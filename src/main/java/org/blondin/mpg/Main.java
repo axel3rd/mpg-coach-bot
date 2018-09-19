@@ -1,4 +1,4 @@
-package org.blonding.mpg;
+package org.blondin.mpg;
 
 public class Main {
 
