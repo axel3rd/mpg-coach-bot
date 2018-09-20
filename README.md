@@ -1,3 +1,6 @@
+
+[![Build Status](https://travis-ci.org/axel3rd/mpg-coach-bot.svg?branch=master)](https://travis-ci.org/axel3rd/mpg-coach-bot) [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=org.blondin%3Ampg-coach-bot&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.blondin%3Ampg-coach-bot)
+
 # mpg-coach-bot
 
 MPG (Mon Petit Gazon) coach bot, to automate and optimize weekly league actions
