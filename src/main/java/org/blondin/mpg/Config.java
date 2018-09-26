@@ -36,9 +36,9 @@ public class Config {
                 // Nothing
             }
         }
-        config.login = StringUtils.defaultIfBlank(properties.getProperty("email"), System.getProperty("MPG_EMAIL"));
-        config.password = StringUtils.defaultIfBlank(properties.getProperty("password"), System.getProperty("MPG_PASSWORD"));
-        config.leagueTest = StringUtils.defaultIfBlank(properties.getProperty("leagueTest"), System.getProperty("MPG_LEAGUE_TEST"));
+        config.login = StringUtils.defaultIfBlank(properties.getProperty("email"), System.getenv("MPG_EMAIL"));
+        config.password = StringUtils.defaultIfBlank(properties.getProperty("password"), System.getenv("MPG_PASSWORD"));
+        config.leagueTest = StringUtils.defaultIfBlank(properties.getProperty("leagueTest"), System.getenv("MPG_LEAGUE_TEST"));
         return config;
     }
 
