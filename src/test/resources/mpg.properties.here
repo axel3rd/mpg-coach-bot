@@ -1,0 +1,6 @@
+# To simplify unit test, put configuration file here
+email = firstName.lastName@gmail.com
+password = foobar
+
+# One league of previous user, used for test
+leagueTest=KLGXSSUG

@@ -1,0 +1,19 @@
+{
+    "data": {
+        "follow": [
+        ],
+        "leagues": [
+            {
+                "id": "KLGXSSUG",
+                "admin_mpg_user_id": "mpg_user_963519",
+                "current_mpg_user": "mpg_user_955966",
+                "name": "Rock on the grass",
+                "leagueStatus": 4,
+                "championship": 1,
+                "mode": 2,
+                "teamStatus": 2,
+                "url": "assets/public/img/league/3.jpg"
+            }
+        ]
+    }
+}

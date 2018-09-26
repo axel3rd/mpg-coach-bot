@@ -9,6 +9,20 @@ MPG (Mon Petit Gazon) coach bot, to automate and optimize weekly league actions
 
 Automate and optimize your [MPG](http://mpg.football/) weekly league actions, using external data like [mpgstats](https://www.mpgstats.fr)
 
+## Usage
+
+Create a `mpg.properties` file with your *MPG* credentials:
+
+    email = firstName.lastName@gmail.com
+    password = foobar
+
+And run program with this file as first parameter.
+
+Note :
+
+- If no file provided as parameter, a `mpg.properties` will be used in working directory (if exist).
+- Environments variable `MPG_EMAIL` & `MPG_PASSWORD` could be used for configuration (override configuration file in this case).
+
 ## Roadmap
 
 ### v1
