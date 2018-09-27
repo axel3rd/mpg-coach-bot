@@ -1,8 +1,8 @@
 {
     "package": {
-        "name": "mpg-coach-bot",
-        "repo": "mpg-coach-bot",
         "subject": "axel3rd",
+        "repo": "generic",
+        "name": "mpg-coach-bot",
         "desc": "MPG (Mon Petit Gazon) coach bot, to automate and optimize weekly actions",
         "website_url": "https://github.com/axel3rd/mpg-coach-bot",
         "issue_tracker_url": "https://github.com/axel3rd/mpg-coach-bot/issues",
@@ -19,8 +19,7 @@
         "public_stats": true
     },
     "version": {
-        "name": "1.0.0-SNAP",
-        "desc": "test version"
+        "name": "1.0.0-SNAP"
     },
     "files": [
         {
