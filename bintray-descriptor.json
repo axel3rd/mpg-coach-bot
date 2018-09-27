@@ -8,7 +8,7 @@
         "issue_tracker_url": "https://github.com/axel3rd/mpg-coach-bot/issues",
         "vcs_url": "https://github.com/axel3rd/mpg-coach-bot.git",
         "licenses": [
-            "GPLv3"
+            "GPL-3.0"
         ],
         "labels": [
             "MPG",
