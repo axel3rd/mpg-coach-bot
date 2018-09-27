@@ -3,12 +3,14 @@
         "name": "mpg-coach-bot",
         "repo": "mpg-coach-bot",
         "subject": "axel3rd",
-        "desc": "I was pushed completely automatically",
+        "desc": "MPG (Mon Petit Gazon) coach bot, to automate and optimize weekly actions",
         "website_url": "https://github.com/axel3rd/mpg-coach-bot",
         "issue_tracker_url": "https://github.com/axel3rd/mpg-coach-bot/issues",
         "vcs_url": "https://github.com/axel3rd/mpg-coach-bot.git",
         "labels": [
-            "MPG"
+            "MPG",
+            "coach",
+            "bot"
         ],
         "public_download_numbers": true,
         "public_stats": true
