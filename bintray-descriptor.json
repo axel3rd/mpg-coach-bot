@@ -19,7 +19,7 @@
         "public_stats": true
     },
     "version": {
-        "name": "1.0.0-SNAPSHOT",
+        "name": "1.0.0-SNAP",
         "desc": "test version"
     },
     "files": [
