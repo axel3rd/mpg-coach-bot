@@ -6,7 +6,7 @@ addons:
   sonarcloud:
     organization: axel3rd-github
 script:
-- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.pullrequest.branch=$TRAVIS_BRANCH -Dsonar.pullrequest.key=$TRAVIS_PULL_REQUEST
 deploy:
   provider: bintray
   file: bintray-descriptor.json

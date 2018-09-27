@@ -19,6 +19,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class MainTest {
 
     @Test
+    public void testRealWithBadCredentials() throws Exception {
+        try {
+            Main.main(new String[] { "src/test/resources/mpg.properties.here" });
+        } catch (UnsupportedOperationException e) {
+            // Credentials in sample file are fake
+        }
+    }
+
+    @Test
     public void testProcessMock() throws Exception {
         // Mock initialization
         MpgClient mpgClient = mock(MpgClient.class);

@@ -25,7 +25,7 @@ public class Main {
     static void process(MpgClient mpgClient, MpgStatsClient mpgStatsClient) {
 
         LOG.info("TODO: This is just a try for the moment ... display your players, stats available for {} players",
-                mpgStatsClient.getStats().getPlayers());
+                mpgStatsClient.getStats().getPlayers().size());
 
         for (League league : mpgClient.getDashboard().getLeagues()) {
             LOG.info("========== {} ==========", league.getName());
