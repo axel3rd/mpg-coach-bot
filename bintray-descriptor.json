@@ -19,11 +19,16 @@
         "public_stats": true
     },
     "version": {
+        "name": "1.0.0-SNAPSHOT",
+        "desc": "test version"
     },
     "files": [
         {
             "includePattern": "target/(mpg-coach-bot-.*.jar)",
-            "uploadPattern": "$1"
+            "uploadPattern": "$1",
+            "matrixParams": {
+                "override": 1
+            }
         }
     ],
     "publish": true
