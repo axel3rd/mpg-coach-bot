@@ -8,9 +8,10 @@
     <name>MPG Coach Bot</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jdk.version>1.8</jdk.version>
         <main.class>org.blondin.mpg.Main</main.class>
+        <jdk.version>1.8</jdk.version>
         <jersey.version>2.27</jersey.version>
+        <slf4j.version>1.7.25</slf4j.version>
     </properties>
     <build>
         <pluginManagement>
@@ -77,6 +78,21 @@
     </build>
     <dependencies>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+        <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
             <version>2.1.1</version>
@@ -115,6 +131,12 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>2.22.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

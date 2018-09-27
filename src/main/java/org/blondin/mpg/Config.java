@@ -24,9 +24,9 @@ public class Config {
 
     public static Config build(String file) {
         Config config = new Config();
-        File fileConfig = new File(file);
-        if (!fileConfig.exists()) {
-            fileConfig = new File(FILE_DEFAULT);
+        File fileConfig = new File(FILE_DEFAULT);
+        if (StringUtils.isNotBlank(file) && new File(file).exists()) {
+            fileConfig = new File(file);
         }
         Properties properties = new Properties();
         if (fileConfig.exists()) {
@@ -39,6 +39,10 @@ public class Config {
         config.login = StringUtils.defaultIfBlank(properties.getProperty("email"), System.getenv("MPG_EMAIL"));
         config.password = StringUtils.defaultIfBlank(properties.getProperty("password"), System.getenv("MPG_PASSWORD"));
         config.leagueTest = StringUtils.defaultIfBlank(properties.getProperty("leagueTest"), System.getenv("MPG_LEAGUE_TEST"));
+        if (StringUtils.isBlank(config.login) || StringUtils.isBlank(config.password)) {
+            throw new UnsupportedOperationException(
+                    String.format("Login and/or password can't be retrieved from file '%s' of environement variables", fileConfig.getName()));
+        }
         return config;
     }
 

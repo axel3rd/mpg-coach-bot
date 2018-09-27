@@ -5,6 +5,7 @@ import java.io.File;
 import org.blondin.mpg.Config;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.Dashboard;
+import org.blondin.mpg.root.model.Player;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -31,6 +32,14 @@ public class MpgClientTest {
         Assert.assertNotNull(coach);
         Assert.assertNotNull(coach.getPlayers());
         Assert.assertTrue(coach.getPlayers().size() > 10);
+        for (Player player : coach.getPlayers()) {
+            Assert.assertNotNull(player);
+            Assert.assertNotNull(player.getName(), player.getFirstName());
+            Assert.assertNotNull(player.getName(), player.getLastName());
+            Assert.assertNotNull(player.getName());
+            Assert.assertEquals(player.getName(), player.getLastName() + " " + player.getFirstName());
+            Assert.assertFalse(player.getName(), player.getName().contains("null"));
+        }
     }
 
     @Test
@@ -49,5 +58,6 @@ public class MpgClientTest {
         Assert.assertNotNull(dashboard);
         Assert.assertNotNull(dashboard.getLeagues());
         Assert.assertEquals("KLGXSSUG", dashboard.getLeagues().get(0).getId());
+        Assert.assertEquals("Rock on the grass", dashboard.getLeagues().get(0).getName());
     }
 }

@@ -1,5 +1,5 @@
 
-[![Build Status](https://travis-ci.org/axel3rd/mpg-coach-bot.svg?branch=master)](https://travis-ci.org/axel3rd/mpg-coach-bot) [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=org.blondin%3Ampg-coach-bot&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.blondin%3Ampg-coach-bot)
+[![Build Status](https://travis-ci.org/axel3rd/mpg-coach-bot.svg?branch=master)](https://travis-ci.org/axel3rd/mpg-coach-bot) [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=org.blondin%3Ampg-coach-bot&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.blondin%3Ampg-coach-bot) [ ![Download](https://api.bintray.com/packages/axel3rd/mpg-coach-bot/mpg-coach-bot/images/download.svg) ](https://bintray.com/mpg-coach-bot/mpg-coach-bot/_latestVersion)
 
 # mpg-coach-bot
 
@@ -16,7 +16,9 @@ Create a `mpg.properties` file with your *MPG* credentials:
     email = firstName.lastName@gmail.com
     password = foobar
 
-And run program with this file as first parameter.
+And run program with this file as first parameter:
+
+    java -jar mpg-coach-bot-x.y.z.jar mpg.properties
 
 Note :
 

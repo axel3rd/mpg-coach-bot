@@ -6,8 +6,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class League {
 
     private String id;
+    private String name;
 
     public String getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
     }
 }

@@ -1,9 +1,15 @@
 language: java
 dist: trusty
 jdk:
-  - oraclejdk8
+- oraclejdk8
 addons:
   sonarcloud:
-    organization: "axel3rd-github"
+    organization: axel3rd-github
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+deploy:
+  provider: bintray
+  file: bintray-descriptor.json
+  user: axel3rd
+  key: 'secure: hCAOCRB6hsAs03CrEYechkvhX+nhwjEfFdd4Q/CLGT1u++1aL+cQf8Gw+a3uPb6buqtjoTNOnWKppsBbmsI2EzKwsLq/2FgHuIovhAn8eG7SBzScWv5bksYKLMrLADBBObQdMMdOIptoB8IY7JAY1/peE7zbaNo0UyzEfKOBoWvIuo5YI99vI/YNxDl8caDVhGxiypxd7Ta6CEHeE/6vIxBpYLp9SEGh+4vvJzrKC0fcFWDq1G+zhcQqPJe45NGbzEBb0Z+oLBleCwl5DhyVHVkb/Vi5W/lCnIRGEN7YzLinMEAwP+NXasXqjZA49sVF41bfmZ2LwCWZqCb+yXlPJbtdZCii24SRb1+1OJYHkRsFH3kwaaMcCG7YPtGSE/chFY9GV1nzhiR+zUAfWSBzUEHB9W1jWqiU7qj5Npe1HrqByu4tl6rvkxQ11hVuB1GW7I56AxlFw/xF0I2vERP3J+KnZs5ud+0jEUMWKBHd1D0ZmSTXhbZ1QM4IHYlQcpoZFXRAqpy/41jgzLlvMa54MypCmegHsBlAE6BH51BLB5TewafyyRcW8irLx6vN+XEACJcnjLAc36uIbiSb6CRXsmex4Cy0VL/lcpjUQD+LCcpHM0DMi97htHx/iSrpZ3S4O7jfBJTVsvFdFgE6/F+HVnb77UF6CggFvSvOqKUK4ik='
+  skip_cleanup: true
