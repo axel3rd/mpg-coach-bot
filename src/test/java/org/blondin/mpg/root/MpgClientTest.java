@@ -37,7 +37,7 @@ public class MpgClientTest {
             Assert.assertNotNull(player.getName(), player.getFirstName());
             Assert.assertNotNull(player.getName(), player.getLastName());
             Assert.assertNotNull(player.getName());
-            Assert.assertEquals(player.getName(), player.getLastName() + " " + player.getFirstName());
+            Assert.assertEquals(player.getName(), (player.getLastName() + " " + player.getFirstName()).trim());
             Assert.assertFalse(player.getName(), player.getName().contains("null"));
         }
     }
