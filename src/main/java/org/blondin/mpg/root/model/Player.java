@@ -14,21 +14,15 @@ public class Player {
     private String lastName;
 
     public String getFirstName() {
-        if (StringUtils.isBlank(firstName)) {
-            return "";
-        }
-        return firstName;
+        return StringUtils.defaultIfBlank(firstName, "");
     }
 
     public String getLastName() {
-        if (StringUtils.isBlank(lastName)) {
-            return "";
-        }
-        return lastName;
+        return StringUtils.defaultIfBlank(lastName, "");
     }
 
     public String getName() {
-        return getLastName() + " " + getFirstName();
+        return (getLastName() + " " + getFirstName()).trim();
     }
 
 }

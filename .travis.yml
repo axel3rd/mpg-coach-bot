@@ -5,8 +5,10 @@ jdk:
 addons:
   sonarcloud:
     organization: axel3rd-github
+before_script: 
+- source ./travis/sonarcloud-props.sh
 script:
-- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar $SONARCLOUD_PROPERTIES
 deploy:
   provider: bintray
   file: bintray-descriptor.json
