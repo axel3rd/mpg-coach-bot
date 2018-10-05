@@ -3,6 +3,7 @@ package org.blondin.mpg.stats;
 import java.io.File;
 
 import org.blondin.mpg.stats.model.Championship;
+import org.blondin.mpg.stats.model.Player;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -24,5 +25,19 @@ public class MpgStatsClientTest {
         Assert.assertNotNull(championship);
         Assert.assertNotNull(championship.getPlayers());
         Assert.assertTrue(championship.getPlayers().size() > 600);
+        boolean atLeatOne = false;
+        for (Player player : championship.getPlayers()) {
+            Assert.assertNotNull(player);
+            Assert.assertNotNull(player.getName(), player.getFirstName());
+            Assert.assertNotNull(player.getName(), player.getLastName());
+            Assert.assertNotNull(player.getName());
+            Assert.assertEquals(player.getName(), (player.getLastName() + " " + player.getFirstName()).trim());
+            Assert.assertFalse(player.getName(), player.getName().contains("null"));
+            if (player.getStats().getGoals() > 0) {
+                atLeatOne = true;
+                Assert.assertTrue(player.getName(), player.getStats().getAverage() > 0);
+            }
+        }
+        Assert.assertTrue(atLeatOne);
     }
 }
