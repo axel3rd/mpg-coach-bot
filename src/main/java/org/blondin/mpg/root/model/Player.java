@@ -8,10 +8,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Player {
 
+    @JsonProperty("playerid")
+    private String id;
     @JsonProperty("firstname")
     private String firstName;
     @JsonProperty("lastname")
     private String lastName;
+    private Position position;
+
+    private float efficiency;
+
+    public String getId() {
+        return id;
+    }
 
     public String getFirstName() {
         return StringUtils.defaultIfBlank(firstName, "");
@@ -23,6 +32,18 @@ public class Player {
 
     public String getName() {
         return (getLastName() + " " + getFirstName()).trim();
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public float getEfficiency() {
+        return efficiency;
+    }
+
+    public void setEfficiency(float efficiency) {
+        this.efficiency = efficiency;
     }
 
 }

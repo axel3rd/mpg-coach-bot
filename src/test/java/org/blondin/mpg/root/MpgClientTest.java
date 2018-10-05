@@ -14,11 +14,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class MpgClientTest {
 
-    private static final String TEST_FILE = "src/test/resources/mpg.properties";
+    private static final Config config = Config.build("src/test/resources/mpg.properties");
 
     @Test
     public void testCoachReal() {
-        Config config = Config.build(TEST_FILE);
         Coach coach = MpgClient.build(config.getLogin(), config.getPassword()).getCoach(config.getLeagueTest());
         Assert.assertNotNull(coach);
         Assert.assertNotNull(coach.getPlayers());
@@ -34,6 +33,8 @@ public class MpgClientTest {
         Assert.assertTrue(coach.getPlayers().size() > 10);
         for (Player player : coach.getPlayers()) {
             Assert.assertNotNull(player);
+            Assert.assertNotNull(player.getId());
+            Assert.assertNotNull(player.getPosition());
             Assert.assertNotNull(player.getName(), player.getFirstName());
             Assert.assertNotNull(player.getName(), player.getLastName());
             Assert.assertNotNull(player.getName());
@@ -44,11 +45,10 @@ public class MpgClientTest {
 
     @Test
     public void testDashboardReal() {
-        Config config = Config.build(TEST_FILE);
         Dashboard dashboard = MpgClient.build(config.getLogin(), config.getPassword()).getDashboard();
         Assert.assertNotNull(dashboard);
         Assert.assertNotNull(dashboard.getLeagues());
-        Assert.assertEquals("KLGXSSUG", dashboard.getLeagues().get(0).getId());
+        Assert.assertEquals(config.getLeagueTest(), dashboard.getLeagues().get(0).getId());
     }
 
     @Test
@@ -57,7 +57,7 @@ public class MpgClientTest {
                 .readValue(new File("src/test/resources/datas", "mpg.dashboard-1.json"), Dashboard.class);
         Assert.assertNotNull(dashboard);
         Assert.assertNotNull(dashboard.getLeagues());
-        Assert.assertEquals("KLGXSSUG", dashboard.getLeagues().get(0).getId());
+        Assert.assertEquals(config.getLeagueTest(), dashboard.getLeagues().get(0).getId());
         Assert.assertEquals("Rock on the grass", dashboard.getLeagues().get(0).getName());
     }
 }
