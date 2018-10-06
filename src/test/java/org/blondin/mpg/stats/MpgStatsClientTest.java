@@ -33,6 +33,7 @@ public class MpgStatsClientTest {
             Assert.assertNotNull(player.getName());
             Assert.assertEquals(player.getName(), (player.getLastName() + " " + player.getFirstName()).trim());
             Assert.assertFalse(player.getName(), player.getName().contains("null"));
+            Assert.assertTrue(player.getName(), player.getPrice() > 0);
             if (player.getStats().getGoals() > 0) {
                 atLeatOne = true;
                 Assert.assertTrue(player.getName(), player.getStats().getAverage() > 0);

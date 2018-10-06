@@ -16,7 +16,7 @@ public class Player {
     private String lastName;
     private Position position;
 
-    private float efficiency;
+    private double efficiency;
 
     public String getId() {
         return id;
@@ -38,11 +38,11 @@ public class Player {
         return position;
     }
 
-    public float getEfficiency() {
+    public double getEfficiency() {
         return efficiency;
     }
 
-    public void setEfficiency(float efficiency) {
+    public void setEfficiency(double efficiency) {
         this.efficiency = efficiency;
     }
 
