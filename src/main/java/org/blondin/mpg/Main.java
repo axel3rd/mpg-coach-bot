@@ -56,10 +56,17 @@ public class Main {
     }
 
     static List<Player> calculateEfficiency(List<Player> players, MpgStatsClient stats) {
+        // Calculate efficient in Stats model
+        for (org.blondin.mpg.stats.model.Player p : stats.getStats().getPlayers()) {
+            double efficiency = p.getStats().getMatchs() / (double) stats.getStats().getDay() * p.getStats().getAverage()
+                    * (1 + p.getStats().getGoals() * 1.2);
+            // round efficiency to 2 decimals
+            p.setEfficiency(Math.round(efficiency * 100) / (double) 100);
+        }
+
+        // Fill MPG model
         for (Player player : players) {
-            // First try with simple average
-            // At minimum should be used the regularly play, the goals, ...
-            player.setEfficiency(stats.getStats().getPlayer(player.getName()).getStats().getAverage());
+            player.setEfficiency(stats.getStats().getPlayer(player.getName()).getEfficiency());
         }
         return players;
     }

@@ -17,6 +17,10 @@ public class Player {
     private String lastName;
     @JsonProperty("s")
     private Stats stats;
+    @JsonProperty("r")
+    private int price;
+
+    private double efficiency;
 
     public String getFirstName() {
         return StringUtils.defaultIfBlank(firstName, "");
@@ -30,8 +34,19 @@ public class Player {
         return (getLastName() + " " + getFirstName()).trim();
     }
 
+    public int getPrice() {
+        return price;
+    }
+
     public Stats getStats() {
         return stats;
     }
 
+    public double getEfficiency() {
+        return efficiency;
+    }
+
+    public void setEfficiency(double efficiency) {
+        this.efficiency = efficiency;
+    }
 }

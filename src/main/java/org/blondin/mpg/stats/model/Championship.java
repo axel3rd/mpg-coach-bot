@@ -14,6 +14,18 @@ public class Championship {
     @JsonProperty("p")
     private List<Player> players;
 
+    @JsonProperty("mxD")
+    private int day;
+
+    /**
+     * Current day of season
+     * 
+     * @return The day
+     */
+    public int getDay() {
+        return day;
+    }
+
     public List<Player> getPlayers() {
         return players;
     }
