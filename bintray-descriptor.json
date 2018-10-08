@@ -19,11 +19,11 @@
         "public_stats": true
     },
     "version": {
-        "name": "1.0.0-SNAP"
+        "name": "VERSION_TO_UPDATE"
     },
     "files": [
         {
-            "includePattern": "target/(mpg-coach-bot-.*.jar)",
+            "includePattern": "target/(mpg-coach-bot-.*.zip)",
             "uploadPattern": "$1",
             "matrixParams": {
                 "override": 1

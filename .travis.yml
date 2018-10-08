@@ -10,6 +10,8 @@ addons:
     organization: axel3rd-github
 script:
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+before_deploy:
+- sh ./bintray-before-deploy.sh
 deploy:
   provider: bintray
   file: bintray-descriptor.json
