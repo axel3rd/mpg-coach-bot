@@ -1,5 +1,5 @@
 
-[![Build Status](https://travis-ci.org/axel3rd/mpg-coach-bot.svg?branch=master)](https://travis-ci.org/axel3rd/mpg-coach-bot) [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=org.blondin%3Ampg-coach-bot&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.blondin%3Ampg-coach-bot) [ ![Download](https://api.bintray.com/packages/axel3rd/generic/mpg-coach-bot/images/download.svg) ](https://bintray.com/axel3rd/generic/mpg-coach-bot/_latestVersion)
+[![Build Status](https://travis-ci.org/axel3rd/mpg-coach-bot.svg?branch=master)](https://travis-ci.org/axel3rd/mpg-coach-bot) [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=org.blondin%3Ampg-coach-bot&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.blondin%3Ampg-coach-bot) [ ![Download](https://api.bintray.com/packages/axel3rd/generic/mpg-coach-bot/images/download.svg) ](https://bintray.com/axel3rd/generic/mpg-coach-bot/_latestVersion) / Development version: [ ![download](https://api.bintray.com/packages/axel3rd/generic-snapshot/mpg-coach-bot/images/download.svg) ](https://bintray.com/axel3rd/generic-dev/mpg-coach-bot/_latestVersion)
 
 # mpg-coach-bot
 
@@ -11,18 +11,24 @@ Automate and optimize your [MPG](http://mpg.football/) weekly league actions, us
 
 ## Usage
 
-Create a `mpg.properties` file with your *MPG* credentials:
+*Prerequisite: [java](https://www.java.com/fr/download/) should be installed and on your PATH.*
+
+Extract ZIP file and update the given `mpg.properties` file with your *MPG* credentials:
 
     email = firstName.lastName@gmail.com
     password = foobar
 
-And run program with this file as first parameter:
+Depending your environment system, run `mpg-coach-bot.bat` (Windows) or `mpg-coach-bot.sh` (Linux).
 
-    java -jar mpg-coach-bot-x.y.z.jar mpg.properties
+## Usage (advanced)
+
+You can execute in command line:
+
+    java -jar mpg-coach-bot-x.y.z.jar your-mpg-config.properties
 
 Note :
 
-- If no file provided as parameter, a `mpg.properties` will be used in working directory (if exist).
+- If no file provided as parameter, a `mpg.properties` file will be used in working directory (if exist).
 - Environments variable `MPG_EMAIL` & `MPG_PASSWORD` could be used for configuration (override configuration file in this case).
 
 ## Roadmap
