@@ -1,5 +1,5 @@
 
-[![Build Status](https://travis-ci.org/axel3rd/mpg-coach-bot.svg?branch=master)](https://travis-ci.org/axel3rd/mpg-coach-bot) [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=org.blondin%3Ampg-coach-bot&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.blondin%3Ampg-coach-bot) [ ![Download](https://api.bintray.com/packages/axel3rd/generic/mpg-coach-bot/images/download.svg) ](https://bintray.com/axel3rd/generic/mpg-coach-bot/_latestVersion) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Development version: [ ![download](https://api.bintray.com/packages/axel3rd/generic-dev/mpg-coach-bot/images/download.svg) ](https://bintray.com/axel3rd/generic-dev/mpg-coach-bot/_latestVersion)
+[![Build Status](https://travis-ci.org/axel3rd/mpg-coach-bot.svg?branch=master)](https://travis-ci.org/axel3rd/mpg-coach-bot) [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=org.blondin%3Ampg-coach-bot&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.blondin%3Ampg-coach-bot) [ ![Download](https://api.bintray.com/packages/axel3rd/generic/mpg-coach-bot/images/download.svg) ](https://bintray.com/axel3rd/generic/mpg-coach-bot/_latestVersion#files) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Development version: [ ![download](https://api.bintray.com/packages/axel3rd/generic-dev/mpg-coach-bot/images/download.svg) ](https://bintray.com/axel3rd/generic-dev/mpg-coach-bot/_latestVersion#files)
 
 # mpg-coach-bot
 
@@ -7,7 +7,11 @@ MPG (Mon Petit Gazon) coach bot, to automate and optimize weekly league actions
 
 ## Concept
 
-Automate and optimize your [MPG](http://mpg.football/) weekly league actions, using external data like [mpgstats](https://www.mpgstats.fr)
+Automate and optimize your [MPG](http://mpg.football/) weekly league actions, using external datas like [mpgstats](https://www.mpgstats.fr) and [equipeactu](http://www.equipeactu.fr/blessures-et-suspensions/).
+
+The efficiency algorithm used to calculate players score is:
+
+    player.matchs / championshipDays * player.average * (1 + player.goals() * 1.2)
 
 ## Usage
 
