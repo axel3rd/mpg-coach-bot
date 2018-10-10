@@ -2,17 +2,17 @@ package org.blondin.mpg.equipeactu.model;
 
 public class Player {
 
-    private String name;
+    private String fullNameWithPosition;
     private OutType outType;
     private String description;
     private String length;
 
-    public String getName() {
-        return name;
+    public String getFullNameWithPosition() {
+        return fullNameWithPosition;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullNameWithPosition(String name) {
+        this.fullNameWithPosition = name;
     }
 
     public OutType getOutType() {

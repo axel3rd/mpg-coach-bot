@@ -2,6 +2,7 @@ package org.blondin.mpg.equipeactu;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
@@ -25,8 +26,23 @@ public class InjuredSuspendedClient extends AbstractClient {
         return "http://www.equipeactu.fr/blessures-et-suspensions/fodbold/";
     }
 
-    public List<Player> getPlayers() {
+    /**
+     * Return injured or suspended player
+     * 
+     * @param name Name
+     * @return Player or null if not found
+     */
+    public Player getPlayer(String name) {
+        for (Player player : getPlayers()) {
+            if (Stream.of(name.split(" ")).allMatch(player.getFullNameWithPosition()::contains)) {
+                return player;
+            }
+        }
         return null;
+    }
+
+    public List<Player> getPlayers() {
+        return getPlayers(get("france/ligue-1", String.class));
     }
 
     protected List<Player> getPlayers(String content) {
@@ -35,7 +51,7 @@ public class InjuredSuspendedClient extends AbstractClient {
         for (Element item : doc.select("div.injuries_item")) {
             Player player = new Player();
             player.setOutType(parseOutType(item.selectFirst("div.injuries_type").selectFirst("span").className()));
-            player.setName(item.selectFirst("div.injuries_playername").text());
+            player.setFullNameWithPosition(item.selectFirst("div.injuries_playername").text());
             player.setDescription(item.selectFirst("div.injuries_name").text());
             player.setLength(item.selectFirst("div.injuries_length").text());
             players.add(player);
