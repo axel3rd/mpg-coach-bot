@@ -9,7 +9,7 @@ public enum Position {
 
     private final int value;
 
-    Position(final int value) {
+    private Position(final int value) {
         this.value = value;
     }
 
