@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.blondin.mpg.equipeactu.ChampionshipOutType;
 import org.blondin.mpg.equipeactu.InjuredSuspendedClient;
 import org.blondin.mpg.equipeactu.model.OutType;
 import org.blondin.mpg.root.MpgClient;
 import org.blondin.mpg.root.model.League;
 import org.blondin.mpg.root.model.Player;
 import org.blondin.mpg.root.model.Position;
+import org.blondin.mpg.stats.ChampionshipStatsType;
 import org.blondin.mpg.stats.MpgStatsClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,10 +43,10 @@ public class Main {
             List<Player> players = mpgClient.getCoach(league.getId()).getPlayers();
 
             // Remove out players (and write them)
-            removeOutPlayers(players, outPlayersClient);
+            removeOutPlayers(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
 
             // Calculate efficiency and sort
-            calculateEfficiency(players, mpgStatsClient);
+            calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()));
             Collections.sort(players, Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).reversed());
 
             // Write optimized team
@@ -52,10 +54,10 @@ public class Main {
         }
     }
 
-    static List<Player> removeOutPlayers(List<Player> players, InjuredSuspendedClient outPlayersClient) {
+    static List<Player> removeOutPlayers(List<Player> players, InjuredSuspendedClient outPlayersClient, ChampionshipOutType championship) {
         List<Player> outPlayers = new ArrayList<>();
         for (Player player : players) {
-            org.blondin.mpg.equipeactu.model.Player outPlayer = outPlayersClient.getPlayer(player.getName(), OutType.INJURY_GREEN);
+            org.blondin.mpg.equipeactu.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(), OutType.INJURY_GREEN);
             if (outPlayer != null) {
                 outPlayers.add(player);
                 LOG.info("Out: {} - {} - {} - {}", player.getName(), outPlayer.getOutType(), outPlayer.getDescription(), outPlayer.getLength());
@@ -87,10 +89,10 @@ public class Main {
         LOG.info("{}", dashes);
     }
 
-    private static List<Player> calculateEfficiency(List<Player> players, MpgStatsClient stats) {
+    private static List<Player> calculateEfficiency(List<Player> players, MpgStatsClient stats, ChampionshipStatsType championship) {
         // Calculate efficient in Stats model
-        for (org.blondin.mpg.stats.model.Player p : stats.getStats().getPlayers()) {
-            double efficiency = p.getStats().getMatchs() / (double) stats.getStats().getDay() * p.getStats().getAverage()
+        for (org.blondin.mpg.stats.model.Player p : stats.getStats(championship).getPlayers()) {
+            double efficiency = p.getStats().getMatchs() / (double) stats.getStats(championship).getDay() * p.getStats().getAverage()
                     * (1 + p.getStats().getGoals() * 1.2);
             // round efficiency to 2 decimals
             p.setEfficiency(Math.round(efficiency * 100) / (double) 100);
@@ -98,7 +100,7 @@ public class Main {
 
         // Fill MPG model
         for (Player player : players) {
-            player.setEfficiency(stats.getStats().getPlayer(player.getName()).getEfficiency());
+            player.setEfficiency(stats.getStats(championship).getPlayer(player.getName()).getEfficiency());
         }
         return players;
     }

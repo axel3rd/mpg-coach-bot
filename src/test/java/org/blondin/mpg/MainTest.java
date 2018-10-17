@@ -1,5 +1,6 @@
 package org.blondin.mpg;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.blondin.mpg.equipeactu.ChampionshipOutType;
 import org.blondin.mpg.equipeactu.InjuredSuspendedClient;
 import org.blondin.mpg.root.MpgClient;
 import org.blondin.mpg.root.model.Coach;
@@ -52,18 +54,18 @@ public class MainTest {
                 .readValue(new File("src/test/resources/datas", "mpg.dashboard-1.json"), Dashboard.class));
 
         MpgStatsClient mpgStatsClient = mock(MpgStatsClient.class);
-        when(mpgStatsClient.getStats())
+        when(mpgStatsClient.getStats(any()))
                 .thenReturn(new ObjectMapper().readValue(new File("src/test/resources/datas", "mpgstats.ligue-1.json"), Championship.class));
 
         InjuredSuspendedClient outPlayersClient = spy(InjuredSuspendedClient.class);
-        when(outPlayersClient.getHtmlContent())
+        when(outPlayersClient.getHtmlContent(ChampionshipOutType.LIGUE_1))
                 .thenReturn(FileUtils.readFileToString(new File("src/test/resources/datas", "equipeactu.ligue-1-1.html")));
 
         // Test out (on cloned list)
         List<Player> players = new ArrayList<>(mpgClient.getCoach("fake").getPlayers());
         Assert.assertNotNull("Nkunku should be here",
                 players.stream().filter(customer -> "Nkunku".equals(customer.getLastName())).findAny().orElse(null));
-        Main.removeOutPlayers(players, outPlayersClient);
+        Main.removeOutPlayers(players, outPlayersClient, ChampionshipOutType.LIGUE_1);
         Assert.assertNull("Nkunku should be removed",
                 players.stream().filter(customer -> "Nkunku".equals(customer.getLastName())).findAny().orElse(null));
 

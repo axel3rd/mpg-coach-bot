@@ -2,6 +2,7 @@ package org.blondin.mpg.equipeactu;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -19,7 +20,7 @@ import org.jsoup.nodes.Element;
  */
 public class InjuredSuspendedClient extends AbstractClient {
 
-    private List<Player> cache;
+    private EnumMap<ChampionshipOutType, List<Player>> cache = new EnumMap<>(ChampionshipOutType.class);
 
     public static InjuredSuspendedClient build() {
         return new InjuredSuspendedClient();
@@ -33,25 +34,27 @@ public class InjuredSuspendedClient extends AbstractClient {
     /**
      * Return injured or suspended player
      * 
+     * @param championship Championship of player
      * @param name Name
      * @return Player or null if not found
      */
-    public Player getPlayer(String name) {
+    public Player getPlayer(ChampionshipOutType championship, String name) {
         OutType[] excludes = null;
-        return getPlayer(name, excludes);
+        return getPlayer(championship, name, excludes);
     }
 
     /**
      * Return injured or suspended player
      * 
+     * @param championship Championship of player
      * @param name Name
      * @param excludes {@link OutType} to exclude
      * @return Player or null if not found
      */
-    public Player getPlayer(String name, OutType... excludes) {
+    public Player getPlayer(ChampionshipOutType championship, String name, OutType... excludes) {
         List<OutType> excluded = Arrays.asList(ObjectUtils.defaultIfNull(excludes, new OutType[] {}));
 
-        for (Player player : getPlayers()) {
+        for (Player player : getPlayers(championship)) {
             if (!excluded.contains(player.getOutType())
                     && Stream.of(name.toLowerCase().split(" ")).allMatch(player.getFullNameWithPosition().toLowerCase()::contains)) {
                 return player;
@@ -60,21 +63,25 @@ public class InjuredSuspendedClient extends AbstractClient {
         return null;
     }
 
-    public String getHtmlContent() {
-        return get("france/ligue-1", String.class);
+    public String getHtmlContent(ChampionshipOutType championship) {
+        return get(championship.getValue(), String.class);
     }
 
-    public List<Player> getPlayers() {
-        if (cache == null) {
-            cache = getPlayers(getHtmlContent());
+    public List<Player> getPlayers(ChampionshipOutType championship) {
+        if (!cache.containsKey(championship)) {
+            cache.put(championship, getPlayers(getHtmlContent(championship)));
         }
-        return cache;
+        return cache.get(championship);
     }
 
     protected List<Player> getPlayers(String content) {
         List<Player> players = new ArrayList<>();
         Document doc = Jsoup.parse(content);
         for (Element item : doc.select("div.injuries_item")) {
+            if (item.selectFirst("div.injuries_name") == null) {
+                // No injured/suspended players in team
+                continue;
+            }
             Player player = new Player();
             player.setOutType(parseOutType(item.selectFirst("div.injuries_type").selectFirst("span").className()));
             player.setFullNameWithPosition(item.selectFirst("div.injuries_playername").text());
