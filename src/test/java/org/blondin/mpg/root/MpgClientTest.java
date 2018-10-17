@@ -49,6 +49,8 @@ public class MpgClientTest {
         Assert.assertNotNull(dashboard);
         Assert.assertNotNull(dashboard.getLeagues());
         Assert.assertEquals(config.getLeagueTest(), dashboard.getLeagues().get(0).getId());
+        Assert.assertNotNull(dashboard.getLeagues().get(0).getChampionship());
+
     }
 
     @Test
