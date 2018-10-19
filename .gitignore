@@ -6,3 +6,5 @@
 /.project
 /.settings/
 /.apt_generated/
+/pom.xml.releaseBackup
+/release.properties
