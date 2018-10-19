@@ -8,7 +8,6 @@
     <name>MPG Coach Bot</name>
     <properties>
         <goals>package</goals>
-        <branch>next-version</branch>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.class>org.blondin.mpg.Main</main.class>
         <jdk.version>1.8</jdk.version>
@@ -51,10 +50,6 @@
                 <plugin>
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.5.3</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-scm-plugin</artifactId>
-                    <version>1.11.1</version>
                 </plugin>
             </plugins>
         </pluginManagement>

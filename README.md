@@ -77,9 +77,11 @@ password = foobar
 leagueTest=KLGXSSUG
 ```
 
-For release build, use on branch `master` (you will have to fill your GitHub credentials):
+For release build, use (you will have to fill your GitHub credentials):
 ```
-mvn clean release:clean scm:branch release:prepare
+git reset --hard origin/master 
+git branch -m next-version 
+mvn clean release:clean release:prepare
 ```
 
 After that, you would have to create pull-request from 'next-version' branch and rebase it on master for next version development.
