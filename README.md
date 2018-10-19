@@ -37,6 +37,8 @@ Note :
 
 ## Roadmap
 
+Details of working progress in [milestones](./milestones) (and [issues](./issues)).
+
 ### v1
 
 Simple Java auto-executable batch (which jersey 2, jackson, ...), which include feature like:
@@ -54,3 +56,32 @@ Web application with friendly UI (Spring boot, docker container, JS Frontend, ..
 ### v3
 
 Data mining on media resources to optimize team (injuries, coach announcements, ...).
+
+## Development process
+
+This project is using [Maven](https://maven.apache.org/) as integration tool.
+
+For development/SNAPSHOT build, use:
+
+```
+mvn install
+```
+
+Locally on your computer, you can improve end2end tests by providing file `src/test/resources/mpg.properties` file with *real* datas (see `mpg.properties.here` file in directory for details):
+
+```
+email = firstName.lastName@gmail.com
+password = foobar
+
+# One league of previous user, used for test
+leagueTest=KLGXSSUG
+```
+
+For release build, use (you will have to fill your GitHub credentials):
+```
+git reset --hard origin/master 
+git branch -m next-version 
+mvn clean release:clean release:prepare
+```
+
+After that, you would have to create pull-request from 'next-version' branch and rebase it on master for next version development.

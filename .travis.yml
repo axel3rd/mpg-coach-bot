@@ -13,8 +13,17 @@ script:
 before_deploy:
 - sh ./bintray-before-deploy.sh
 deploy:
-  provider: bintray
-  file: bintray-descriptor.json
-  user: axel3rd
-  key: $BINTRAY_API_KEY
-  skip_cleanup: true
+    # master deployment
+  - provider: bintray
+    file: bintray-descriptor.json
+    user: axel3rd
+    key: $BINTRAY_API_KEY
+    skip_cleanup: true
+    # Tag deployment
+  - provider: bintray
+    file: bintray-descriptor.json
+    user: axel3rd
+    key: $BINTRAY_API_KEY
+    skip_cleanup: true
+    on:
+      tags: true

@@ -7,12 +7,16 @@
     <version>1.0-SNAPSHOT</version>
     <name>MPG Coach Bot</name>
     <properties>
+        <goals>package</goals>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.class>org.blondin.mpg.Main</main.class>
         <jdk.version>1.8</jdk.version>
         <jersey.version>2.27</jersey.version>
         <slf4j.version>1.7.25</slf4j.version>
     </properties>
+    <scm>
+        <connection>scm:git:https://github.com/axel3rd/mpg-coach-bot</connection>
+    </scm>
     <build>
         <pluginManagement>
             <plugins>
@@ -34,11 +38,18 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.22.0</version>
+                    <version>2.22.1</version>
+                    <configuration>
+                        <argLine>-Dfile.encoding=${project.build.sourceEncoding}</argLine>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
                     <version>3.1.0</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5.3</version>
                 </plugin>
             </plugins>
         </pluginManagement>
