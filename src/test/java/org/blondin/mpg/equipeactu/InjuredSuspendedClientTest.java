@@ -37,7 +37,8 @@ public class InjuredSuspendedClientTest {
 
         // Mock
         InjuredSuspendedClient client = spy(InjuredSuspendedClient.class);
-        when(client.getHtmlContent(c)).thenReturn(FileUtils.readFileToString(new File("src/test/resources/datas", "equipeactu.ligue-1-1.html")));
+        when(client.getHtmlContent(c))
+                .thenReturn(FileUtils.readFileToString(new File("src/test/resources/datas", "equipeactu.ligue-1-1.html"), "UTF-8"));
 
         // Test
         Assert.assertNotNull(client.getPlayer(c, "Presnel Kimpembe"));
@@ -60,7 +61,7 @@ public class InjuredSuspendedClientTest {
         // Mock
         InjuredSuspendedClient client = spy(InjuredSuspendedClient.class);
         when(client.getHtmlContent(c))
-                .thenReturn(FileUtils.readFileToString(new File("src/test/resources/datas", "equipeactu.premier-league-1.html")));
+                .thenReturn(FileUtils.readFileToString(new File("src/test/resources/datas", "equipeactu.premier-league-1.html"), "UTF-8"));
 
         // Test
         Assert.assertNotNull(client.getPlayer(c, "Yoshinori Muto"));
@@ -83,7 +84,8 @@ public class InjuredSuspendedClientTest {
 
         // Mock
         InjuredSuspendedClient client = spy(InjuredSuspendedClient.class);
-        when(client.getHtmlContent(c)).thenReturn(FileUtils.readFileToString(new File("src/test/resources/datas", "equipeactu.liga-1.html")));
+        when(client.getHtmlContent(c))
+                .thenReturn(FileUtils.readFileToString(new File("src/test/resources/datas", "equipeactu.liga-1.html"), "UTF-8"));
 
         // Test
         Assert.assertNotNull(client.getPlayer(c, "Unai Bustinza"));
