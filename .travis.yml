@@ -2,6 +2,10 @@ language: java
 dist: trusty
 jdk:
 - oraclejdk8
+- oraclejdk9
+- openjdk10
+- openjdk11
+- oraclejdk11
 cache:
   directories:
   - $HOME/.m2
@@ -19,6 +23,8 @@ deploy:
     user: axel3rd
     key: $BINTRAY_API_KEY
     skip_cleanup: true
+    on:
+      jdk: oraclejdk8    
     # Tag deployment
   - provider: bintray
     file: bintray-descriptor.json
@@ -27,3 +33,4 @@ deploy:
     skip_cleanup: true
     on:
       tags: true
+      jdk: oraclejdk8
