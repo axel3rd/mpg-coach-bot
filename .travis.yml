@@ -12,8 +12,9 @@ cache:
 addons:
   sonarcloud:
     organization: axel3rd-github
-script:
+before_script:
 - echo "Jdk version: $TRAVIS_JDK_VERSION"
+script:
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package
 - if [ "$TRAVIS_JDK_VERSION" = "8" ]; then mvn sonar:sonar; fi
 before_deploy:
