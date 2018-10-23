@@ -4,7 +4,6 @@ jdk:
 - oraclejdk8
 - oraclejdk9
 - openjdk10
-- openjdk11
 - oraclejdk11
 cache:
   directories:
@@ -13,7 +12,7 @@ addons:
   sonarcloud:
     organization: axel3rd-github
 before_script:
-- echo Jdk version is $TRAVIS_JDK_VERSION
+- echo debug $JAVA_HOME
 script:
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package
 - if [ "$TRAVIS_JDK_VERSION" = "8" ]; then mvn sonar:sonar; fi
