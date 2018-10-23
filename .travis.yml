@@ -12,10 +12,10 @@ addons:
   sonarcloud:
     organization: axel3rd-github
 before_script:
-- echo debug $JAVA_HOME
+- echo Current build is $JAVA_HOME
 script:
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package
-- if [ "$TRAVIS_JDK_VERSION" = "8" ]; then mvn sonar:sonar; fi
+- if [ "$JAVA_HOME" = "oraclejdk8" ]; then mvn sonar:sonar; fi
 before_deploy:
 - sh ./bintray-before-deploy.sh
 deploy:
