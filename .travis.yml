@@ -13,6 +13,7 @@ addons:
     organization: axel3rd-github
 before_script:
 - echo Current build is $JAVA_HOME
+- env
 script:
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package
 - if [ "$JAVA_HOME" = "oraclejdk8" ]; then mvn sonar:sonar; fi
