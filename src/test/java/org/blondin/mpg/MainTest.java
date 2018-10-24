@@ -2,6 +2,7 @@ package org.blondin.mpg;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -9,6 +10,8 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.ws.rs.ProcessingException;
 
 import org.apache.commons.io.FileUtils;
 import org.blondin.mpg.equipeactu.ChampionshipOutType;
@@ -41,6 +44,8 @@ public class MainTest {
             Main.main(new String[] { "src/test/resources/mpg.properties.here" });
         } catch (UnsupportedOperationException e) {
             // Credentials in sample file are fake
+        } catch (ProcessingException e) {
+            // Proxy not configured
         }
     }
 
@@ -58,8 +63,8 @@ public class MainTest {
                 .thenReturn(new ObjectMapper().readValue(new File("src/test/resources/datas", "mpgstats.ligue-1.json"), Championship.class));
 
         InjuredSuspendedClient outPlayersClient = spy(InjuredSuspendedClient.class);
-        when(outPlayersClient.getHtmlContent(ChampionshipOutType.LIGUE_1))
-                .thenReturn(FileUtils.readFileToString(new File("src/test/resources/datas", "equipeactu.ligue-1-1.html")));
+        doReturn(FileUtils.readFileToString(new File("src/test/resources/datas", "equipeactu.ligue-1-1.html"))).when(outPlayersClient)
+                .getHtmlContent(ChampionshipOutType.LIGUE_1);
 
         // Test out (on cloned list)
         List<Player> players = new ArrayList<>(mpgClient.getCoach("fake").getPlayers());

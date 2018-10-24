@@ -1,13 +1,14 @@
 package org.blondin.mpg.equipeactu;
 
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.blondin.mpg.config.Config;
 import org.blondin.mpg.equipeactu.model.OutType;
 import org.blondin.mpg.equipeactu.model.Player;
 import org.junit.Assert;
@@ -18,7 +19,7 @@ public class InjuredSuspendedClientTest {
     @Test
     public void testLocalMapping() throws Exception {
         for (String subFile : Arrays.asList("ligue-1", "premier-league", "liga")) {
-            List<Player> players = InjuredSuspendedClient.build()
+            List<Player> players = InjuredSuspendedClient.build(Config.build("src/test/resources/mpg.properties.here"))
                     .getPlayers(FileUtils.readFileToString(new File("src/test/resources/datas", "equipeactu." + subFile + "-1.html")));
             Assert.assertNotNull(players);
             Assert.assertTrue(players.size() > 10);
@@ -37,8 +38,8 @@ public class InjuredSuspendedClientTest {
 
         // Mock
         InjuredSuspendedClient client = spy(InjuredSuspendedClient.class);
-        when(client.getHtmlContent(c))
-                .thenReturn(FileUtils.readFileToString(new File("src/test/resources/datas", "equipeactu.ligue-1-1.html"), "UTF-8"));
+        doReturn(FileUtils.readFileToString(new File("src/test/resources/datas", "equipeactu.ligue-1-1.html"), "UTF-8")).when(client)
+                .getHtmlContent(ChampionshipOutType.LIGUE_1);
 
         // Test
         Assert.assertNotNull(client.getPlayer(c, "Presnel Kimpembe"));
@@ -60,8 +61,8 @@ public class InjuredSuspendedClientTest {
 
         // Mock
         InjuredSuspendedClient client = spy(InjuredSuspendedClient.class);
-        when(client.getHtmlContent(c))
-                .thenReturn(FileUtils.readFileToString(new File("src/test/resources/datas", "equipeactu.premier-league-1.html"), "UTF-8"));
+        doReturn(FileUtils.readFileToString(new File("src/test/resources/datas", "equipeactu.premier-league-1.html"), "UTF-8")).when(client)
+                .getHtmlContent(ChampionshipOutType.PREMIER_LEAGUE);
 
         // Test
         Assert.assertNotNull(client.getPlayer(c, "Yoshinori Muto"));
@@ -84,8 +85,8 @@ public class InjuredSuspendedClientTest {
 
         // Mock
         InjuredSuspendedClient client = spy(InjuredSuspendedClient.class);
-        when(client.getHtmlContent(c))
-                .thenReturn(FileUtils.readFileToString(new File("src/test/resources/datas", "equipeactu.liga-1.html"), "UTF-8"));
+        doReturn(FileUtils.readFileToString(new File("src/test/resources/datas", "equipeactu.liga-1.html"), "UTF-8")).when(client)
+                .getHtmlContent(ChampionshipOutType.LIGA);
 
         // Test
         Assert.assertNotNull(client.getPlayer(c, "Unai Bustinza"));
@@ -104,8 +105,14 @@ public class InjuredSuspendedClientTest {
 
     @Test
     public void testReal() throws Exception {
+        // Real test => use real config if exist (for potential proxy usage)
+        Config config = Config.build("src/test/resources/mpg.properties.here");
+        if (new File("src/test/resources", "mpg.properties").exists()) {
+            config = Config.build("src/test/resources/mpg.properties");
+        }
+
         for (ChampionshipOutType type : Arrays.asList(ChampionshipOutType.LIGUE_1, ChampionshipOutType.PREMIER_LEAGUE, ChampionshipOutType.LIGA)) {
-            List<Player> players = InjuredSuspendedClient.build().getPlayers(type);
+            List<Player> players = InjuredSuspendedClient.build(config).getPlayers(type);
             Assert.assertNotNull(players);
             Assert.assertTrue(players.size() > 10);
         }

@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
+import org.blondin.mpg.config.Config;
 import org.blondin.mpg.equipeactu.model.OutType;
 import org.blondin.mpg.equipeactu.model.Player;
 import org.jsoup.Jsoup;
@@ -22,13 +23,11 @@ public class InjuredSuspendedClient extends AbstractClient {
 
     private EnumMap<ChampionshipOutType, List<Player>> cache = new EnumMap<>(ChampionshipOutType.class);
 
-    public static InjuredSuspendedClient build() {
-        return new InjuredSuspendedClient();
-    }
-
-    @Override
-    protected String getUrl() {
-        return "http://www.equipeactu.fr/blessures-et-suspensions/fodbold/";
+    public static InjuredSuspendedClient build(Config config) {
+        InjuredSuspendedClient client = new InjuredSuspendedClient();
+        client.setUrl("http://www.equipeactu.fr/blessures-et-suspensions/fodbold/");
+        client.setProxy(config.getProxy());
+        return client;
     }
 
     /**

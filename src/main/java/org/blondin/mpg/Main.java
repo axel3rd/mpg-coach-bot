@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.blondin.mpg.config.Config;
 import org.blondin.mpg.equipeactu.ChampionshipOutType;
 import org.blondin.mpg.equipeactu.InjuredSuspendedClient;
 import org.blondin.mpg.equipeactu.model.OutType;
@@ -29,9 +30,9 @@ public class Main {
             configFile = args[0];
         }
         Config config = Config.build(configFile);
-        MpgClient mpgClient = MpgClient.build(config.getLogin(), config.getPassword());
-        MpgStatsClient mpgStatsClient = MpgStatsClient.build();
-        InjuredSuspendedClient outPlayersClient = InjuredSuspendedClient.build();
+        MpgClient mpgClient = MpgClient.build(config);
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(config);
+        InjuredSuspendedClient outPlayersClient = InjuredSuspendedClient.build(config);
         process(mpgClient, mpgStatsClient, outPlayersClient);
     }
 

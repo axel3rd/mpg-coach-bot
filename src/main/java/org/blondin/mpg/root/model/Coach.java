@@ -1,6 +1,3 @@
-/*
- * Creation : 25 sept. 2018
- */
 package org.blondin.mpg.root.model;
 
 import java.util.List;

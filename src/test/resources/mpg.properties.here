@@ -4,3 +4,8 @@ password = foobar
 
 # One league of previous user, used for test
 leagueTest=KLGXSSUG
+
+# Usage behind a company proxy
+#proxy.uri=http://company.proxy.com:80
+#proxy.user=foo
+#proxy.password=bar

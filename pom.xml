@@ -134,6 +134,11 @@
             <version>${jersey.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.glassfish.jersey.connectors</groupId>
+            <artifactId>jersey-apache-connector</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
             <version>${jersey.version}</version>
@@ -183,6 +188,18 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>2.22.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock</artifactId>
+            <version>2.19.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.littleshoot</groupId>
+            <artifactId>littleproxy</artifactId>
+            <version>1.1.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
