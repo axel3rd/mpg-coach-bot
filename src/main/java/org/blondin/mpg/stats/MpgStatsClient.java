@@ -3,6 +3,7 @@ package org.blondin.mpg.stats;
 import java.util.EnumMap;
 
 import org.blondin.mpg.AbstractClient;
+import org.blondin.mpg.config.Config;
 import org.blondin.mpg.stats.model.Championship;
 
 /**
@@ -16,13 +17,11 @@ public class MpgStatsClient extends AbstractClient {
         super();
     }
 
-    public static MpgStatsClient build() {
-        return new MpgStatsClient();
-    }
-
-    @Override
-    protected String getUrl() {
-        return "https://www.mpgstats.fr/json/customteam.json";
+    public static MpgStatsClient build(Config config) {
+        MpgStatsClient client = new MpgStatsClient();
+        client.setUrl("https://www.mpgstats.fr/json/customteam.json");
+        client.setProxy(config.getProxy());
+        return client;
     }
 
     public synchronized Championship getStats(ChampionshipStatsType type) {

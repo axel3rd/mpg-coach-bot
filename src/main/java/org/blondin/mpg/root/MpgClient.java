@@ -7,6 +7,7 @@ import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.blondin.mpg.AbstractClient;
+import org.blondin.mpg.config.Config;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.Dashboard;
 import org.blondin.mpg.root.model.UserSignIn;
@@ -22,15 +23,12 @@ public class MpgClient extends AbstractClient {
         super();
     }
 
-    public static MpgClient build(String login, String password) {
+    public static MpgClient build(Config config) {
         MpgClient client = new MpgClient();
-        client.signIn(login, password);
+        client.setUrl("https://api.monpetitgazon.com");
+        client.setProxy(config.getProxy());
+        client.signIn(config.getLogin(), config.getPassword());
         return client;
-    }
-
-    @Override
-    protected String getUrl() {
-        return "https://api.monpetitgazon.com";
     }
 
     public Coach getCoach(String league) {

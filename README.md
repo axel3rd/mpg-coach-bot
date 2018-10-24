@@ -26,14 +26,24 @@ Depending your environment system, run `mpg-coach-bot.bat` (Windows) or `mpg-coa
 
 ## Usage (advanced)
 
+### Configuration
+
+If you are using this program the Friday @work, you can have to configure the company proxy in `mpg.properties` file (since v1.1):
+
+    # Usage behind a company proxy
+    proxy.uri=http://company.proxy.com:80
+    proxy.user=foo
+    proxy.password=bar
+
+Environments variable with `MPG_` and key name in upper case + '_' (ex: `MPG_EMAIL`, `MPG_PASSWORD`, ...) could be used (override configuration file in this case).
+
+### Execution
+
 You can execute in command line:
 
     java -jar mpg-coach-bot-x.y.z.jar your-mpg-config.properties
 
-Note :
-
-- If no file provided as parameter, a `mpg.properties` file will be used in working directory (if exist).
-- Environments variable `MPG_EMAIL` & `MPG_PASSWORD` could be used for configuration (override configuration file in this case).
+Note : If no file provided as parameter, a `mpg.properties` file will be used in working directory (if exist).
 
 ## Roadmap
 

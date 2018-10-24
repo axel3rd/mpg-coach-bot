@@ -2,7 +2,7 @@ package org.blondin.mpg.root;
 
 import java.io.File;
 
-import org.blondin.mpg.Config;
+import org.blondin.mpg.config.Config;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.Dashboard;
 import org.blondin.mpg.root.model.Player;
@@ -18,7 +18,7 @@ public class MpgClientTest {
 
     @Test
     public void testCoachReal() {
-        Coach coach = MpgClient.build(config.getLogin(), config.getPassword()).getCoach(config.getLeagueTest());
+        Coach coach = MpgClient.build(config).getCoach(config.getLeagueTest());
         Assert.assertNotNull(coach);
         Assert.assertNotNull(coach.getPlayers());
         Assert.assertTrue(coach.getPlayers().size() > 10);
@@ -45,7 +45,7 @@ public class MpgClientTest {
 
     @Test
     public void testDashboardReal() {
-        Dashboard dashboard = MpgClient.build(config.getLogin(), config.getPassword()).getDashboard();
+        Dashboard dashboard = MpgClient.build(config).getDashboard();
         Assert.assertNotNull(dashboard);
         Assert.assertNotNull(dashboard.getLeagues());
         Assert.assertEquals(config.getLeagueTest(), dashboard.getLeagues().get(0).getId());

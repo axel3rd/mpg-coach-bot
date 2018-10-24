@@ -3,6 +3,7 @@ package org.blondin.mpg.stats;
 import java.io.File;
 import java.util.Arrays;
 
+import org.blondin.mpg.config.Config;
 import org.blondin.mpg.stats.model.Championship;
 import org.blondin.mpg.stats.model.Player;
 import org.junit.Assert;
@@ -14,8 +15,14 @@ public class MpgStatsClientTest {
 
     @Test
     public void testReal() {
-        for (ChampionshipStatsType type : Arrays.asList(ChampionshipStatsType.LIGUE_1, ChampionshipStatsType.PREMIER_LEAGUE, ChampionshipStatsType.LIGA)) {
-            Championship championship = MpgStatsClient.build().getStats(type);
+        // Real test => use real config if exist (for potential proxy usage)
+        Config config = Config.build("src/test/resources/mpg.properties.here");
+        if (new File("src/test/resources", "mpg.properties").exists()) {
+            config = Config.build("src/test/resources/mpg.properties");
+        }
+        for (ChampionshipStatsType type : Arrays.asList(ChampionshipStatsType.LIGUE_1, ChampionshipStatsType.PREMIER_LEAGUE,
+                ChampionshipStatsType.LIGA)) {
+            Championship championship = MpgStatsClient.build(config).getStats(type);
             Assert.assertNotNull(championship);
             Assert.assertNotNull(championship.getPlayers());
             Assert.assertTrue(championship.getPlayers().size() > 550);
