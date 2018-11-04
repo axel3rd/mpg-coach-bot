@@ -1,5 +1,6 @@
 package org.blondin.mpg.stats.model;
 
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -16,6 +17,12 @@ public class Championship {
 
     @JsonProperty("mxD")
     private int day;
+
+    @JsonProperty("bD")
+    private Date date;
+
+    @JsonProperty("mL")
+    private Infos infos;
 
     /**
      * Current day of season
@@ -37,5 +44,13 @@ public class Championship {
             }
         }
         throw new UnsupportedOperationException(String.format("Player can't be found in stats: %s", name));
+    }
+
+    public Infos getInfos() {
+        return infos;
+    }
+
+    public Date getDate() {
+        return date;
     }
 }

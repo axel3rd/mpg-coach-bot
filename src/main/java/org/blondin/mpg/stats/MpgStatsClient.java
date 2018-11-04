@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.stats.model.Championship;
+import org.blondin.mpg.stats.model.LeaguesRefresh;
 
 /**
  * Client for https://www.mpgstats.fr/
@@ -19,20 +20,27 @@ public class MpgStatsClient extends AbstractClient {
 
     public static MpgStatsClient build(Config config) {
         MpgStatsClient client = new MpgStatsClient();
-        client.setUrl("https://www.mpgstats.fr/json/customteam.json");
+        client.setUrl("https://www.mpgstats.fr/json");
         client.setProxy(config.getProxy());
         return client;
     }
 
     public synchronized Championship getStats(ChampionshipStatsType type) {
         if (!cache.containsKey(type)) {
-            // TODO : Stats are updated every week (analyse JS for detail) => could be cached in file
-
-            // FR : "Ligue-1"
-            // EN : "Premier-League"
-            // ES : "Liga"
-            cache.put(type, get(type.getValue(), Championship.class));
+            // FR : "Ligue-1" / EN : "Premier-League" / ES : "Liga"
+            // Call with infinite cache and verify timestamp after
+            LeaguesRefresh leaguesRefresh = getLeaguesRefresh();
+            Championship championship = get("customteam.json/" + type.getValue(), Championship.class, 0);
+            if (championship.getDate().before(leaguesRefresh.getDate(championship.getInfos().getId()))) {
+                // Force refresh by using a mini cache time
+                championship = get("customteam.json/" + type.getValue(), Championship.class, 1);
+            }
+            cache.put(type, championship);
         }
         return cache.get(type);
+    }
+
+    protected synchronized LeaguesRefresh getLeaguesRefresh() {
+        return get("leagues.json", LeaguesRefresh.class, TIME_HOUR_IN_MILLI_SECOND);
     }
 }

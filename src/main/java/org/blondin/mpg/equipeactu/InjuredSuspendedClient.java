@@ -63,7 +63,7 @@ public class InjuredSuspendedClient extends AbstractClient {
     }
 
     public String getHtmlContent(ChampionshipOutType championship) {
-        return get(championship.getValue(), String.class);
+        return get(championship.getValue(), String.class, TIME_HOUR_IN_MILLI_SECOND);
     }
 
     public List<Player> getPlayers(ChampionshipOutType championship) {
