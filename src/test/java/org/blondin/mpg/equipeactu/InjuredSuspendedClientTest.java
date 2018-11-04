@@ -111,10 +111,21 @@ public class InjuredSuspendedClientTest {
             config = Config.build("src/test/resources/mpg.properties");
         }
 
+        // Remove cache
+        File tmpFile = InjuredSuspendedClient.getCacheFile("http://www.equipeactu.fr/blessures-et-suspensions/fodbold/", "france/ligue-1");
+        tmpFile.delete();
+        Assert.assertFalse(tmpFile.exists());
+
         for (ChampionshipOutType type : Arrays.asList(ChampionshipOutType.LIGUE_1, ChampionshipOutType.PREMIER_LEAGUE, ChampionshipOutType.LIGA)) {
             List<Player> players = InjuredSuspendedClient.build(config).getPlayers(type);
             Assert.assertNotNull(players);
             Assert.assertTrue(players.size() > 10);
         }
+
+        // Verify cache file has been created, recall and verify date file doesn't change
+        Assert.assertTrue(tmpFile.exists());
+        long cacheDate = tmpFile.lastModified();
+        InjuredSuspendedClient.build(config).getPlayers(ChampionshipOutType.LIGUE_1);
+        Assert.assertEquals(cacheDate, tmpFile.lastModified());
     }
 }
