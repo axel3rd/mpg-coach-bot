@@ -47,7 +47,7 @@ Note : If no file provided as parameter, a `mpg.properties` file will be used in
 
 ## Roadmap
 
-Details of working progress in [milestones](./milestones) (and [issues](./issues)).
+Details of working progress in [milestones](../../milestones) (and [issues](../../issues)).
 
 ### v1
 
