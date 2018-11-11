@@ -1,33 +1,27 @@
 package org.blondin.mpg.root;
 
-import java.io.File;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 
-import org.blondin.mpg.config.Config;
+import org.blondin.mpg.AbstractMockTestClient;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.Dashboard;
 import org.blondin.mpg.root.model.Player;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-public class MpgClientTest {
-
-    private static final Config config = Config.build("src/test/resources/mpg.properties");
+public class MpgClientTest extends AbstractMockTestClient {
 
     @Test
-    public void testCoachReal() {
-        Coach coach = MpgClient.build(config).getCoach(config.getLeagueTest());
-        Assert.assertNotNull(coach);
-        Assert.assertNotNull(coach.getPlayers());
-        Assert.assertTrue(coach.getPlayers().size() > 10);
-    }
-
-    @Test
-    public void testCoachLocalMapping() throws Exception {
-        Coach coach = new ObjectMapper().enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
-                .readValue(new File("src/test/resources/datas", "mpg.coach-1.json"), Coach.class);
+    public void testMockCoach() throws Exception {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/league/KLGXSSUG/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.20180926.json")));
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        Coach coach = mpgClient.getCoach("KLGXSSUG");
         Assert.assertNotNull(coach);
         Assert.assertNotNull(coach.getPlayers());
         Assert.assertTrue(coach.getPlayers().size() > 10);
@@ -44,22 +38,16 @@ public class MpgClientTest {
     }
 
     @Test
-    public void testDashboardReal() {
-        Dashboard dashboard = MpgClient.build(config).getDashboard();
+    public void testMockDashboard() throws Exception {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.20180926.json")));
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        Dashboard dashboard = mpgClient.getDashboard();
         Assert.assertNotNull(dashboard);
         Assert.assertNotNull(dashboard.getLeagues());
-        Assert.assertEquals(config.getLeagueTest(), dashboard.getLeagues().get(0).getId());
-        Assert.assertNotNull(dashboard.getLeagues().get(0).getChampionship());
-
-    }
-
-    @Test
-    public void testDashboardLocalMapping() throws Exception {
-        Dashboard dashboard = new ObjectMapper().enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
-                .readValue(new File("src/test/resources/datas", "mpg.dashboard-1.json"), Dashboard.class);
-        Assert.assertNotNull(dashboard);
-        Assert.assertNotNull(dashboard.getLeagues());
-        Assert.assertEquals(config.getLeagueTest(), dashboard.getLeagues().get(0).getId());
+        Assert.assertEquals(getConfig().getLeagueTest(), dashboard.getLeagues().get(0).getId());
         Assert.assertEquals("Rock on the grass", dashboard.getLeagues().get(0).getName());
     }
 }

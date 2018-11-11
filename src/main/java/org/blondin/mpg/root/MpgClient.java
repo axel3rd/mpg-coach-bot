@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 
+import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.root.model.Coach;
@@ -24,8 +25,12 @@ public class MpgClient extends AbstractClient {
     }
 
     public static MpgClient build(Config config) {
+        return build(config, null);
+    }
+
+    public static MpgClient build(Config config, String urlOverride) {
         MpgClient client = new MpgClient();
-        client.setUrl("https://api.monpetitgazon.com");
+        client.setUrl(StringUtils.defaultString(urlOverride, "https://api.monpetitgazon.com"));
         client.setProxy(config.getProxy());
         client.signIn(config.getLogin(), config.getPassword());
         return client;
