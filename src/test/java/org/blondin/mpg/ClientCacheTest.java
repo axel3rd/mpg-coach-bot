@@ -3,7 +3,6 @@ package org.blondin.mpg;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
 import java.io.File;
@@ -33,7 +32,7 @@ public class ClientCacheTest {
     public void testCacheObjMock() throws Exception {
         final String content = "{ \"key\": \"value\"}";
         final String path = "/api/test";
-        stubFor(get(urlEqualTo(path)).willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(content)));
+        stubFor(get(path).willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(content)));
         AbstractClient client = new AbstractClient() {
         };
         String url = "http://localhost:" + server.port();
@@ -70,7 +69,7 @@ public class ClientCacheTest {
         final String content = "Hello";
         final String path = "/api/test";
 
-        stubFor(get(urlEqualTo(path)).willReturn(aResponse().withHeader("Content-Type", "text/html").withBody(content)));
+        stubFor(get(path).willReturn(aResponse().withHeader("Content-Type", "text/html").withBody(content)));
 
         AbstractClient client = new AbstractClient() {
         };

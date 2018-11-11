@@ -3,7 +3,6 @@ package org.blondin.mpg;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
 import java.util.Base64;
@@ -110,7 +109,7 @@ public class ProxyTest {
         final String content = "{ \"key\": \"value\"}";
         final String url = "/api/test";
 
-        stubFor(get(urlEqualTo(url)).willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(content)));
+        stubFor(get(url).willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(content)));
 
         AbstractClient client = new AbstractClient() {
         };
