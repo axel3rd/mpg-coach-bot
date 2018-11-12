@@ -109,8 +109,7 @@ public class MainTest extends AbstractMockTestClient {
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20181017.json")));
         stubFor(get("/customteam.json/Liga")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.liga.20181017.json")));
-        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig());
-        mpgStatsClient.setUrl("http://localhost:" + getServer().port());
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
 
         stubFor(get("/blessures-et-suspensions/fodbold/france/ligue-1")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.ligue-1.20181017.html")));
@@ -118,9 +117,8 @@ public class MainTest extends AbstractMockTestClient {
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20181017.html")));
         stubFor(get("/blessures-et-suspensions/fodbold/espagne/primera-division")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.liga.20181017.html")));
-
-        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig());
-        injuredSuspendedClient.setUrl("http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
 
         // Run global process
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient);

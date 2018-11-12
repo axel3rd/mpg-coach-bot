@@ -116,8 +116,8 @@ public class InjuredSuspendedClientTest extends AbstractMockTestClient {
         stubFor(get("/blessures-et-suspensions/fodbold/espagne/primera-division")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.liga.20181017.html")));
 
-        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig());
-        injuredSuspendedClient.setUrl("http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
 
         // Remove cache
         File tmpFile = InjuredSuspendedClient.getCacheFile("http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/",
@@ -134,8 +134,8 @@ public class InjuredSuspendedClientTest extends AbstractMockTestClient {
         // Verify cache file has been created, recall and verify date file doesn't change
         Assert.assertTrue(tmpFile.exists());
         long cacheDate = tmpFile.lastModified();
-        injuredSuspendedClient = InjuredSuspendedClient.build(getConfig());
-        injuredSuspendedClient.setUrl("http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
         injuredSuspendedClient.getPlayers(ChampionshipOutType.LIGUE_1);
         Assert.assertEquals(cacheDate, tmpFile.lastModified());
     }
