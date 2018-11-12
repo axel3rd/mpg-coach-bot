@@ -29,8 +29,7 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
         stubFor(get("/customteam.json/Liga")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.liga.20181017.json")));
 
-        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig());
-        mpgStatsClient.setUrl("http://localhost:" + getServer().port());
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
 
         for (ChampionshipStatsType type : Arrays.asList(ChampionshipStatsType.LIGUE_1, ChampionshipStatsType.PREMIER_LEAGUE,
                 ChampionshipStatsType.LIGA)) {

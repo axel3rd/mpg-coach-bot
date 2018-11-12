@@ -24,8 +24,12 @@ public class InjuredSuspendedClient extends AbstractClient {
     private EnumMap<ChampionshipOutType, List<Player>> cache = new EnumMap<>(ChampionshipOutType.class);
 
     public static InjuredSuspendedClient build(Config config) {
+        return build(config, null);
+    }
+
+    public static InjuredSuspendedClient build(Config config, String urlOverride) {
         InjuredSuspendedClient client = new InjuredSuspendedClient();
-        client.setUrl("http://www.equipeactu.fr/blessures-et-suspensions/fodbold/");
+        client.setUrl(StringUtils.defaultString(urlOverride, "http://www.equipeactu.fr/blessures-et-suspensions/fodbold/"));
         client.setProxy(config.getProxy());
         return client;
     }

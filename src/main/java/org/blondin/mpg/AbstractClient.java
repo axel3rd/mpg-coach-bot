@@ -35,7 +35,7 @@ public abstract class AbstractClient {
         super();
     }
 
-    public void setUrl(String url) {
+    protected void setUrl(String url) {
         this.url = url;
     }
 
