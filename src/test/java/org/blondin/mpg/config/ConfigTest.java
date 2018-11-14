@@ -36,7 +36,7 @@ public class ConfigTest {
         lines.add("email = firstName.lastName@gmail.com");
         lines.add("password = foobar");
         lines.add("team.update=true");
-        lines.add("tactical.substitute.attacker=3,2");
+        lines.add("tactical.substitute.attacker=3.2");
         lines.add("tactical.substitute.midfielder=1");
         lines.add("tactical.substitute.defender=2");
         lines.add("proxy.uri=http://company.proxy.com:80");

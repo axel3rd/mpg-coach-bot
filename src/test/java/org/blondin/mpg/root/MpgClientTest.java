@@ -1,6 +1,7 @@
 package org.blondin.mpg.root;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -13,6 +14,26 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class MpgClientTest extends AbstractMockTestClient {
+
+    @Test
+    public void testMockSignInKo() throws Exception {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withStatus(401).withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.bad.json")));
+        try {
+            MpgClient.build(getConfig(), "http://localhost:" + server.port());
+            Assert.fail("Invalid password is invalid");
+        } catch (UnsupportedOperationException e) {
+            Assert.assertEquals("Bad credentials", "Unsupported status code: 401 Unauthorized", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testMockSignInOk() throws Exception {
+        stubFor(post("/user/signIn")
+                .withRequestBody(equalToJson("{\"email\":\"firstName.lastName@gmail.com\",\"password\":\"foobar\",\"language\":\"fr-FR\"}"))
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        MpgClient.build(getConfig(), "http://localhost:" + server.port());
+    }
 
     @Test
     public void testMockCoach() throws Exception {

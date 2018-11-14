@@ -43,9 +43,9 @@ If you are using this program the Friday @work, you can have to configure the co
 To change default notes for tactical substitutes, use in `mpg.properties` file (since v1.1):
 
     # Notes for tactical substitutes
-    tactical.substitute.attacker = 6
-    tactical.substitute.midfielder = 5
-    tactical.substitute.defender = 5
+    tactical.substitute.attacker = 6.0
+    tactical.substitute.midfielder = 5.0
+    tactical.substitute.defender = 5.0
 
 ### Execution
 
