@@ -105,22 +105,55 @@ public class MainTest extends AbstractMockTestClient {
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20181017.json")));
         stubFor(get("/customteam.json/Ligue-1")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.ligue-1.20181017.json")));
-        stubFor(get("/customteam.json/Premier-League")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20181017.json")));
-        stubFor(get("/customteam.json/Liga")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.liga.20181017.json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
 
         stubFor(get("/blessures-et-suspensions/fodbold/france/ligue-1")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.ligue-1.20181017.html")));
-        stubFor(get("/blessures-et-suspensions/fodbold/angleterre/championship")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20181017.html")));
-        stubFor(get("/blessures-et-suspensions/fodbold/espagne/primera-division")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.liga.20181017.html")));
         InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
                 "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
 
         // Run global process
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient);
     }
+
+    private static void prepareProcessUpdateWithMock() {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.20181114.json")));
+        stubFor(get("/leagues.json")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20181114.json")));
+        stubFor(get("/customteam.json/Ligue-1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.ligue-1.20181114.json")));
+        stubFor(get("/blessures-et-suspensions/fodbold/france/ligue-1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.ligue-1.20181114.html")));
+    }
+
+    @Test
+    public void testProcessUpdateNoPlayersMiroirOptionWithMock() throws Exception {
+        prepareProcessUpdateWithMock();
+        stubFor(get("/league/KLGXSSUG/coach").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.20181114-noPlayers-MiroirOption.json")));
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
+        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient);
+    }
+
+    @Test
+    public void testProcessUpdateComleteNoOptionWithMock() throws Exception {
+        // TODO
+    }
+
+    @Test
+    public void testProcessUpdateNoSubstitutesRotaldoOptionWithMock() throws Exception {
+        // TODO
+    }
+
+    @Test
+    public void testProcessUpdateCompleteBoostPlayerWithMock() throws Exception {
+        // TODO
+    }
+
 }
