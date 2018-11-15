@@ -12,6 +12,7 @@ import org.blondin.mpg.equipeactu.ChampionshipOutType;
 import org.blondin.mpg.equipeactu.InjuredSuspendedClient;
 import org.blondin.mpg.equipeactu.model.OutType;
 import org.blondin.mpg.root.MpgClient;
+import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.League;
 import org.blondin.mpg.root.model.Player;
 import org.blondin.mpg.root.model.Position;
@@ -33,10 +34,10 @@ public class Main {
         MpgClient mpgClient = MpgClient.build(config);
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(config);
         InjuredSuspendedClient outPlayersClient = InjuredSuspendedClient.build(config);
-        process(mpgClient, mpgStatsClient, outPlayersClient);
+        process(mpgClient, mpgStatsClient, outPlayersClient, config);
     }
 
-    static void process(MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient) {
+    static void process(MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient, Config config) {
         for (League league : mpgClient.getDashboard().getLeagues()) {
             LOG.info("========== {} ==========", league.getName());
 
@@ -52,6 +53,12 @@ public class Main {
 
             // Write optimized team
             writeTeamOptimized(players);
+
+            // Auto-update team
+            if (config.isTeampUpdate()) {
+                // TODO: Update
+                mpgClient.updateCoach(league, new CoachRequest());
+            }
         }
     }
 

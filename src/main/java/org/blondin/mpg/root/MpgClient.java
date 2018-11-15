@@ -10,7 +10,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.root.model.Coach;
+import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.Dashboard;
+import org.blondin.mpg.root.model.League;
 import org.blondin.mpg.root.model.UserSignIn;
 
 /**
@@ -51,6 +53,10 @@ public class MpgClient extends AbstractClient {
         entity.put("language", "fr-FR");
         String token = post("user/signIn", entity, UserSignIn.class).getToken();
         headersToken.add("authorization", token);
+    }
+
+    public void updateCoach(League league, CoachRequest coachRequest) {
+        post("league/" + league + "/coach", headersToken, coachRequest, String.class);
     }
 
 }
