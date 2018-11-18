@@ -12,6 +12,7 @@ import org.blondin.mpg.equipeactu.ChampionshipOutType;
 import org.blondin.mpg.equipeactu.InjuredSuspendedClient;
 import org.blondin.mpg.equipeactu.model.OutType;
 import org.blondin.mpg.root.MpgClient;
+import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.League;
 import org.blondin.mpg.root.model.Player;
@@ -42,7 +43,8 @@ public class Main {
             LOG.info("========== {} ==========", league.getName());
 
             // Get players
-            List<Player> players = mpgClient.getCoach(league.getId()).getPlayers();
+            Coach coach = mpgClient.getCoach(league.getId());
+            List<Player> players = coach.getPlayers();
 
             // Remove out players (and write them)
             removeOutPlayers(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
@@ -56,8 +58,7 @@ public class Main {
 
             // Auto-update team
             if (config.isTeampUpdate()) {
-                // TODO: Update
-                mpgClient.updateCoach(league, new CoachRequest());
+                mpgClient.updateCoach(league, getCoachRequest(coach, players));
             }
         }
     }
@@ -111,6 +112,30 @@ public class Main {
             player.setEfficiency(stats.getStats(championship).getPlayer(player.getName()).getEfficiency());
         }
         return players;
+    }
+
+    private static CoachRequest getCoachRequest(Coach coach, List<Player> players) {
+        CoachRequest request = new CoachRequest(coach);
+
+        // Goals
+        List<Player> goals = players.stream().filter(p -> p.getPosition().equals(Position.G)).collect(Collectors.toList());
+        if (!goals.isEmpty()) {
+            request.getPlayersOnPitch().setPlayer(1, goals.get(0).getId());
+            if (goals.size() > 1) {
+                request.getPlayersOnPitch().setPlayer(18, goals.get(1).getId());
+            }
+        }
+
+        // Defenders
+        List<Player> defenders = players.stream().filter(p -> p.getPosition().equals(Position.D)).collect(Collectors.toList());
+
+        // Midfielders
+        List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList());
+
+        // Attackers
+        List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList());
+
+        return request;
     }
 
 }

@@ -1,6 +1,7 @@
 package org.blondin.mpg;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -12,6 +13,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -139,6 +141,9 @@ public class MainTest extends AbstractMockTestClient {
         Config config = prepareProcessUpdateWithMock();
         stubFor(get("/league/KLGXSSUG/coach").willReturn(
                 aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.20181114-noPlayers-MiroirOption.json")));
+        stubFor(post("/league/KLGXSSUG/coach")
+                .withRequestBody(equalToJson(getTestFileToString("mpg.coach.20181114-noPlayers-MiroirOption-Request.json")))
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.post.success.json")));
         MpgClient mpgClient = MpgClient.build(config, "http://localhost:" + server.port());
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
         InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
@@ -159,6 +164,10 @@ public class MainTest extends AbstractMockTestClient {
     @Test
     public void testProcessUpdateCompleteBoostPlayerWithMock() throws Exception {
         // TODO
+    }
+
+    private String getTestFileToString(String fileName) throws IOException {
+        return FileUtils.readFileToString(new File("src/test/resources/__files", fileName));
     }
 
 }

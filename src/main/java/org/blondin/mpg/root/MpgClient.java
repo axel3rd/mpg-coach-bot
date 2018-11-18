@@ -56,7 +56,7 @@ public class MpgClient extends AbstractClient {
     }
 
     public void updateCoach(League league, CoachRequest coachRequest) {
-        post("league/" + league + "/coach", headersToken, coachRequest, String.class);
+        post("league/" + league.getId() + "/coach", headersToken, coachRequest, String.class);
     }
 
 }
