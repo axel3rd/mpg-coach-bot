@@ -22,7 +22,7 @@ Extract ZIP file and update the given `mpg.properties` file with your *MPG* cred
     email = firstName.lastName@gmail.com
     password = foobar
     
-    # Auto update team ('false' by default)
+    # Auto update team ('false' by default, since v1.1)
     team.update = true
 
 Depending your environment system, run `mpg-coach-bot.bat` (Windows) or `mpg-coach-bot.sh` (Linux).
