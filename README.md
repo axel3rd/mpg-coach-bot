@@ -17,10 +17,13 @@ The efficiency algorithm used to calculate players score is:
 
 *Prerequisite: [java](https://www.java.com/fr/download/) should be installed and on your PATH.*
 
-Extract ZIP file and update the given `mpg.properties` file with your *MPG* credentials:
+Extract ZIP file and update the given `mpg.properties` file with your *MPG* credentials and main options:
 
     email = firstName.lastName@gmail.com
     password = foobar
+    
+    # Auto update team ('false' by default, since v1.1)
+    team.update = true
 
 Depending your environment system, run `mpg-coach-bot.bat` (Windows) or `mpg-coach-bot.sh` (Linux).
 
@@ -28,14 +31,21 @@ Depending your environment system, run `mpg-coach-bot.bat` (Windows) or `mpg-coa
 
 ### Configuration
 
+Environments variable with `MPG_` and key name in upper case + '_' (ex: `MPG_EMAIL`, `MPG_PASSWORD`, ...) could be used (override configuration file in this case).
+
 If you are using this program the Friday @work, you can have to configure the company proxy in `mpg.properties` file (since v1.1):
 
     # Usage behind a company proxy
-    proxy.uri=http://company.proxy.com:80
-    proxy.user=foo
-    proxy.password=bar
+    proxy.uri = http://company.proxy.com:80
+    proxy.user = foo
+    proxy.password = bar
 
-Environments variable with `MPG_` and key name in upper case + '_' (ex: `MPG_EMAIL`, `MPG_PASSWORD`, ...) could be used (override configuration file in this case).
+To change default notes for tactical substitutes, use in `mpg.properties` file (since v1.1):
+
+    # Notes for tactical substitutes
+    tactical.substitute.attacker = 6.0
+    tactical.substitute.midfielder = 5.0
+    tactical.substitute.defender = 5.0
 
 ### Execution
 

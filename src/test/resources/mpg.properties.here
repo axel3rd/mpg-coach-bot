@@ -2,10 +2,18 @@
 email = firstName.lastName@gmail.com
 password = foobar
 
-# One league of previous user, used for test
-leagueTest=KLGXSSUG
+# Enable auto-update team ('false' by default)
+#team.update = true
+
+# Default notes for tactical substitues
+#tactical.substitute.attacker = 6
+#tactical.substitute.midfielder = 5
+#tactical.substitute.defender = 5
 
 # Usage behind a company proxy
-#proxy.uri=http://company.proxy.com:80
-#proxy.user=foo
-#proxy.password=bar
+#proxy.uri = http://company.proxy.com:80
+#proxy.user  =foo
+#proxy.password = bar
+
+# One league of previous user, used for test
+leagueTest = KLGXSSUG

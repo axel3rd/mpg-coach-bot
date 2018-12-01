@@ -1,0 +1,55 @@
+{
+    "playersOnPitch": {
+        "1": "player_42713",
+        "2": "player_52782",
+        "3": "player_93605",
+        "4": "player_116406",
+        "5": "player_95434",
+        "6": "player_166989",
+        "7": "player_213198",
+        "8": "player_163562",
+        "9": "player_103124",
+        "10": "player_61278",
+        "11": "player_195735",
+        "12": "player_226944",
+        "13": "player_183779",
+        "14": "player_47654",
+        "15": "player_228322",
+        "16": "player_167443",
+        "17": "player_147577",
+        "18": "player_181439"
+    },
+    "composition": 343,
+    "tacticalsubstitutes": [
+        {
+            "subs": "player_226944",
+            "start": "player_116406",
+            "rating": 5.0
+        },
+        {
+            "subs": "player_47654",
+            "start": "player_163562",
+            "rating": 5.0
+        },
+        {
+            "subs": "player_228322",
+            "start": "player_213198",
+            "rating": 5.0
+        },
+        {
+            "subs": "player_167443",
+            "start": "player_195735",
+            "rating": 6.0
+        },
+        {
+            "subs": "player_147577",
+            "start": "player_61278",
+            "rating": 6.0
+        }
+    ],
+    "bonusSelected": {
+        "type": null
+    },
+    "matchId": "mpg_match_KLGXSSUG_1_11_4",
+    "realday": 14
+}

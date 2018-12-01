@@ -1,6 +1,7 @@
 package org.blondin.mpg;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -12,6 +13,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +21,7 @@ import javax.ws.rs.ProcessingException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.blondin.mpg.config.Config;
 import org.blondin.mpg.equipeactu.ChampionshipOutType;
 import org.blondin.mpg.equipeactu.InjuredSuspendedClient;
 import org.blondin.mpg.root.MpgClient;
@@ -88,7 +91,7 @@ public class MainTest extends AbstractMockTestClient {
                 players.stream().filter(customer -> "Nkunku".equals(customer.getLastName())).findAny().orElse(null));
 
         // Run global process
-        Main.process(mpgClient, mpgStatsClient, outPlayersClient);
+        Main.process(mpgClient, mpgStatsClient, outPlayersClient, getConfig());
     }
 
     @Test
@@ -105,22 +108,69 @@ public class MainTest extends AbstractMockTestClient {
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20181017.json")));
         stubFor(get("/customteam.json/Ligue-1")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.ligue-1.20181017.json")));
-        stubFor(get("/customteam.json/Premier-League")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20181017.json")));
-        stubFor(get("/customteam.json/Liga")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.liga.20181017.json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
 
         stubFor(get("/blessures-et-suspensions/fodbold/france/ligue-1")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.ligue-1.20181017.html")));
-        stubFor(get("/blessures-et-suspensions/fodbold/angleterre/championship")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20181017.html")));
-        stubFor(get("/blessures-et-suspensions/fodbold/espagne/primera-division")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.liga.20181017.html")));
         InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
                 "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
 
         // Run global process
-        Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient);
+        Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, getConfig());
     }
+
+    private static Config prepareProcessUpdateWithMock() {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.20181114.json")));
+        stubFor(get("/leagues.json")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20181114.json")));
+        stubFor(get("/customteam.json/Ligue-1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.ligue-1.20181114.json")));
+        stubFor(get("/blessures-et-suspensions/fodbold/france/ligue-1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.ligue-1.20181114.html")));
+
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTeampUpdate();
+        return config;
+    }
+
+    @Test
+    public void testProcessUpdateNoPlayersMiroirOptionWithMock() throws Exception {
+        subTestProcessUpdateWithMock("mpg.coach.20181114-noPlayers-MiroirOption");
+    }
+
+    @Test
+    public void testProcessUpdateCompleteNoOptionWithMock() throws Exception {
+        subTestProcessUpdateWithMock("mpg.coach.20181114-Complete-NoOption");
+    }
+
+    @Test
+    public void testProcessUpdateNoSubstitutesRotaldoOptionWithMock() throws Exception {
+        subTestProcessUpdateWithMock("mpg.coach.20181114-noSubstitutes-RotaldoOption");
+    }
+
+    @Test
+    public void testProcessUpdateCompleteBoostPlayerWithMock() throws Exception {
+        subTestProcessUpdateWithMock("mpg.coach.20181114-Complete-BoostPlayer");
+    }
+
+    private void subTestProcessUpdateWithMock(String coachFileWithoutJsonExtension) throws Exception {
+        Config config = prepareProcessUpdateWithMock();
+        stubFor(get("/league/KLGXSSUG/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile(coachFileWithoutJsonExtension + ".json")));
+        stubFor(post("/league/KLGXSSUG/coach").withRequestBody(equalToJson(getTestFileToString(coachFileWithoutJsonExtension + "-Request.json")))
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.post.success.json")));
+        MpgClient mpgClient = MpgClient.build(config, "http://localhost:" + server.port());
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
+        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, config);
+    }
+
+    private String getTestFileToString(String fileName) throws IOException {
+        return FileUtils.readFileToString(new File("src/test/resources/__files", fileName));
+    }
+
 }

@@ -14,6 +14,10 @@ public class Config {
     private String login;
     private String password;
     private String leagueTest;
+    private boolean teampUpdate = false;
+    private float noteTacticalSubstituteAttacker = 6;
+    private float noteTacticalSubstituteMidfielder = 5;
+    private float noteTacticalSubstituteDefender = 5;
     private Proxy proxy;
 
     private Config() {
@@ -35,6 +39,7 @@ public class Config {
             }
         }
         configMain(config, properties, fileConfig);
+        configNoteTacticalSubstitute(config, properties);
         configProxy(config, properties);
         configTest(config, properties);
         return config;
@@ -46,6 +51,33 @@ public class Config {
         if (StringUtils.isBlank(config.login) || StringUtils.isBlank(config.password)) {
             throw new UnsupportedOperationException(
                     String.format("Login and/or password can't be retrieved from file '%s' of environement variables", fileConfig.getName()));
+        }
+        String teamUpdateStr = StringUtils.defaultIfBlank(properties.getProperty("team.update"), System.getenv("MPG_TEAM_UPDATE"));
+        if (StringUtils.isNotBlank(teamUpdateStr)) {
+            config.teampUpdate = Boolean.parseBoolean(teamUpdateStr);
+        }
+    }
+
+    private static void configNoteTacticalSubstitute(Config config, Properties properties) {
+        // Attacker
+        String attacker = StringUtils.defaultIfBlank(properties.getProperty("tactical.substitute.attacker"),
+                System.getenv("MPG_TACTICAL_SUBSTITUTE_ATTACKER"));
+        if (StringUtils.isNotBlank(attacker)) {
+            config.noteTacticalSubstituteAttacker = Float.parseFloat(attacker);
+        }
+
+        // Midfielder
+        String midfielder = StringUtils.defaultIfBlank(properties.getProperty("tactical.substitute.midfielder"),
+                System.getenv("MPG_TACTICAL_SUBSTITUTE_MIDFIELDER"));
+        if (StringUtils.isNotBlank(midfielder)) {
+            config.noteTacticalSubstituteMidfielder = Float.parseFloat(midfielder);
+        }
+
+        // Defender
+        String defender = StringUtils.defaultIfBlank(properties.getProperty("tactical.substitute.defender"),
+                System.getenv("MPG_TACTICAL_SUBSTITUTE_DEFENDER"));
+        if (StringUtils.isNotBlank(defender)) {
+            config.noteTacticalSubstituteDefender = Float.parseFloat(defender);
         }
     }
 
@@ -66,6 +98,22 @@ public class Config {
 
     public String getPassword() {
         return password;
+    }
+
+    public boolean isTeampUpdate() {
+        return teampUpdate;
+    }
+
+    public float getNoteTacticalSubstituteAttacker() {
+        return noteTacticalSubstituteAttacker;
+    }
+
+    public float getNoteTacticalSubstituteMidfielder() {
+        return noteTacticalSubstituteMidfielder;
+    }
+
+    public float getNoteTacticalSubstituteDefender() {
+        return noteTacticalSubstituteDefender;
     }
 
     public Proxy getProxy() {
