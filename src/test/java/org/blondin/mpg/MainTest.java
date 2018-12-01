@@ -138,32 +138,35 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testProcessUpdateNoPlayersMiroirOptionWithMock() throws Exception {
+        subTestProcessUpdateWithMock("mpg.coach.20181114-noPlayers-MiroirOption");
+    }
+
+    @Test
+    public void testProcessUpdateCompleteNoOptionWithMock() throws Exception {
+        subTestProcessUpdateWithMock("mpg.coach.20181114-Complete-NoOption");
+    }
+
+    @Test
+    public void testProcessUpdateNoSubstitutesRotaldoOptionWithMock() throws Exception {
+        subTestProcessUpdateWithMock("mpg.coach.20181114-noSubstitutes-RotaldoOption");
+    }
+
+    @Test
+    public void testProcessUpdateCompleteBoostPlayerWithMock() throws Exception {
+        subTestProcessUpdateWithMock("mpg.coach.20181114-Complete-BoostPlayer");
+    }
+
+    private void subTestProcessUpdateWithMock(String coachFileWithoutJsonExtension) throws Exception {
         Config config = prepareProcessUpdateWithMock();
-        stubFor(get("/league/KLGXSSUG/coach").willReturn(
-                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.20181114-noPlayers-MiroirOption.json")));
-        stubFor(post("/league/KLGXSSUG/coach")
-                .withRequestBody(equalToJson(getTestFileToString("mpg.coach.20181114-noPlayers-MiroirOption-Request.json")))
+        stubFor(get("/league/KLGXSSUG/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile(coachFileWithoutJsonExtension + ".json")));
+        stubFor(post("/league/KLGXSSUG/coach").withRequestBody(equalToJson(getTestFileToString(coachFileWithoutJsonExtension + "-Request.json")))
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.post.success.json")));
         MpgClient mpgClient = MpgClient.build(config, "http://localhost:" + server.port());
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
         InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
                 "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, config);
-    }
-
-    @Test
-    public void testProcessUpdateComleteNoOptionWithMock() throws Exception {
-        // TODO
-    }
-
-    @Test
-    public void testProcessUpdateNoSubstitutesRotaldoOptionWithMock() throws Exception {
-        // TODO
-    }
-
-    @Test
-    public void testProcessUpdateCompleteBoostPlayerWithMock() throws Exception {
-        // TODO
     }
 
     private String getTestFileToString(String fileName) throws IOException {

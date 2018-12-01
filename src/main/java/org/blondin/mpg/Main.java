@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.equipeactu.ChampionshipOutType;
 import org.blondin.mpg.equipeactu.InjuredSuspendedClient;
@@ -17,6 +18,7 @@ import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.League;
 import org.blondin.mpg.root.model.Player;
 import org.blondin.mpg.root.model.Position;
+import org.blondin.mpg.root.model.TacticalSubstitute;
 import org.blondin.mpg.stats.ChampionshipStatsType;
 import org.blondin.mpg.stats.MpgStatsClient;
 import org.slf4j.Logger;
@@ -58,7 +60,8 @@ public class Main {
 
             // Auto-update team
             if (config.isTeampUpdate()) {
-                mpgClient.updateCoach(league, getCoachRequest(coach, players));
+                LOG.info("\nUpdating team ...");
+                mpgClient.updateCoach(league, getCoachRequest(coach, players, config));
             }
         }
     }
@@ -114,7 +117,11 @@ public class Main {
         return players;
     }
 
-    private static CoachRequest getCoachRequest(Coach coach, List<Player> players) {
+    private static CoachRequest getCoachRequest(Coach coach, List<Player> players, Config config) {
+        int nbrDefenders = coach.getComposition() % 10;
+        int nbrMidfielders = coach.getComposition() % 100 / 10;
+        int nbrAttackers = coach.getComposition() / 100;
+
         CoachRequest request = new CoachRequest(coach);
 
         // Goals
@@ -126,16 +133,44 @@ public class Main {
             }
         }
 
-        // Defenders
         List<Player> defenders = players.stream().filter(p -> p.getPosition().equals(Position.D)).collect(Collectors.toList());
-
-        // Midfielders
         List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList());
-
-        // Attackers
         List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList());
+
+        // Main lines
+        setPlayersOnPitch(request, defenders, nbrDefenders, 1);
+        setPlayersOnPitch(request, midfielders, nbrMidfielders, 1 + nbrDefenders);
+        setPlayersOnPitch(request, attackers, nbrAttackers, 1 + nbrDefenders + nbrMidfielders);
+
+        // Substitutes
+        setPlayersOnPitch(request, defenders, 2, 11);
+        setPlayersOnPitch(request, midfielders, 2, 13);
+        setPlayersOnPitch(request, attackers, 2, 15);
+
+        // Tactical Substitutes (x5)
+        setTacticalSubstitute(request, 12, 1 + nbrDefenders, config.getNoteTacticalSubstituteDefender());
+        setTacticalSubstitute(request, 14, 1 + nbrDefenders + nbrMidfielders, config.getNoteTacticalSubstituteMidfielder());
+        setTacticalSubstitute(request, 15, nbrDefenders + nbrMidfielders, config.getNoteTacticalSubstituteMidfielder());
+        setTacticalSubstitute(request, 16, 1 + nbrDefenders + nbrMidfielders + nbrAttackers, config.getNoteTacticalSubstituteAttacker());
+        setTacticalSubstitute(request, 17, nbrDefenders + nbrMidfielders + nbrAttackers, config.getNoteTacticalSubstituteAttacker());
 
         return request;
     }
 
+    private static void setPlayersOnPitch(CoachRequest request, List<Player> players, int number, int index) {
+        for (int i = 0; i < number; i++) {
+            if (!players.isEmpty()) {
+                request.getPlayersOnPitch().setPlayer(index + i + 1, players.remove(0).getId());
+            }
+        }
+    }
+
+    private static void setTacticalSubstitute(CoachRequest request, int playerIdSubstitutePosition, int playerIdStartPosition, float rating) {
+        String playerIdSubstitute = request.getPlayersOnPitch().getPlayer(playerIdSubstitutePosition);
+        String playerIdStart = request.getPlayersOnPitch().getPlayer(playerIdStartPosition);
+        if (StringUtils.isBlank(playerIdSubstitute) || StringUtils.isBlank(playerIdStart)) {
+            return;
+        }
+        request.getTacticalsubstitutes().add(new TacticalSubstitute(playerIdSubstitute, playerIdStart, rating));
+    }
 }

@@ -13,4 +13,10 @@ public class TacticalSubstitute {
     @JsonProperty("rating")
     private float rating;
 
+    public TacticalSubstitute(String playerIdSubstitute, String playerIdStart, float rating) {
+        this.playerIdSubstitute = playerIdSubstitute;
+        this.playerIdStart = playerIdStart;
+        this.rating = rating;
+    }
+
 }

@@ -13,7 +13,7 @@ public class BonusSelected {
     @JsonInclude(Include.NON_NULL)
     private String playerId;
 
-    public int getType() {
+    public Integer getType() {
         return type;
     }
 

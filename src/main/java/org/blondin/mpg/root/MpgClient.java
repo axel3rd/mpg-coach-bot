@@ -56,7 +56,10 @@ public class MpgClient extends AbstractClient {
     }
 
     public void updateCoach(League league, CoachRequest coachRequest) {
-        post("league/" + league.getId() + "/coach", headersToken, coachRequest, String.class);
+        String result = post("league/" + league.getId() + "/coach", headersToken, coachRequest, String.class);
+        if (!"{\"success\":\"teamSaved\"}".equals(result)) {
+            throw new UnsupportedOperationException(String.format("The team has been updated, result message: %s", result));
+        }
     }
 
 }

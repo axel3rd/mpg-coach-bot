@@ -72,4 +72,12 @@ public class PlayersOnPitch {
         }
     }
 
+    public String getPlayer(int position) {
+        try {
+            return (String) FieldUtils.readDeclaredField(this, "playerId" + position, true);
+        } catch (IllegalAccessException e) {
+            throw new UnsupportedOperationException(String.format("Can't get playerId on pitch for position %s: %s", position, e.getMessage()), e);
+        }
+    }
+
 }
