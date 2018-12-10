@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
-public class ClientCacheTest {
+public class ClientMiscTest {
 
     @Rule
     public WireMockRule server = new WireMockRule(options().dynamicPort().portNumber());
@@ -25,6 +25,44 @@ public class ClientCacheTest {
         for (File file : new File(System.getProperty("java.io.tmpdir")).listFiles((d, name) -> name.startsWith("mpg-coach-bot-httplocalhost"))) {
             file.delete();
         }
+    }
+
+    @Test
+    public void testErrorContentMock() throws Exception {
+        final String content = "{ \"msg\": \"foobar\"}";
+        final String path = "/api/test";
+        stubFor(get(path).willReturn(aResponse().withStatus(400).withHeader("Content-Type", "application/json").withBody(content)));
+        AbstractClient client = new AbstractClient() {
+        };
+        String url = "http://localhost:" + server.port();
+        client.setUrl(url);
+
+        try {
+            client.get(path, String.class);
+            Assert.fail("Should fail");
+        } catch (UnsupportedOperationException e) {
+            String s = e.getMessage();
+            Assert.assertTrue(s, s.contains("foobar"));
+        }
+
+    }
+
+    @Test
+    public void testErrorNoContentMock() throws Exception {
+        final String path = "/api/test";
+        stubFor(get(path).willReturn(aResponse().withStatus(400)));
+        AbstractClient client = new AbstractClient() {
+        };
+        String url = "http://localhost:" + server.port();
+        client.setUrl(url);
+
+        try {
+            client.get(path, String.class);
+            Assert.fail("Should fail");
+        } catch (UnsupportedOperationException e) {
+            Assert.assertEquals("Unsupported status code: 400 Bad Request", e.getMessage());
+        }
+
     }
 
     @SuppressWarnings("unchecked")

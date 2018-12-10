@@ -23,7 +23,8 @@ public class MpgClientTest extends AbstractMockTestClient {
             MpgClient.build(getConfig(), "http://localhost:" + server.port());
             Assert.fail("Invalid password is invalid");
         } catch (UnsupportedOperationException e) {
-            Assert.assertEquals("Bad credentials", "Unsupported status code: 401 Unauthorized", e.getMessage());
+            Assert.assertEquals("Bad credentials",
+                    "Unsupported status code: 401 Unauthorized / Content: {\"success\":false,\"error\":\"incorrectPasswordUser\"}", e.getMessage());
         }
     }
 

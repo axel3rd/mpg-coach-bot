@@ -16,6 +16,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.config.Proxy;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
@@ -107,8 +108,12 @@ public abstract class AbstractClient {
                 response = invocationBuilder.post(Entity.entity(entityRequest, MediaType.APPLICATION_JSON));
             }
             if (Response.Status.OK.getStatusCode() != response.getStatus()) {
+                String content = IOUtils.toString((InputStream) response.getEntity());
+                if (StringUtils.isNoneBlank(content)) {
+                    content = " / Content: " + content;
+                }
                 throw new UnsupportedOperationException(
-                        String.format("Unsupported status code: %s %s", response.getStatus(), response.getStatusInfo().getReasonPhrase()));
+                        String.format("Unsupported status code: %s %s%s", response.getStatus(), response.getStatusInfo().getReasonPhrase(), content));
             }
             if (cacheFile != null) {
                 Files.copy((InputStream) response.getEntity(), cacheFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
