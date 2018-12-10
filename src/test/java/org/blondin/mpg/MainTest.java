@@ -58,7 +58,8 @@ public class MainTest extends AbstractMockTestClient {
             Assert.fail("Credentials are invalid");
         } catch (UnsupportedOperationException e) {
             // Credentials in sample file are fake
-            Assert.assertEquals("Bad credentials", "Unsupported status code: 401 Unauthorized", e.getMessage());
+            Assert.assertEquals("Bad credentials",
+                    "Unsupported status code: 401 Unauthorized / Content: {\"success\":false,\"error\":\"incorrectPasswordUser\"}", e.getMessage());
         } catch (ProcessingException e) {
             // Proxy not configured or real URL not accessible
             Assert.assertEquals("No network", "java.net.UnknownHostException: api.monpetitgazon.com", e.getMessage());
