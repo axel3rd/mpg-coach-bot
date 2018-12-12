@@ -13,7 +13,7 @@ import org.blondin.mpg.stats.model.LeaguesRefresh;
  */
 public class MpgStatsClient extends AbstractClient {
 
-    private static EnumMap<ChampionshipStatsType, Championship> cache = new EnumMap<>(ChampionshipStatsType.class);
+    private EnumMap<ChampionshipStatsType, Championship> cache = new EnumMap<>(ChampionshipStatsType.class);
 
     private MpgStatsClient() {
         super();

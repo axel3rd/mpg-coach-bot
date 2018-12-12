@@ -70,7 +70,6 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
             Assert.assertNotNull(player.getName(), player.getFirstName());
             Assert.assertNotNull(player.getName(), player.getLastName());
             Assert.assertNotNull(player.getName());
-            Assert.assertEquals(player.getName(), (player.getLastName() + " " + player.getFirstName()).trim());
             Assert.assertFalse(player.getName(), player.getName().contains("null"));
             Assert.assertTrue(player.getName(), player.getPrice() > 0);
             if (player.getStats().getGoals() > 0) {
