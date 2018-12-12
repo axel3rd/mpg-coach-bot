@@ -96,23 +96,33 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
-    public void testProcessWithMock() throws Exception {
+    public void testProcessWithMockSimple() throws Exception {
+        subTestProcessWithMock("KLGXSSUG", "20180926", "20180926", "20181017", "20181017", "20181017");
+    }
+
+    @Test
+    public void testProcessWithMockAndNameDifferentInRootAndStats() throws Exception {
+        subTestProcessWithMock("KLGXSSUG", "20181212", "20181212", "20181212", "20181212", "20181212");
+    }
+
+    private void subTestProcessWithMock(String leagueId, String dateFileRootCoach, String dateFileRootDashboard, String dateFileStatsLeagues,
+            String dataFileStats, String dataFileEquipeActu) {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/league/KLGXSSUG/coach")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.20180926.json")));
-        stubFor(get("/user/dashboard")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.20180926.json")));
+        stubFor(get("/league/" + leagueId + "/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach." + dateFileRootCoach + ".json")));
+        stubFor(get("/user/dashboard").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard." + dateFileRootDashboard + ".json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
 
-        stubFor(get("/leagues.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20181017.json")));
+        stubFor(get("/leagues.json").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues." + dateFileStatsLeagues + ".json")));
         stubFor(get("/customteam.json/Ligue-1")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.ligue-1.20181017.json")));
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.ligue-1." + dataFileStats + ".json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
 
-        stubFor(get("/blessures-et-suspensions/fodbold/france/ligue-1")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.ligue-1.20181017.html")));
+        stubFor(get("/blessures-et-suspensions/fodbold/france/ligue-1").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.ligue-1." + dataFileEquipeActu + ".html")));
         InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
                 "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
 

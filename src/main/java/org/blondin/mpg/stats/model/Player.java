@@ -31,6 +31,10 @@ public class Player {
     }
 
     public String getName() {
+        if (StringUtils.isBlank(getFirstName()) && getLastName().contains(" ")) {
+            int index = getLastName().indexOf(' ');
+            return getLastName().substring(index + 1) + " " + getLastName().substring(0, index);
+        }
         return (getLastName() + " " + getFirstName()).trim();
     }
 

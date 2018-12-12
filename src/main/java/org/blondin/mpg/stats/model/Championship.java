@@ -39,7 +39,7 @@ public class Championship {
 
     public Player getPlayer(String name) {
         for (Player p : getPlayers()) {
-            if (p.getName().equals(name)) {
+            if (p.getName().equals(name) || p.getLastName().equals(name)) {
                 return p;
             }
         }
