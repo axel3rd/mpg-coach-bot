@@ -130,6 +130,23 @@ public class MainTest extends AbstractMockTestClient {
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, getConfig());
     }
 
+    @Test
+    public void testProcessNoMoreMatch() throws Exception {
+        Config config = prepareProcessUpdateWithMock();
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        // TODO : Dashbard file could be the same for all tests
+        stubFor(get("/user/dashboard")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.20181114.json")));
+        stubFor(get("/league/KLGXSSUG/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.20181217.json")));
+        MpgClient mpgClient = MpgClient.build(config, "http://localhost:" + server.port());
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
+        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, config);
+    }
+
     private static Config prepareProcessUpdateWithMock() {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
