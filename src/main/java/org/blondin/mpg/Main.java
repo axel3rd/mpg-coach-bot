@@ -13,6 +13,7 @@ import org.blondin.mpg.equipeactu.ChampionshipOutType;
 import org.blondin.mpg.equipeactu.InjuredSuspendedClient;
 import org.blondin.mpg.equipeactu.model.OutType;
 import org.blondin.mpg.root.MpgClient;
+import org.blondin.mpg.root.exception.NoMoreGamesException;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.League;
@@ -42,26 +43,30 @@ public class Main {
 
     static void process(MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient, Config config) {
         for (League league : mpgClient.getDashboard().getLeagues()) {
-            LOG.info("========== {} ==========", league.getName());
+            try {
+                LOG.info("========== {} ==========", league.getName());
 
-            // Get players
-            Coach coach = mpgClient.getCoach(league.getId());
-            List<Player> players = coach.getPlayers();
+                // Get players
+                Coach coach = mpgClient.getCoach(league.getId());
+                List<Player> players = coach.getPlayers();
 
-            // Remove out players (and write them)
-            removeOutPlayers(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
+                // Remove out players (and write them)
+                removeOutPlayers(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
 
-            // Calculate efficiency and sort
-            calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()));
-            Collections.sort(players, Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).reversed());
+                // Calculate efficiency and sort
+                calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()));
+                Collections.sort(players, Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).reversed());
 
-            // Write optimized team
-            writeTeamOptimized(players);
+                // Write optimized team
+                writeTeamOptimized(players);
 
-            // Auto-update team
-            if (config.isTeampUpdate()) {
-                LOG.info("\nUpdating team ...");
-                mpgClient.updateCoach(league, getCoachRequest(coach, players, config));
+                // Auto-update team
+                if (config.isTeampUpdate()) {
+                    LOG.info("\nUpdating team ...\n");
+                    mpgClient.updateCoach(league, getCoachRequest(coach, players, config));
+                }
+            } catch (NoMoreGamesException e) {
+                LOG.info("\nNo more games in this league ...\n");
             }
         }
     }

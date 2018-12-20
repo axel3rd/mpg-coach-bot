@@ -131,7 +131,7 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
-    public void testProcessNoMoreMatch() throws Exception {
+    public void testProcessNoMoreGames() throws Exception {
         Config config = prepareProcessUpdateWithMock();
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
