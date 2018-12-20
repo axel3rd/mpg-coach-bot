@@ -42,9 +42,6 @@ public class MpgClient extends AbstractClient {
         return client;
     }
 
-    {
-    }
-
     public Coach getCoach(String league) {
         final String path = "league/" + league + "/coach";
         try {
