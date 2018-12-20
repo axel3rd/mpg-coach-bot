@@ -1,11 +1,11 @@
 package org.blondin.mpg;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.config.Config;
@@ -24,6 +24,9 @@ import org.blondin.mpg.stats.ChampionshipStatsType;
 import org.blondin.mpg.stats.MpgStatsClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import de.vandermeer.asciitable.AsciiTable;
+import de.vandermeer.asciitable.CWC_LongestLine;
 
 public class Main {
 
@@ -47,8 +50,10 @@ public class Main {
             switch (league.getLeagueStatus()) {
             case CREATION:
             case UNKNOWN:
+                processMercatoChampionship(league, mpgClient, mpgStatsClient, outPlayersClient);
+                break;
             case MERCATO:
-                LOG.info("\nThis league is or will be in mercato ... TODO\n");
+                processMercatoLeague(league, mpgClient, mpgStatsClient, outPlayersClient);
                 break;
             case GAMES:
                 processGames(league, mpgClient, mpgStatsClient, outPlayersClient, config);
@@ -58,6 +63,47 @@ public class Main {
                 break;
             }
         }
+    }
+
+    static void processMercatoLeague(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient) {
+        LOG.info("\nProposal for your mercato:\n");
+        List<Player> players = mpgClient.getMercato(league.getId()).getPlayers();
+        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()));
+        processMercato(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
+    }
+
+    static void processMercatoChampionship(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient,
+            InjuredSuspendedClient outPlayersClient) {
+        LOG.info("\nProposal for your coming soon mercato:\n");
+        List<Player> players = mpgClient.getMercato(league.getChampionship()).getPlayers();
+        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()));
+        processMercato(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
+    }
+
+    static void processMercato(List<Player> players, InjuredSuspendedClient outPlayersClient, ChampionshipOutType championship) {
+        Collections.sort(players, Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).reversed());
+        List<Player> goals = players.stream().filter(p -> p.getPosition().equals(Position.G)).collect(Collectors.toList()).subList(0, 5);
+        List<Player> defenders = players.stream().filter(p -> p.getPosition().equals(Position.D)).collect(Collectors.toList()).subList(0, 10);
+        List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList()).subList(0, 10);
+        List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList()).subList(0, 10);
+
+        AsciiTable at = new AsciiTable();
+        at.getRenderer().setCWC(new CWC_LongestLine());
+        at.addRow("P", "Player name", "Q.", "Eff.", "Out info");
+        at.addRule();
+        for (List<Player> line : Arrays.asList(goals, defenders, midfielders, attackers)) {
+            for (Player player : line) {
+                org.blondin.mpg.equipeactu.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(), OutType.INJURY_GREEN);
+                String outInfos = "";
+                if (outPlayer != null) {
+                    outInfos = String.format("%s - %s - %s", outPlayer.getOutType(), outPlayer.getDescription(), outPlayer.getLength());
+                }
+                at.addRow(player.getPosition(), player.getName(), player.getQuotation(), player.getEfficiency(), outInfos);
+            }
+            at.addRule();
+        }
+        String render = at.render();
+        LOG.info(render);
     }
 
     static void processGames(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient,
@@ -102,25 +148,22 @@ public class Main {
     }
 
     private static void writeTeamOptimized(List<Player> players) {
-        final int nameMaxLength = players.stream().map(Player::getName).collect(Collectors.toList()).stream()
-                .max(Comparator.comparing(String::length)).orElse("").length();
-        final String dashes = IntStream.range(0, nameMaxLength + 11).mapToObj(i -> "-").collect(Collectors.joining(""));
-
-        LOG.info("\nOptimized team:\n{}", dashes);
+        LOG.info("\nOptimized team:");
+        AsciiTable at = new AsciiTable();
+        at.getRenderer().setCWC(new CWC_LongestLine());
+        at.addRule();
         Position lp = Position.G;
         for (Player player : players) {
-
             // Write position separator
             if (!player.getPosition().equals(lp)) {
                 lp = player.getPosition();
-                LOG.info("{}", dashes);
+                at.addRule();
             }
-
-            // Write player
-            String spacesAfterName = IntStream.range(0, nameMaxLength - player.getName().length()).mapToObj(i -> " ").collect(Collectors.joining(""));
-            LOG.info("{} | {}{} | {}", player.getPosition(), player.getName(), spacesAfterName, player.getEfficiency());
+            at.addRow(player.getPosition(), player.getName(), player.getEfficiency());
         }
-        LOG.info("{}", dashes);
+        at.addRule();
+        String render = at.render();
+        LOG.info(render);
     }
 
     private static List<Player> calculateEfficiency(List<Player> players, MpgStatsClient stats, ChampionshipStatsType championship) {

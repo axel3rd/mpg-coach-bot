@@ -23,4 +23,7 @@ public enum ChampionshipType {
         throw new UnsupportedOperationException(String.format("Championship type not supported: %s", value));
     }
 
+    public int value() {
+        return this.value;
+    }
 }
