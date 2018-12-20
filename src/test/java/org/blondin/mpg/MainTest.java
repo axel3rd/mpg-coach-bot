@@ -132,6 +132,34 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testProcessLeagueInCreationAndTerminated() throws Exception {
+        Config config = prepareProcessUpdateWithMock();
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.KX24XMUG-status-1-KLGXSSUG-status-5.json")));
+        MpgClient mpgClient = MpgClient.build(config, "http://localhost:" + server.port());
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
+        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, config);
+    }
+
+    @Test
+    public void testProcessLeagueInMercato() throws Exception {
+        Config config = prepareProcessUpdateWithMock();
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.KX24XMUG-status-3-KLGXSSUG-status-5.json")));
+        MpgClient mpgClient = MpgClient.build(config, "http://localhost:" + server.port());
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
+        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, config);
+    }
+
+    @Test
     public void testProcessNoMoreGames() throws Exception {
         Config config = prepareProcessUpdateWithMock();
         stubFor(post("/user/signIn")

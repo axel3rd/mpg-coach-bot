@@ -43,31 +43,48 @@ public class Main {
 
     static void process(MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient, Config config) {
         for (League league : mpgClient.getDashboard().getLeagues()) {
-            try {
-                LOG.info("========== {} ==========", league.getName());
-
-                // Get players
-                Coach coach = mpgClient.getCoach(league.getId());
-                List<Player> players = coach.getPlayers();
-
-                // Remove out players (and write them)
-                removeOutPlayers(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
-
-                // Calculate efficiency and sort
-                calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()));
-                Collections.sort(players, Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).reversed());
-
-                // Write optimized team
-                writeTeamOptimized(players);
-
-                // Auto-update team
-                if (config.isTeampUpdate()) {
-                    LOG.info("\nUpdating team ...\n");
-                    mpgClient.updateCoach(league, getCoachRequest(coach, players, config));
-                }
-            } catch (NoMoreGamesException e) {
-                LOG.info("\nNo more games in this league ...\n");
+            LOG.info("========== {} ==========", league.getName());
+            switch (league.getLeagueStatus()) {
+            case CREATION:
+            case UNKNOWN:
+            case MERCATO:
+                LOG.info("\nThis league is or will be in mercato ... TODO\n");
+                break;
+            case GAMES:
+                processGames(league, mpgClient, mpgStatsClient, outPlayersClient, config);
+                break;
+            case TERMINATED:
+                LOG.info("\nThis league is terminated ...\n");
+                break;
             }
+        }
+    }
+
+    static void processGames(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient,
+            Config config) {
+        try {
+
+            // Get players
+            Coach coach = mpgClient.getCoach(league.getId());
+            List<Player> players = coach.getPlayers();
+
+            // Remove out players (and write them)
+            removeOutPlayers(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
+
+            // Calculate efficiency and sort
+            calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()));
+            Collections.sort(players, Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).reversed());
+
+            // Write optimized team
+            writeTeamOptimized(players);
+
+            // Auto-update team
+            if (config.isTeampUpdate()) {
+                LOG.info("\nUpdating team ...\n");
+                mpgClient.updateCoach(league, getCoachRequest(coach, players, config));
+            }
+        } catch (NoMoreGamesException e) {
+            LOG.info("\nNo more games in this league ...\n");
         }
     }
 
