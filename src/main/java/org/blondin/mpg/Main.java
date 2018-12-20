@@ -13,6 +13,7 @@ import org.blondin.mpg.equipeactu.ChampionshipOutType;
 import org.blondin.mpg.equipeactu.InjuredSuspendedClient;
 import org.blondin.mpg.equipeactu.model.OutType;
 import org.blondin.mpg.root.MpgClient;
+import org.blondin.mpg.root.exception.NoMoreGamesException;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.League;
@@ -43,6 +44,25 @@ public class Main {
     static void process(MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient, Config config) {
         for (League league : mpgClient.getDashboard().getLeagues()) {
             LOG.info("========== {} ==========", league.getName());
+            switch (league.getLeagueStatus()) {
+            case CREATION:
+            case UNKNOWN:
+            case MERCATO:
+                LOG.info("\nThis league is or will be in mercato ... TODO\n");
+                break;
+            case GAMES:
+                processGames(league, mpgClient, mpgStatsClient, outPlayersClient, config);
+                break;
+            case TERMINATED:
+                LOG.info("\nThis league is terminated ...\n");
+                break;
+            }
+        }
+    }
+
+    static void processGames(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient,
+            Config config) {
+        try {
 
             // Get players
             Coach coach = mpgClient.getCoach(league.getId());
@@ -60,9 +80,11 @@ public class Main {
 
             // Auto-update team
             if (config.isTeampUpdate()) {
-                LOG.info("\nUpdating team ...");
+                LOG.info("\nUpdating team ...\n");
                 mpgClient.updateCoach(league, getCoachRequest(coach, players, config));
             }
+        } catch (NoMoreGamesException e) {
+            LOG.info("\nNo more games in this league ...\n");
         }
     }
 

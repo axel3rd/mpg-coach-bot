@@ -64,7 +64,7 @@ public class MpgClientTest extends AbstractMockTestClient {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
         stubFor(get("/user/dashboard")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.20180926.json")));
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.KLGXSSUG-status-4.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         Dashboard dashboard = mpgClient.getDashboard();
         Assert.assertNotNull(dashboard);

@@ -14,6 +14,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,15 +74,15 @@ public class MainTest extends AbstractMockTestClient {
         when(mpgClient.getCoach(anyString())).thenReturn(new ObjectMapper().enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
                 .readValue(new File("src/test/resources/__files", "mpg.coach.20180926.json"), Coach.class));
         when(mpgClient.getDashboard()).thenReturn(new ObjectMapper().enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
-                .readValue(new File("src/test/resources/__files", "mpg.dashboard.20180926.json"), Dashboard.class));
+                .readValue(new File("src/test/resources/__files", "mpg.dashboard.KLGXSSUG-status-4.json"), Dashboard.class));
 
         MpgStatsClient mpgStatsClient = mock(MpgStatsClient.class);
         when(mpgStatsClient.getStats(any())).thenReturn(
                 new ObjectMapper().readValue(new File("src/test/resources/__files", "mpgstats.ligue-1.20181017.json"), Championship.class));
 
         InjuredSuspendedClient outPlayersClient = spy(InjuredSuspendedClient.class);
-        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.ligue-1.20181017.html"))).when(outPlayersClient)
-                .getHtmlContent(ChampionshipOutType.LIGUE_1);
+        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.ligue-1.20181017.html"), Charset.defaultCharset()))
+                .when(outPlayersClient).getHtmlContent(ChampionshipOutType.LIGUE_1);
 
         // Test out (on cloned list)
         List<Player> players = new ArrayList<>(mpgClient.getCoach("fake").getPlayers());
@@ -97,26 +98,26 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testProcessWithMockSimple() throws Exception {
-        subTestProcessWithMock("KLGXSSUG", "20180926", "20180926", "20181017", "20181017", "20181017");
+        subTestProcessWithMock("KLGXSSUG", "KLGXSSUG-status-4", "20180926", "20181017", "20181017", "20181017");
     }
 
     @Test
     public void testProcessWithMockAndNameDifferentInRootAndStats() throws Exception {
-        subTestProcessWithMock("KLGXSSUG", "20181212", "20181212", "20181212", "20181212", "20181212");
+        subTestProcessWithMock("KLGXSSUG", "KLGXSSUG-status-4", "20181212", "20181212", "20181212", "20181212");
     }
 
-    private void subTestProcessWithMock(String leagueId, String dateFileRootCoach, String dateFileRootDashboard, String dateFileStatsLeagues,
+    private void subTestProcessWithMock(String leagueId, String fileRootDashboard, String fileRootCoach, String fileStatsLeagues,
             String dataFileStats, String dataFileEquipeActu) {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
         stubFor(get("/league/" + leagueId + "/coach")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach." + dateFileRootCoach + ".json")));
-        stubFor(get("/user/dashboard").willReturn(
-                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard." + dateFileRootDashboard + ".json")));
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach." + fileRootCoach + ".json")));
+        stubFor(get("/user/dashboard")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard." + fileRootDashboard + ".json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
 
         stubFor(get("/leagues.json").willReturn(
-                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues." + dateFileStatsLeagues + ".json")));
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues." + fileStatsLeagues + ".json")));
         stubFor(get("/customteam.json/Ligue-1")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.ligue-1." + dataFileStats + ".json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
@@ -130,11 +131,55 @@ public class MainTest extends AbstractMockTestClient {
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, getConfig());
     }
 
+    @Test
+    public void testProcessLeagueInCreationAndTerminated() throws Exception {
+        Config config = prepareProcessUpdateWithMock();
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.KX24XMUG-status-1-KLGXSSUG-status-5.json")));
+        MpgClient mpgClient = MpgClient.build(config, "http://localhost:" + server.port());
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
+        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, config);
+    }
+
+    @Test
+    public void testProcessLeagueInMercato() throws Exception {
+        Config config = prepareProcessUpdateWithMock();
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.KX24XMUG-status-3-KLGXSSUG-status-5.json")));
+        MpgClient mpgClient = MpgClient.build(config, "http://localhost:" + server.port());
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
+        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, config);
+    }
+
+    @Test
+    public void testProcessNoMoreGames() throws Exception {
+        Config config = prepareProcessUpdateWithMock();
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.KLGXSSUG-status-4.json")));
+        stubFor(get("/league/KLGXSSUG/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.noMoreGames.json")));
+        MpgClient mpgClient = MpgClient.build(config, "http://localhost:" + server.port());
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
+        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, config);
+    }
+
     private static Config prepareProcessUpdateWithMock() {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
         stubFor(get("/user/dashboard")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.20181114.json")));
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.KLGXSSUG-status-4.json")));
         stubFor(get("/leagues.json")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20181114.json")));
         stubFor(get("/customteam.json/Ligue-1")
@@ -181,7 +226,7 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     private String getTestFileToString(String fileName) throws IOException {
-        return FileUtils.readFileToString(new File("src/test/resources/__files", fileName));
+        return FileUtils.readFileToString(new File("src/test/resources/__files", fileName), Charset.defaultCharset());
     }
 
 }

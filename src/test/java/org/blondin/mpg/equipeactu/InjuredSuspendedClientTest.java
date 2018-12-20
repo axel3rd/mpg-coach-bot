@@ -7,6 +7,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,8 +24,8 @@ public class InjuredSuspendedClientTest extends AbstractMockTestClient {
     @Test
     public void testLocalMapping() throws Exception {
         for (String subFile : Arrays.asList("ligue-1", "premier-league", "liga")) {
-            List<Player> players = InjuredSuspendedClient.build(Config.build("src/test/resources/mpg.properties.here"))
-                    .getPlayers(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu." + subFile + ".20181017.html")));
+            List<Player> players = InjuredSuspendedClient.build(Config.build("src/test/resources/mpg.properties.here")).getPlayers(FileUtils
+                    .readFileToString(new File("src/test/resources/__files", "equipeactu." + subFile + ".20181017.html"), Charset.defaultCharset()));
             Assert.assertNotNull(players);
             Assert.assertTrue(players.size() > 10);
             for (Player player : players) {

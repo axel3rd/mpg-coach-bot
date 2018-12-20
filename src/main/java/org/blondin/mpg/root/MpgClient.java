@@ -3,17 +3,21 @@ package org.blondin.mpg.root;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
+import org.blondin.mpg.root.exception.NoMoreGamesException;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.Dashboard;
 import org.blondin.mpg.root.model.League;
 import org.blondin.mpg.root.model.UserSignIn;
+
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 /**
  * Client for https://www.mpgstats.fr/
@@ -39,7 +43,20 @@ public class MpgClient extends AbstractClient {
     }
 
     public Coach getCoach(String league) {
-        return get("league/" + league + "/coach", headersToken, Coach.class, true);
+        final String path = "league/" + league + "/coach";
+        try {
+            return get(path, headersToken, Coach.class, true);
+        } catch (ProcessingException e) {
+            if (e.getCause() instanceof JsonMappingException
+                    && e.getCause().getMessage().contains("Root name 'success' does not match expected ('data')")) {
+                String response = get(path, headersToken, String.class, true);
+                if (response.contains("noMoreGames")) {
+                    throw new NoMoreGamesException();
+                }
+                throw new UnsupportedOperationException(String.format("Coach response not supported: %s", response));
+            }
+            throw e;
+        }
     }
 
     public Dashboard getDashboard() {
