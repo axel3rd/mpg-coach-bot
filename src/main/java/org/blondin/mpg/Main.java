@@ -1,5 +1,6 @@
 package org.blondin.mpg;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,10 +26,16 @@ import org.blondin.mpg.stats.MpgStatsClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.vandermeer.asciitable.AT_Cell;
+import de.vandermeer.asciitable.AT_Row;
 import de.vandermeer.asciitable.AsciiTable;
 import de.vandermeer.asciitable.CWC_LongestLine;
+import de.vandermeer.asciithemes.a7.A7_Grids;
+import de.vandermeer.skb.interfaces.transformers.textformat.TextAlignment;
 
 public class Main {
+
+    private static final DecimalFormat FORMAT_DECIMAL_DOUBLE = new DecimalFormat("0.00");
 
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
@@ -87,10 +94,7 @@ public class Main {
         List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList()).subList(0, 10);
         List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList()).subList(0, 10);
 
-        AsciiTable at = new AsciiTable();
-        at.getRenderer().setCWC(new CWC_LongestLine());
-        at.addRow("P", "Player name", "Q.", "Eff.", "Out info");
-        at.addRule();
+        AsciiTable at = getTable("P", "Player name", "Q.", "Eff.", "Out info");
         for (List<Player> line : Arrays.asList(goals, defenders, midfielders, attackers)) {
             for (Player player : line) {
                 org.blondin.mpg.equipeactu.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(), OutType.INJURY_GREEN);
@@ -98,12 +102,18 @@ public class Main {
                 if (outPlayer != null) {
                     outInfos = String.format("%s - %s - %s", outPlayer.getOutType(), outPlayer.getDescription(), outPlayer.getLength());
                 }
-                at.addRow(player.getPosition(), player.getName(), player.getQuotation(), player.getEfficiency(), outInfos);
+                AT_Row row = at.addRow(player.getPosition(), player.getName(), player.getQuotation(),
+                        FORMAT_DECIMAL_DOUBLE.format(player.getEfficiency()), outInfos);
+                setTableFormatRowPaddingSpace(row);
+                row.getCells().get(2).getContext().setTextAlignment(TextAlignment.RIGHT);
+                row.getCells().get(3).getContext().setTextAlignment(TextAlignment.RIGHT);
             }
             at.addRule();
         }
+
         String render = at.render();
         LOG.info(render);
+        LOG.info("");
     }
 
     static void processGames(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient,
@@ -126,7 +136,7 @@ public class Main {
 
             // Auto-update team
             if (config.isTeampUpdate()) {
-                LOG.info("\nUpdating team ...\n");
+                LOG.info("Updating team ...\n");
                 mpgClient.updateCoach(league, getCoachRequest(coach, players, config));
             }
         } catch (NoMoreGamesException e) {
@@ -149,9 +159,7 @@ public class Main {
 
     private static void writeTeamOptimized(List<Player> players) {
         LOG.info("\nOptimized team:");
-        AsciiTable at = new AsciiTable();
-        at.getRenderer().setCWC(new CWC_LongestLine());
-        at.addRule();
+        AsciiTable at = getTable("P", "Player name", "Eff.");
         Position lp = Position.G;
         for (Player player : players) {
             // Write position separator
@@ -159,11 +167,14 @@ public class Main {
                 lp = player.getPosition();
                 at.addRule();
             }
-            at.addRow(player.getPosition(), player.getName(), player.getEfficiency());
+            AT_Row row = at.addRow(player.getPosition(), player.getName(), FORMAT_DECIMAL_DOUBLE.format(player.getEfficiency()));
+            setTableFormatRowPaddingSpace(row);
+            row.getCells().get(2).getContext().setTextAlignment(TextAlignment.RIGHT);
         }
         at.addRule();
         String render = at.render();
         LOG.info(render);
+        LOG.info("");
     }
 
     private static List<Player> calculateEfficiency(List<Player> players, MpgStatsClient stats, ChampionshipStatsType championship) {
@@ -238,4 +249,25 @@ public class Main {
         }
         request.getTacticalsubstitutes().add(new TacticalSubstitute(playerIdSubstitute, playerIdStart, rating));
     }
+
+    private static AsciiTable getTable(Object... columnTitle) {
+        AsciiTable at = new AsciiTable();
+        at.getContext().setGrid(A7_Grids.minusBarPlusEquals());
+        at.setPaddingLeftRight(1);
+        at.getRenderer().setCWC(new CWC_LongestLine());
+        at.addRule();
+        AT_Row rowHead = at.addRow(columnTitle);
+        for (AT_Cell cell : rowHead.getCells()) {
+            cell.getContext().setTextAlignment(TextAlignment.CENTER);
+        }
+        at.addRule();
+        return at;
+    }
+
+    private static void setTableFormatRowPaddingSpace(AT_Row row) {
+        for (AT_Cell cell : row.getCells()) {
+            cell.getContext().setPaddingLeftRight(1);
+        }
+    }
+
 }
