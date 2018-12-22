@@ -18,6 +18,7 @@ import org.blondin.mpg.root.exception.NoMoreGamesException;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.League;
+import org.blondin.mpg.root.model.LeagueStatus;
 import org.blondin.mpg.root.model.Player;
 import org.blondin.mpg.root.model.Position;
 import org.blondin.mpg.root.model.TacticalSubstitute;
@@ -53,8 +54,14 @@ public class Main {
 
     static void process(MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient, Config config) {
         for (League league : mpgClient.getDashboard().getLeagues()) {
+            if (LeagueStatus.TERMINATED.equals(league.getLeagueStatus())) {
+                continue;
+            }
+
             LOG.info("========== {} ==========", league.getName());
             switch (league.getLeagueStatus()) {
+            case TERMINATED:
+                // Already managed previously
             case CREATION:
             case UNKNOWN:
                 processMercatoChampionship(league, mpgClient, mpgStatsClient, outPlayersClient);
@@ -64,9 +71,6 @@ public class Main {
                 break;
             case GAMES:
                 processGames(league, mpgClient, mpgStatsClient, outPlayersClient, config);
-                break;
-            case TERMINATED:
-                LOG.info("\nThis league is terminated ...\n");
                 break;
             }
         }
