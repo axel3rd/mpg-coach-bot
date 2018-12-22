@@ -145,6 +145,16 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testProcessLeagueInMercatoTurnClosed() throws Exception {
+        prepareMainLigue1Mocks("KX24XMUG-status-3+1-KLGXSSUG-status-5", null, null, null);
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
+        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, getConfig());
+    }
+
+    @Test
     public void testProcessNoMoreGames() throws Exception {
         prepareMainLigue1Mocks("KLGXSSUG-status-4", null, null, null);
         stubFor(get("/league/KLGXSSUG/coach")

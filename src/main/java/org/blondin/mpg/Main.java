@@ -55,24 +55,33 @@ public class Main {
     static void process(MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient, Config config) {
         for (League league : mpgClient.getDashboard().getLeagues()) {
             if (LeagueStatus.TERMINATED.equals(league.getLeagueStatus())) {
+                // Don't display any logs
                 continue;
             }
+            processLeague(league, mpgClient, mpgStatsClient, outPlayersClient, config);
+        }
+    }
 
-            LOG.info("========== {} ==========", league.getName());
-            switch (league.getLeagueStatus()) {
-            case TERMINATED:
-                // Already managed previously
-            case CREATION:
-            case UNKNOWN:
-                processMercatoChampionship(league, mpgClient, mpgStatsClient, outPlayersClient);
-                break;
-            case MERCATO:
-                processMercatoLeague(league, mpgClient, mpgStatsClient, outPlayersClient);
-                break;
-            case GAMES:
-                processGames(league, mpgClient, mpgStatsClient, outPlayersClient, config);
-                break;
+    static void processLeague(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient,
+            Config config) {
+        LOG.info("========== {} ==========", league.getName());
+        switch (league.getLeagueStatus()) {
+        case TERMINATED:
+            // Already managed previously
+        case CREATION:
+        case UNKNOWN:
+            processMercatoChampionship(league, mpgClient, mpgStatsClient, outPlayersClient);
+            break;
+        case MERCATO:
+            if (league.getTeamStatus() == 1) {
+                LOG.info("\nMercato turn is closed, come back for the next !\n");
+                return;
             }
+            processMercatoLeague(league, mpgClient, mpgStatsClient, outPlayersClient);
+            break;
+        case GAMES:
+            processGames(league, mpgClient, mpgStatsClient, outPlayersClient, config);
+            break;
         }
     }
 
