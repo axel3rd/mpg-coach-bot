@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.blondin.mpg.Main;
 
 public class Config {
 
@@ -41,6 +44,7 @@ public class Config {
         configMain(config, properties, fileConfig);
         configNoteTacticalSubstitute(config, properties);
         configProxy(config, properties);
+        configLogs(properties);
         configTest(config, properties);
         return config;
     }
@@ -78,6 +82,12 @@ public class Config {
                 System.getenv("MPG_TACTICAL_SUBSTITUTE_DEFENDER"));
         if (StringUtils.isNotBlank(defender)) {
             config.noteTacticalSubstituteDefender = Float.parseFloat(defender);
+        }
+    }
+
+    private static void configLogs(Properties properties) {
+        if ("true".equals(StringUtils.defaultIfBlank(properties.getProperty("logs.debug"), System.getenv("MPG_LOGS_DEBUG")))) {
+            Logger.getLogger(Main.class.getPackage().getName()).setLevel(Level.DEBUG);
         }
     }
 

@@ -23,10 +23,14 @@ import org.blondin.mpg.config.Proxy;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class AbstractClient {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractClient.class);
 
     protected static final long TIME_HOUR_IN_MILLI_SECOND = 3600000;
 
@@ -83,7 +87,9 @@ public abstract class AbstractClient {
 
     private <T> T call(String path, MultivaluedMap<String, Object> headers, Object entityRequest, Class<T> entityResponse, boolean wrapRoot,
             long cacheTimeMilliSecond) {
+        long start = System.currentTimeMillis();
         try {
+            LOG.debug("Call URL: {}/{} (cache duration ms: {})", url, path, cacheTimeMilliSecond);
             if (StringUtils.isBlank(url)) {
                 throw new UnsupportedOperationException("Please use 'setUrl(...)' before using this client");
             }
@@ -92,6 +98,7 @@ public abstract class AbstractClient {
                 cacheFile = getCacheFile(url, path);
                 if (cacheFile.exists()
                         && (cacheTimeMilliSecond == 0 || cacheFile.lastModified() > System.currentTimeMillis() - cacheTimeMilliSecond)) {
+                    LOG.debug("Read cache file: {}", cacheFile.getAbsolutePath());
                     return readEntityFromFile(cacheFile, entityResponse);
                 }
             }
@@ -117,12 +124,15 @@ public abstract class AbstractClient {
                         String.format("Unsupported status code: %s %s%s", response.getStatus(), response.getStatusInfo().getReasonPhrase(), content));
             }
             if (cacheFile != null) {
+                LOG.debug("Write cache file: {}", cacheFile.getAbsolutePath());
                 Files.copy((InputStream) response.getEntity(), cacheFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 return readEntityFromFile(cacheFile, entityResponse);
             }
             return response.readEntity(entityResponse);
         } catch (IOException e) {
             throw new UnsupportedOperationException(e);
+        } finally {
+            LOG.debug("Call URL time elaps ms: {}", System.currentTimeMillis() - start);
         }
     }
 

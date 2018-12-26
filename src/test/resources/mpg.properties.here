@@ -15,5 +15,8 @@ password = foobar
 #proxy.user  =foo
 #proxy.password = bar
 
+# Enable debug logs
+logs.debug = true
+
 # One league of previous user, used for test
 leagueTest = KLGXSSUG

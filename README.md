@@ -47,6 +47,11 @@ To change default notes for tactical substitutes, use in `mpg.properties` file (
     tactical.substitute.midfielder = 5.0
     tactical.substitute.defender = 5.0
 
+To add some debug logs about execution (since v1.2):
+
+    # Enable debug logs
+    logs.debug = true
+
 ### Execution
 
 You can execute in command line:
