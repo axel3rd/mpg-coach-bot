@@ -3,6 +3,8 @@ package org.blondin.mpg.stats.model;
 import java.util.Date;
 import java.util.List;
 
+import org.blondin.mpg.root.exception.PlayerNotFoundException;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -43,7 +45,7 @@ public class Championship {
                 return p;
             }
         }
-        throw new UnsupportedOperationException(String.format("Player can't be found in stats: %s", name));
+        throw new PlayerNotFoundException(String.format("Player can't be found in stats: %s", name));
     }
 
     public Infos getInfos() {

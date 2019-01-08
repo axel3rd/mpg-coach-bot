@@ -15,6 +15,7 @@ import org.blondin.mpg.equipeactu.InjuredSuspendedClient;
 import org.blondin.mpg.equipeactu.model.OutType;
 import org.blondin.mpg.root.MpgClient;
 import org.blondin.mpg.root.exception.NoMoreGamesException;
+import org.blondin.mpg.root.exception.PlayerNotFoundException;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.League;
@@ -88,7 +89,7 @@ public class Main {
     static void processMercatoLeague(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient) {
         LOG.info("\nProposal for your mercato:\n");
         List<Player> players = mpgClient.getMercato(league.getId()).getPlayers();
-        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()));
+        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), false);
         processMercato(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
     }
 
@@ -96,7 +97,7 @@ public class Main {
             InjuredSuspendedClient outPlayersClient) {
         LOG.info("\nProposal for your coming soon mercato:\n");
         List<Player> players = mpgClient.getMercato(league.getChampionship()).getPlayers();
-        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()));
+        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), false);
         processMercato(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
     }
 
@@ -141,7 +142,7 @@ public class Main {
             removeOutPlayers(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
 
             // Calculate efficiency and sort
-            calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()));
+            calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), true);
             Collections.sort(players, Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).reversed());
 
             // Write optimized team
@@ -190,7 +191,8 @@ public class Main {
         LOG.info("");
     }
 
-    private static List<Player> calculateEfficiency(List<Player> players, MpgStatsClient stats, ChampionshipStatsType championship) {
+    private static List<Player> calculateEfficiency(List<Player> players, MpgStatsClient stats, ChampionshipStatsType championship,
+            boolean failIfPlayerNotFound) {
         // Calculate efficient in Stats model
         for (org.blondin.mpg.stats.model.Player p : stats.getStats(championship).getPlayers()) {
             double efficiency = p.getStats().getMatchs() / (double) stats.getStats(championship).getDay() * p.getStats().getAverage()
@@ -201,7 +203,15 @@ public class Main {
 
         // Fill MPG model
         for (Player player : players) {
-            player.setEfficiency(stats.getStats(championship).getPlayer(player.getName()).getEfficiency());
+            try {
+                player.setEfficiency(stats.getStats(championship).getPlayer(player.getName()).getEfficiency());
+            } catch (PlayerNotFoundException e) {
+                if (failIfPlayerNotFound) {
+                    throw e;
+                }
+                LOG.warn("WARN: Player can't be found in statistics: {}", player.getName());
+                player.setEfficiency(0);
+            }
         }
         return players;
     }
