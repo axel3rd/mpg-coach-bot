@@ -15,6 +15,7 @@ public class Player {
     @JsonProperty("lastname")
     private String lastName;
     private Position position;
+    private int quotation;
 
     private double efficiency;
 
@@ -36,6 +37,10 @@ public class Player {
 
     public Position getPosition() {
         return position;
+    }
+
+    public int getQuotation() {
+        return quotation;
     }
 
     public double getEfficiency() {

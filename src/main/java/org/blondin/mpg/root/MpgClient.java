@@ -11,10 +11,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.root.exception.NoMoreGamesException;
+import org.blondin.mpg.root.model.ChampionshipType;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.Dashboard;
 import org.blondin.mpg.root.model.League;
+import org.blondin.mpg.root.model.Mercato;
+import org.blondin.mpg.root.model.MercatoChampionship;
+import org.blondin.mpg.root.model.MercatoLeague;
 import org.blondin.mpg.root.model.UserSignIn;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -23,6 +27,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
  * Client for https://www.mpgstats.fr/
  */
 public class MpgClient extends AbstractClient {
+
+    private static final String PATH_LEAGUE = "league/";
 
     private MultivaluedMap<String, Object> headersToken = new MultivaluedHashMap<>();
 
@@ -43,7 +49,7 @@ public class MpgClient extends AbstractClient {
     }
 
     public Coach getCoach(String league) {
-        final String path = "league/" + league + "/coach";
+        final String path = PATH_LEAGUE + league + "/coach";
         try {
             return get(path, headersToken, Coach.class, true);
         } catch (ProcessingException e) {
@@ -63,6 +69,14 @@ public class MpgClient extends AbstractClient {
         return get("user/dashboard", headersToken, Dashboard.class, true);
     }
 
+    public Mercato getMercato(ChampionshipType championship) {
+        return get("mercato/" + championship.value(), headersToken, MercatoChampionship.class);
+    }
+
+    public Mercato getMercato(String league) {
+        return get(PATH_LEAGUE + league + "/mercato", headersToken, MercatoLeague.class);
+    }
+
     private void signIn(String login, String password) {
         Map<String, String> entity = new HashMap<>();
         entity.put("email", login);
@@ -73,7 +87,7 @@ public class MpgClient extends AbstractClient {
     }
 
     public void updateCoach(League league, CoachRequest coachRequest) {
-        String result = post("league/" + league.getId() + "/coach", headersToken, coachRequest, String.class);
+        String result = post(PATH_LEAGUE + league.getId() + "/coach", headersToken, coachRequest, String.class);
         if (!"{\"success\":\"teamSaved\"}".equals(result)) {
             throw new UnsupportedOperationException(String.format("The team has been updated, result message: %s", result));
         }

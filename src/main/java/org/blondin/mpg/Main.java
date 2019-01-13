@@ -1,11 +1,12 @@
 package org.blondin.mpg;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.config.Config;
@@ -14,9 +15,11 @@ import org.blondin.mpg.equipeactu.InjuredSuspendedClient;
 import org.blondin.mpg.equipeactu.model.OutType;
 import org.blondin.mpg.root.MpgClient;
 import org.blondin.mpg.root.exception.NoMoreGamesException;
+import org.blondin.mpg.root.exception.PlayerNotFoundException;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.League;
+import org.blondin.mpg.root.model.LeagueStatus;
 import org.blondin.mpg.root.model.Player;
 import org.blondin.mpg.root.model.Position;
 import org.blondin.mpg.root.model.TacticalSubstitute;
@@ -25,7 +28,16 @@ import org.blondin.mpg.stats.MpgStatsClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.vandermeer.asciitable.AT_Cell;
+import de.vandermeer.asciitable.AT_Row;
+import de.vandermeer.asciitable.AsciiTable;
+import de.vandermeer.asciitable.CWC_LongestLine;
+import de.vandermeer.asciithemes.a7.A7_Grids;
+import de.vandermeer.skb.interfaces.transformers.textformat.TextAlignment;
+
 public class Main {
+
+    private static final DecimalFormat FORMAT_DECIMAL_DOUBLE = new DecimalFormat("0.00");
 
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
@@ -43,21 +55,79 @@ public class Main {
 
     static void process(MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient, Config config) {
         for (League league : mpgClient.getDashboard().getLeagues()) {
-            LOG.info("========== {} ==========", league.getName());
-            switch (league.getLeagueStatus()) {
-            case CREATION:
-            case UNKNOWN:
-            case MERCATO:
-                LOG.info("\nThis league is or will be in mercato ... TODO\n");
-                break;
-            case GAMES:
-                processGames(league, mpgClient, mpgStatsClient, outPlayersClient, config);
-                break;
-            case TERMINATED:
-                LOG.info("\nThis league is terminated ...\n");
-                break;
+            if (LeagueStatus.TERMINATED.equals(league.getLeagueStatus())) {
+                // Don't display any logs
+                continue;
             }
+            processLeague(league, mpgClient, mpgStatsClient, outPlayersClient, config);
         }
+    }
+
+    static void processLeague(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient,
+            Config config) {
+        LOG.info("========== {} ==========", league.getName());
+        switch (league.getLeagueStatus()) {
+        case TERMINATED:
+            // Already managed previously
+        case CREATION:
+        case UNKNOWN:
+            processMercatoChampionship(league, mpgClient, mpgStatsClient, outPlayersClient);
+            break;
+        case MERCATO:
+            if (league.getTeamStatus() == 1) {
+                LOG.info("\nMercato turn is closed, come back for the next !\n");
+                return;
+            }
+            processMercatoLeague(league, mpgClient, mpgStatsClient, outPlayersClient);
+            break;
+        case GAMES:
+            processGames(league, mpgClient, mpgStatsClient, outPlayersClient, config);
+            break;
+        }
+    }
+
+    static void processMercatoLeague(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient) {
+        LOG.info("\nProposal for your mercato:\n");
+        List<Player> players = mpgClient.getMercato(league.getId()).getPlayers();
+        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), false);
+        processMercato(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
+    }
+
+    static void processMercatoChampionship(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient,
+            InjuredSuspendedClient outPlayersClient) {
+        LOG.info("\nProposal for your coming soon mercato:\n");
+        List<Player> players = mpgClient.getMercato(league.getChampionship()).getPlayers();
+        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), false);
+        processMercato(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
+    }
+
+    static void processMercato(List<Player> players, InjuredSuspendedClient outPlayersClient, ChampionshipOutType championship) {
+        Collections.sort(players, Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).reversed());
+        List<Player> goals = players.stream().filter(p -> p.getPosition().equals(Position.G)).collect(Collectors.toList()).subList(0, 5);
+        List<Player> defenders = players.stream().filter(p -> p.getPosition().equals(Position.D)).collect(Collectors.toList()).subList(0, 10);
+        List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList()).subList(0, 10);
+        List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList()).subList(0, 10);
+
+        AsciiTable at = getTable("P", "Player name", "Q.", "Eff.", "Out info");
+        for (List<Player> line : Arrays.asList(goals, defenders, midfielders, attackers)) {
+            for (Player player : line) {
+                org.blondin.mpg.equipeactu.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(), OutType.INJURY_GREEN);
+                String outInfos = "";
+                if (outPlayer != null) {
+                    outInfos = String.format("%s - %s - %s", outPlayer.getOutType(), outPlayer.getDescription(), outPlayer.getLength());
+                }
+                AT_Row row = at.addRow(player.getPosition(), player.getName(), player.getQuotation(),
+                        FORMAT_DECIMAL_DOUBLE.format(player.getEfficiency()), outInfos);
+                setTableFormatRowPaddingSpace(row);
+                row.getCells().get(2).getContext().setTextAlignment(TextAlignment.RIGHT);
+                row.getCells().get(3).getContext().setTextAlignment(TextAlignment.RIGHT);
+            }
+            at.addRule();
+        }
+
+        String render = at.render();
+        LOG.info(render);
+        LOG.info("");
     }
 
     static void processGames(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient,
@@ -72,7 +142,7 @@ public class Main {
             removeOutPlayers(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
 
             // Calculate efficiency and sort
-            calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()));
+            calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), true);
             Collections.sort(players, Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).reversed());
 
             // Write optimized team
@@ -80,7 +150,7 @@ public class Main {
 
             // Auto-update team
             if (config.isTeampUpdate()) {
-                LOG.info("\nUpdating team ...\n");
+                LOG.info("Updating team ...\n");
                 mpgClient.updateCoach(league, getCoachRequest(coach, players, config));
             }
         } catch (NoMoreGamesException e) {
@@ -102,28 +172,27 @@ public class Main {
     }
 
     private static void writeTeamOptimized(List<Player> players) {
-        final int nameMaxLength = players.stream().map(Player::getName).collect(Collectors.toList()).stream()
-                .max(Comparator.comparing(String::length)).orElse("").length();
-        final String dashes = IntStream.range(0, nameMaxLength + 11).mapToObj(i -> "-").collect(Collectors.joining(""));
-
-        LOG.info("\nOptimized team:\n{}", dashes);
+        LOG.info("\nOptimized team:");
+        AsciiTable at = getTable("P", "Player name", "Eff.");
         Position lp = Position.G;
         for (Player player : players) {
-
             // Write position separator
             if (!player.getPosition().equals(lp)) {
                 lp = player.getPosition();
-                LOG.info("{}", dashes);
+                at.addRule();
             }
-
-            // Write player
-            String spacesAfterName = IntStream.range(0, nameMaxLength - player.getName().length()).mapToObj(i -> " ").collect(Collectors.joining(""));
-            LOG.info("{} | {}{} | {}", player.getPosition(), player.getName(), spacesAfterName, player.getEfficiency());
+            AT_Row row = at.addRow(player.getPosition(), player.getName(), FORMAT_DECIMAL_DOUBLE.format(player.getEfficiency()));
+            setTableFormatRowPaddingSpace(row);
+            row.getCells().get(2).getContext().setTextAlignment(TextAlignment.RIGHT);
         }
-        LOG.info("{}", dashes);
+        at.addRule();
+        String render = at.render();
+        LOG.info(render);
+        LOG.info("");
     }
 
-    private static List<Player> calculateEfficiency(List<Player> players, MpgStatsClient stats, ChampionshipStatsType championship) {
+    private static List<Player> calculateEfficiency(List<Player> players, MpgStatsClient stats, ChampionshipStatsType championship,
+            boolean failIfPlayerNotFound) {
         // Calculate efficient in Stats model
         for (org.blondin.mpg.stats.model.Player p : stats.getStats(championship).getPlayers()) {
             double efficiency = p.getStats().getMatchs() / (double) stats.getStats(championship).getDay() * p.getStats().getAverage()
@@ -134,7 +203,15 @@ public class Main {
 
         // Fill MPG model
         for (Player player : players) {
-            player.setEfficiency(stats.getStats(championship).getPlayer(player.getName()).getEfficiency());
+            try {
+                player.setEfficiency(stats.getStats(championship).getPlayer(player.getName()).getEfficiency());
+            } catch (PlayerNotFoundException e) {
+                if (failIfPlayerNotFound) {
+                    throw e;
+                }
+                LOG.warn("WARN: Player can't be found in statistics: {}", player.getName());
+                player.setEfficiency(0);
+            }
         }
         return players;
     }
@@ -195,4 +272,25 @@ public class Main {
         }
         request.getTacticalsubstitutes().add(new TacticalSubstitute(playerIdSubstitute, playerIdStart, rating));
     }
+
+    private static AsciiTable getTable(Object... columnTitle) {
+        AsciiTable at = new AsciiTable();
+        at.getContext().setGrid(A7_Grids.minusBarPlusEquals());
+        at.setPaddingLeftRight(1);
+        at.getRenderer().setCWC(new CWC_LongestLine());
+        at.addRule();
+        AT_Row rowHead = at.addRow(columnTitle);
+        for (AT_Cell cell : rowHead.getCells()) {
+            cell.getContext().setTextAlignment(TextAlignment.CENTER);
+        }
+        at.addRule();
+        return at;
+    }
+
+    private static void setTableFormatRowPaddingSpace(AT_Row row) {
+        for (AT_Cell cell : row.getCells()) {
+            cell.getContext().setPaddingLeftRight(1);
+        }
+    }
+
 }
