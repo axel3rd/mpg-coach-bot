@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.blondin.mpg.stats.model.Position;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,13 +22,17 @@ public class ConfigTest {
         Config config = Config.build("src/test/resources/mpg.properties.here");
         Assert.assertEquals("firstName.lastName@gmail.com", config.getLogin());
         Assert.assertEquals("foobar", config.getPassword());
-        Assert.assertEquals("KLGXSSUG", config.getLeagueTest());
         Assert.assertEquals(false, config.isTeampUpdate());
         Assert.assertNotNull(config.getProxy());
         Assert.assertFalse(config.getProxy().isConfigured());
         Assert.assertEquals(6.0f, config.getNoteTacticalSubstituteAttacker(), 0);
         Assert.assertEquals(5.0f, config.getNoteTacticalSubstituteDefender(), 0);
         Assert.assertEquals(5.0f, config.getNoteTacticalSubstituteMidfielder(), 0);
+
+        Assert.assertEquals(1.2f, config.getEfficiencyCoefficient(Position.A), 0);
+        Assert.assertEquals(1.05f, config.getEfficiencyCoefficient(Position.M), 0);
+        Assert.assertEquals(1.025f, config.getEfficiencyCoefficient(Position.D), 0);
+        Assert.assertEquals(1f, config.getEfficiencyCoefficient(Position.G), 0);
     }
 
     @Test
@@ -47,7 +52,7 @@ public class ConfigTest {
         FileUtils.writeLines(configFile, lines);
 
         Config config = Config.build(configFile.getPath());
-        // No login/password/leagueTest, could be overridden by system properties in real Travis tests
+        // No login/password, could be overridden by system properties in real Travis tests
         Assert.assertEquals(true, config.isTeampUpdate());
         Assert.assertEquals(3.2f, config.getNoteTacticalSubstituteAttacker(), 0);
         Assert.assertEquals(2f, config.getNoteTacticalSubstituteDefender(), 0);

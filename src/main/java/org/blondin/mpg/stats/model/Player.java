@@ -15,6 +15,8 @@ public class Player {
     private String firstName;
     @JsonProperty("n")
     private String lastName;
+    @JsonProperty("p")
+    private Position position;
     @JsonProperty("s")
     private Stats stats;
     @JsonProperty("r")
@@ -44,6 +46,10 @@ public class Player {
 
     public Stats getStats() {
         return stats;
+    }
+
+    public Position getPosition() {
+        return position;
     }
 
     public double getEfficiency() {

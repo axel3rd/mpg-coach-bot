@@ -69,7 +69,7 @@ public class MpgClientTest extends AbstractMockTestClient {
         Dashboard dashboard = mpgClient.getDashboard();
         Assert.assertNotNull(dashboard);
         Assert.assertNotNull(dashboard.getLeagues());
-        Assert.assertEquals(getConfig().getLeagueTest(), dashboard.getLeagues().get(0).getId());
+        Assert.assertEquals("KLGXSSUG", dashboard.getLeagues().get(0).getId());
         Assert.assertEquals("Rock on the grass", dashboard.getLeagues().get(0).getName());
     }
 }

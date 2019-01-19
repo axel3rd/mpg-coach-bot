@@ -10,13 +10,17 @@ password = foobar
 #tactical.substitute.midfielder = 5
 #tactical.substitute.defender = 5
 
+# Efficiency  Coefficient
+#efficiency.coefficient.attacker = 1.2
+#efficiency.coefficient.midfielder = 1.05
+#efficiency.coefficient.defender = 1.025
+#efficiency.coefficient.goalkeeper = 1.0
+
 # Usage behind a company proxy
 #proxy.uri = http://company.proxy.com:80
 #proxy.user  =foo
 #proxy.password = bar
 
 # Enable debug logs
-logs.debug = true
+#logs.debug = true
 
-# One league of previous user, used for test
-leagueTest = KLGXSSUG

@@ -11,7 +11,9 @@ Automate and optimize your [MPG](http://mpg.football/) weekly league actions, us
 
 The efficiency algorithm used to calculate players score is:
 
-    player.matchs / championshipDays * player.average * (1 + player.goals() * 1.2)
+    player.matchs / championshipDays * player.average * (1 + player.goals() * efficiency.coeff)
+
+*With efficiency coeff : Attacker = 1.2 ; Midfielder = 1.05 ; Defender = 1.025 ; Goalkeeper = 1 (Before v1.2, 1.2 for all lines).*
 
 ## Usage
 
@@ -46,6 +48,14 @@ To change default notes for tactical substitutes, use in `mpg.properties` file (
     tactical.substitute.attacker = 6.0
     tactical.substitute.midfielder = 5.0
     tactical.substitute.defender = 5.0
+
+To change default efficiency coefficient for players, use in `mpg.properties` file (since v1.2):
+
+    # Efficiency  Coefficient
+    efficiency.coefficient.attacker = 1.2
+    efficiency.coefficient.midfielder = 1.05
+    efficiency.coefficient.defender = 1.025
+    efficiency.coefficient.goalkeeper = 1.0
 
 To add some debug logs about execution (since v1.2):
 
@@ -97,9 +107,6 @@ Locally on your computer, you can improve end2end tests by providing file `src/t
 ```
 email = firstName.lastName@gmail.com
 password = foobar
-
-# One league of previous user, used for test
-leagueTest=KLGXSSUG
 ```
 
 For release build, use (you will have to fill your GitHub credentials):
