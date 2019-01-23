@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class BonusSelected {
 
     @JsonProperty("type")
+    @JsonInclude(Include.NON_NULL)
     private Integer type;
 
     @JsonProperty("playerid")
