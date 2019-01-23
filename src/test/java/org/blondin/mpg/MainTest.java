@@ -98,6 +98,23 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testProcess2019January() throws Exception {
+        prepareMainLigue1Mocks("KX24XMUG-status-4", "20190123", "20190123", "20190123");
+        stubFor(get("/league/KX24XMUG/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.20190123.json")));
+        stubFor(post("/league/KX24XMUG/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.20190123-Request.json")))
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.post.success.json")));
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
+        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTeampUpdate();
+        Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, config);
+
+    }
+
+    @Test
     public void testProcessWithMockSimple() throws Exception {
         subTestProcessWithMock("KLGXSSUG", "KLGXSSUG-status-4", "20180926", "20181017", "20181017", "20181017");
     }

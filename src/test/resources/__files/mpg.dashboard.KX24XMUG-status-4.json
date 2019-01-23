@@ -1,0 +1,32 @@
+{
+    "data": {
+        "follow": [
+        ],
+        "leagues": [
+            {
+                "id": "KX24XMUG",
+                "admin_mpg_user_id": "mpg_user_1520001",
+                "current_mpg_user": "mpg_user_955966",
+                "name": "Achille Needle",
+                "leagueStatus": 4,
+                "championship": 1,
+                "mode": 2,
+                "teamStatus": 1,
+                "url": "assets/public/img/league/10.jpg",
+                "players": 10
+            },
+            {
+                "id": "KLGXSSUG",
+                "admin_mpg_user_id": "mpg_user_963519",
+                "current_mpg_user": "mpg_user_955966",
+                "name": "Rock on the grass",
+                "leagueStatus": 5,
+                "championship": 1,
+                "mode": 2,
+                "teamStatus": 2,
+                "url": "assets/public/img/league/3.jpg",
+                "players": 8
+            }
+        ]
+    }
+}
