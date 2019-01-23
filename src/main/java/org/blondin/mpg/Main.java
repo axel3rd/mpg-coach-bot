@@ -71,14 +71,14 @@ public class Main {
             // Already managed previously
         case CREATION:
         case UNKNOWN:
-            processMercatoChampionship(league, mpgClient, mpgStatsClient, outPlayersClient);
+            processMercatoChampionship(league, mpgClient, mpgStatsClient, outPlayersClient, config);
             break;
         case MERCATO:
             if (league.getTeamStatus() == 1) {
                 LOG.info("\nMercato turn is closed, come back for the next !\n");
                 return;
             }
-            processMercatoLeague(league, mpgClient, mpgStatsClient, outPlayersClient);
+            processMercatoLeague(league, mpgClient, mpgStatsClient, outPlayersClient, config);
             break;
         case GAMES:
             processGames(league, mpgClient, mpgStatsClient, outPlayersClient, config);
@@ -86,18 +86,19 @@ public class Main {
         }
     }
 
-    static void processMercatoLeague(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient) {
+    static void processMercatoLeague(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient,
+            Config config) {
         LOG.info("\nProposal for your mercato:\n");
         List<Player> players = mpgClient.getMercato(league.getId()).getPlayers();
-        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), false);
+        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false);
         processMercato(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
     }
 
-    static void processMercatoChampionship(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient,
-            InjuredSuspendedClient outPlayersClient) {
+    static void processMercatoChampionship(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient,
+            Config config) {
         LOG.info("\nProposal for your coming soon mercato:\n");
         List<Player> players = mpgClient.getMercato(league.getChampionship()).getPlayers();
-        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), false);
+        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false);
         processMercato(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
     }
 
@@ -142,7 +143,7 @@ public class Main {
             removeOutPlayers(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
 
             // Calculate efficiency and sort
-            calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), true);
+            calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, true);
             Collections.sort(players, Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).reversed());
 
             // Write optimized team
@@ -191,12 +192,12 @@ public class Main {
         LOG.info("");
     }
 
-    private static List<Player> calculateEfficiency(List<Player> players, MpgStatsClient stats, ChampionshipStatsType championship,
+    private static List<Player> calculateEfficiency(List<Player> players, MpgStatsClient stats, ChampionshipStatsType championship, Config config,
             boolean failIfPlayerNotFound) {
         // Calculate efficient in Stats model
         for (org.blondin.mpg.stats.model.Player p : stats.getStats(championship).getPlayers()) {
             double efficiency = p.getStats().getMatchs() / (double) stats.getStats(championship).getDay() * p.getStats().getAverage()
-                    * (1 + p.getStats().getGoals() * 1.2);
+                    * (1 + p.getStats().getGoals() * config.getEfficiencyCoefficient(p.getPosition()));
             // round efficiency to 2 decimals
             p.setEfficiency(Math.round(efficiency * 100) / (double) 100);
         }

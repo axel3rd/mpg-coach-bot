@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.blondin.mpg.Main;
+import org.blondin.mpg.stats.model.Position;
 
 public class Config {
 
@@ -16,11 +17,14 @@ public class Config {
 
     private String login;
     private String password;
-    private String leagueTest;
     private boolean teampUpdate = false;
     private float noteTacticalSubstituteAttacker = 6;
     private float noteTacticalSubstituteMidfielder = 5;
     private float noteTacticalSubstituteDefender = 5;
+    private float efficiencyCoefficientAttacker = 1.2f;
+    private float efficiencyCoefficientMidfielder = 1.05f;
+    private float efficiencyCoefficientDefender = 1.025f;
+    private float efficiencyCoefficientGoalkeeper = 1f;
     private Proxy proxy;
 
     private Config() {
@@ -43,9 +47,9 @@ public class Config {
         }
         configMain(config, properties, fileConfig);
         configNoteTacticalSubstitute(config, properties);
+        configEfficiencyCoefficient(config, properties);
         configProxy(config, properties);
         configLogs(properties);
-        configTest(config, properties);
         return config;
     }
 
@@ -85,14 +89,40 @@ public class Config {
         }
     }
 
+    private static void configEfficiencyCoefficient(Config config, Properties properties) {
+        // Attacker
+        String attacker = StringUtils.defaultIfBlank(properties.getProperty("efficiency.coefficient.attacker"),
+                System.getenv("MPG_EFFICIENCY_COEFFICIENT_ATTACKER"));
+        if (StringUtils.isNotBlank(attacker)) {
+            config.efficiencyCoefficientAttacker = Float.parseFloat(attacker);
+        }
+
+        // Midfielder
+        String midfielder = StringUtils.defaultIfBlank(properties.getProperty("efficiency.coefficient.midfielder"),
+                System.getenv("MPG_EFFICIENCY_COEFFICIENT_MIDFIELDER"));
+        if (StringUtils.isNotBlank(midfielder)) {
+            config.efficiencyCoefficientMidfielder = Float.parseFloat(midfielder);
+        }
+
+        // Defender
+        String defender = StringUtils.defaultIfBlank(properties.getProperty("efficiency.coefficient.defender"),
+                System.getenv("MPG_EFFICIENCY_COEFFICIENT_DEFENDER"));
+        if (StringUtils.isNotBlank(defender)) {
+            config.efficiencyCoefficientDefender = Float.parseFloat(defender);
+        }
+
+        // Goalkeeper
+        String goalkeeper = StringUtils.defaultIfBlank(properties.getProperty("efficiency.coefficient.goalkeeper"),
+                System.getenv("MPG_EFFICIENCY_COEFFICIENT_GOALKEEPER"));
+        if (StringUtils.isNotBlank(goalkeeper)) {
+            config.efficiencyCoefficientGoalkeeper = Float.parseFloat(goalkeeper);
+        }
+    }
+
     private static void configLogs(Properties properties) {
         if ("true".equals(StringUtils.defaultIfBlank(properties.getProperty("logs.debug"), System.getenv("MPG_LOGS_DEBUG")))) {
             Logger.getLogger(Main.class.getPackage().getName()).setLevel(Level.DEBUG);
         }
-    }
-
-    private static void configTest(Config config, Properties properties) {
-        config.leagueTest = StringUtils.defaultIfBlank(properties.getProperty("leagueTest"), System.getenv("MPG_LEAGUE_TEST"));
     }
 
     private static void configProxy(Config config, Properties properties) {
@@ -126,11 +156,23 @@ public class Config {
         return noteTacticalSubstituteDefender;
     }
 
+    public float getEfficiencyCoefficient(Position position) {
+        switch (position) {
+        case A:
+            return efficiencyCoefficientAttacker;
+        case M:
+            return efficiencyCoefficientMidfielder;
+        case D:
+            return efficiencyCoefficientDefender;
+        case G:
+            return efficiencyCoefficientGoalkeeper;
+        default:
+            throw new UnsupportedOperationException(String.format("Position not supported: %s", position));
+        }
+    }
+
     public Proxy getProxy() {
         return proxy;
     }
 
-    public String getLeagueTest() {
-        return leagueTest;
-    }
 }
