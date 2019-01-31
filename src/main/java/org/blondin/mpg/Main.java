@@ -112,7 +112,8 @@ public class Main {
         AsciiTable at = getTable("P", "Player name", "Q.", "Eff.", "Out info");
         for (List<Player> line : Arrays.asList(goals, defenders, midfielders, attackers)) {
             for (Player player : line) {
-                org.blondin.mpg.equipeactu.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(), OutType.INJURY_GREEN);
+                org.blondin.mpg.equipeactu.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
+                        PositionWrapper.toOut(player.getPosition()), OutType.INJURY_GREEN);
                 String outInfos = "";
                 if (outPlayer != null) {
                     outInfos = String.format("%s - %s - %s", outPlayer.getOutType(), outPlayer.getDescription(), outPlayer.getLength());
@@ -162,7 +163,8 @@ public class Main {
     static List<Player> removeOutPlayers(List<Player> players, InjuredSuspendedClient outPlayersClient, ChampionshipOutType championship) {
         List<Player> outPlayers = new ArrayList<>();
         for (Player player : players) {
-            org.blondin.mpg.equipeactu.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(), OutType.INJURY_GREEN);
+            org.blondin.mpg.equipeactu.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
+                    PositionWrapper.toOut(player.getPosition()), OutType.INJURY_GREEN);
             if (outPlayer != null) {
                 outPlayers.add(player);
                 LOG.info("Out: {} - {} - {} - {}", player.getName(), outPlayer.getOutType(), outPlayer.getDescription(), outPlayer.getLength());

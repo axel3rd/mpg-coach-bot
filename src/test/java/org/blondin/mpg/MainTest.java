@@ -205,7 +205,9 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     private void subTestProcessUpdateWithMocks(String coachFileWithoutJsonExtension) throws Exception {
-        Config config = prepareProcessUpdateWithMock();
+        prepareMainLigue1Mocks("KLGXSSUG-status-4", "20181114", "20181114", "20181114");
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTeampUpdate();
         stubFor(get("/league/KLGXSSUG/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile(coachFileWithoutJsonExtension + ".json")));
         stubFor(post("/league/KLGXSSUG/coach").withRequestBody(equalToJson(getTestFileToString(coachFileWithoutJsonExtension + "-Request.json")))
@@ -215,13 +217,6 @@ public class MainTest extends AbstractMockTestClient {
         InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
                 "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, config);
-    }
-
-    private static Config prepareProcessUpdateWithMock() {
-        prepareMainLigue1Mocks("KLGXSSUG-status-4", "20181114", "20181114", "20181114");
-        Config config = spy(getConfig());
-        doReturn(true).when(config).isTeampUpdate();
-        return config;
     }
 
     private static void prepareMainLigue1Mocks(String fileRootDashboard, String fileStatsLeagues, String dataFileStats, String dataFileEquipeActu) {
