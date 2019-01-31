@@ -12,6 +12,7 @@ import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.equipeactu.model.OutType;
 import org.blondin.mpg.equipeactu.model.Player;
+import org.blondin.mpg.equipeactu.model.Position;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -39,11 +40,12 @@ public class InjuredSuspendedClient extends AbstractClient {
      * 
      * @param championship Championship of player
      * @param name Name
+     * @param position Position
      * @return Player or null if not found
      */
-    public Player getPlayer(ChampionshipOutType championship, String name) {
+    public Player getPlayer(ChampionshipOutType championship, String name, Position position) {
         OutType[] excludes = null;
-        return getPlayer(championship, name, excludes);
+        return getPlayer(championship, name, position, excludes);
     }
 
     /**
@@ -51,16 +53,20 @@ public class InjuredSuspendedClient extends AbstractClient {
      * 
      * @param championship Championship of player
      * @param name Name
+     * @param position Position
      * @param excludes {@link OutType} to exclude
      * @return Player or null if not found
      */
-    public Player getPlayer(ChampionshipOutType championship, String name, OutType... excludes) {
+    public Player getPlayer(ChampionshipOutType championship, String name, Position position, OutType... excludes) {
         List<OutType> excluded = Arrays.asList(ObjectUtils.defaultIfNull(excludes, new OutType[] {}));
 
         for (Player player : getPlayers(championship)) {
             if (!excluded.contains(player.getOutType())
                     && Stream.of(name.toLowerCase().split(" ")).allMatch(player.getFullNameWithPosition().toLowerCase()::contains)) {
-                return player;
+                Position pos = player.getPosition();
+                if (Position.UNDEFINED.equals(pos) || Position.UNDEFINED.equals(position) || position.equals(pos)) {
+                    return player;
+                }
             }
         }
         return null;

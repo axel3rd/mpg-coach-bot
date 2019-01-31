@@ -11,6 +11,13 @@ public class Player {
         return fullNameWithPosition;
     }
 
+    public Position getPosition() {
+        if (getFullNameWithPosition().matches(".* \\([A-Z]{2}\\)")) {
+            return Position.getNameByValue(getFullNameWithPosition().substring(getFullNameWithPosition().lastIndexOf('(')));
+        }
+        return Position.UNDEFINED;
+    }
+
     public void setFullNameWithPosition(String name) {
         this.fullNameWithPosition = name;
     }
