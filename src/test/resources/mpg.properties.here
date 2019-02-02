@@ -5,12 +5,18 @@ password = foobar
 # Enable auto-update team ('false' by default)
 #team.update = true
 
-# Default notes for tactical substitues
+# Default notes for tactical substitutes
 #tactical.substitute.attacker = 6
 #tactical.substitute.midfielder = 5
 #tactical.substitute.defender = 5
 
-# Efficiency  Coefficient
+# Notes for proposal of selling players
+#efficiency.sell.attacker = 3.0
+#efficiency.sell.midfielder= 3.0
+#efficiency.sell.defender = 3.0
+#efficiency.sell.goalkeeper = 3.0
+
+# Efficiency coefficient
 #efficiency.coefficient.attacker = 1.2
 #efficiency.coefficient.midfielder = 1.05
 #efficiency.coefficient.defender = 1.025

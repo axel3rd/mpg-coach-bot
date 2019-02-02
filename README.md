@@ -49,9 +49,17 @@ To change default notes for tactical substitutes, use in `mpg.properties` file (
     tactical.substitute.midfielder = 5.0
     tactical.substitute.defender = 5.0
 
+To change default notes for proposal of selling players, use in `mpg.properties` file (since v1.2):
+
+    # Notes for proposal of selling players
+    efficiency.sell.attacker = 3.0
+    efficiency.sell.midfielder= 3.0
+    efficiency.sell.defender = 3.0
+    efficiency.sell.goalkeeper = 3.0
+
 To change default efficiency coefficient for players, use in `mpg.properties` file (since v1.2):
 
-    # Efficiency  Coefficient
+    # Efficiency coefficient
     efficiency.coefficient.attacker = 1.2
     efficiency.coefficient.midfielder = 1.05
     efficiency.coefficient.defender = 1.025

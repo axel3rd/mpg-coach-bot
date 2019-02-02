@@ -25,6 +25,10 @@ public class Config {
     private float efficiencyCoefficientMidfielder = 1.05f;
     private float efficiencyCoefficientDefender = 1.025f;
     private float efficiencyCoefficientGoalkeeper = 1f;
+    private float efficiencySellAttacker = 3f;
+    private float efficiencySellMidfielder = 3f;
+    private float efficiencySellDefender = 3f;
+    private float efficiencySellGoalkeeper = 3f;
     private Proxy proxy;
 
     private Config() {
@@ -48,6 +52,7 @@ public class Config {
         configMain(config, properties, fileConfig);
         configNoteTacticalSubstitute(config, properties);
         configEfficiencyCoefficient(config, properties);
+        configEfficiencySell(config, properties);
         configProxy(config, properties);
         configLogs(properties);
         return config;
@@ -66,57 +71,32 @@ public class Config {
         }
     }
 
+    private static float parseFloat(Properties properties, String key, float valueIfNotDefined) {
+        String value = StringUtils.defaultIfBlank(properties.getProperty(key), System.getenv("MPG_" + key.toUpperCase().replaceAll("\\.", "_")));
+        if (StringUtils.isNotBlank(value)) {
+            return Float.parseFloat(value);
+        }
+        return valueIfNotDefined;
+    }
+
     private static void configNoteTacticalSubstitute(Config config, Properties properties) {
-        // Attacker
-        String attacker = StringUtils.defaultIfBlank(properties.getProperty("tactical.substitute.attacker"),
-                System.getenv("MPG_TACTICAL_SUBSTITUTE_ATTACKER"));
-        if (StringUtils.isNotBlank(attacker)) {
-            config.noteTacticalSubstituteAttacker = Float.parseFloat(attacker);
-        }
-
-        // Midfielder
-        String midfielder = StringUtils.defaultIfBlank(properties.getProperty("tactical.substitute.midfielder"),
-                System.getenv("MPG_TACTICAL_SUBSTITUTE_MIDFIELDER"));
-        if (StringUtils.isNotBlank(midfielder)) {
-            config.noteTacticalSubstituteMidfielder = Float.parseFloat(midfielder);
-        }
-
-        // Defender
-        String defender = StringUtils.defaultIfBlank(properties.getProperty("tactical.substitute.defender"),
-                System.getenv("MPG_TACTICAL_SUBSTITUTE_DEFENDER"));
-        if (StringUtils.isNotBlank(defender)) {
-            config.noteTacticalSubstituteDefender = Float.parseFloat(defender);
-        }
+        config.noteTacticalSubstituteAttacker = parseFloat(properties, "tactical.substitute.attacker", config.noteTacticalSubstituteAttacker);
+        config.noteTacticalSubstituteMidfielder = parseFloat(properties, "tactical.substitute.midfielder", config.noteTacticalSubstituteMidfielder);
+        config.noteTacticalSubstituteDefender = parseFloat(properties, "tactical.substitute.defender", config.noteTacticalSubstituteDefender);
     }
 
     private static void configEfficiencyCoefficient(Config config, Properties properties) {
-        // Attacker
-        String attacker = StringUtils.defaultIfBlank(properties.getProperty("efficiency.coefficient.attacker"),
-                System.getenv("MPG_EFFICIENCY_COEFFICIENT_ATTACKER"));
-        if (StringUtils.isNotBlank(attacker)) {
-            config.efficiencyCoefficientAttacker = Float.parseFloat(attacker);
-        }
+        config.efficiencyCoefficientAttacker = parseFloat(properties, "efficiency.coefficient.attacker", config.efficiencyCoefficientAttacker);
+        config.efficiencyCoefficientMidfielder = parseFloat(properties, "efficiency.coefficient.midfielder", config.efficiencyCoefficientMidfielder);
+        config.efficiencyCoefficientDefender = parseFloat(properties, "efficiency.coefficient.defender", config.efficiencyCoefficientDefender);
+        config.efficiencyCoefficientGoalkeeper = parseFloat(properties, "efficiency.coefficient.goalkeeper", config.efficiencyCoefficientGoalkeeper);
+    }
 
-        // Midfielder
-        String midfielder = StringUtils.defaultIfBlank(properties.getProperty("efficiency.coefficient.midfielder"),
-                System.getenv("MPG_EFFICIENCY_COEFFICIENT_MIDFIELDER"));
-        if (StringUtils.isNotBlank(midfielder)) {
-            config.efficiencyCoefficientMidfielder = Float.parseFloat(midfielder);
-        }
-
-        // Defender
-        String defender = StringUtils.defaultIfBlank(properties.getProperty("efficiency.coefficient.defender"),
-                System.getenv("MPG_EFFICIENCY_COEFFICIENT_DEFENDER"));
-        if (StringUtils.isNotBlank(defender)) {
-            config.efficiencyCoefficientDefender = Float.parseFloat(defender);
-        }
-
-        // Goalkeeper
-        String goalkeeper = StringUtils.defaultIfBlank(properties.getProperty("efficiency.coefficient.goalkeeper"),
-                System.getenv("MPG_EFFICIENCY_COEFFICIENT_GOALKEEPER"));
-        if (StringUtils.isNotBlank(goalkeeper)) {
-            config.efficiencyCoefficientGoalkeeper = Float.parseFloat(goalkeeper);
-        }
+    private static void configEfficiencySell(Config config, Properties properties) {
+        config.efficiencySellAttacker = parseFloat(properties, "efficiency.sell.attacker", config.efficiencySellAttacker);
+        config.efficiencySellMidfielder = parseFloat(properties, "efficiency.sell.midfielder", config.efficiencySellMidfielder);
+        config.efficiencySellDefender = parseFloat(properties, "efficiency.sell.defender", config.efficiencySellDefender);
+        config.efficiencySellGoalkeeper = parseFloat(properties, "efficiency.sell.goalkeeper", config.efficiencySellGoalkeeper);
     }
 
     private static void configLogs(Properties properties) {
@@ -166,6 +146,21 @@ public class Config {
             return efficiencyCoefficientDefender;
         case G:
             return efficiencyCoefficientGoalkeeper;
+        default:
+            throw new UnsupportedOperationException(String.format("Position not supported: %s", position));
+        }
+    }
+
+    public float getEfficiencySell(Position position) {
+        switch (position) {
+        case A:
+            return efficiencySellAttacker;
+        case M:
+            return efficiencySellMidfielder;
+        case D:
+            return efficiencySellDefender;
+        case G:
+            return efficiencySellGoalkeeper;
         default:
             throw new UnsupportedOperationException(String.format("Position not supported: %s", position));
         }
