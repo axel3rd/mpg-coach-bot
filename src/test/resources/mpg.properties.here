@@ -10,6 +10,9 @@ password = foobar
 #tactical.substitute.midfielder = 5
 #tactical.substitute.defender = 5
 
+# Enable sell/buy players proposal
+# transactions.proposal = true
+
 # Notes for proposal of selling players
 #efficiency.sell.attacker = 3.0
 #efficiency.sell.midfielder= 3.0

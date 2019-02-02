@@ -25,6 +25,7 @@ public class Config {
     private float efficiencyCoefficientMidfielder = 1.05f;
     private float efficiencyCoefficientDefender = 1.025f;
     private float efficiencyCoefficientGoalkeeper = 1f;
+    private boolean transactionsProposal = true;
     private float efficiencySellAttacker = 3f;
     private float efficiencySellMidfielder = 3f;
     private float efficiencySellDefender = 3f;
@@ -58,25 +59,35 @@ public class Config {
         return config;
     }
 
-    private static void configMain(Config config, Properties properties, File fileConfig) {
-        config.login = StringUtils.defaultIfBlank(properties.getProperty("email"), System.getenv("MPG_EMAIL"));
-        config.password = StringUtils.defaultIfBlank(properties.getProperty("password"), System.getenv("MPG_PASSWORD"));
-        if (StringUtils.isBlank(config.login) || StringUtils.isBlank(config.password)) {
-            throw new UnsupportedOperationException(
-                    String.format("Login and/or password can't be retrieved from file '%s' of environement variables", fileConfig.getName()));
-        }
-        String teamUpdateStr = StringUtils.defaultIfBlank(properties.getProperty("team.update"), System.getenv("MPG_TEAM_UPDATE"));
-        if (StringUtils.isNotBlank(teamUpdateStr)) {
-            config.teampUpdate = Boolean.parseBoolean(teamUpdateStr);
-        }
+    private static String parseString(Properties properties, String key) {
+        return StringUtils.defaultIfBlank(properties.getProperty(key), System.getenv("MPG_" + key.toUpperCase().replaceAll("\\.", "_")));
     }
 
     private static float parseFloat(Properties properties, String key, float valueIfNotDefined) {
-        String value = StringUtils.defaultIfBlank(properties.getProperty(key), System.getenv("MPG_" + key.toUpperCase().replaceAll("\\.", "_")));
+        String value = parseString(properties, key);
         if (StringUtils.isNotBlank(value)) {
             return Float.parseFloat(value);
         }
         return valueIfNotDefined;
+    }
+
+    private static boolean parseBoolean(Properties properties, String key, boolean valueIfNotDefined) {
+        String value = parseString(properties, key);
+        if (StringUtils.isNotBlank(value)) {
+            return Boolean.parseBoolean(value);
+        }
+        return valueIfNotDefined;
+    }
+
+    private static void configMain(Config config, Properties properties, File fileConfig) {
+        config.login = parseString(properties, "email");
+        config.password = parseString(properties, "password");
+        if (StringUtils.isBlank(config.login) || StringUtils.isBlank(config.password)) {
+            throw new UnsupportedOperationException(
+                    String.format("Login and/or password can't be retrieved from file '%s' of environement variables", fileConfig.getName()));
+        }
+        config.teampUpdate = parseBoolean(properties, "team.update", config.teampUpdate);
+        config.transactionsProposal = parseBoolean(properties, "transactions.proposal", config.transactionsProposal);
     }
 
     private static void configNoteTacticalSubstitute(Config config, Properties properties) {
@@ -100,15 +111,15 @@ public class Config {
     }
 
     private static void configLogs(Properties properties) {
-        if ("true".equals(StringUtils.defaultIfBlank(properties.getProperty("logs.debug"), System.getenv("MPG_LOGS_DEBUG")))) {
+        if (parseBoolean(properties, "logs.debug", false)) {
             Logger.getLogger(Main.class.getPackage().getName()).setLevel(Level.DEBUG);
         }
     }
 
     private static void configProxy(Config config, Properties properties) {
-        String uri = StringUtils.defaultIfBlank(properties.getProperty("proxy.uri"), System.getenv("MPG_PROXY_URI"));
-        String user = StringUtils.defaultIfBlank(properties.getProperty("proxy.user"), System.getenv("MPG_PROXY_USER"));
-        String password = StringUtils.defaultIfBlank(properties.getProperty("proxy.password"), System.getenv("MPG_PROXY_PASSWORD"));
+        String uri = parseString(properties, "proxy.uri");
+        String user = parseString(properties, "proxy.user");
+        String password = parseString(properties, "proxy.password");
         config.proxy = new Proxy(uri, user, password);
     }
 
@@ -122,6 +133,10 @@ public class Config {
 
     public boolean isTeampUpdate() {
         return teampUpdate;
+    }
+
+    public boolean isTransactionsProposal() {
+        return transactionsProposal;
     }
 
     public float getNoteTacticalSubstituteAttacker() {

@@ -69,6 +69,19 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testSellBuy() throws Exception {
+        prepareMainLigue1Mocks("KX24XMUG-status-4", "20190202", "20190202", "20190202");
+        stubFor(get("/league/KX24XMUG/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.20190202.json")));
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
+        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, getConfig());
+
+    }
+
+    @Test
     public void testProcessWithLocalMapping() throws Exception {
         // Mock initialization
         MpgClient mpgClient = mock(MpgClient.class);
