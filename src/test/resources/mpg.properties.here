@@ -10,8 +10,8 @@ password = foobar
 #tactical.substitute.midfielder = 5
 #tactical.substitute.defender = 5
 
-# Enable sell/buy players proposal
-# transactions.proposal = true
+# Enable sell/buy players proposal (Main mocks doesn't have transfer/buy configured)
+transactions.proposal = false
 
 # Notes for proposal of selling players
 #efficiency.sell.attacker = 3.0

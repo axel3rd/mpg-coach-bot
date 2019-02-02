@@ -23,6 +23,7 @@ import org.blondin.mpg.root.model.LeagueStatus;
 import org.blondin.mpg.root.model.Player;
 import org.blondin.mpg.root.model.Position;
 import org.blondin.mpg.root.model.TacticalSubstitute;
+import org.blondin.mpg.root.model.TransferBuy;
 import org.blondin.mpg.stats.ChampionshipStatsType;
 import org.blondin.mpg.stats.MpgStatsClient;
 import org.slf4j.Logger;
@@ -140,8 +141,9 @@ public class Main {
             Coach coach = mpgClient.getCoach(league.getId());
             List<Player> players = coach.getPlayers();
 
-            // Calculate efficiency (should be in injured played display)
+            // Calculate efficiency (notes should be in injured players display), and save for transactions proposal
             calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, true);
+            List<Player> playersTeam = players.stream().collect(Collectors.toList());
 
             // Remove out players (and write them)
             removeOutPlayers(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
@@ -157,9 +159,22 @@ public class Main {
                 LOG.info("Updating team ...\n");
                 mpgClient.updateCoach(league, getCoachRequest(coach, players, config));
             }
+
+            if (config.isTransactionsProposal()) {
+                LOG.info("Transaction proposal ...");
+                TransferBuy transferBuy = mpgClient.getTransferBuy(league.getId());
+                List<Player> playersAvailable = transferBuy.getAvailablePlayers();
+                calculateEfficiency(playersAvailable, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, true);
+                writeTransactionsProposal(playersTeam, playersAvailable, transferBuy.getBudget());
+            }
         } catch (NoMoreGamesException e) {
             LOG.info("\nNo more games in this league ...\n");
         }
+    }
+
+    private static void writeTransactionsProposal(List<Player> playersTeam, List<Player> playersAvailable, int budget) {
+        LOG.error("Not Yet Implemented");
+        LOG.info("\n");
     }
 
     static List<Player> removeOutPlayers(List<Player> players, InjuredSuspendedClient outPlayersClient, ChampionshipOutType championship) {
