@@ -140,11 +140,13 @@ public class Main {
             Coach coach = mpgClient.getCoach(league.getId());
             List<Player> players = coach.getPlayers();
 
+            // Calculate efficiency (should be in injured played display)
+            calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, true);
+
             // Remove out players (and write them)
             removeOutPlayers(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
 
-            // Calculate efficiency and sort
-            calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, true);
+            // Sort by efficiency
             Collections.sort(players, Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).reversed());
 
             // Write optimized team
@@ -167,7 +169,9 @@ public class Main {
                     PositionWrapper.toOut(player.getPosition()), OutType.INJURY_GREEN);
             if (outPlayer != null) {
                 outPlayers.add(player);
-                LOG.info("Out: {} - {} - {} - {}", player.getName(), outPlayer.getOutType(), outPlayer.getDescription(), outPlayer.getLength());
+                String eff = FORMAT_DECIMAL_DOUBLE.format(player.getEfficiency());
+                LOG.info("Out: {} ({} - {}) - {} - {} - {}", player.getName(), player.getPosition(), eff, outPlayer.getOutType(),
+                        outPlayer.getDescription(), outPlayer.getLength());
             }
         }
         players.removeAll(outPlayers);
