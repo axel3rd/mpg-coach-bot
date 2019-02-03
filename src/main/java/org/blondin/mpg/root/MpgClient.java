@@ -19,6 +19,7 @@ import org.blondin.mpg.root.model.League;
 import org.blondin.mpg.root.model.Mercato;
 import org.blondin.mpg.root.model.MercatoChampionship;
 import org.blondin.mpg.root.model.MercatoLeague;
+import org.blondin.mpg.root.model.TransferBuy;
 import org.blondin.mpg.root.model.UserSignIn;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -75,6 +76,10 @@ public class MpgClient extends AbstractClient {
 
     public Mercato getMercato(String league) {
         return get(PATH_LEAGUE + league + "/mercato", headersToken, MercatoLeague.class);
+    }
+
+    public TransferBuy getTransferBuy(String league) {
+        return get(PATH_LEAGUE + league + "/transfer/buy", headersToken, TransferBuy.class);
     }
 
     private void signIn(String login, String password) {

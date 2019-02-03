@@ -22,4 +22,19 @@ public class PositionWrapper {
             throw new UnsupportedOperationException(String.format("Position not supported: %s", position));
         }
     }
+
+    public static Position fromStats(org.blondin.mpg.stats.model.Position position) {
+        switch (position) {
+        case A:
+            return Position.A;
+        case M:
+            return Position.M;
+        case D:
+            return Position.D;
+        case G:
+            return Position.G;
+        default:
+            throw new UnsupportedOperationException(String.format("Position not supported: %s", position));
+        }
+    }
 }

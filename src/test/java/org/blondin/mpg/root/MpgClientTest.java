@@ -10,6 +10,7 @@ import org.blondin.mpg.AbstractMockTestClient;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.Dashboard;
 import org.blondin.mpg.root.model.Player;
+import org.blondin.mpg.root.model.TransferBuy;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -71,5 +72,17 @@ public class MpgClientTest extends AbstractMockTestClient {
         Assert.assertNotNull(dashboard.getLeagues());
         Assert.assertEquals("KLGXSSUG", dashboard.getLeagues().get(0).getId());
         Assert.assertEquals("Rock on the grass", dashboard.getLeagues().get(0).getName());
+    }
+
+    @Test
+    public void testMockTransferBuy() throws Exception {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/league/KX24XMUG/transfer/buy")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.transfer.buy.20190202.json")));
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        TransferBuy tb = mpgClient.getTransferBuy("KX24XMUG");
+        Assert.assertEquals(1, tb.getBudget());
+        Assert.assertTrue(tb.getAvailablePlayers().size() > 10);
     }
 }

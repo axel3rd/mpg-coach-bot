@@ -16,6 +16,7 @@ public class Player {
     private String lastName;
     private Position position;
     private int quotation;
+    private int teamId;
 
     private double efficiency;
 
@@ -41,6 +42,10 @@ public class Player {
 
     public int getQuotation() {
         return quotation;
+    }
+
+    public int getTeamId() {
+        return teamId;
     }
 
     public double getEfficiency() {

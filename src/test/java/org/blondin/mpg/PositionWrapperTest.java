@@ -18,4 +18,12 @@ public class PositionWrapperTest {
         Assert.assertEquals(org.blondin.mpg.equipeactu.model.Position.D, PositionWrapper.toOut(Position.D));
         Assert.assertEquals(org.blondin.mpg.equipeactu.model.Position.G, PositionWrapper.toOut(Position.G));
     }
+
+    @Test
+    public void testFromStats() {
+        Assert.assertEquals(Position.A, PositionWrapper.fromStats(org.blondin.mpg.stats.model.Position.A));
+        Assert.assertEquals(Position.M, PositionWrapper.fromStats(org.blondin.mpg.stats.model.Position.M));
+        Assert.assertEquals(Position.D, PositionWrapper.fromStats(org.blondin.mpg.stats.model.Position.D));
+        Assert.assertEquals(Position.G, PositionWrapper.fromStats(org.blondin.mpg.stats.model.Position.G));
+    }
 }
