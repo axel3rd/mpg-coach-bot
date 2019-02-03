@@ -38,6 +38,11 @@ import de.vandermeer.skb.interfaces.transformers.textformat.TextAlignment;
 
 public class Main {
 
+    private static final String TABLE_POSITION = "P";
+    private static final String TABLE_PLAYER_NAME = "Player name";
+    private static final String TABLE_QUOTE = "Q.";
+    private static final String TABLE_EFFICIENCY = "Eff.";
+
     private static final DecimalFormat FORMAT_DECIMAL_DOUBLE = new DecimalFormat("0.00");
 
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
@@ -110,7 +115,7 @@ public class Main {
         List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList()).subList(0, 10);
         List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList()).subList(0, 10);
 
-        AsciiTable at = getTable("P", "Player name", "Q.", "Eff.", "Out info");
+        AsciiTable at = getTable(TABLE_POSITION, TABLE_PLAYER_NAME, TABLE_EFFICIENCY, TABLE_QUOTE, "Out info");
         for (List<Player> line : Arrays.asList(goals, defenders, midfielders, attackers)) {
             for (Player player : line) {
                 org.blondin.mpg.equipeactu.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
@@ -119,8 +124,8 @@ public class Main {
                 if (outPlayer != null) {
                     outInfos = String.format("%s - %s - %s", outPlayer.getOutType(), outPlayer.getDescription(), outPlayer.getLength());
                 }
-                AT_Row row = at.addRow(player.getPosition(), player.getName(), player.getQuotation(),
-                        FORMAT_DECIMAL_DOUBLE.format(player.getEfficiency()), outInfos);
+                AT_Row row = at.addRow(player.getPosition(), player.getName(), FORMAT_DECIMAL_DOUBLE.format(player.getEfficiency()),
+                        player.getQuotation(), outInfos);
                 setTableFormatRowPaddingSpace(row);
                 row.getCells().get(2).getContext().setTextAlignment(TextAlignment.RIGHT);
                 row.getCells().get(3).getContext().setTextAlignment(TextAlignment.RIGHT);
@@ -189,7 +194,7 @@ public class Main {
         int cash = budget;
         if (!players2Sell.isEmpty()) {
             LOG.info("Players to sell (initial cash: {}):", budget);
-            AsciiTable at = getTable("P", "Player name", "Eff.", "Quote");
+            AsciiTable at = getTable(TABLE_POSITION, TABLE_PLAYER_NAME, TABLE_EFFICIENCY, TABLE_QUOTE);
             for (Player player : players2Sell) {
                 cash += player.getQuotation();
                 AT_Row row = at.addRow(player.getPosition(), player.getName(), FORMAT_DECIMAL_DOUBLE.format(player.getEfficiency()),
@@ -229,7 +234,7 @@ public class Main {
 
         if (!players2buy.isEmpty()) {
             LOG.info("Player(s) to buy (3 best choice by line):");
-            AsciiTable at = getTable("P", "Player name", "Eff.", "Price");
+            AsciiTable at = getTable(TABLE_POSITION, TABLE_PLAYER_NAME, TABLE_EFFICIENCY, TABLE_QUOTE);
             for (Player player : players2buy) {
                 org.blondin.mpg.equipeactu.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
                         PositionWrapper.toOut(player.getPosition()), OutType.INJURY_GREEN);
@@ -268,7 +273,7 @@ public class Main {
 
     private static void writeTeamOptimized(List<Player> players) {
         LOG.info("\nOptimized team:");
-        AsciiTable at = getTable("P", "Player name", "Eff.", "Quote");
+        AsciiTable at = getTable(TABLE_POSITION, TABLE_PLAYER_NAME, TABLE_EFFICIENCY, TABLE_QUOTE);
         Position lp = Position.G;
         for (Player player : players) {
             // Write position separator
