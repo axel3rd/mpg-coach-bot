@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.blondin.mpg.Main;
-import org.blondin.mpg.stats.model.Position;
+import org.blondin.mpg.root.model.Position;
 
 public class Config {
 

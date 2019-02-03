@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.blondin.mpg.stats.model.Position;
+import org.blondin.mpg.root.model.Position;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
