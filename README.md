@@ -42,18 +42,18 @@ If you are using this program the Friday @work, you can have to configure the co
     proxy.user = foo
     proxy.password = bar
 
-To enable/disable and change default notes for tactical substitutes, use in `mpg.properties` file (since v1.1):
+To change default notes for tactical substitutes, use in `mpg.properties` file (since v1.1):
 
-    # Enable sell/buy players proposal
-    transactions.proposal = true
-    
     # Notes for tactical substitutes
     tactical.substitute.attacker = 6.0
     tactical.substitute.midfielder = 5.0
     tactical.substitute.defender = 5.0
 
-To change default notes for proposal of selling players, use in `mpg.properties` file (since v1.2):
+To enable/disable and change default notes for proposal of selling players, use in `mpg.properties` file (since v1.2):
 
+    # Enable sell/buy players proposal
+    transactions.proposal = true
+    
     # Notes for proposal of selling players
     efficiency.sell.attacker = 3.0
     efficiency.sell.midfielder= 3.0
