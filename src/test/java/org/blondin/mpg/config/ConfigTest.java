@@ -33,7 +33,7 @@ public class ConfigTest {
         Assert.assertEquals(5.0f, config.getNoteTacticalSubstituteMidfielder(), 0);
 
         // For unit tests, transactions proposal is not enable by default
-        Assert.assertEquals(true, config.isTransactionsProposal());
+        Assert.assertEquals(false, config.isTransactionsProposal());
 
         Assert.assertEquals(3f, config.getEfficiencySell(Position.A), 0);
         Assert.assertEquals(3f, config.getEfficiencySell(Position.M), 0);
