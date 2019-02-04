@@ -169,7 +169,7 @@ public class Main {
                 LOG.info("\nTransactions proposal ...");
                 TransferBuy transferBuy = mpgClient.getTransferBuy(league.getId());
                 List<Player> playersAvailable = transferBuy.getAvailablePlayers();
-                calculateEfficiency(playersAvailable, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, true);
+                calculateEfficiency(playersAvailable, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false);
                 writeTransactionsProposal(playersTeam, playersAvailable, transferBuy.getBudget(), outPlayersClient,
                         ChampionshipTypeWrapper.toOut(league.getChampionship()), config);
             }
