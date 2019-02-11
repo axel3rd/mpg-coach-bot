@@ -18,6 +18,7 @@ public class Config {
     private String login;
     private String password;
     private boolean teampUpdate = false;
+    private boolean tacticalSubstitutesUpdate = true;
     private float noteTacticalSubstituteAttacker = 6;
     private float noteTacticalSubstituteMidfielder = 5;
     private float noteTacticalSubstituteDefender = 5;
@@ -91,6 +92,7 @@ public class Config {
     }
 
     private static void configNoteTacticalSubstitute(Config config, Properties properties) {
+        config.tacticalSubstitutesUpdate = parseBoolean(properties, "tactical.substitutes", config.tacticalSubstitutesUpdate);
         config.noteTacticalSubstituteAttacker = parseFloat(properties, "tactical.substitute.attacker", config.noteTacticalSubstituteAttacker);
         config.noteTacticalSubstituteMidfielder = parseFloat(properties, "tactical.substitute.midfielder", config.noteTacticalSubstituteMidfielder);
         config.noteTacticalSubstituteDefender = parseFloat(properties, "tactical.substitute.defender", config.noteTacticalSubstituteDefender);
@@ -137,6 +139,10 @@ public class Config {
 
     public boolean isTransactionsProposal() {
         return transactionsProposal;
+    }
+
+    public boolean isTacticalSubstitutes() {
+        return tacticalSubstitutesUpdate;
     }
 
     public float getNoteTacticalSubstituteAttacker() {
