@@ -82,7 +82,7 @@ public class MainTest extends AbstractMockTestClient {
         Config config = spy(getConfig());
         doReturn(true).when(config).isTransactionsProposal();
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, config);
-
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Achille Needle"));
     }
 
     @Test

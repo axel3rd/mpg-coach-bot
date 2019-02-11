@@ -5,6 +5,7 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 import java.io.File;
 
 import org.blondin.mpg.config.Config;
+import org.blondin.mpg.test.io.ConsoleTestAppender;
 import org.junit.Before;
 import org.junit.Rule;
 
@@ -23,6 +24,10 @@ public abstract class AbstractMockTestClient {
         for (File file : new File(System.getProperty("java.io.tmpdir")).listFiles((d, name) -> name.startsWith("mpg-coach-bot-httplocalhost"))) {
             file.delete();
         }
+
+        // Check log config and reset log test
+        ConsoleTestAppender.checkLogBinding();
+        ConsoleTestAppender.logTestReset();
     }
 
     protected final static Config getConfig() {
@@ -31,5 +36,23 @@ public abstract class AbstractMockTestClient {
 
     protected final WireMockRule getServer() {
         return server;
+    }
+
+    /**
+     * Get log (stdout) generated during method test execution
+     * 
+     * @return String
+     */
+    protected String getLogOut() {
+        return ConsoleTestAppender.getLogOut().toString();
+    }
+
+    /**
+     * Get log (stderr) generated during method test execution
+     * 
+     * @return String
+     */
+    protected String getLogErr() {
+        return ConsoleTestAppender.getLogErr().toString();
     }
 }
