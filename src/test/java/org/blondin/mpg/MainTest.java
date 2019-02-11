@@ -83,6 +83,7 @@ public class MainTest extends AbstractMockTestClient {
         doReturn(true).when(config).isTransactionsProposal();
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, config);
         Assert.assertTrue(getLogOut(), getLogOut().contains("Achille Needle"));
+        Assert.assertFalse(getLogOut(), getLogOut().contains("Neymar"));
     }
 
     @Test
@@ -106,7 +107,7 @@ public class MainTest extends AbstractMockTestClient {
         List<Player> players = new ArrayList<>(mpgClient.getCoach("fake").getPlayers());
         Assert.assertNotNull("Nkunku should be here",
                 players.stream().filter(customer -> "Nkunku".equals(customer.getLastName())).findAny().orElse(null));
-        Main.removeOutPlayers(players, outPlayersClient, ChampionshipOutType.LIGUE_1);
+        Main.removeOutPlayers(players, outPlayersClient, ChampionshipOutType.LIGUE_1, false);
         Assert.assertNull("Nkunku should be removed",
                 players.stream().filter(customer -> "Nkunku".equals(customer.getLastName())).findAny().orElse(null));
 
