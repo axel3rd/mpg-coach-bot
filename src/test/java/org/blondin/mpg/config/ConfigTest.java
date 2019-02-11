@@ -28,6 +28,7 @@ public class ConfigTest {
         Assert.assertNotNull(config.getProxy());
         Assert.assertFalse(config.getProxy().isConfigured());
 
+        Assert.assertTrue(config.isTacticalSubstitutes());
         Assert.assertEquals(6.0f, config.getNoteTacticalSubstituteAttacker(), 0);
         Assert.assertEquals(5.0f, config.getNoteTacticalSubstituteDefender(), 0);
         Assert.assertEquals(5.0f, config.getNoteTacticalSubstituteMidfielder(), 0);
@@ -52,6 +53,7 @@ public class ConfigTest {
         lines.add("email = firstName.lastName@gmail.com");
         lines.add("password = foobar");
         lines.add("team.update=true");
+        lines.add("tactical.substitutes=false");
         lines.add("tactical.substitute.attacker=3.2");
         lines.add("tactical.substitute.midfielder=1");
         lines.add("tactical.substitute.defender=2");
@@ -76,6 +78,7 @@ public class ConfigTest {
 
         Assert.assertEquals(true, config.isTeampUpdate());
 
+        Assert.assertFalse(config.isTacticalSubstitutes());
         Assert.assertEquals(3.2f, config.getNoteTacticalSubstituteAttacker(), 0);
         Assert.assertEquals(2f, config.getNoteTacticalSubstituteDefender(), 0);
         Assert.assertEquals(1f, config.getNoteTacticalSubstituteMidfielder(), 0);

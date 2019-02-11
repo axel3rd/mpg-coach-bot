@@ -6,6 +6,7 @@ password = foobar
 #team.update = true
 
 # Default notes for tactical substitutes
+#tactical.substitutes = true
 #tactical.substitute.attacker = 6
 #tactical.substitute.midfielder = 5
 #tactical.substitute.defender = 5
