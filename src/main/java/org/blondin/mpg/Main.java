@@ -151,7 +151,7 @@ public class Main {
             List<Player> playersTeam = players.stream().collect(Collectors.toList());
 
             // Remove out players (and write them)
-            removeOutPlayers(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
+            removeOutPlayers(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()), true);
 
             // Sort by efficiency
             Collections.sort(players, Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).reversed());
@@ -169,6 +169,7 @@ public class Main {
                 LOG.info("\nTransactions proposal ...");
                 TransferBuy transferBuy = mpgClient.getTransferBuy(league.getId());
                 List<Player> playersAvailable = transferBuy.getAvailablePlayers();
+                removeOutPlayers(playersAvailable, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()), false);
                 calculateEfficiency(playersAvailable, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false);
                 writeTransactionsProposal(playersTeam, playersAvailable, transferBuy.getBudget(), outPlayersClient,
                         ChampionshipTypeWrapper.toOut(league.getChampionship()), config);
@@ -255,16 +256,19 @@ public class Main {
 
     }
 
-    static List<Player> removeOutPlayers(List<Player> players, InjuredSuspendedClient outPlayersClient, ChampionshipOutType championship) {
+    static List<Player> removeOutPlayers(List<Player> players, InjuredSuspendedClient outPlayersClient, ChampionshipOutType championship,
+            boolean displayOut) {
         List<Player> outPlayers = new ArrayList<>();
         for (Player player : players) {
             org.blondin.mpg.equipeactu.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
                     PositionWrapper.toOut(player.getPosition()), OutType.INJURY_GREEN);
             if (outPlayer != null) {
                 outPlayers.add(player);
-                String eff = FORMAT_DECIMAL_DOUBLE.format(player.getEfficiency());
-                LOG.info("Out: {} ({} - {}) - {} - {} - {}", player.getName(), player.getPosition(), eff, outPlayer.getOutType(),
-                        outPlayer.getDescription(), outPlayer.getLength());
+                if (displayOut) {
+                    String eff = FORMAT_DECIMAL_DOUBLE.format(player.getEfficiency());
+                    LOG.info("Out: {} ({} - {}) - {} - {} - {}", player.getName(), player.getPosition(), eff, outPlayer.getOutType(),
+                            outPlayer.getDescription(), outPlayer.getLength());
+                }
             }
         }
         players.removeAll(outPlayers);
