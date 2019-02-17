@@ -15,9 +15,10 @@ A clear and concise description of what the bug is, with a copy/paste of Java ex
 
 Depending your championship, join data files set in attachment.
 
-1. The [MPG](https://mpg.football/) JSon *Response* of these *Request* (visible via F12 in your browser):
+1. The [MPG](https://mpg.football/) JSon *Response* of these *Request* on https://api.monpetitgazon.com (visible via F12 in your browser):
 - From home : `GET /user/dashboard`
 - From coach: `GET /league/[yourLeagueId]/coach`
+- From transfer : `GET /league/[yourLeagueId]/transfer/buy`
 
 2. The [Players statistics](https://www.mpgstats.fr/) data, one JSon from:
 - https://www.mpgstats.fr/json/customteam.json/Ligue-1

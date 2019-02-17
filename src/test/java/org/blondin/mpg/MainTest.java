@@ -87,6 +87,24 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testSellBuyNoWarningInLog() throws Exception {
+        prepareMainLigue1Mocks("KX24XMUG-status-4", "20190217", "20190217", "20190217");
+        stubFor(get("/league/KX24XMUG/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.20190217.json")));
+        stubFor(get("/league/KX24XMUG/transfer/buy")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.transfer.buy.20190217.json")));
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
+        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTransactionsProposal();
+        Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, config);
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Achille Needle"));
+        Assert.assertFalse(getLogOut(), getLogOut().contains("WARN: Player can't be found in statistics: Wade Paul"));
+    }
+
+    @Test
     public void testProcessWithLocalMapping() throws Exception {
         // Mock initialization
         MpgClient mpgClient = mock(MpgClient.class);

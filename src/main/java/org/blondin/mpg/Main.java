@@ -96,7 +96,7 @@ public class Main {
             Config config) {
         LOG.info("\nProposal for your mercato:\n");
         List<Player> players = mpgClient.getMercato(league.getId()).getPlayers();
-        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false);
+        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
         processMercato(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
     }
 
@@ -104,7 +104,7 @@ public class Main {
             Config config) {
         LOG.info("\nProposal for your coming soon mercato:\n");
         List<Player> players = mpgClient.getMercato(league.getChampionship()).getPlayers();
-        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false);
+        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
         processMercato(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
     }
 
@@ -147,7 +147,7 @@ public class Main {
             List<Player> players = coach.getPlayers();
 
             // Calculate efficiency (notes should be in injured players display), and save for transactions proposal
-            calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, true);
+            calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, true, true);
             List<Player> playersTeam = players.stream().collect(Collectors.toList());
 
             // Remove out players (and write them)
@@ -170,7 +170,8 @@ public class Main {
                 TransferBuy transferBuy = mpgClient.getTransferBuy(league.getId());
                 List<Player> playersAvailable = transferBuy.getAvailablePlayers();
                 removeOutPlayers(playersAvailable, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()), false);
-                calculateEfficiency(playersAvailable, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false);
+                calculateEfficiency(playersAvailable, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false,
+                        false);
                 writeTransactionsProposal(playersTeam, playersAvailable, transferBuy.getBudget(), outPlayersClient,
                         ChampionshipTypeWrapper.toOut(league.getChampionship()), config);
             }
@@ -296,7 +297,7 @@ public class Main {
     }
 
     private static List<Player> calculateEfficiency(List<Player> players, MpgStatsClient stats, ChampionshipStatsType championship, Config config,
-            boolean failIfPlayerNotFound) {
+            boolean failIfPlayerNotFound, boolean logWarnIfPlayerNotFound) {
         // Calculate efficient in Stats model
         for (org.blondin.mpg.stats.model.Player p : stats.getStats(championship).getPlayers()) {
             double efficiency = p.getStats().getMatchs() / (double) stats.getStats(championship).getDay() * p.getStats().getAverage()
@@ -313,7 +314,9 @@ public class Main {
                 if (failIfPlayerNotFound) {
                     throw e;
                 }
-                LOG.warn("WARN: Player can't be found in statistics: {}", player.getName());
+                if (logWarnIfPlayerNotFound) {
+                    LOG.warn("WARN: Player can't be found in statistics: {}", player.getName());
+                }
                 player.setEfficiency(0);
             }
         }
