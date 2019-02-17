@@ -36,6 +36,7 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.tomakehurst.wiremock.stubbing.Scenario;
 
 public class MainTest extends AbstractMockTestClient {
 
@@ -139,6 +140,11 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(get("/league/KX24XMUG/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.20190211.json")));
         stubFor(post("/league/KX24XMUG/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.20190211-Request.json")))
+                .inScenario("Retry Scenario").whenScenarioStateIs(Scenario.STARTED)
+                .willReturn(aResponse().withStatus(400).withHeader("Content-Type", "application/json").withBody("{\"error\":\"badRequest\"}"))
+                .willSetStateTo("Cause Success"));
+        stubFor(post("/league/KX24XMUG/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.20190211-Request.json")))
+                .inScenario("Retry Scenario").whenScenarioStateIs("Cause Success")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.post.success.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
@@ -148,6 +154,7 @@ public class MainTest extends AbstractMockTestClient {
         doReturn(false).when(config).isTacticalSubstitutes();
         doReturn(true).when(config).isTeampUpdate();
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, config);
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Retrying ..."));
     }
 
     @Test

@@ -161,8 +161,7 @@ public class Main {
 
             // Auto-update team
             if (config.isTeampUpdate()) {
-                LOG.info("\nUpdating team ...");
-                mpgClient.updateCoach(league, getCoachRequest(coach, players, config));
+                updateTeamWithRetry(league, mpgClient, coach, players, config);
             }
 
             if (config.isTransactionsProposal()) {
@@ -179,6 +178,25 @@ public class Main {
             LOG.info("\nNo more games in this league ...\n");
         }
         LOG.info("");
+    }
+
+    private static void updateTeamWithRetry(League league, MpgClient mpgClient, Coach coach, List<Player> players, Config config) {
+        LOG.info("\nUpdating team ...");
+        for (int i = 0; i < 10; i++) {
+            try {
+                mpgClient.updateCoach(league, getCoachRequest(coach, players, config));
+            } catch (UnsupportedOperationException e) {
+                if (!"Unsupported status code: 400 Bad Request / Content: {\"error\":\"badRequest\"}".equals(e.getMessage())) {
+                    throw e;
+                }
+                try {
+                    LOG.info("Retrying ...");
+                    Thread.sleep(5000);
+                } catch (InterruptedException e1) { // NOSONAR : Sleep wanted
+                    throw new UnsupportedOperationException(e1);
+                }
+            }
+        }
     }
 
     private static void writeTransactionsProposal(List<Player> playersTeam, List<Player> playersAvailable, int budget,
