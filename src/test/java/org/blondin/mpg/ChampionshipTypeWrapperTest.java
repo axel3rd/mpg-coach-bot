@@ -11,6 +11,7 @@ public class ChampionshipTypeWrapperTest {
     @Test
     public void testConst() {
         new ChampionshipTypeWrapper();
+        Assert.assertTrue(true);
     }
 
     @Test

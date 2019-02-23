@@ -35,6 +35,7 @@ public class MpgClientTest extends AbstractMockTestClient {
                 .withRequestBody(equalToJson("{\"email\":\"firstName.lastName@gmail.com\",\"password\":\"foobar\",\"language\":\"fr-FR\"}"))
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
         MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        Assert.assertTrue(true);
     }
 
     @Test

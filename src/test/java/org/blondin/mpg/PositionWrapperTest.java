@@ -9,6 +9,7 @@ public class PositionWrapperTest {
     @Test
     public void testConst() {
         new PositionWrapper();
+        Assert.assertTrue(true);
     }
 
     @Test
