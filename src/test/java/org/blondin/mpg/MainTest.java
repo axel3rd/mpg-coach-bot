@@ -171,16 +171,19 @@ public class MainTest extends AbstractMockTestClient {
         Config config = spy(getConfig());
         doReturn(true).when(config).isTeampUpdate();
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, config);
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Updating team" + ""));
     }
 
     @Test
     public void testProcessWithMockSimple() throws Exception {
         subTestProcessWithMock("KLGXSSUG", "KLGXSSUG-status-4", "20180926", "20181017", "20181017", "20181017");
+        Assert.assertTrue("Assert in previous method", true);
     }
 
     @Test
     public void testProcessWithMockAndNameDifferentInRootAndStats() throws Exception {
         subTestProcessWithMock("KLGXSSUG", "KLGXSSUG-status-4", "20181212", "20181212", "20181212", "20181212");
+        Assert.assertTrue("Assert in previous method", true);
     }
 
     private void subTestProcessWithMock(String leagueId, String fileRootDashboard, String fileRootCoach, String fileStatsLeagues,
@@ -195,6 +198,7 @@ public class MainTest extends AbstractMockTestClient {
 
         // Run global process
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, getConfig());
+        Assert.assertTrue(getLogOut(), getLogOut().contains("=========="));
     }
 
     @Test
@@ -207,6 +211,8 @@ public class MainTest extends AbstractMockTestClient {
         InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
                 "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, getConfig());
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Proposal for your coming soon mercato"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Thauvin Florian"));
     }
 
     @Test
@@ -219,6 +225,8 @@ public class MainTest extends AbstractMockTestClient {
         InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
                 "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, getConfig());
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Proposal for your mercato"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Thauvin Florian"));
     }
 
     @Test
@@ -241,26 +249,31 @@ public class MainTest extends AbstractMockTestClient {
         InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
                 "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, getConfig());
+        Assert.assertTrue(getLogOut(), getLogOut().contains("No more games in this league"));
     }
 
     @Test
     public void testProcessUpdateNoPlayersMiroirOptionWithMock() throws Exception {
         subTestProcessUpdateWithMocks("mpg.coach.20181114-noPlayers-MiroirOption");
+        Assert.assertTrue("Assert in previous method", true);
     }
 
     @Test
     public void testProcessUpdateCompleteNoOptionWithMock() throws Exception {
         subTestProcessUpdateWithMocks("mpg.coach.20181114-Complete-NoOption");
+        Assert.assertTrue("Assert in previous method", true);
     }
 
     @Test
     public void testProcessUpdateNoSubstitutesRotaldoOptionWithMock() throws Exception {
         subTestProcessUpdateWithMocks("mpg.coach.20181114-noSubstitutes-RotaldoOption");
+        Assert.assertTrue("Assert in previous method", true);
     }
 
     @Test
     public void testProcessUpdateCompleteBoostPlayerWithMock() throws Exception {
         subTestProcessUpdateWithMocks("mpg.coach.20181114-Complete-BoostPlayer");
+        Assert.assertTrue("Assert in previous method", true);
     }
 
     private void subTestProcessUpdateWithMocks(String coachFileWithoutJsonExtension) throws Exception {
@@ -276,6 +289,7 @@ public class MainTest extends AbstractMockTestClient {
         InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
                 "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, config);
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Updating team"));
     }
 
     private static void prepareMainLigue1Mocks(String fileRootDashboard, String fileStatsLeagues, String dataFileStats, String dataFileEquipeActu) {
