@@ -237,6 +237,7 @@ public class MainTest extends AbstractMockTestClient {
         InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
                 "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, getConfig());
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Mercato turn is closed, come back for the next"));
     }
 
     @Test
