@@ -182,11 +182,12 @@ public class Main {
 
     private static void updateTeamWithRetry(League league, MpgClient mpgClient, Coach coach, List<Player> players, Config config) {
         LOG.info("\nUpdating team ...");
-        for (int i = 0; i < 10; i++) {
+        final long maxRetry = 10;
+        for (int i = 1; i <= 10; i++) {
             try {
                 mpgClient.updateCoach(league, getCoachRequest(coach, players, config));
             } catch (UnsupportedOperationException e) {
-                if (!"Unsupported status code: 400 Bad Request / Content: {\"error\":\"badRequest\"}".equals(e.getMessage())) {
+                if (i == maxRetry || !"Unsupported status code: 400 Bad Request / Content: {\"error\":\"badRequest\"}".equals(e.getMessage())) {
                     throw e;
                 }
                 try {
