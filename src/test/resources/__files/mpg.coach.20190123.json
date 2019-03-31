@@ -576,8 +576,7 @@
         },
         "tacticalsubstitutes": [
         ],
-        "bonusSelected": {
-        },
+        "bonusSelected": null,
         "nbPlayers": 10
     }
 }
