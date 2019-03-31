@@ -186,6 +186,7 @@ public class Main {
         for (int i = 1; i <= 10; i++) {
             try {
                 mpgClient.updateCoach(league, getCoachRequest(coach, players, config));
+                break;
             } catch (UnsupportedOperationException e) {
                 if (i == maxRetry || !"Unsupported status code: 400 Bad Request / Content: {\"error\":\"badRequest\"}".equals(e.getMessage())) {
                     throw e;
