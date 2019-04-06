@@ -18,6 +18,8 @@ public class Config {
     private String login;
     private String password;
     private boolean teampUpdate = false;
+    private boolean efficiencyRecentFocus = false;
+    private int efficiencyRecentDays = 8;
     private boolean tacticalSubstitutesUpdate = true;
     private float noteTacticalSubstituteAttacker = 6;
     private float noteTacticalSubstituteMidfielder = 5;
@@ -80,6 +82,14 @@ public class Config {
         return valueIfNotDefined;
     }
 
+    private static int parseInt(Properties properties, String key, int valueIfNotDefined) {
+        String value = parseString(properties, key);
+        if (StringUtils.isNotBlank(value)) {
+            return Integer.parseInt(value);
+        }
+        return valueIfNotDefined;
+    }
+
     private static void configMain(Config config, Properties properties, File fileConfig) {
         config.login = parseString(properties, "email");
         config.password = parseString(properties, "password");
@@ -88,6 +98,8 @@ public class Config {
                     String.format("Login and/or password can't be retrieved from file '%s' of environement variables", fileConfig.getName()));
         }
         config.teampUpdate = parseBoolean(properties, "team.update", config.teampUpdate);
+        config.efficiencyRecentFocus = parseBoolean(properties, "efficiency.recent.focus", config.efficiencyRecentFocus);
+        config.efficiencyRecentDays = parseInt(properties, "efficiency.recent.days", config.efficiencyRecentDays);
         config.transactionsProposal = parseBoolean(properties, "transactions.proposal", config.transactionsProposal);
     }
 
@@ -135,6 +147,14 @@ public class Config {
 
     public boolean isTeampUpdate() {
         return teampUpdate;
+    }
+
+    public boolean isEfficiencyRecentFocus() {
+        return efficiencyRecentFocus;
+    }
+
+    public int getEfficiencyRecentDays() {
+        return efficiencyRecentDays;
     }
 
     public boolean isTransactionsProposal() {

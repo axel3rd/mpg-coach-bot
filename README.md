@@ -35,14 +35,22 @@ Depending your environment system, run `mpg-coach-bot.bat` (Windows) or `mpg-coa
 
 Environments variable with `MPG_` and key name in upper case + '_' (ex: `MPG_EMAIL`, `MPG_PASSWORD`, ...) could be used (override configuration file in this case).
 
-If you are using this program the Friday @work, you can have to configure the company proxy in `mpg.properties` file (since v1.1):
+The `mpg.properties` file could be used to change the program behavior on multiple items. Here the option with default values for information (except for proxy).
+
+If you are using this program the Friday @work, you can have to configure the company proxy (since v1.1):
 
     # Usage behind a company proxy
     proxy.uri = http://company.proxy.com:80
     proxy.user = foo
     proxy.password = bar
 
-To enable/disable and change default notes for tactical substitutes, use in `mpg.properties` file (since v1.1):
+To focus on recent efficiency, about team proposal and buy transaction (since v1.3):
+
+    # Focus on recent efficiency
+    efficiency.recent.focus = false
+    efficiency.recent.days = 8
+
+To enable/disable and change default notes for tactical substitutes (since v1.1):
 
     # Notes for tactical substitutes
     tactical.substitutes = true
@@ -50,9 +58,9 @@ To enable/disable and change default notes for tactical substitutes, use in `mpg
     tactical.substitute.midfielder = 5.0
     tactical.substitute.defender = 5.0
 
-To enable/disable and change default notes for proposal of selling players, use in `mpg.properties` file (since v1.2):
+To enable/disable and change default notes for proposal of selling players (since v1.2):
 
-    # Enable sell/buy players proposal
+    # Enable sell/buy players proposal (only if 'efficiency.recent.focus' is false)
     transactions.proposal = true
     
     # Notes for proposal of selling players
@@ -61,7 +69,7 @@ To enable/disable and change default notes for proposal of selling players, use 
     efficiency.sell.defender = 3.0
     efficiency.sell.goalkeeper = 3.0
 
-To change default efficiency coefficient for players, use in `mpg.properties` file (since v1.2):
+To change default efficiency coefficient for players (since v1.2):
 
     # Efficiency coefficient
     efficiency.coefficient.attacker = 1.2
@@ -72,7 +80,7 @@ To change default efficiency coefficient for players, use in `mpg.properties` fi
 To add some debug logs about execution (since v1.2):
 
     # Enable debug logs
-    logs.debug = true
+    logs.debug = false
 
 ### Execution
 

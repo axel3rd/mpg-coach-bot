@@ -59,4 +59,5 @@ public class Player {
     public void setEfficiency(double efficiency) {
         this.efficiency = efficiency;
     }
+
 }

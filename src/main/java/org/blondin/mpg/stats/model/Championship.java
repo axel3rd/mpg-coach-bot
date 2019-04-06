@@ -26,6 +26,8 @@ public class Championship {
     @JsonProperty("mL")
     private Infos infos;
 
+    private boolean maxDaySetOnPlayer;
+
     /**
      * Current day of season
      * 
@@ -36,6 +38,12 @@ public class Championship {
     }
 
     public List<Player> getPlayers() {
+        synchronized (this) {
+            if (!maxDaySetOnPlayer) {
+                players.forEach(p -> p.getStats().setCurrentSeasonDay(getDay()));
+                maxDaySetOnPlayer = true;
+            }
+        }
         return players;
     }
 

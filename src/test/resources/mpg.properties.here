@@ -5,6 +5,10 @@ password = foobar
 # Enable auto-update team ('false' by default)
 #team.update = true
 
+# Focus on recent efficiency ('false' by default)
+#efficiency.recent.focus = true
+#efficiency.recent.days = 8
+
 # Default notes for tactical substitutes
 #tactical.substitutes = true
 #tactical.substitute.attacker = 6
