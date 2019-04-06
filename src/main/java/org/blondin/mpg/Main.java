@@ -214,7 +214,7 @@ public class Main {
         players2Sell.removeIf(p -> p.getPosition().equals(Position.G) && p.getTeamId() == goalFirst.getTeamId());
 
         int cash = budget;
-        if (!players2Sell.isEmpty()) {
+        if (!config.isEfficiencyRecentFocus() && !players2Sell.isEmpty()) {
             LOG.info("Players to sell (initial cash: {}):", budget);
             AsciiTable at = getTable(TABLE_POSITION, TABLE_PLAYER_NAME, TABLE_EFFICIENCY, TABLE_QUOTE);
             for (Player player : players2Sell) {
@@ -319,11 +319,16 @@ public class Main {
     private static List<Player> calculateEfficiency(List<Player> players, MpgStatsClient stats, ChampionshipStatsType championship, Config config,
             boolean failIfPlayerNotFound, boolean logWarnIfPlayerNotFound) {
         // Calculate efficient in Stats model
+        int days4efficiency = 0;
+        if (config.isEfficiencyRecentFocus()) {
+            days4efficiency = config.getEfficiencyRecentDays();
+        }
         for (org.blondin.mpg.stats.model.Player p : stats.getStats(championship).getPlayers()) {
-            double efficiency = p.getStats().getMatchs() / (double) stats.getStats(championship).getDay() * p.getStats().getAverage()
-                    * (1 + p.getStats().getGoals() * config.getEfficiencyCoefficient(PositionWrapper.fromStats(p.getPosition())));
+            double efficiency = p.getStats().getMatchs(days4efficiency) / (double) stats.getStats(championship).getDay()
+                    * p.getStats().getAverage(days4efficiency)
+                    * (1 + p.getStats().getGoals(days4efficiency) * config.getEfficiencyCoefficient(PositionWrapper.fromStats(p.getPosition())));
             // round efficiency to 2 decimals
-            p.setEfficiency(Math.round(efficiency * 100) / (double) 100);
+            p.setEfficiency(efficiency);
         }
 
         // Fill MPG model

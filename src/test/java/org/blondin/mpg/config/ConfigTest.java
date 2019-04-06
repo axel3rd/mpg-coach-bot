@@ -24,6 +24,8 @@ public class ConfigTest {
         Assert.assertEquals("foobar", config.getPassword());
 
         Assert.assertEquals(false, config.isTeampUpdate());
+        Assert.assertEquals(false, config.isEfficiencyRecentFocus());
+        Assert.assertEquals(8, config.getEfficiencyRecentDays());
 
         Assert.assertNotNull(config.getProxy());
         Assert.assertFalse(config.getProxy().isConfigured());
@@ -53,6 +55,8 @@ public class ConfigTest {
         lines.add("email = firstName.lastName@gmail.com");
         lines.add("password = foobar");
         lines.add("team.update=true");
+        lines.add("efficiency.recent.focus=true");
+        lines.add(" efficiency.recent.days=5");
         lines.add("tactical.substitutes=false");
         lines.add("tactical.substitute.attacker=3.2");
         lines.add("tactical.substitute.midfielder=1");
@@ -68,7 +72,7 @@ public class ConfigTest {
         lines.add("efficiency.sell.goalkeeper=1");
         lines.add("proxy.uri=http://company.proxy.com:80");
         lines.add("proxy.user=foo");
-        lines.add("proxy.password=bar");
+        lines.add("proxy.password=bar"); // NOSNOAR : Test wanted
 
         File configFile = new File(testFolder.getRoot(), "mpg.properties.test");
         FileUtils.writeLines(configFile, lines);
@@ -77,6 +81,8 @@ public class ConfigTest {
         // No login/password, could be overridden by system properties in real Travis tests
 
         Assert.assertEquals(true, config.isTeampUpdate());
+        Assert.assertEquals(true, config.isEfficiencyRecentFocus());
+        Assert.assertEquals(5, config.getEfficiencyRecentDays());
 
         Assert.assertFalse(config.isTacticalSubstitutes());
         Assert.assertEquals(3.2f, config.getNoteTacticalSubstituteAttacker(), 0);
