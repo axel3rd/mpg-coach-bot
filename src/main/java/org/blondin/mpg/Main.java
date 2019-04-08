@@ -318,14 +318,15 @@ public class Main {
 
     private static List<Player> calculateEfficiency(List<Player> players, MpgStatsClient stats, ChampionshipStatsType championship, Config config,
             boolean failIfPlayerNotFound, boolean logWarnIfPlayerNotFound) {
-        // Calculate efficient in Stats model
+        // Calculate efficiency in statistics model
+        int daysPeriod = stats.getStats(championship).getDay();
         int days4efficiency = 0;
         if (config.isEfficiencyRecentFocus()) {
             days4efficiency = config.getEfficiencyRecentDays();
+            daysPeriod = days4efficiency;
         }
         for (org.blondin.mpg.stats.model.Player p : stats.getStats(championship).getPlayers()) {
-            double efficiency = p.getStats().getMatchs(days4efficiency) / (double) stats.getStats(championship).getDay()
-                    * p.getStats().getAverage(days4efficiency)
+            double efficiency = p.getStats().getMatchs(days4efficiency) / (double) daysPeriod * p.getStats().getAverage(days4efficiency)
                     * (1 + p.getStats().getGoals(days4efficiency) * config.getEfficiencyCoefficient(PositionWrapper.fromStats(p.getPosition())));
             // round efficiency to 2 decimals
             p.setEfficiency(efficiency);
