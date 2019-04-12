@@ -3,7 +3,7 @@ package org.blondin.mpg.stats.model;
 
 import java.util.Map;
 
-import org.apache.commons.math.util.MathUtils;
+import org.apache.commons.math3.util.Precision;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -60,7 +60,7 @@ public class Stats {
                 averageLastDaysSum += statsDay.get(d).getAverage();
             }
         }
-        return MathUtils.round(averageLastDaysSum / days, 2);
+        return Precision.round(averageLastDaysSum / days, 2);
     }
 
     /**
