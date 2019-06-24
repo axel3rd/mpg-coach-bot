@@ -133,7 +133,7 @@ For release build, use (you will have to fill your GitHub credentials):
 ```
 git reset --hard origin/master 
 git branch -m next-version 
-mvn clean release:clean release:prepare
+mvn -B clean release:clean release:prepare
 ```
 
 After that, you would have to create pull-request from 'next-version' branch and rebase it on master for next version development.
