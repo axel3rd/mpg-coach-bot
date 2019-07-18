@@ -14,6 +14,8 @@ public class ChampionshipTypeWrapper {
         switch (championship) {
         case LIGUE_1:
             return ChampionshipStatsType.LIGUE_1;
+        case LIGUE_2:
+            return ChampionshipStatsType.LIGUE_2;
         case PREMIER_LEAGUE:
             return ChampionshipStatsType.PREMIER_LEAGUE;
         case LIGA:
@@ -27,6 +29,8 @@ public class ChampionshipTypeWrapper {
         switch (championship) {
         case LIGUE_1:
             return ChampionshipOutType.LIGUE_1;
+        case LIGUE_2:
+            return ChampionshipOutType.LIGUE_2;
         case PREMIER_LEAGUE:
             return ChampionshipOutType.PREMIER_LEAGUE;
         case LIGA:

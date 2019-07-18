@@ -22,6 +22,7 @@ Depending your championship, join data files set in attachment.
 
 2. The [Players statistics](https://www.mpgstats.fr/) data, one JSon from:
 - https://www.mpgstats.fr/json/customteam.json/Ligue-1
+- https://www.mpgstats.fr/json/customteam.json/Ligue-2
 - https://www.mpgstats.fr/json/customteam.json/Premier-League
 - https://www.mpgstats.fr/json/customteam.json/Liga
 
@@ -29,6 +30,7 @@ Depending your championship, join data files set in attachment.
 
 4. The [Injury / Suspended](http://www.equipeactu.fr/blessures-et-suspensions/fodbold/) data, one full HTML from:
 - http://www.equipeactu.fr/blessures-et-suspensions/fodbold/france/ligue-1
+- http://www.equipeactu.fr/blessures-et-suspensions/fodbold/france/ligue-2
 - http://www.equipeactu.fr/blessures-et-suspensions/fodbold/angleterre/championship
 - http://www.equipeactu.fr/blessures-et-suspensions/fodbold/espagne/primera-division
 

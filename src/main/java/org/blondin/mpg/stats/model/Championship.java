@@ -1,5 +1,6 @@
 package org.blondin.mpg.stats.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Championship {
 
     @JsonProperty("p")
-    private List<Player> players;
+    private List<Player> players = new ArrayList<>();
 
     @JsonProperty("mxD")
     private int day;
