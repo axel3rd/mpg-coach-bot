@@ -1,0 +1,27 @@
+{
+    "cN": "Customteam",
+    "bD": "2019-07-17T11:35:58Z",
+    "mL": {
+        "i": 4,
+        "n": "Ligue 2",
+        "cN": "Ligue-2",
+        "u": "\/league\/Ligue-2",
+        "aS": {
+            "cN": "Ligue-2-2019-2020",
+            "i": 12,
+            "n": "Ligue 2 2019-2020",
+            "mD": 38,
+            "cD": {
+                "cN": "CurrentDay",
+                "d": 0,
+                "lD": 0
+            }
+        }
+    },
+    "mxD": null,
+    "np": 0,
+    "le": {
+        "4": "Ligue-2"
+    },
+    "k": "1594b0"
+}

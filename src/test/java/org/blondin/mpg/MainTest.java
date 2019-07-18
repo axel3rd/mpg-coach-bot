@@ -44,8 +44,8 @@ public class MainTest extends AbstractMockTestClient {
     public void testRealIfCredentials() throws Exception {
         try {
             final String config = "src/test/resources/mpg.properties";
-            if (new File(config).exists() || (StringUtils.isNoneBlank(System.getenv("MPG_EMAIL"))
-                    && StringUtils.isNoneBlank(System.getenv("MPG_PASSWORD")) && StringUtils.isNoneBlank(System.getenv("MPG_LEAGUE_TEST")))) {
+            if (new File(config).exists()
+                    || (StringUtils.isNoneBlank(System.getenv("MPG_EMAIL")) && StringUtils.isNoneBlank(System.getenv("MPG_PASSWORD")))) {
                 Main.main(new String[] { config });
             }
         } catch (ProcessingException e) {
@@ -67,6 +67,20 @@ public class MainTest extends AbstractMockTestClient {
             // Proxy not configured or real URL not accessible
             Assert.assertEquals("No network", "java.net.UnknownHostException: api.monpetitgazon.com", e.getMessage());
         }
+    }
+
+    @Test
+    public void testLeague2InCreation() throws Exception {
+        prepareMainLigue2Mocks("LH9HKBTD-status-1-championship-4", "20190718", "20190718", "20190718");
+        stubFor(get("/mercato/4")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.mercato.ligue-2.20190718.json")));
+
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
+        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, spy(getConfig()));
+        Assert.assertFalse(getLogOut(), getLogOut().contains("Players to sell"));
     }
 
     @Test
@@ -350,6 +364,15 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     private static void prepareMainLigue1Mocks(String fileRootDashboard, String fileStatsLeagues, String dataFileStats, String dataFileEquipeActu) {
+        prepareMainLigueMocks(fileRootDashboard, fileStatsLeagues, 1, dataFileStats, dataFileEquipeActu);
+    }
+
+    private static void prepareMainLigue2Mocks(String fileRootDashboard, String fileStatsLeagues, String dataFileStats, String dataFileEquipeActu) {
+        prepareMainLigueMocks(fileRootDashboard, fileStatsLeagues, 2, dataFileStats, dataFileEquipeActu);
+    }
+
+    private static void prepareMainLigueMocks(String fileRootDashboard, String fileStatsLeagues, int ligue, String dataFileStats,
+            String dataFileEquipeActu) {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
         if (StringUtils.isNotBlank(fileRootDashboard)) {
@@ -361,12 +384,12 @@ public class MainTest extends AbstractMockTestClient {
                     aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues." + fileStatsLeagues + ".json")));
         }
         if (StringUtils.isNotBlank(dataFileStats)) {
-            stubFor(get("/customteam.json/Ligue-1").willReturn(
-                    aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.ligue-1." + dataFileStats + ".json")));
+            stubFor(get("/customteam.json/Ligue-" + ligue).willReturn(aResponse().withHeader("Content-Type", "application/json")
+                    .withBodyFile("mpgstats.ligue-" + ligue + "." + dataFileStats + ".json")));
         }
         if (StringUtils.isNotBlank(dataFileEquipeActu)) {
-            stubFor(get("/blessures-et-suspensions/fodbold/france/ligue-1").willReturn(
-                    aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.ligue-1." + dataFileEquipeActu + ".html")));
+            stubFor(get("/blessures-et-suspensions/fodbold/france/ligue-" + ligue).willReturn(aResponse()
+                    .withHeader("Content-Type", "application/json").withBodyFile("equipeactu.ligue-" + ligue + "." + dataFileEquipeActu + ".html")));
         }
     }
 
