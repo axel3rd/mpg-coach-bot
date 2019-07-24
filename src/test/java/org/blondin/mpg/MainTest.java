@@ -29,6 +29,7 @@ import org.blondin.mpg.root.MpgClient;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.Dashboard;
 import org.blondin.mpg.root.model.Player;
+import org.blondin.mpg.stats.ChampionshipStatsType;
 import org.blondin.mpg.stats.MpgStatsClient;
 import org.blondin.mpg.stats.model.Championship;
 import org.junit.Assert;
@@ -67,6 +68,29 @@ public class MainTest extends AbstractMockTestClient {
             // Proxy not configured or real URL not accessible
             Assert.assertEquals("No network", "java.net.UnknownHostException: api.monpetitgazon.com", e.getMessage());
         }
+    }
+
+    @Test
+    public void testLeague2NoData() throws Exception {
+        prepareMainLigue2Mocks("LH9HKBTD-status-4-championship-4", "20190724", "20190724", "20190724");
+        stubFor(get("/league/LH9HKBTD/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LH9HKBTD.20190724.json")));
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
+        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+
+        // The efficiency should not be 'infinity' but 0
+        Assert.assertEquals(0, mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_2).getPlayer("Rodelin Ronny").getEfficiency(), 0);
+
+        // Use average (not existing data)
+        Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, spy(getConfig()));
+
+        // Use focus on recent efficiency (not existing data)
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTransactionsProposal();
+        doReturn(true).when(config).isEfficiencyRecentFocus();
+        Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, spy(getConfig()));
     }
 
     @Test

@@ -147,7 +147,7 @@ public class Main {
             List<Player> players = coach.getPlayers();
 
             // Calculate efficiency (notes should be in injured players display), and save for transactions proposal
-            calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, true, true);
+            calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
             List<Player> playersTeam = players.stream().collect(Collectors.toList());
 
             // Remove out players (and write them)
@@ -320,6 +320,12 @@ public class Main {
             boolean failIfPlayerNotFound, boolean logWarnIfPlayerNotFound) {
         // Calculate efficiency in statistics model
         int daysPeriod = stats.getStats(championship).getDay();
+
+        // If league not started, we take the number of day of season, because average will be on this period
+        if (daysPeriod == 0) {
+            daysPeriod = stats.getStats(championship).getInfos().getAnnualStats().getMaxDay();
+        }
+
         int days4efficiency = 0;
         if (config.isEfficiencyRecentFocus()) {
             days4efficiency = config.getEfficiencyRecentDays();
