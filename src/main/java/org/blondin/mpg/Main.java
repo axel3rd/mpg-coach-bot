@@ -154,7 +154,8 @@ public class Main {
             removeOutPlayers(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()), true);
 
             // Sort by efficiency
-            Collections.sort(players, Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).reversed());
+            Collections.sort(players,
+                    Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed());
 
             // Write optimized team
             writeTeamOptimized(players);

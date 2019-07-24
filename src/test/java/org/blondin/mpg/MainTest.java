@@ -86,6 +86,16 @@ public class MainTest extends AbstractMockTestClient {
         // Use average (not existing data)
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, spy(getConfig()));
 
+        // Check order efficiency, value/quotation should be used as second criteria
+        String log = getLogOut();
+        // Some players are displayed in WARNING because 0 data
+        String logTablePlayers = log.substring(log.lastIndexOf("Optimized team"));
+        Assert.assertTrue(logTablePlayers.lastIndexOf("Vachoux") > logTablePlayers.lastIndexOf("Gallon"));
+        Assert.assertTrue(logTablePlayers.lastIndexOf("Boissier") > logTablePlayers.lastIndexOf("Jacob"));
+        Assert.assertTrue(logTablePlayers.lastIndexOf("Benkaid") > logTablePlayers.lastIndexOf("Rodelin"));
+        Assert.assertTrue(logTablePlayers.lastIndexOf("Abdeldjelil") > logTablePlayers.lastIndexOf("Rodelin"));
+        Assert.assertTrue(logTablePlayers.lastIndexOf("Abdeldjelil") > logTablePlayers.lastIndexOf("Benkaid"));
+
         // Use focus on recent efficiency (not existing data)
         Config config = spy(getConfig());
         doReturn(true).when(config).isTransactionsProposal();
