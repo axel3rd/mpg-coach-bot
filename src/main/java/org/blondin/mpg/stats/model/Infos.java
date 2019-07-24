@@ -10,6 +10,8 @@ public class Infos {
     private String name;
     @JsonProperty("i")
     private int id;
+    @JsonProperty("aS")
+    private AnnualStats annualStats;
 
     public String getName() {
         return name;
@@ -17,5 +19,9 @@ public class Infos {
 
     public int getId() {
         return id;
+    }
+
+    public AnnualStats getAnnualStats() {
+        return annualStats;
     }
 }
