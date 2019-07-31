@@ -142,7 +142,9 @@
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
-            <version>${jersey.version}</version>
+            <!-- Temporary downgrade: https://github.com/spotify/docker-client/issues/1030 -->
+            <!-- version>${jersey.version}</version -->
+            <version>2.27</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
