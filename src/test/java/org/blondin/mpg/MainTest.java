@@ -86,8 +86,12 @@ public class MainTest extends AbstractMockTestClient {
         // Use average (not existing data)
         Main.process(mpgClient, mpgStatsClient, injuredSuspendedClient, spy(getConfig()));
 
-        // Check order efficiency, value/quotation should be used as second criteria
         String log = getLogOut();
+        // Check that no infinite character on some players.
+        Assert.assertFalse(log.contains("∞"));
+        Assert.assertTrue(log.contains("| A | Benkaid Hicham      | 0,00 | 17 |"));
+        Assert.assertTrue(log.contains("| A | Rodelin Ronny       | 2,01 | 16 |"));
+        // Check order efficiency, value/quotation should be used as second criteria
         // Some players are displayed in WARNING because 0 data
         String logTablePlayers = log.substring(log.lastIndexOf("Optimized team"));
         Assert.assertTrue(logTablePlayers.lastIndexOf("Vachoux") > logTablePlayers.lastIndexOf("Gallon"));
