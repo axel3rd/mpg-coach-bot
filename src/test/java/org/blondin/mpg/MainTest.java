@@ -33,6 +33,7 @@ import org.blondin.mpg.root.model.Player;
 import org.blondin.mpg.stats.ChampionshipStatsType;
 import org.blondin.mpg.stats.MpgStatsClient;
 import org.blondin.mpg.stats.model.Championship;
+import org.blondin.mpg.test.io.ConsoleTestAppender;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -72,6 +73,29 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testLeague2FocusEfficiencySeasonStart() throws Exception {
+        prepareMainLigue2Mocks("LH9HKBTD-status-4-championship-4", "20190724", "20190801", "20190724");
+        stubFor(get("/league/LH9HKBTD/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LH9HKBTD.20190724.json")));
+
+        // With global average
+        executeMainProcess();
+        String logGlobal = getLogOut();
+        // Remove WireMock log at begin
+        logGlobal = logGlobal.substring(logGlobal.indexOf("=========="));
+        Assert.assertTrue(logGlobal.contains("Grbic Adrian        | 27.20"));
+        ConsoleTestAppender.logTestReset();
+
+        // With focus efficiency (8 days) on season start (1 day)
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isEfficiencyRecentFocus();
+        executeMainProcess(config);
+        String logFocus = getLogOut();
+        Assert.assertTrue(logFocus.contains("Grbic Adrian        | 27.20"));
+        Assert.assertEquals(logGlobal, logFocus);
+    }
+
+    @Test
     public void testLeague2NoData() throws Exception {
         prepareMainLigue2Mocks("LH9HKBTD-status-4-championship-4", "20190724", "20190724", "20190724");
         stubFor(get("/league/LH9HKBTD/coach")
@@ -100,9 +124,10 @@ public class MainTest extends AbstractMockTestClient {
 
         // Use focus on recent efficiency (not existing data)
         Config config = spy(getConfig());
-        doReturn(true).when(config).isTransactionsProposal();
         doReturn(true).when(config).isEfficiencyRecentFocus();
-        executeMainProcess(spy(getConfig()));
+        executeMainProcess(config);
+        Assert.assertFalse(log.contains("∞"));
+        Assert.assertTrue(log.contains("| A | Benkaid Hicham      | 0.00 | 17 |"));
     }
 
     @Test
