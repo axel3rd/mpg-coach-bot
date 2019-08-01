@@ -3,6 +3,7 @@ package org.blondin.mpg;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
 import java.io.File;
+import java.util.Locale;
 
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.test.io.ConsoleTestAppender;
@@ -20,6 +21,9 @@ public abstract class AbstractMockTestClient {
 
     @Before
     public void setUp() {
+        // Force English locale, necessary for log ouput test (French env vs English Travis, ...)
+        Locale.setDefault(Locale.ENGLISH);
+
         // Remove any local cache
         for (File file : new File(System.getProperty("java.io.tmpdir")).listFiles((d, name) -> name.startsWith("mpg-coach-bot-httplocalhost"))) {
             file.delete();
