@@ -330,7 +330,12 @@ public class Main {
         int days4efficiency = 0;
         if (config.isEfficiencyRecentFocus()) {
             days4efficiency = config.getEfficiencyRecentDays();
-            daysPeriod = days4efficiency;
+            // If season start (=> daysPeriod < 8 when days4efficiency = 8 by default), the focus is on the started days
+            if (daysPeriod < days4efficiency) {
+                days4efficiency = daysPeriod;
+            } else {
+                daysPeriod = days4efficiency;
+            }
         }
         for (org.blondin.mpg.stats.model.Player p : stats.getStats(championship).getPlayers()) {
             double efficiency = p.getStats().getMatchs(days4efficiency) / (double) daysPeriod * p.getStats().getAverage(days4efficiency)
