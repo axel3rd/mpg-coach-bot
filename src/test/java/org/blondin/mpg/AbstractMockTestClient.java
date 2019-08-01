@@ -21,7 +21,7 @@ public abstract class AbstractMockTestClient {
 
     @Before
     public void setUp() {
-        // Force English locale, necessary for log ouput test (French env vs English Travis, ...)
+        // Force English locale, necessary for log output test (French local environment vs English Travis, ...)
         Locale.setDefault(Locale.ENGLISH);
 
         // Remove any local cache
