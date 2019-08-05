@@ -109,7 +109,8 @@ public class Main {
     }
 
     static void processMercato(List<Player> players, InjuredSuspendedClient outPlayersClient, ChampionshipOutType championship) {
-        Collections.sort(players, Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).reversed());
+        Collections.sort(players,
+                Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed());
         List<Player> goals = players.stream().filter(p -> p.getPosition().equals(Position.G)).collect(Collectors.toList()).subList(0, 5);
         List<Player> defenders = players.stream().filter(p -> p.getPosition().equals(Position.D)).collect(Collectors.toList()).subList(0, 10);
         List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList()).subList(0, 10);
@@ -231,12 +232,12 @@ public class Main {
         }
         LOG.info("Budget: {}", cash);
 
-        Player defenderLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.D)).sorted(Comparator.comparing(Player::getEfficiency))
-                .collect(Collectors.toList()).get(0);
+        Player defenderLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.D))
+                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation)).collect(Collectors.toList()).get(0);
         Player midfielderLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.M))
-                .sorted(Comparator.comparing(Player::getEfficiency)).collect(Collectors.toList()).get(0);
-        Player attackerLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.A)).sorted(Comparator.comparing(Player::getEfficiency))
-                .collect(Collectors.toList()).get(0);
+                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation)).collect(Collectors.toList()).get(0);
+        Player attackerLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.A))
+                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation)).collect(Collectors.toList()).get(0);
         cash += goalFirst.getQuotation() + defenderLast.getQuotation() + midfielderLast.getQuotation() + attackerLast.getQuotation();
         LOG.info("Budget if last players by line sold: {}", cash);
 
@@ -244,16 +245,20 @@ public class Main {
         List<Player> players2buy = new ArrayList<>();
         players2buy.addAll(playersAvailable.stream().filter(p -> p.getPosition().equals(Position.G)).filter(p -> p.getQuotation() <= budgetPotential)
                 .filter(p -> p.getEfficiency() > goalFirst.getEfficiency()).filter(p -> p.getEfficiency() > config.getEfficiencySell(Position.G))
-                .sorted(Comparator.comparing(Player::getEfficiency).reversed()).limit(3).collect(Collectors.toList()));
+                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3)
+                .collect(Collectors.toList()));
         players2buy.addAll(playersAvailable.stream().filter(p -> p.getPosition().equals(Position.D)).filter(p -> p.getQuotation() <= budgetPotential)
                 .filter(p -> p.getEfficiency() > defenderLast.getEfficiency()).filter(p -> p.getEfficiency() > config.getEfficiencySell(Position.D))
-                .sorted(Comparator.comparing(Player::getEfficiency).reversed()).limit(3).collect(Collectors.toList()));
+                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3)
+                .collect(Collectors.toList()));
         players2buy.addAll(playersAvailable.stream().filter(p -> p.getPosition().equals(Position.M)).filter(p -> p.getQuotation() <= budgetPotential)
                 .filter(p -> p.getEfficiency() > midfielderLast.getEfficiency()).filter(p -> p.getEfficiency() > config.getEfficiencySell(Position.M))
-                .sorted(Comparator.comparing(Player::getEfficiency).reversed()).limit(3).collect(Collectors.toList()));
+                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3)
+                .collect(Collectors.toList()));
         players2buy.addAll(playersAvailable.stream().filter(p -> p.getPosition().equals(Position.A)).filter(p -> p.getQuotation() <= budgetPotential)
                 .filter(p -> p.getEfficiency() > attackerLast.getEfficiency()).filter(p -> p.getEfficiency() > config.getEfficiencySell(Position.A))
-                .sorted(Comparator.comparing(Player::getEfficiency).reversed()).limit(3).collect(Collectors.toList()));
+                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3)
+                .collect(Collectors.toList()));
 
         if (!players2buy.isEmpty()) {
             LOG.info("Player(s) to buy (3 best choice by line):");
@@ -320,11 +325,14 @@ public class Main {
     private static List<Player> calculateEfficiency(List<Player> players, MpgStatsClient stats, ChampionshipStatsType championship, Config config,
             boolean failIfPlayerNotFound, boolean logWarnIfPlayerNotFound) {
         // Calculate efficiency in statistics model
-        int daysPeriod = stats.getStats(championship).getDay();
+        int daysPeriod = stats.getStats(championship).getInfos().getAnnualStats().getCurrentDay().getDay();
 
         // If league not started, we take the number of day of season, because average will be on this period
         if (daysPeriod == 0) {
-            daysPeriod = stats.getStats(championship).getInfos().getAnnualStats().getMaxDay();
+            // The previous season statistics could be null, in this case current annual max day is used
+            daysPeriod = stats.getStats(championship).getInfos().getLastStats() == null
+                    ? stats.getStats(championship).getInfos().getAnnualStats().getMaxDay()
+                    : stats.getStats(championship).getInfos().getLastStats().getMaxDay();
         }
 
         int days4efficiency = 0;
