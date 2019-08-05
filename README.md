@@ -9,11 +9,22 @@ MPG (Mon Petit Gazon) coach bot, to automate and optimize weekly league actions
 
 Automate and optimize your [MPG](http://mpg.football/) weekly league actions, using external datas like [mpgstats](https://www.mpgstats.fr) and [equipeactu](http://www.equipeactu.fr/blessures-et-suspensions/).
 
-The efficiency algorithm used to calculate players score is:
+**The common features are:**
+
+- Displaying your teams, line by line, ordered by players efficiency (with injured players)
+- Updating your team (if option `team.update` is enabled)
+- Proposing some players to buy, better than the one you have (if option `transactions.proposal` is enabled)
+- When league not started (aka: *mercato*), the best players to buy for your incoming team
+
+**NB:**: Your tactical organization and selected bonus are not updated and let as configured.
+
+The efficiency algorithm used to calculate players efficiency score is:
 
     player.matchs / championshipDays * player.average * (1 + player.goals() * efficiency.coeff)
 
 *With efficiency coeff : Attacker = 1.2 ; Midfielder = 1.05 ; Defender = 1.025 ; Goalkeeper = 1 (Before v1.2, 1.2 for all lines).*
+
+This efficiency can be focused on recent days (8 by default) by enabling option `efficiency.recent.focus`.
 
 ## Usage
 
@@ -28,6 +39,82 @@ Extract ZIP file and update the given `mpg.properties` file with your *MPG* cred
     team.update = true
 
 Depending your environment system, run `mpg-coach-bot.bat` (Windows) or `mpg-coach-bot.sh` (Linux).
+
+To fully automate update your weekly actions on your *MPG* leagues, you can use a Linux *crontab* (daily at 6pm, for sample).
+
+**Disclaimer**: MPG credentials are used to connect on MPG website API, to retrieve your leagues informations. These credentials are not stored outside the configuration file, but are in memory during the program execution.
+
+## Sample output
+
+### Principal
+
+The main output is displaying:
+
+- Injured players, to remove of your team
+- Your team line by line, ordered by efficiency score (*Eff.*), with the players quotation/prices (*Q.*):
+
+    ========== Your league name ==========
+    Out: Aouar Houssem (M - 34.88) - INJURY_ORANGE - Inconnu (depuis 12/11) - Inconnu
+    Out: Ambroise Oyongo (D - 11.85) - INJURY_ORANGE - Blessure au genou (depuis 04/11) - Inconnu
+    
+    Optimized team:
+    +---+--------------------+-------+----+
+    | P |    Player name     | Eff.  | Q. |
+    +---+--------------------+-------+----+
+    | G | Costil Benoit      |  5.58 | 20 |
+    | G | Prior Jerome       |  0.00 | 7  |
+    +---+--------------------+-------+----+
+    | D | Le Tallec Damien   | 17.35 | 23 |
+    | D | Meunier Thomas     | 13.13 | 24 |
+    | D | Marquinhos         | 10.43 | 25 |
+    | D | Kamara Boubacar    |  4.15 | 11 |
+    | D | Dubois Léo         |  2.27 | 11 |
+    +---+--------------------+-------+----+
+    | M | Thauvin Florian    | 41.47 | 38 |
+    | M | Tielemans Youri    | 17.73 | 13 |
+    | M | Nkunku Christopher |  8.75 | 13 |
+    | M | Lucas Evangelista  |  7.10 | 8  |
+    | M | Luiz Gustavo       |  4.42 | 15 |
+    | M | Lienard Dimitri    |  3.16 | 12 |
+    +---+--------------------+-------+----+
+    | A | Sala Emiliano      | 74.84 | 30 |
+    | A | Neymar             | 73.48 | 52 |
+    | A | Pepe Nicolas       | 65.61 | 36 |
+    | A | Laborde Gaetan     | 44.12 | 24 |
+    | A | Diony Lois         | 23.55 | 15 |
+    | A | Ripart Renaud      | 18.19 | 17 |
+    | A | Leya Iseka Aaron   | 11.38 | 10 |
+    +---+--------------------+-------+----+
+
+### Team Update
+
+When option `team.update` is enabled, you will have in addition:
+
+    Updating team ...
+
+**NB**:  Injured players are not taken into account to compose your team during an update.
+
+### Transaction proposal
+
+When option `transactions.proposal` is enabled, you will have in addition:
+
+    Transactions proposal ...
+    Budget: 2
+    Budget if last players by line sold: 69
+    Player(s) to buy (3 best choice by line):
+    +---+----------------------------+-------+----+
+    | P |        Player name         | Eff.  | Q. |
+    +---+----------------------------+-------+----+
+    | D | Badiashile Mukinayi Benoit |  9.62 | 9  |
+    | D | Eboa Eboa Félix            |  5.89 | 11 |
+    | D | Alakouch Sofiane           |  5.89 | 11 |
+    | M | Lopez Maxime               | 11.27 | 15 |
+    | M | Sarr Bouna                 | 10.64 | 14 |
+    | M | Fulgini Angelo             | 10.64 | 13 |
+    | A | Otero Juan Ferney          |  9.14 | 13 |
+    | A | Kalifa Coulibaly           |  3.96 | 11 |
+    | A | Skuletic Petar             |  3.50 | 12 |
+    +---+----------------------------+-------+----+
 
 ## Usage (advanced)
 
