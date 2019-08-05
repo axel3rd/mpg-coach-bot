@@ -20,6 +20,8 @@ public class ChampionshipTypeWrapper {
             return ChampionshipStatsType.PREMIER_LEAGUE;
         case LIGA:
             return ChampionshipStatsType.LIGA;
+        case SERIE_A:
+            return ChampionshipStatsType.SERIE_A;
         default:
             throw new UnsupportedOperationException(String.format("Championship type not supported: %s", championship));
         }
@@ -35,6 +37,8 @@ public class ChampionshipTypeWrapper {
             return ChampionshipOutType.PREMIER_LEAGUE;
         case LIGA:
             return ChampionshipOutType.LIGA;
+        case SERIE_A:
+            return ChampionshipOutType.SERIE_A;
         default:
             throw new UnsupportedOperationException(String.format("Championship type not supported: %s", championship));
         }
