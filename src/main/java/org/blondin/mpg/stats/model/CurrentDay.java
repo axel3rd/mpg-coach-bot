@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AnnualStats {
+public class CurrentDay {
 
-    @JsonProperty("mD")
-    private int maxDay;
+    @JsonProperty("d")
+    private int day;
 
-    public int getMaxDay() {
-        return maxDay;
+    public int getDay() {
+        return day;
     }
 }

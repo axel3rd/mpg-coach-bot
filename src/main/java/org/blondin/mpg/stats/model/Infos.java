@@ -11,7 +11,9 @@ public class Infos {
     @JsonProperty("i")
     private int id;
     @JsonProperty("aS")
-    private AnnualStats annualStats;
+    private SeasonStats annualStats;
+    @JsonProperty("lS")
+    private SeasonStats lastStats;
 
     public String getName() {
         return name;
@@ -21,7 +23,11 @@ public class Infos {
         return id;
     }
 
-    public AnnualStats getAnnualStats() {
+    public SeasonStats getAnnualStats() {
         return annualStats;
+    }
+
+    public SeasonStats getLastStats() {
+        return lastStats;
     }
 }

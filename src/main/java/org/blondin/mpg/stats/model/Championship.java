@@ -18,9 +18,6 @@ public class Championship {
     @JsonProperty("p")
     private List<Player> players = new ArrayList<>();
 
-    @JsonProperty("mxD")
-    private int day;
-
     @JsonProperty("bD")
     private Date date;
 
@@ -29,19 +26,15 @@ public class Championship {
 
     private boolean maxDaySetOnPlayer;
 
-    /**
-     * Current day of season
-     * 
-     * @return The day
-     */
-    public int getDay() {
-        return day;
-    }
-
     public List<Player> getPlayers() {
         synchronized (this) {
             if (!maxDaySetOnPlayer) {
-                players.forEach(p -> p.getStats().setCurrentSeasonDay(getDay()));
+                // If last season statistics does not exist (Dominos L2 in 2019 use case, first one in MPG), current annual max day is used
+                final int previousMaxSeasonDay = getInfos().getLastStats() == null ? getInfos().getAnnualStats().getMaxDay()
+                        : getInfos().getLastStats().getMaxDay();
+                final int currentSeasonDay = getInfos().getAnnualStats().getCurrentDay().getDay();
+                players.forEach(p -> p.getStats().setCurrentSeasonDay(currentSeasonDay));
+                players.forEach(p -> p.getStats().setPreviousMaxSeasonDay(previousMaxSeasonDay));
                 maxDaySetOnPlayer = true;
             }
         }

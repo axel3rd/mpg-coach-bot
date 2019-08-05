@@ -73,6 +73,37 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testMercatoSeasonStart() throws Exception {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LJT3FXDF-status-1.json")));
+        stubFor(get("/mercato/2")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.mercato.premier-league.20190805.json")));
+        stubFor(get("/leagues.json")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20190805.json")));
+        stubFor(get("/customteam.json/Premier-League")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20190805.json")));
+        stubFor(get("/blessures-et-suspensions/fodbold/angleterre/championship")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20190805.html")));
+
+        executeMainProcess();
+        String logGlobal = getLogOut();
+        Assert.assertTrue(logGlobal.indexOf("Vardy Jamie") > logGlobal.indexOf("Mohamed Salah"));
+        Assert.assertFalse(logGlobal.contains("Mohamed Salah             | 0.00 | 50 |"));
+        Assert.assertTrue(logGlobal.contains("Aubameyang Pierre-Emerick | 143.03"));
+
+        // With focus on last N days
+        ConsoleTestAppender.logTestReset();
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isEfficiencyRecentFocus();
+        executeMainProcess(config);
+        String logEfficiency = getLogOut();
+        Assert.assertFalse(logEfficiency.contains("Mohamed Salah             | 0.00"));
+        Assert.assertTrue(logEfficiency.contains("Aubameyang Pierre-Emerick | 31.42"));
+    }
+
+    @Test
     public void testLeague2FocusEfficiencySeasonStart() throws Exception {
         prepareMainLigue2Mocks("LH9HKBTD-status-4-championship-4", "20190724", "20190801", "20190724");
         stubFor(get("/league/LH9HKBTD/coach")
