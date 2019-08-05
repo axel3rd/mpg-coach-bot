@@ -1,0 +1,19 @@
+{
+    "data": {
+        "leagues": [
+            {
+                "id": "XXXXXXXX",
+                "admin_mpg_user_id": "mpg_user_XXXX",
+                "current_mpg_user": "mpg_user_XXXX",
+                "name": "A fake league name",
+                "url": "assets/public/img/league/5.jpg",
+                "leagueStatus": 1,
+                "championship": 5,
+                "mode": 1,
+                "teamStatus": null
+            }
+        ],
+        "follow": [
+        ]
+    }
+}

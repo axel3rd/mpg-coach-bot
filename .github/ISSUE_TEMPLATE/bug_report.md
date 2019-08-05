@@ -25,6 +25,7 @@ Depending your championship, join data files set in attachment.
 - https://www.mpgstats.fr/json/customteam.json/Ligue-2
 - https://www.mpgstats.fr/json/customteam.json/Premier-League
 - https://www.mpgstats.fr/json/customteam.json/Liga
+- https://www.mpgstats.fr/json/customteam.json/SerieA
 
 3. The [Players statistics](https://www.mpgstats.fr/) time update datas : https://www.mpgstats.fr/json/leagues.json
 
@@ -33,6 +34,7 @@ Depending your championship, join data files set in attachment.
 - http://www.equipeactu.fr/blessures-et-suspensions/fodbold/france/ligue-2
 - http://www.equipeactu.fr/blessures-et-suspensions/fodbold/angleterre/championship
 - http://www.equipeactu.fr/blessures-et-suspensions/fodbold/espagne/primera-division
+- http://www.equipeactu.fr/blessures-et-suspensions/fodbold/italie/serie-a
 
 **Expected behavior**
 

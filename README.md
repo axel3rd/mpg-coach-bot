@@ -53,38 +53,40 @@ The main output is displaying:
 - Injured players, to remove of your team
 - Your team line by line, ordered by efficiency score (*Eff.*), with the players quotation/prices (*Q.*):
 
-    ========== Your league name ==========
-    Out: Aouar Houssem (M - 34.88) - INJURY_ORANGE - Inconnu (depuis 12/11) - Inconnu
-    Out: Ambroise Oyongo (D - 11.85) - INJURY_ORANGE - Blessure au genou (depuis 04/11) - Inconnu
-    
-    Optimized team:
-    +---+--------------------+-------+----+
-    | P |    Player name     | Eff.  | Q. |
-    +---+--------------------+-------+----+
-    | G | Costil Benoit      |  5.58 | 20 |
-    | G | Prior Jerome       |  0.00 | 7  |
-    +---+--------------------+-------+----+
-    | D | Le Tallec Damien   | 17.35 | 23 |
-    | D | Meunier Thomas     | 13.13 | 24 |
-    | D | Marquinhos         | 10.43 | 25 |
-    | D | Kamara Boubacar    |  4.15 | 11 |
-    | D | Dubois Léo         |  2.27 | 11 |
-    +---+--------------------+-------+----+
-    | M | Thauvin Florian    | 41.47 | 38 |
-    | M | Tielemans Youri    | 17.73 | 13 |
-    | M | Nkunku Christopher |  8.75 | 13 |
-    | M | Lucas Evangelista  |  7.10 | 8  |
-    | M | Luiz Gustavo       |  4.42 | 15 |
-    | M | Lienard Dimitri    |  3.16 | 12 |
-    +---+--------------------+-------+----+
-    | A | Sala Emiliano      | 74.84 | 30 |
-    | A | Neymar             | 73.48 | 52 |
-    | A | Pepe Nicolas       | 65.61 | 36 |
-    | A | Laborde Gaetan     | 44.12 | 24 |
-    | A | Diony Lois         | 23.55 | 15 |
-    | A | Ripart Renaud      | 18.19 | 17 |
-    | A | Leya Iseka Aaron   | 11.38 | 10 |
-    +---+--------------------+-------+----+
+```
+========== Your league name ==========
+Out: Aouar Houssem (M - 34.88) - INJURY_ORANGE - Inconnu (depuis 12/11) - Inconnu
+Out: Ambroise Oyongo (D - 11.85) - INJURY_ORANGE - Blessure au genou (depuis 04/11) - Inconnu
+
+Optimized team:
++---+--------------------+-------+----+
+| P |    Player name     | Eff.  | Q. |
++---+--------------------+-------+----+
+| G | Costil Benoit      |  5.58 | 20 |
+| G | Prior Jerome       |  0.00 | 7  |
++---+--------------------+-------+----+
+| D | Le Tallec Damien   | 17.35 | 23 |
+| D | Meunier Thomas     | 13.13 | 24 |
+| D | Marquinhos         | 10.43 | 25 |
+| D | Kamara Boubacar    |  4.15 | 11 |
+| D | Dubois Léo         |  2.27 | 11 |
++---+--------------------+-------+----+
+| M | Thauvin Florian    | 41.47 | 38 |
+| M | Tielemans Youri    | 17.73 | 13 |
+| M | Nkunku Christopher |  8.75 | 13 |
+| M | Lucas Evangelista  |  7.10 | 8  |
+| M | Luiz Gustavo       |  4.42 | 15 |
+| M | Lienard Dimitri    |  3.16 | 12 |
++---+--------------------+-------+----+
+| A | Sala Emiliano      | 74.84 | 30 |
+| A | Neymar             | 73.48 | 52 |
+| A | Pepe Nicolas       | 65.61 | 36 |
+| A | Laborde Gaetan     | 44.12 | 24 |
+| A | Diony Lois         | 23.55 | 15 |
+| A | Ripart Renaud      | 18.19 | 17 |
+| A | Leya Iseka Aaron   | 11.38 | 10 |
++---+--------------------+-------+----+
+```
 
 ### Team Update
 
