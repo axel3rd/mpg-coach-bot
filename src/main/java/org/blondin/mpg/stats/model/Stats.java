@@ -44,8 +44,11 @@ public class Stats {
         if (currentSeasonDay == 0 && days <= 0) {
             return oldGoals;
         }
-        if (days <= 0 || statsDay == null) {
+        if (days <= 0) {
             return goals;
+        }
+        if (statsDay == null) {
+            return 0;
         }
         int nbrGoals = 0;
         int maxDay = currentSeasonDay > 0 ? currentSeasonDay : previousMaxSeasonDay;
@@ -67,17 +70,25 @@ public class Stats {
         if (currentSeasonDay == 0 && days <= 0) {
             return oldAverage;
         }
-        if (days <= 0 || statsDay == null) {
+        if (days <= 0) {
             return average;
         }
+        if (statsDay == null) {
+            return 0;
+        }
         double averageLastDaysSum = 0;
+        int daysPlayed = 0;
         int maxDay = currentSeasonDay > 0 ? currentSeasonDay : previousMaxSeasonDay;
         for (int d = maxDay; d > (maxDay - days); d--) {
             if (statsDay.containsKey(d)) {
                 averageLastDaysSum += statsDay.get(d).getAverage();
+                daysPlayed++;
             }
         }
-        return Precision.round(averageLastDaysSum / days, 2);
+        if (daysPlayed == 0) {
+            return 0;
+        }
+        return Precision.round(averageLastDaysSum / daysPlayed, 2);
     }
 
     /**
@@ -90,8 +101,11 @@ public class Stats {
         if (currentSeasonDay == 0 && days <= 0) {
             return oldMatchs;
         }
-        if (days <= 0 || statsDay == null) {
+        if (days <= 0) {
             return matchs;
+        }
+        if (statsDay == null) {
+            return 0;
         }
         int nbrMatchs = 0;
         int maxDay = currentSeasonDay > 0 ? currentSeasonDay : previousMaxSeasonDay;

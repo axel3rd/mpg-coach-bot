@@ -44,8 +44,8 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
         Assert.assertEquals(6.79, playerMBappe.getStats().getAverage(0), 0);
         Assert.assertEquals(6, playerMBappe.getStats().getAverage(1), 0);
         Assert.assertEquals(6.5, playerMBappe.getStats().getAverage(2), 0);
-        Assert.assertEquals(5, playerMBappe.getStats().getAverage(4), 0);
-        Assert.assertEquals(5.43, playerMBappe.getStats().getAverage(7), 0);
+        Assert.assertEquals(6.67, playerMBappe.getStats().getAverage(4), 0);
+        Assert.assertEquals(6.33, playerMBappe.getStats().getAverage(7), 0);
         Assert.assertEquals(27, playerMBappe.getStats().getGoals(0));
         Assert.assertEquals(1, playerMBappe.getStats().getGoals(1));
         Assert.assertEquals(2, playerMBappe.getStats().getGoals(2));
