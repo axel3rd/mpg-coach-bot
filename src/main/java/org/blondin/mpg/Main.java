@@ -324,17 +324,7 @@ public class Main {
 
     private static List<Player> calculateEfficiency(List<Player> players, MpgStatsClient stats, ChampionshipStatsType championship, Config config,
             boolean failIfPlayerNotFound, boolean logWarnIfPlayerNotFound) {
-        // Calculate efficiency in statistics model
-        int daysPeriod = stats.getStats(championship).getInfos().getAnnualStats().getCurrentDay().getDay();
-
-        // If league not started, we take the number of day of season, because average will be on this period
-        if (daysPeriod == 0) {
-            // The previous season statistics could be null, in this case current annual max day is used
-            daysPeriod = stats.getStats(championship).getInfos().getLastStats() == null
-                    ? stats.getStats(championship).getInfos().getAnnualStats().getMaxDay()
-                    : stats.getStats(championship).getInfos().getLastStats().getMaxDay();
-        }
-
+        int daysPeriod = getCurrentDay(stats, championship);
         int days4efficiency = 0;
         if (config.isEfficiencyRecentFocus()) {
             days4efficiency = config.getEfficiencyRecentDays();
@@ -367,6 +357,18 @@ public class Main {
             }
         }
         return players;
+    }
+
+    private static int getCurrentDay(MpgStatsClient stats, ChampionshipStatsType championship) {
+        int daysPeriod = stats.getStats(championship).getInfos().getAnnualStats().getCurrentDay().getDay();
+        // If league not started, we take the number of day of season, because average will be on this period
+        if (daysPeriod == 0) {
+            // The previous season statistics could be null, in this case current annual max day is used
+            daysPeriod = stats.getStats(championship).getInfos().getLastStats() == null
+                    ? stats.getStats(championship).getInfos().getAnnualStats().getMaxDay()
+                    : stats.getStats(championship).getInfos().getLastStats().getMaxDay();
+        }
+        return daysPeriod;
     }
 
     private static CoachRequest getCoachRequest(Coach coach, List<Player> players, Config config) {

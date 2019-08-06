@@ -118,7 +118,35 @@ public class MainTest extends AbstractMockTestClient {
         executeMainProcess(config);
         String logEfficiency = getLogOut();
         Assert.assertFalse(logEfficiency.contains("Mohamed Salah             | 0.00"));
-        Assert.assertTrue(logEfficiency.contains("Aubameyang Pierre-Emerick | 31.42"));
+        Assert.assertTrue(logEfficiency.contains("Aubameyang Pierre-Emerick | 35.89"));
+    }
+
+    @Test
+    public void testLeague2FocusEfficiencySeasonAfter2Days() throws Exception {
+        prepareMainLigue2Mocks("LH9HKBTD-status-4-championship-4", "20190806", "20190806", "20190724");
+        stubFor(get("/league/LH9HKBTD/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LH9HKBTD.20190806.json")));
+
+        // After 2 match, Jeannin Mehdi has played only the first one with 7 as note => should have 3.5 for both (global & efficiency focus)
+        // Current bug is with efficiency focus, the note is 1.75
+
+        // With global average
+        executeMainProcess();
+        String logGlobal = getLogOut();
+        // Remove WireMock log at begin
+        logGlobal = logGlobal.substring(logGlobal.indexOf("=========="));
+        Assert.assertTrue(logGlobal.contains("A | Kadewere Tinotenda | 29.90"));
+        Assert.assertTrue(logGlobal.contains("G | Jeannin Mehdi      |  3.50"));
+        ConsoleTestAppender.logTestReset();
+
+        // With focus efficiency (8 days) on season start (2 day)
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isEfficiencyRecentFocus();
+        executeMainProcess(config);
+        String logFocus = getLogOut();
+        Assert.assertTrue(logFocus.contains("A | Kadewere Tinotenda | 29.90"));
+        Assert.assertTrue(logFocus.contains("G | Jeannin Mehdi      |  3.50"));
+        Assert.assertEquals(logGlobal, logFocus);
     }
 
     @Test
