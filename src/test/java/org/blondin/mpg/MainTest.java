@@ -90,11 +90,16 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(post("/league/KJVB6L7C/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.KJVB6L7C.20190807-Request.json")))
                 .willReturn(aResponse().withBody("{\"success\":\"teamSaved\"}")));
 
+        // This endpoint should not be called, but provide NPE to reproduce the problem
+        stubFor(get("/league/KJVB6L7C/transfer/buy")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.transfer.buy.error.normal.mode.json")));
+
         Config config = spy(getConfig());
         doReturn(true).when(config).isTeampUpdate();
         doReturn(true).when(config).isTransactionsProposal();
         doReturn(false).when(config).isTacticalSubstitutes();
         executeMainProcess(config);
+        Assert.assertTrue(getLogOut().contains("Transactions proposal can not be achieved, not available in 'MPG normal mode')"));
     }
 
     @Test

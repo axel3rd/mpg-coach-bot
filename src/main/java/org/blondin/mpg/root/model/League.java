@@ -9,6 +9,7 @@ public class League {
     private String name;
     private ChampionshipType championship;
     private LeagueStatus leagueStatus;
+    private Mode mode;
     private int teamStatus;
 
     public String getId() {
@@ -25,6 +26,10 @@ public class League {
 
     public LeagueStatus getLeagueStatus() {
         return leagueStatus;
+    }
+
+    public Mode getMode() {
+        return mode;
     }
 
     public int getTeamStatus() {
