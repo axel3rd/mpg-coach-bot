@@ -33,7 +33,7 @@ public class MpgClient extends AbstractClient {
 
     private static final String PATH_LEAGUE = "league/";
 
-    private final MultivaluedMap<String, Object> headersToken = new MultivaluedHashMap<>();
+    private final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
 
     private MpgClient() {
         super();
@@ -54,11 +54,11 @@ public class MpgClient extends AbstractClient {
     public Coach getCoach(String league) {
         final String path = PATH_LEAGUE + league + "/coach";
         try {
-            return get(path, headersToken, Coach.class, true);
+            return get(path, headers, Coach.class, true);
         } catch (ProcessingException e) {
             if (e.getCause() instanceof JsonMappingException
                     && e.getCause().getMessage().contains("Root name 'success' does not match expected ('data')")) {
-                String response = get(path, headersToken, String.class, true);
+                String response = get(path, headers, String.class, true);
                 if (response.contains("noMoreGames")) {
                     throw new NoMoreGamesException();
                 }
@@ -69,21 +69,19 @@ public class MpgClient extends AbstractClient {
     }
 
     public Dashboard getDashboard() {
-        return get("user/dashboard", headersToken, Dashboard.class, true);
+        return get("user/dashboard", headers, Dashboard.class, true);
     }
 
     public Mercato getMercato(ChampionshipType championship) {
-        return get("mercato/" + championship.value(), headersToken, MercatoChampionship.class);
+        return get("mercato/" + championship.value(), headers, MercatoChampionship.class);
     }
 
     public Mercato getMercato(String league) {
-        MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>(headersToken);
-        headers.add("client-version", MPG_CLIENT_VERSION);
         return get(PATH_LEAGUE + league + "/mercato", headers, MercatoLeague.class);
     }
 
     public TransferBuy getTransferBuy(String league) {
-        return get(PATH_LEAGUE + league + "/transfer/buy", headersToken, TransferBuy.class);
+        return get(PATH_LEAGUE + league + "/transfer/buy", headers, TransferBuy.class);
     }
 
     private void signIn(String login, String password) {
@@ -92,11 +90,12 @@ public class MpgClient extends AbstractClient {
         entity.put("password", password);
         entity.put("language", "fr-FR");
         String token = post("user/signIn", entity, UserSignIn.class).getToken();
-        headersToken.add("authorization", token);
+        headers.add("authorization", token);
+        headers.add("client-version", MPG_CLIENT_VERSION);
     }
 
     public void updateCoach(League league, CoachRequest coachRequest) {
-        String result = post(PATH_LEAGUE + league.getId() + "/coach", headersToken, coachRequest, String.class);
+        String result = post(PATH_LEAGUE + league.getId() + "/coach", headers, coachRequest, String.class);
         if (!"{\"success\":\"teamSaved\"}".equals(result)) {
             throw new UnsupportedOperationException(String.format("The team has been updated, result message: %s", result));
         }
