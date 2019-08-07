@@ -74,6 +74,31 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testUpdateTeamPremierLeague() throws Exception {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.KJVB6L7C-status-4.json")));
+        stubFor(get("/league/KJVB6L7C/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.KJVB6L7C.20190807.json")));
+        stubFor(get("/leagues.json")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20190806.json")));
+        stubFor(get("/customteam.json/Premier-League")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20190805.json")));
+        stubFor(get("/blessures-et-suspensions/fodbold/angleterre/championship")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20190805.html")));
+
+        // TODO: mpg.coach.KJVB6L7C.20190807-Request.json should be updated with the players order
+        stubFor(post("/league/KJVB6L7C/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.KJVB6L7C.20190807-Request.json")))
+                .willReturn(aResponse().withBody("{\"success\":\"teamSaved\"}")));
+
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        executeMainProcess(config);
+    }
+
+    @Test
     public void testMercatoLeagueStartHeaderClientRequired() throws Exception {
         prepareMainLigue1Mocks("qyOG7BuuZcv-status-3", "20190806", "20190807", "20190807");
 

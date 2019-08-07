@@ -1,0 +1,29 @@
+{
+    "playersOnPitch": {
+        "1": "player_21205",
+        "2": "player_203368",
+        "3": "player_56192",
+        "4": "player_39487",
+        "5": "player_54484",
+        "6": "player_40868",
+        "7": "player_431131",
+        "8": "player_217593",
+        "9": "player_91651",
+        "10": "player_102057",
+        "11": "player_94924",
+        "12": null,
+        "13": null,
+        "14": null,
+        "15": null,
+        "16": null,
+        "17": null,
+        "18": null
+    },
+    "composition": 532,
+    "tacticalsubstitutes": [
+    ],
+    "bonusSelected": {
+    },
+    "matchId": "mpg_match_KJVB6L7C_3_1_1",
+    "realday": 1
+}

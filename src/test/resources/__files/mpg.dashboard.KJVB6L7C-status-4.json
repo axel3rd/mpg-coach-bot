@@ -1,0 +1,20 @@
+{
+    "data": {
+        "leagues": [
+            {
+                "id": "KJVB6L7C",
+                "admin_mpg_user_id": "mpg_user_352212",
+                "current_mpg_user": "mpg_user_306874",
+                "name": "World Cup 2018 Part deux",
+                "url": "assets/public/img/league/6.jpg",
+                "leagueStatus": 4,
+                "championship": 2,
+                "mode": 1,
+                "teamStatus": 2,
+                "players": 10
+            }
+        ],
+        "follow": [
+        ]
+    }
+}
