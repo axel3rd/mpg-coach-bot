@@ -20,6 +20,7 @@ import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.League;
 import org.blondin.mpg.root.model.LeagueStatus;
+import org.blondin.mpg.root.model.Mode;
 import org.blondin.mpg.root.model.Player;
 import org.blondin.mpg.root.model.Position;
 import org.blondin.mpg.root.model.TacticalSubstitute;
@@ -167,14 +168,18 @@ public class Main {
             }
 
             if (config.isTransactionsProposal()) {
-                LOG.info("\nTransactions proposal ...");
-                TransferBuy transferBuy = mpgClient.getTransferBuy(league.getId());
-                List<Player> playersAvailable = transferBuy.getAvailablePlayers();
-                removeOutPlayers(playersAvailable, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()), false);
-                calculateEfficiency(playersAvailable, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false,
-                        false);
-                writeTransactionsProposal(playersTeam, playersAvailable, transferBuy.getBudget(), outPlayersClient,
-                        ChampionshipTypeWrapper.toOut(league.getChampionship()), config);
+                if (Mode.NORMAL.equals(league.getMode())) {
+                    LOG.info("\n(Transactions proposal can not be achieved, not available in 'MPG normal mode')");
+                } else {
+                    LOG.info("\nTransactions proposal ...");
+                    TransferBuy transferBuy = mpgClient.getTransferBuy(league.getId());
+                    List<Player> playersAvailable = transferBuy.getAvailablePlayers();
+                    removeOutPlayers(playersAvailable, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()), false);
+                    calculateEfficiency(playersAvailable, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false,
+                            false);
+                    writeTransactionsProposal(playersTeam, playersAvailable, transferBuy.getBudget(), outPlayersClient,
+                            ChampionshipTypeWrapper.toOut(league.getChampionship()), config);
+                }
             }
         } catch (NoMoreGamesException e) {
             LOG.info("\nNo more games in this league ...\n");
@@ -286,9 +291,6 @@ public class Main {
     static List<Player> removeOutPlayers(List<Player> players, InjuredSuspendedClient outPlayersClient, ChampionshipOutType championship,
             boolean displayOut) {
         List<Player> outPlayers = new ArrayList<>();
-        if (players == null) {
-            System.out.println("stop");
-        }
         for (Player player : players) {
             org.blondin.mpg.equipeactu.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
                     PositionWrapper.toOut(player.getPosition()), OutType.INJURY_GREEN);
