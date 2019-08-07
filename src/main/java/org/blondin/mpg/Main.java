@@ -286,6 +286,9 @@ public class Main {
     static List<Player> removeOutPlayers(List<Player> players, InjuredSuspendedClient outPlayersClient, ChampionshipOutType championship,
             boolean displayOut) {
         List<Player> outPlayers = new ArrayList<>();
+        if (players == null) {
+            System.out.println("stop");
+        }
         for (Player player : players) {
             org.blondin.mpg.equipeactu.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
                     PositionWrapper.toOut(player.getPosition()), OutType.INJURY_GREEN);
@@ -372,9 +375,9 @@ public class Main {
     }
 
     private static CoachRequest getCoachRequest(Coach coach, List<Player> players, Config config) {
-        int nbrDefenders = coach.getComposition() % 10;
+        int nbrAttackers = coach.getComposition() % 10;
         int nbrMidfielders = coach.getComposition() % 100 / 10;
-        int nbrAttackers = coach.getComposition() / 100;
+        int nbrDefenders = coach.getComposition() / 100;
 
         CoachRequest request = new CoachRequest(coach);
 
