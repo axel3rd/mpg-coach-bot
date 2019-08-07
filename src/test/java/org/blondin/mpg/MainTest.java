@@ -74,7 +74,7 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
-    public void testUpdateTeamPremierLeague() throws Exception {
+    public void testUpdateTeamPremierLeague352WithTransactionProposalButNotEnabled() throws Exception {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
         stubFor(get("/user/dashboard")
@@ -87,13 +87,12 @@ public class MainTest extends AbstractMockTestClient {
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20190805.json")));
         stubFor(get("/blessures-et-suspensions/fodbold/angleterre/championship")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20190805.html")));
-
-        // TODO: mpg.coach.KJVB6L7C.20190807-Request.json should be updated with the players order
         stubFor(post("/league/KJVB6L7C/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.KJVB6L7C.20190807-Request.json")))
                 .willReturn(aResponse().withBody("{\"success\":\"teamSaved\"}")));
 
         Config config = spy(getConfig());
         doReturn(true).when(config).isTeampUpdate();
+        doReturn(true).when(config).isTransactionsProposal();
         doReturn(false).when(config).isTacticalSubstitutes();
         executeMainProcess(config);
     }
