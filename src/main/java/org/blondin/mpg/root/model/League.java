@@ -10,6 +10,7 @@ public class League {
     private ChampionshipType championship;
     private LeagueStatus leagueStatus;
     private int teamStatus;
+    private int players;
 
     public String getId() {
         return id;
@@ -29,5 +30,9 @@ public class League {
 
     public int getTeamStatus() {
         return teamStatus;
+    }
+
+    public int getPlayers() {
+        return players;
     }
 }

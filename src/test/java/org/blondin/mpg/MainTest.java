@@ -73,6 +73,26 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testMercatoNeedCreateTeam() throws Exception {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LJT3FXDF-status-3-needinfos.json")));
+        executeMainProcess();
+        Assert.assertTrue(getLogOut().contains("It seems you should fill team informations before access to first mercato round"));
+    }
+
+    @Test
+    public void testMercatoTurnClosed() throws Exception {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LJT3FXDF-status-3-nextmercatoturn.json")));
+        executeMainProcess();
+        Assert.assertTrue(getLogOut().contains("Mercato round is closed, come back for the next"));
+    }
+
+    @Test
     public void testSerieASupportSeasonStart() throws Exception {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
@@ -413,7 +433,7 @@ public class MainTest extends AbstractMockTestClient {
         prepareMainLigue1Mocks("KX24XMUG-status-3+1-KLGXSSUG-status-5", null, null, null);
 
         executeMainProcess();
-        Assert.assertTrue(getLogOut(), getLogOut().contains("Mercato turn is closed, come back for the next"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Mercato round is closed, come back for the next"));
     }
 
     @Test

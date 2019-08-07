@@ -80,8 +80,12 @@ public class Main {
             processMercatoChampionship(league, mpgClient, mpgStatsClient, outPlayersClient, config);
             break;
         case MERCATO:
+            if (league.getTeamStatus() == 0 && league.getPlayers() > 0) {
+                LOG.info("\nIt seems you should fill team informations before access to first mercato round.\n");
+                return;
+            }
             if (league.getTeamStatus() == 1) {
-                LOG.info("\nMercato turn is closed, come back for the next !\n");
+                LOG.info("\nMercato round is closed, come back for the next !\n");
                 return;
             }
             processMercatoLeague(league, mpgClient, mpgStatsClient, outPlayersClient, config);

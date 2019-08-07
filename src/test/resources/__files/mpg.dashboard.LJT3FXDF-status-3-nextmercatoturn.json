@@ -1,0 +1,20 @@
+{
+    "data": {
+        "leagues": [
+            {
+                "id": "LJT3FXDF",
+                "admin_mpg_user_id": "mpg_user_35635",
+                "current_mpg_user": "mpg_user_955966",
+                "name": "Peter Ouch ",
+                "url": "assets/public/img/league/1.jpg",
+                "leagueStatus": 3,
+                "championship": 2,
+                "mode": 1,
+                "teamStatus": 1,
+                "players": 10
+            }
+        ],
+        "follow": [
+        ]
+    }
+}
