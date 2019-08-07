@@ -82,7 +82,11 @@ public class Main {
             break;
         case MERCATO:
             if (league.getTeamStatus() == 1) {
-                LOG.info("\nMercato turn is closed, come back for the next !\n");
+                LOG.info("\nMercato round is closed, come back soon for the next !\n");
+                return;
+            }
+            if (league.getTeamStatus() == 2) {
+                LOG.info("\nMercato will be ending, ready for your first match ?\n");
                 return;
             }
             processMercatoLeague(league, mpgClient, mpgStatsClient, outPlayersClient, config);

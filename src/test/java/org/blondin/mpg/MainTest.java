@@ -74,6 +74,16 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testMercatoEnding() throws Exception {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.qyOG7BuuZcv-status-3-teamStatus-2.json")));
+        executeMainProcess();
+        Assert.assertTrue(getLogOut().contains("Mercato will be ending, ready for your first match"));
+    }
+
+    @Test
     public void testUpdateTeamPremierLeague352WithTransactionProposalButNotEnabled() throws Exception {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
@@ -459,7 +469,7 @@ public class MainTest extends AbstractMockTestClient {
         prepareMainLigue1Mocks("KX24XMUG-status-3+1-KLGXSSUG-status-5", null, null, null);
 
         executeMainProcess();
-        Assert.assertTrue(getLogOut(), getLogOut().contains("Mercato turn is closed, come back for the next"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Mercato round is closed, come back soon for the next"));
     }
 
     @Test
