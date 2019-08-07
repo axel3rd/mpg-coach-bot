@@ -1,6 +1,7 @@
 package org.blondin.mpg;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
@@ -70,6 +71,22 @@ public class MainTest extends AbstractMockTestClient {
             // Proxy not configured or real URL not accessible
             Assert.assertEquals("No network", "java.net.UnknownHostException: api.monpetitgazon.com", e.getMessage());
         }
+    }
+
+    @Test
+    public void testMercatoLeagueStartHeaderClientRequired() throws Exception {
+        prepareMainLigue1Mocks("qyOG7BuuZcv-status-3", "20190806", "20190807", "20190807");
+
+        // Correct mercato request
+        stubFor(get("/league/qyOG7BuuZcv/mercato").withHeader("client-version", equalTo(MpgClient.MPG_CLIENT_VERSION)).atPriority(1)
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.mercato.qyOG7BuuZcv.20190807.json")));
+
+        // Incorrect mercato request
+        stubFor(get("/league/qyOG7BuuZcv/mercato").atPriority(5).willReturn(aResponse().withHeader("Content-Type", "application/json").withStatus(403)
+                .withBody("{\"success\":false,\"error\":\"needUpdate\",\"code\":854}")));
+
+        executeMainProcess();
+        Assert.assertTrue(getLogOut().contains("Proposal for your mercato"));
     }
 
     @Test
