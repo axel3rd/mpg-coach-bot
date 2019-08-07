@@ -29,9 +29,11 @@ import com.fasterxml.jackson.databind.JsonMappingException;
  */
 public class MpgClient extends AbstractClient {
 
+    public static final String MPG_CLIENT_VERSION = "5.2.0";
+
     private static final String PATH_LEAGUE = "league/";
 
-    private MultivaluedMap<String, Object> headersToken = new MultivaluedHashMap<>();
+    private final MultivaluedMap<String, Object> headersToken = new MultivaluedHashMap<>();
 
     private MpgClient() {
         super();
@@ -75,7 +77,9 @@ public class MpgClient extends AbstractClient {
     }
 
     public Mercato getMercato(String league) {
-        return get(PATH_LEAGUE + league + "/mercato", headersToken, MercatoLeague.class);
+        MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>(headersToken);
+        headers.add("client-version", MPG_CLIENT_VERSION);
+        return get(PATH_LEAGUE + league + "/mercato", headers, MercatoLeague.class);
     }
 
     public TransferBuy getTransferBuy(String league) {

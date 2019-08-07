@@ -1,0 +1,19 @@
+{
+    "data": {
+        "leagues": [
+            {
+                "id": "qyOG7BuuZcv",
+                "admin_mpg_user_id": "mpg_user_306874",
+                "current_mpg_user": "mpg_user_306874",
+                "name": "Liga 1 Casas Bahia",
+                "url": "assets/public/img/league/7.jpg",
+                "leagueStatus": 3,
+                "championship": 1,
+                "mode": 1,
+                "teamStatus": 0,
+                "players": 10
+            }        ],
+        "follow": [
+        ]
+    }
+}
