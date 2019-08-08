@@ -7,16 +7,16 @@ MPG (Mon Petit Gazon) coach bot, to automate and optimize weekly league actions
 
 ## Concept
 
-Automate and optimize your [MPG](http://mpg.football/) weekly league actions, using external datas like [mpgstats](https://www.mpgstats.fr) and [equipeactu](http://www.equipeactu.fr/blessures-et-suspensions/).
+Automate and optimize your [MPG](http://mpg.football/) weekly league actions, using external data like [mpgstats](https://www.mpgstats.fr) and [equipeactu](http://www.equipeactu.fr/blessures-et-suspensions/).
 
 **The common features are:**
 
 - Displaying your teams, line by line, ordered by players efficiency (with injured players)
 - Updating your team (if option `team.update` is enabled)
-- Proposing some players to buy, better than the one you have (if option `transactions.proposal` is enabled)
+- Proposing some players to buy, better than the one you have (if option `transactions.proposal` is enabled and *MPG* expert mode is bought)
 - When league not started (aka: *mercato*), the best players to buy for your incoming team
 
-**NB:**: Your tactical organization and selected bonus are not updated and let as configured.
+**NB:** Your tactical organization and selected bonus are not updated and let as configured.
 
 The efficiency algorithm used to calculate players efficiency score is:
 
@@ -42,7 +42,7 @@ Depending your environment system, run `mpg-coach-bot.bat` (Windows) or `mpg-coa
 
 To fully automate update your weekly actions on your *MPG* leagues, you can use a Linux *crontab* (daily at 6pm, for sample).
 
-**Disclaimer**: MPG credentials are used to connect on MPG website API, to retrieve your leagues informations. These credentials are not stored outside the configuration file, but are in memory during the program execution.
+**Disclaimer**: *MPG* credentials are used to connect on *MPG* website API, to retrieve your leagues informations. These credentials are not stored outside the configuration file, but are in memory during the program execution.
 
 ## Sample output
 
@@ -90,7 +90,7 @@ Optimized team:
 
 ### Team Update
 
-When option `team.update` is enabled, you will have in addition:
+When option `team.update` is enabled and *MPG* expert mode is bought, you will have in addition:
 
     Updating team ...
 
@@ -211,7 +211,7 @@ For development/SNAPSHOT build, use:
 mvn install
 ```
 
-Locally on your computer, you can improve end2end tests by providing file `src/test/resources/mpg.properties` file with *real* datas (see `mpg.properties.here` file in directory for details):
+Locally on your computer, you can improve end2end tests by providing file `src/test/resources/mpg.properties` file with *real* data (see `mpg.properties.here` file in directory for details):
 
 ```
 email = firstName.lastName@gmail.com

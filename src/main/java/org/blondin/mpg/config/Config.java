@@ -82,10 +82,15 @@ public class Config {
         return valueIfNotDefined;
     }
 
-    private static int parseInt(Properties properties, String key, int valueIfNotDefined) {
+    private static int parseInt(Properties properties, String key, int valueIfNotDefined, int min, int max) {
         String value = parseString(properties, key);
         if (StringUtils.isNotBlank(value)) {
-            return Integer.parseInt(value);
+            int valueInt = Integer.parseInt(value);
+            if (valueInt < min || valueInt > max) {
+                throw new UnsupportedOperationException(
+                        String.format("The property '%s' can't be '%s', should between '%s' and '%s'", key, valueInt, min, max));
+            }
+            return valueInt;
         }
         return valueIfNotDefined;
     }
@@ -99,7 +104,7 @@ public class Config {
         }
         config.teampUpdate = parseBoolean(properties, "team.update", config.teampUpdate);
         config.efficiencyRecentFocus = parseBoolean(properties, "efficiency.recent.focus", config.efficiencyRecentFocus);
-        config.efficiencyRecentDays = parseInt(properties, "efficiency.recent.days", config.efficiencyRecentDays);
+        config.efficiencyRecentDays = parseInt(properties, "efficiency.recent.days", config.efficiencyRecentDays, 1, config.efficiencyRecentDays);
         config.transactionsProposal = parseBoolean(properties, "transactions.proposal", config.transactionsProposal);
     }
 

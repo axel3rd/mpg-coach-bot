@@ -109,7 +109,8 @@ public class MainTest extends AbstractMockTestClient {
         doReturn(true).when(config).isTransactionsProposal();
         doReturn(false).when(config).isTacticalSubstitutes();
         executeMainProcess(config);
-        Assert.assertTrue(getLogOut().contains("Transactions proposal can not be achieved, not available in 'MPG normal mode')"));
+        Assert.assertTrue(getLogOut()
+                .contains("Transaction proposals can not be achieved, you should buy 'MPG expert mode' for this league (very fun, not expensive!)"));
     }
 
     @Test

@@ -15,21 +15,24 @@ A clear and concise description of what the bug is, with a copy/paste of Java ex
 
 Depending your championship, join data files set in attachment.
 
-1. The [MPG](https://mpg.football/) JSon *Response* of these *Request* on https://api.monpetitgazon.com (visible via F12 in your browser):
+1. The [MPG](https://mpg.football/) JSon *Response* of these *Request* on https://api.monpetitgazon.com (use the browser network monitor - F12, see wiki [Get MPG data for opening a bug](https://github.com/axel3rd/mpg-coach-bot/wiki/Get-MPG-data-for-opening-a-bug) for more details):
+
 - From home : `GET /user/dashboard`
 - From coach: `GET /league/[yourLeagueId]/coach`
 - From transfer : `GET /league/[yourLeagueId]/transfer/buy`
 
 2. The [Players statistics](https://www.mpgstats.fr/) data, one JSon from:
+
 - https://www.mpgstats.fr/json/customteam.json/Ligue-1
 - https://www.mpgstats.fr/json/customteam.json/Ligue-2
 - https://www.mpgstats.fr/json/customteam.json/Premier-League
 - https://www.mpgstats.fr/json/customteam.json/Liga
 - https://www.mpgstats.fr/json/customteam.json/SerieA
 
-3. The [Players statistics](https://www.mpgstats.fr/) time update datas : https://www.mpgstats.fr/json/leagues.json
+3. The [Players statistics](https://www.mpgstats.fr/) time update data : https://www.mpgstats.fr/json/leagues.json
 
 4. The [Injury / Suspended](http://www.equipeactu.fr/blessures-et-suspensions/fodbold/) data, one full HTML from:
+
 - http://www.equipeactu.fr/blessures-et-suspensions/fodbold/france/ligue-1
 - http://www.equipeactu.fr/blessures-et-suspensions/fodbold/france/ligue-2
 - http://www.equipeactu.fr/blessures-et-suspensions/fodbold/angleterre/championship
@@ -40,4 +43,4 @@ Depending your championship, join data files set in attachment.
 
 A clear and concise description of what you expected to happen.
 
-If problem on *update team* feature, please join the *Request* and *Response* (visible via F12 in your browser) of `POST /league/[yourLeagueId]/coach` when you save your team in [MPG](https://mpg.football/).
+If problem on *update team* feature, please join the *Request* and *Response* of `POST /league/[yourLeagueId]/coach` when you save your team in [MPG](https://mpg.football/).

@@ -56,7 +56,7 @@ public class ConfigTest {
         lines.add("password = foobar");
         lines.add("team.update=true");
         lines.add("efficiency.recent.focus=true");
-        lines.add(" efficiency.recent.days=5");
+        lines.add("efficiency.recent.days=5");
         lines.add("tactical.substitutes=false");
         lines.add("tactical.substitute.attacker=3.2");
         lines.add("tactical.substitute.midfielder=1");
@@ -106,4 +106,41 @@ public class ConfigTest {
         Assert.assertEquals("foo", config.getProxy().getUser());
         Assert.assertEquals("bar", config.getProxy().getPassword());
     }
+
+    @Test
+    public void testBadEfficiencyRecentDayMax() throws IOException {
+        List<String> lines = new ArrayList<>();
+        lines.add("email = firstName.lastName@gmail.com");
+        lines.add("password = foobar");
+        lines.add("efficiency.recent.days=42");
+        File configFile = new File(testFolder.getRoot(), "mpg.properties.test");
+        FileUtils.writeLines(configFile, lines);
+
+        try {
+            Config.build(configFile.getPath());
+            Assert.fail("Days > max");
+        } catch (UnsupportedOperationException e) {
+            Assert.assertTrue(e.getMessage().contains("efficiency.recent.days"));
+            Assert.assertTrue(e.getMessage().contains("8"));
+        }
+    }
+
+    @Test
+    public void testBadEfficiencyRecentDayMin() throws IOException {
+        List<String> lines = new ArrayList<>();
+        lines.add("email = firstName.lastName@gmail.com");
+        lines.add("password = foobar");
+        lines.add("efficiency.recent.days=0");
+        File configFile = new File(testFolder.getRoot(), "mpg.properties.test");
+        FileUtils.writeLines(configFile, lines);
+
+        try {
+            Config.build(configFile.getPath());
+            Assert.fail("Days > max");
+        } catch (UnsupportedOperationException e) {
+            Assert.assertTrue(e.getMessage().contains("efficiency.recent.days"));
+            Assert.assertTrue(e.getMessage().contains("8"));
+        }
+    }
+
 }
