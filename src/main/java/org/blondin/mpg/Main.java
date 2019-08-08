@@ -173,7 +173,8 @@ public class Main {
 
             if (config.isTransactionsProposal()) {
                 if (Mode.NORMAL.equals(league.getMode())) {
-                    LOG.info("\n(Transactions proposal can not be achieved, not available in 'MPG normal mode')");
+                    LOG.info(
+                            "\n(Transaction proposals can not be achieved, you should buy 'MPG expert mode' for this league (very fun, not expensive!)");
                 } else {
                     LOG.info("\nTransactions proposal ...");
                     TransferBuy transferBuy = mpgClient.getTransferBuy(league.getId());
