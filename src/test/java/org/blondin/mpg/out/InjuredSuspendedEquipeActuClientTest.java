@@ -1,4 +1,4 @@
-package org.blondin.mpg.equipeactu;
+package org.blondin.mpg.out;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -14,18 +14,18 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.blondin.mpg.AbstractMockTestClient;
 import org.blondin.mpg.config.Config;
-import org.blondin.mpg.equipeactu.model.OutType;
-import org.blondin.mpg.equipeactu.model.Player;
-import org.blondin.mpg.equipeactu.model.Position;
+import org.blondin.mpg.out.model.OutType;
+import org.blondin.mpg.out.model.Player;
+import org.blondin.mpg.out.model.Position;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class InjuredSuspendedClientTest extends AbstractMockTestClient {
+public class InjuredSuspendedEquipeActuClientTest extends AbstractMockTestClient {
 
     @Test
     public void testLocalMapping() throws Exception {
         for (String subFile : Arrays.asList("ligue-1", "premier-league", "liga")) {
-            List<Player> players = InjuredSuspendedClient.build(Config.build("src/test/resources/mpg.properties.here")).getPlayers(FileUtils
+            List<Player> players = InjuredSuspendedEquipeActuClient.build(Config.build("src/test/resources/mpg.properties.here")).getPlayers(FileUtils
                     .readFileToString(new File("src/test/resources/__files", "equipeactu." + subFile + ".20181017.html"), Charset.defaultCharset()));
             Assert.assertNotNull(players);
             Assert.assertTrue(players.size() > 10);
@@ -40,9 +40,9 @@ public class InjuredSuspendedClientTest extends AbstractMockTestClient {
 
     @Test
     public void testSomeInjuries() throws Exception {
-        InjuredSuspendedClient client = spy(InjuredSuspendedClient.class);
-        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.ligue-1.20190131.html"), "UTF-8")).when(client)
-                .getHtmlContent(ChampionshipOutType.LIGUE_1);
+        InjuredSuspendedEquipeActuClient client = spy(InjuredSuspendedEquipeActuClient.class);
+        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.ligue-1.20190131.html"), Charset.defaultCharset()))
+                .when(client).getHtmlContent(ChampionshipOutType.LIGUE_1);
 
         Assert.assertNotNull("Fares Bahlouli is injured", client.getPlayer(ChampionshipOutType.LIGUE_1, "Fares Bahlouli", Position.UNDEFINED));
         Assert.assertNotNull("Neymar is injured", client.getPlayer(ChampionshipOutType.LIGUE_1, "Neymar", Position.UNDEFINED));
@@ -56,9 +56,9 @@ public class InjuredSuspendedClientTest extends AbstractMockTestClient {
         ChampionshipOutType c = ChampionshipOutType.LIGUE_1;
 
         // Mock
-        InjuredSuspendedClient client = spy(InjuredSuspendedClient.class);
-        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.ligue-1.20181017.html"), "UTF-8")).when(client)
-                .getHtmlContent(ChampionshipOutType.LIGUE_1);
+        InjuredSuspendedEquipeActuClient client = spy(InjuredSuspendedEquipeActuClient.class);
+        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.ligue-1.20181017.html"), Charset.defaultCharset()))
+                .when(client).getHtmlContent(ChampionshipOutType.LIGUE_1);
 
         // Test
         Assert.assertNotNull(client.getPlayer(c, "Presnel Kimpembe", Position.UNDEFINED));
@@ -79,9 +79,9 @@ public class InjuredSuspendedClientTest extends AbstractMockTestClient {
         ChampionshipOutType c = ChampionshipOutType.PREMIER_LEAGUE;
 
         // Mock
-        InjuredSuspendedClient client = spy(InjuredSuspendedClient.class);
-        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.premier-league.20181017.html"), "UTF-8")).when(client)
-                .getHtmlContent(ChampionshipOutType.PREMIER_LEAGUE);
+        InjuredSuspendedEquipeActuClient client = spy(InjuredSuspendedEquipeActuClient.class);
+        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.premier-league.20181017.html"),
+                Charset.defaultCharset())).when(client).getHtmlContent(ChampionshipOutType.PREMIER_LEAGUE);
 
         // Test
         Assert.assertNotNull(client.getPlayer(c, "Yoshinori Muto", Position.UNDEFINED));
@@ -103,9 +103,9 @@ public class InjuredSuspendedClientTest extends AbstractMockTestClient {
         ChampionshipOutType c = ChampionshipOutType.LIGA;
 
         // Mock
-        InjuredSuspendedClient client = spy(InjuredSuspendedClient.class);
-        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.liga.20181017.html"), "UTF-8")).when(client)
-                .getHtmlContent(ChampionshipOutType.LIGA);
+        InjuredSuspendedEquipeActuClient client = spy(InjuredSuspendedEquipeActuClient.class);
+        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.liga.20181017.html"), Charset.defaultCharset()))
+                .when(client).getHtmlContent(ChampionshipOutType.LIGA);
 
         // Test
         Assert.assertNotNull(client.getPlayer(c, "Unai Bustinza", Position.UNDEFINED));
@@ -131,11 +131,11 @@ public class InjuredSuspendedClientTest extends AbstractMockTestClient {
         stubFor(get("/blessures-et-suspensions/fodbold/espagne/primera-division")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.liga.20181017.html")));
 
-        InjuredSuspendedClient injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+        InjuredSuspendedEquipeActuClient injuredSuspendedClient = InjuredSuspendedEquipeActuClient.build(getConfig(),
                 "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
 
         // Remove cache
-        File tmpFile = InjuredSuspendedClient.getCacheFile("http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/",
+        File tmpFile = InjuredSuspendedEquipeActuClient.getCacheFile("http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/",
                 "france/ligue-1");
         tmpFile.delete();
         Assert.assertFalse(tmpFile.exists());
@@ -149,7 +149,7 @@ public class InjuredSuspendedClientTest extends AbstractMockTestClient {
         // Verify cache file has been created, recall and verify date file doesn't change
         Assert.assertTrue(tmpFile.exists());
         long cacheDate = tmpFile.lastModified();
-        injuredSuspendedClient = InjuredSuspendedClient.build(getConfig(),
+        injuredSuspendedClient = InjuredSuspendedEquipeActuClient.build(getConfig(),
                 "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
         injuredSuspendedClient.getPlayers(ChampionshipOutType.LIGUE_1);
         Assert.assertEquals(cacheDate, tmpFile.lastModified());

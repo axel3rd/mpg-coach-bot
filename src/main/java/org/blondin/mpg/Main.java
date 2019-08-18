@@ -10,9 +10,9 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.config.Config;
-import org.blondin.mpg.equipeactu.ChampionshipOutType;
-import org.blondin.mpg.equipeactu.InjuredSuspendedClient;
-import org.blondin.mpg.equipeactu.model.OutType;
+import org.blondin.mpg.out.ChampionshipOutType;
+import org.blondin.mpg.out.InjuredSuspendedWrapperClient;
+import org.blondin.mpg.out.model.OutType;
 import org.blondin.mpg.root.MpgClient;
 import org.blondin.mpg.root.exception.NoMoreGamesException;
 import org.blondin.mpg.root.exception.PlayerNotFoundException;
@@ -56,11 +56,11 @@ public class Main {
         Config config = Config.build(configFile);
         MpgClient mpgClient = MpgClient.build(config);
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(config);
-        InjuredSuspendedClient outPlayersClient = InjuredSuspendedClient.build(config);
+        InjuredSuspendedWrapperClient outPlayersClient = InjuredSuspendedWrapperClient.build(config);
         process(mpgClient, mpgStatsClient, outPlayersClient, config);
     }
 
-    static void process(MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient, Config config) {
+    static void process(MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedWrapperClient outPlayersClient, Config config) {
         for (League league : mpgClient.getDashboard().getLeagues()) {
             if (LeagueStatus.TERMINATED.equals(league.getLeagueStatus())) {
                 // Don't display any logs
@@ -70,7 +70,7 @@ public class Main {
         }
     }
 
-    static void processLeague(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient,
+    static void processLeague(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedWrapperClient outPlayersClient,
             Config config) {
         LOG.info("========== {} ==========", league.getName());
         switch (league.getLeagueStatus()) {
@@ -97,7 +97,7 @@ public class Main {
         }
     }
 
-    static void processMercatoLeague(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient,
+    static void processMercatoLeague(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedWrapperClient outPlayersClient,
             Config config) {
         LOG.info("\nProposal for your mercato:\n");
         List<Player> players = mpgClient.getMercato(league.getId()).getPlayers();
@@ -105,7 +105,7 @@ public class Main {
         processMercato(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
     }
 
-    static void processMercatoChampionship(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient,
+    static void processMercatoChampionship(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedWrapperClient outPlayersClient,
             Config config) {
         LOG.info("\nProposal for your coming soon mercato:\n");
         List<Player> players = mpgClient.getMercato(league.getChampionship()).getPlayers();
@@ -113,7 +113,7 @@ public class Main {
         processMercato(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
     }
 
-    static void processMercato(List<Player> players, InjuredSuspendedClient outPlayersClient, ChampionshipOutType championship) {
+    static void processMercato(List<Player> players, InjuredSuspendedWrapperClient outPlayersClient, ChampionshipOutType championship) {
         Collections.sort(players,
                 Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed());
         List<Player> goals = players.stream().filter(p -> p.getPosition().equals(Position.G)).collect(Collectors.toList()).subList(0, 5);
@@ -124,7 +124,7 @@ public class Main {
         AsciiTable at = getTable(TABLE_POSITION, TABLE_PLAYER_NAME, TABLE_EFFICIENCY, TABLE_QUOTE, "Out info");
         for (List<Player> line : Arrays.asList(goals, defenders, midfielders, attackers)) {
             for (Player player : line) {
-                org.blondin.mpg.equipeactu.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
+                org.blondin.mpg.out.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
                         PositionWrapper.toOut(player.getPosition()), OutType.INJURY_GREEN);
                 String outInfos = "";
                 if (outPlayer != null) {
@@ -144,7 +144,7 @@ public class Main {
         LOG.info("");
     }
 
-    static void processGames(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient outPlayersClient,
+    static void processGames(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedWrapperClient outPlayersClient,
             Config config) {
         try {
 
@@ -214,7 +214,7 @@ public class Main {
     }
 
     private static void writeTransactionsProposal(List<Player> playersTeam, List<Player> playersAvailable, int budget,
-            InjuredSuspendedClient outPlayersClient, ChampionshipOutType championship, Config config) {
+            InjuredSuspendedWrapperClient outPlayersClient, ChampionshipOutType championship, Config config) {
 
         // Players with bad efficiency
         List<Player> players2Sell = playersTeam.stream().filter(p -> p.getEfficiency() <= config.getEfficiencySell(p.getPosition()))
@@ -274,7 +274,7 @@ public class Main {
             LOG.info("Player(s) to buy (3 best choice by line):");
             AsciiTable at = getTable(TABLE_POSITION, TABLE_PLAYER_NAME, TABLE_EFFICIENCY, TABLE_QUOTE);
             for (Player player : players2buy) {
-                org.blondin.mpg.equipeactu.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
+                org.blondin.mpg.out.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
                         PositionWrapper.toOut(player.getPosition()), OutType.INJURY_GREEN);
                 String s = player.getName();
                 if (outPlayer != null) {
@@ -293,11 +293,11 @@ public class Main {
 
     }
 
-    static List<Player> removeOutPlayers(List<Player> players, InjuredSuspendedClient outPlayersClient, ChampionshipOutType championship,
+    static List<Player> removeOutPlayers(List<Player> players, InjuredSuspendedWrapperClient outPlayersClient, ChampionshipOutType championship,
             boolean displayOut) {
         List<Player> outPlayers = new ArrayList<>();
         for (Player player : players) {
-            org.blondin.mpg.equipeactu.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
+            org.blondin.mpg.out.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
                     PositionWrapper.toOut(player.getPosition()), OutType.INJURY_GREEN);
             if (outPlayer != null) {
                 outPlayers.add(player);

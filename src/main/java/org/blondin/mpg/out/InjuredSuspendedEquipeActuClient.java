@@ -1,4 +1,4 @@
-package org.blondin.mpg.equipeactu;
+package org.blondin.mpg.out;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,9 +10,9 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
-import org.blondin.mpg.equipeactu.model.OutType;
-import org.blondin.mpg.equipeactu.model.Player;
-import org.blondin.mpg.equipeactu.model.Position;
+import org.blondin.mpg.out.model.OutType;
+import org.blondin.mpg.out.model.Player;
+import org.blondin.mpg.out.model.Position;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,16 +20,16 @@ import org.jsoup.nodes.Element;
 /**
  * http://www.equipeactu.fr/blessures-et-suspensions/fodbold/
  */
-public class InjuredSuspendedClient extends AbstractClient {
+public class InjuredSuspendedEquipeActuClient extends AbstractClient {
 
     private EnumMap<ChampionshipOutType, List<Player>> cache = new EnumMap<>(ChampionshipOutType.class);
 
-    public static InjuredSuspendedClient build(Config config) {
+    public static InjuredSuspendedEquipeActuClient build(Config config) {
         return build(config, null);
     }
 
-    public static InjuredSuspendedClient build(Config config, String urlOverride) {
-        InjuredSuspendedClient client = new InjuredSuspendedClient();
+    public static InjuredSuspendedEquipeActuClient build(Config config, String urlOverride) {
+        InjuredSuspendedEquipeActuClient client = new InjuredSuspendedEquipeActuClient();
         client.setUrl(StringUtils.defaultString(urlOverride, "http://www.equipeactu.fr/blessures-et-suspensions/fodbold/"));
         client.setProxy(config.getProxy());
         return client;
@@ -39,8 +39,8 @@ public class InjuredSuspendedClient extends AbstractClient {
      * Return injured or suspended player
      * 
      * @param championship Championship of player
-     * @param name Name
-     * @param position Position
+     * @param name         Name
+     * @param position     Position
      * @return Player or null if not found
      */
     public Player getPlayer(ChampionshipOutType championship, String name, Position position) {
@@ -52,9 +52,9 @@ public class InjuredSuspendedClient extends AbstractClient {
      * Return injured or suspended player
      * 
      * @param championship Championship of player
-     * @param name Name
-     * @param position Position
-     * @param excludes {@link OutType} to exclude
+     * @param name         Name
+     * @param position     Position
+     * @param excludes     {@link OutType} to exclude
      * @return Player or null if not found
      */
     public Player getPlayer(ChampionshipOutType championship, String name, Position position, OutType... excludes) {

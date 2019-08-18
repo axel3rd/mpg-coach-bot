@@ -1,5 +1,5 @@
 
-package org.blondin.mpg.equipeactu.model;
+package org.blondin.mpg.out.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
