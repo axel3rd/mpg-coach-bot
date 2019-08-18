@@ -407,9 +407,10 @@ public class Main {
         setPlayersOnPitch(request, attackers, nbrAttackers, 1 + nbrDefenders + nbrMidfielders);
 
         // Substitutes
-        setPlayersOnPitch(request, defenders, 2, 11);
-        setPlayersOnPitch(request, midfielders, 2, 13);
-        setPlayersOnPitch(request, attackers, 2, 15);
+        int substitutes = 0;
+        substitutes += setPlayersOnPitch(request, defenders, 2, 11);
+        substitutes += setPlayersOnPitch(request, midfielders, 2, 13);
+        substitutes += setPlayersOnPitch(request, attackers, 2, 15);
 
         // Tactical Substitutes (x5)
         if (config.isTacticalSubstitutes()) {
@@ -420,15 +421,35 @@ public class Main {
             setTacticalSubstitute(request, 17, nbrDefenders + nbrMidfielders + nbrAttackers, config.getNoteTacticalSubstituteAttacker());
         }
 
+        // No blank on substitutes' bench
+        if (substitutes < 6) {
+            List<Player> playersRemaining = new ArrayList<>();
+            playersRemaining.addAll(defenders);
+            playersRemaining.addAll(midfielders);
+            playersRemaining.addAll(attackers);
+            Collections.sort(playersRemaining, Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed());
+            for (int i = 12; i <= 17; i++) {
+                if (playersRemaining.isEmpty()) {
+                    break;
+                }
+                if (StringUtils.isBlank(request.getPlayersOnPitch().getPlayer(i))) {
+                    request.getPlayersOnPitch().setPlayer(i, playersRemaining.remove(0).getId());
+                }
+            }
+        }
+
         return request;
     }
 
-    private static void setPlayersOnPitch(CoachRequest request, List<Player> players, int number, int index) {
+    private static int setPlayersOnPitch(CoachRequest request, List<Player> players, int number, int index) {
+        int setted = 0;
         for (int i = 0; i < number; i++) {
             if (!players.isEmpty()) {
                 request.getPlayersOnPitch().setPlayer(index + i + 1, players.remove(0).getId());
+                setted++;
             }
         }
+        return setted;
     }
 
     private static void setTacticalSubstitute(CoachRequest request, int playerIdSubstitutePosition, int playerIdStartPosition, float rating) {

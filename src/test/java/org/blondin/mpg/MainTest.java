@@ -74,6 +74,30 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testNoblankOnSubstitutesBench() throws Exception {
+        prepareMainLigue1Mocks("LJV92C9Y.LJT3FXDF-status-4", "20190818", "20190818", "20190818");
+        stubFor(get("/league/LJV92C9Y/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJV92C9Y.20190818.json")));
+        stubFor(get("/league/LJT3FXDF/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20190818.json")));
+        stubFor(get("/customteam.json/Premier-League")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20190818.json")));
+        stubFor(get("/blessures-et-suspensions/fodbold/angleterre/championship")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20190818.html")));
+        stubFor(post("/league/LJT3FXDF/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LJT3FXDF.20190818-Request.json")))
+                .willReturn(aResponse().withBody("{\"success\":\"teamSaved\"}")));
+        stubFor(post("/league/LJV92C9Y/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LJV92C9Y.20190818-Request.json")))
+                .willReturn(aResponse().withBody("{\"success\":\"teamSaved\"}")));
+
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut().contains("FAKE L1"));
+        Assert.assertTrue(getLogOut().contains("FAKE PL"));
+    }
+
+    @Test
     public void testMercatoEnding() throws Exception {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
