@@ -1,9 +1,9 @@
 
-package org.blondin.mpg.equipeactu.model;
+package org.blondin.mpg.out.model;
 
 public enum OutType {
 
-    INJURY_GREEN("injury_green"), INJURY_ORANGE("injury_orange"), INJURY_RED("injury"), SUSPENDED("suspended");
+    INJURY_GREEN("injury_green"), INJURY_ORANGE("injury_orange"), INJURY_RED("injury"), SUSPENDED("suspended"), ASBENT("absent");
 
     private final String value;
 

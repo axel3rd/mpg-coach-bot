@@ -8,16 +8,16 @@ public class PositionWrapper {
         super();
     }
 
-    public static org.blondin.mpg.equipeactu.model.Position toOut(Position position) {
+    public static org.blondin.mpg.out.model.Position toOut(Position position) {
         switch (position) {
         case A:
-            return org.blondin.mpg.equipeactu.model.Position.A;
+            return org.blondin.mpg.out.model.Position.A;
         case M:
-            return org.blondin.mpg.equipeactu.model.Position.M;
+            return org.blondin.mpg.out.model.Position.M;
         case D:
-            return org.blondin.mpg.equipeactu.model.Position.D;
+            return org.blondin.mpg.out.model.Position.D;
         case G:
-            return org.blondin.mpg.equipeactu.model.Position.G;
+            return org.blondin.mpg.out.model.Position.G;
         default:
             throw new UnsupportedOperationException(String.format("Position not supported: %s", position));
         }

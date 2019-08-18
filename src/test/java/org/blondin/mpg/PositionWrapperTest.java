@@ -14,10 +14,10 @@ public class PositionWrapperTest {
 
     @Test
     public void testToOut() {
-        Assert.assertEquals(org.blondin.mpg.equipeactu.model.Position.A, PositionWrapper.toOut(Position.A));
-        Assert.assertEquals(org.blondin.mpg.equipeactu.model.Position.M, PositionWrapper.toOut(Position.M));
-        Assert.assertEquals(org.blondin.mpg.equipeactu.model.Position.D, PositionWrapper.toOut(Position.D));
-        Assert.assertEquals(org.blondin.mpg.equipeactu.model.Position.G, PositionWrapper.toOut(Position.G));
+        Assert.assertEquals(org.blondin.mpg.out.model.Position.A, PositionWrapper.toOut(Position.A));
+        Assert.assertEquals(org.blondin.mpg.out.model.Position.M, PositionWrapper.toOut(Position.M));
+        Assert.assertEquals(org.blondin.mpg.out.model.Position.D, PositionWrapper.toOut(Position.D));
+        Assert.assertEquals(org.blondin.mpg.out.model.Position.G, PositionWrapper.toOut(Position.G));
     }
 
     @Test

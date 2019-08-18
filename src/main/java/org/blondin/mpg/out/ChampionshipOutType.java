@@ -1,5 +1,5 @@
 
-package org.blondin.mpg.equipeactu;
+package org.blondin.mpg.out;
 
 public enum ChampionshipOutType {
 

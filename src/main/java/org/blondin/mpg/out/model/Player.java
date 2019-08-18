@@ -1,4 +1,4 @@
-package org.blondin.mpg.equipeactu.model;
+package org.blondin.mpg.out.model;
 
 public class Player {
 

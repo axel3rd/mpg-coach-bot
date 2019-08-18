@@ -25,8 +25,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.config.Config;
-import org.blondin.mpg.equipeactu.ChampionshipOutType;
-import org.blondin.mpg.equipeactu.InjuredSuspendedClient;
+import org.blondin.mpg.out.ChampionshipOutType;
+import org.blondin.mpg.out.InjuredSuspendedEquipeActuClient;
+import org.blondin.mpg.out.InjuredSuspendedWrapperClient;
 import org.blondin.mpg.root.MpgClient;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.Dashboard;
@@ -71,6 +72,23 @@ public class MainTest extends AbstractMockTestClient {
             // Proxy not configured or real URL not accessible
             Assert.assertEquals("No network", "java.net.UnknownHostException: api.monpetitgazon.com", e.getMessage());
         }
+    }
+
+    @Test
+    public void testFrenchL2OutPlayers() throws Exception {
+        // Boissier (Le Mans) should not be in team
+        prepareMainLigue2Mocks("LH9HKBTD-status-4-championship-4", "20190818", "20190818", "20190818");
+        stubFor(get("/league/LH9HKBTD/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LH9HKBTD.20190818.json")));
+        stubFor(post("/league/LH9HKBTD/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LH9HKBTD.20190818-Request.json")))
+                .willReturn(aResponse().withBody("{\"success\":\"teamSaved\"}")));
+
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut().contains("Out: Boissier Remy"));
+        Assert.assertFalse(getLogOut().contains("Out: Martin Florian"));
     }
 
     @Test
@@ -204,7 +222,7 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testLeague2FocusEfficiencySeasonAfter2Days() throws Exception {
-        prepareMainLigue2Mocks("LH9HKBTD-status-4-championship-4", "20190806", "20190806", "20190724");
+        prepareMainLigue2Mocks("LH9HKBTD-status-4-championship-4", "20190806", "20190806", "20190818");
         stubFor(get("/league/LH9HKBTD/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LH9HKBTD.20190806.json")));
 
@@ -232,7 +250,7 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testLeague2FocusEfficiencySeasonStart() throws Exception {
-        prepareMainLigue2Mocks("LH9HKBTD-status-4-championship-4", "20190724", "20190801", "20190724");
+        prepareMainLigue2Mocks("LH9HKBTD-status-4-championship-4", "20190724", "20190801", "20190818");
         stubFor(get("/league/LH9HKBTD/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LH9HKBTD.20190724.json")));
 
@@ -255,7 +273,7 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testLeague2NoData() throws Exception {
-        prepareMainLigue2Mocks("LH9HKBTD-status-4-championship-4", "20190724", "20190724", "20190724");
+        prepareMainLigue2Mocks("LH9HKBTD-status-4-championship-4", "20190724", "20190724", "20190818");
         stubFor(get("/league/LH9HKBTD/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LH9HKBTD.20190724.json")));
 
@@ -275,7 +293,7 @@ public class MainTest extends AbstractMockTestClient {
         // Some players are displayed in WARNING because 0 data
         String logTablePlayers = log.substring(log.lastIndexOf("Optimized team"));
         Assert.assertTrue(logTablePlayers.lastIndexOf("Vachoux") > logTablePlayers.lastIndexOf("Gallon"));
-        Assert.assertTrue(logTablePlayers.lastIndexOf("Boissier") > logTablePlayers.lastIndexOf("Jacob"));
+        Assert.assertTrue(logTablePlayers.lastIndexOf("Tramoni") > logTablePlayers.lastIndexOf("Jacob"));
         Assert.assertTrue(logTablePlayers.lastIndexOf("Benkaid") > logTablePlayers.lastIndexOf("Rodelin"));
         Assert.assertTrue(logTablePlayers.lastIndexOf("Abdeldjelil") > logTablePlayers.lastIndexOf("Rodelin"));
         Assert.assertTrue(logTablePlayers.lastIndexOf("Abdeldjelil") > logTablePlayers.lastIndexOf("Benkaid"));
@@ -290,7 +308,7 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testLeague2InCreation() throws Exception {
-        prepareMainLigue2Mocks("LH9HKBTD-status-1-championship-4", "20190718", "20190718", "20190718");
+        prepareMainLigue2Mocks("LH9HKBTD-status-1-championship-4", "20190718", "20190718", "20190818");
         stubFor(get("/mercato/4")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.mercato.ligue-2.20190718.json")));
 
@@ -359,9 +377,11 @@ public class MainTest extends AbstractMockTestClient {
         when(mpgStatsClient.getStats(any())).thenReturn(
                 new ObjectMapper().readValue(new File("src/test/resources/__files", "mpgstats.ligue-1.20181017.json"), Championship.class));
 
-        InjuredSuspendedClient outPlayersClient = spy(InjuredSuspendedClient.class);
+        InjuredSuspendedEquipeActuClient outPlayersEquipeActuClient = spy(InjuredSuspendedEquipeActuClient.class);
         doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.ligue-1.20181017.html"), Charset.defaultCharset()))
-                .when(outPlayersClient).getHtmlContent(ChampionshipOutType.LIGUE_1);
+                .when(outPlayersEquipeActuClient).getHtmlContent(ChampionshipOutType.LIGUE_1);
+        InjuredSuspendedWrapperClient outPlayersClient = spy(InjuredSuspendedWrapperClient.class);
+        doReturn(outPlayersEquipeActuClient).when(outPlayersClient).useOnlyForTestGetEquipeActuClient();
 
         // Test out (on cloned list)
         List<Player> players = new ArrayList<>(mpgClient.getCoach("fake").getPlayers());
@@ -551,7 +571,7 @@ public class MainTest extends AbstractMockTestClient {
         Assert.assertTrue(getLogOut(), getLogOut().contains("Updating team"));
     }
 
-    private void executeMainProcess(MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedClient injuredSuspendedClient,
+    private void executeMainProcess(MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedWrapperClient injuredSuspendedClient,
             Config config) {
         Config c = ObjectUtils.defaultIfNull(config, getConfig());
         // ObjectUtils.defaultIfNull could not be used for other, the builders of client should not be called
@@ -563,24 +583,25 @@ public class MainTest extends AbstractMockTestClient {
         if (mpgStatsClientLocal == null) {
             mpgStatsClientLocal = MpgStatsClient.build(c, "http://localhost:" + getServer().port());
         }
-        InjuredSuspendedClient injuredSuspendedClientLocal = injuredSuspendedClient;
+        InjuredSuspendedWrapperClient injuredSuspendedClientLocal = injuredSuspendedClient;
         if (injuredSuspendedClientLocal == null) {
-            injuredSuspendedClientLocal = InjuredSuspendedClient.build(c,
-                    "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+            injuredSuspendedClientLocal = InjuredSuspendedWrapperClient.build(c,
+                    "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/",
+                    "http://localhost:" + getServer().port() + "/2019/08/05/joueurs-blesses-et-suspendus/");
         }
         Main.process(mpgClientLocal, mpgStatsClientLocal, injuredSuspendedClientLocal, c);
     }
 
     private static void prepareMainLigue1Mocks(String fileRootDashboard, String fileStatsLeagues, String dataFileStats, String dataFileEquipeActu) {
-        prepareMainLigueMocks(fileRootDashboard, fileStatsLeagues, 1, dataFileStats, dataFileEquipeActu);
+        prepareMainLigueMocks(fileRootDashboard, fileStatsLeagues, 1, dataFileStats, dataFileEquipeActu, null);
     }
 
-    private static void prepareMainLigue2Mocks(String fileRootDashboard, String fileStatsLeagues, String dataFileStats, String dataFileEquipeActu) {
-        prepareMainLigueMocks(fileRootDashboard, fileStatsLeagues, 2, dataFileStats, dataFileEquipeActu);
+    private static void prepareMainLigue2Mocks(String fileRootDashboard, String fileStatsLeagues, String dataFileStats, String dataFileMaLigue2) {
+        prepareMainLigueMocks(fileRootDashboard, fileStatsLeagues, 2, dataFileStats, null, dataFileMaLigue2);
     }
 
     private static void prepareMainLigueMocks(String fileRootDashboard, String fileStatsLeagues, int ligue, String dataFileStats,
-            String dataFileEquipeActu) {
+            String dataFileEquipeActu, String dataFileMaLigue2) {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
         if (StringUtils.isNotBlank(fileRootDashboard)) {
@@ -598,6 +619,10 @@ public class MainTest extends AbstractMockTestClient {
         if (StringUtils.isNotBlank(dataFileEquipeActu)) {
             stubFor(get("/blessures-et-suspensions/fodbold/france/ligue-" + ligue).willReturn(aResponse()
                     .withHeader("Content-Type", "application/json").withBodyFile("equipeactu.ligue-" + ligue + "." + dataFileEquipeActu + ".html")));
+        }
+        if (StringUtils.isNotBlank(dataFileMaLigue2)) {
+            stubFor(get("/2019/08/05/joueurs-blesses-et-suspendus/").willReturn(aResponse().withHeader("Content-Type", "application/json")
+                    .withBodyFile("maligue2.joueurs-blesses-et-suspendus." + dataFileMaLigue2 + ".html")));
         }
     }
 

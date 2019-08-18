@@ -1,6 +1,6 @@
 package org.blondin.mpg;
 
-import org.blondin.mpg.equipeactu.ChampionshipOutType;
+import org.blondin.mpg.out.ChampionshipOutType;
 import org.blondin.mpg.root.model.ChampionshipType;
 import org.blondin.mpg.stats.ChampionshipStatsType;
 
