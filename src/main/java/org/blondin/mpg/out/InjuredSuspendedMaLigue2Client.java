@@ -83,10 +83,14 @@ public class InjuredSuspendedMaLigue2Client extends AbstractClient {
                 player.setOutType(outType);
                 player.setLength("");
                 player.setDescription("");
-                int l = content.lastIndexOf('(');
-                if (l > 0) {
-                    player.setFullNameWithPosition(content.substring(0, l).trim());
-                    player.setLength(content.substring(l + 1, content.indexOf(')')));
+                int lBegin = content.lastIndexOf('(');
+                int lEnd = content.lastIndexOf(')');
+                if (lBegin > 0) {
+                    player.setFullNameWithPosition(content.substring(0, lBegin).trim());
+                    // If no parentheses ending, no length information
+                    if (lEnd > 0) {
+                        player.setLength(content.substring(lBegin + 1, lEnd));
+                    }
                 } else {
                     player.setFullNameWithPosition(content.trim());
                 }

@@ -35,6 +35,16 @@ public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testSomeInjuriesWithNoParentheseEnding() throws Exception {
+        InjuredSuspendedMaLigue2Client client = spy(InjuredSuspendedMaLigue2Client.class);
+        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "maligue2.joueurs-blesses-et-suspendus.20190822.html"),
+                Charset.defaultCharset())).when(client).getHtmlContent();
+
+        Assert.assertNotNull("Boissier Remy is injured", client.getPlayer("Boissier Remy"));
+        Assert.assertNotNull("Julienne is injured", client.getPlayer("Julienne"));
+    }
+
+    @Test
     public void testSomeInjuries() throws Exception {
         InjuredSuspendedMaLigue2Client client = spy(InjuredSuspendedMaLigue2Client.class);
         doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "maligue2.joueurs-blesses-et-suspendus.20190818.html"),
