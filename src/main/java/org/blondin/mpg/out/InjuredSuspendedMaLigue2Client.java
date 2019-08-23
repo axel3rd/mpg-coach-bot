@@ -36,9 +36,9 @@ public class InjuredSuspendedMaLigue2Client extends AbstractClient {
         return cache;
     }
 
-    public Player getPlayer(String name) {
+    public Player getPlayer(String playerName, String teamName) {
         // For composed lastName (highest priority than firstName composed), we replace space by '-'
-        String lastName = name;
+        String lastName = playerName;
         int spaceIndex = lastName.lastIndexOf(' ');
         if (spaceIndex > 0) {
             lastName = lastName.substring(0, spaceIndex);
@@ -47,6 +47,9 @@ public class InjuredSuspendedMaLigue2Client extends AbstractClient {
         lastName = lastName.replace("Saint-", "St-");
         for (Player player : getPlayers()) {
             if (lastName.equalsIgnoreCase(player.getFullNameWithPosition())) {
+                if (StringUtils.isNotBlank(teamName) && !player.getTeam().contains(teamName)) {
+                    continue;
+                }
                 return player;
             }
         }
@@ -64,14 +67,15 @@ public class InjuredSuspendedMaLigue2Client extends AbstractClient {
             if (item.selectFirst("th.column-1") != null && "Club".equals(item.selectFirst("th.column-1").text())) {
                 continue;
             }
-            players.addAll(parsePlayers(item.selectFirst("td.column-2"), OutType.SUSPENDED));
-            players.addAll(parsePlayers(item.selectFirst("td.column-3"), OutType.INJURY_RED));
-            players.addAll(parsePlayers(item.selectFirst("td.column-4"), OutType.ASBENT));
+            String team = item.selectFirst("td.column-1").text();
+            players.addAll(parsePlayers(team, item.selectFirst("td.column-2"), OutType.SUSPENDED));
+            players.addAll(parsePlayers(team, item.selectFirst("td.column-3"), OutType.INJURY_RED));
+            players.addAll(parsePlayers(team, item.selectFirst("td.column-4"), OutType.ASBENT));
         }
         return players;
     }
 
-    private List<Player> parsePlayers(Element e, OutType outType) {
+    private List<Player> parsePlayers(String team, Element e, OutType outType) {
         List<Player> players = new ArrayList<>();
         for (Node node : e.childNodes()) {
             if (node instanceof TextNode) {
@@ -80,17 +84,19 @@ public class InjuredSuspendedMaLigue2Client extends AbstractClient {
                     continue;
                 }
                 Player player = new Player();
+                player.setTeam(team);
                 player.setOutType(outType);
                 player.setLength("");
                 player.setDescription("");
                 int lBegin = content.lastIndexOf('(');
-                int lEnd = content.lastIndexOf(')');
                 if (lBegin > 0) {
                     player.setFullNameWithPosition(content.substring(0, lBegin).trim());
-                    // If no parentheses ending, no length information
-                    if (lEnd > 0) {
-                        player.setLength(content.substring(lBegin + 1, lEnd));
+                    int lEnd = content.lastIndexOf(')');
+                    // If no parentheses ending, length information is until end (because no parenthesis)
+                    if (lEnd <= 0) {
+                        lEnd = content.length();
                     }
+                    player.setLength(content.substring(lBegin + 1, lEnd));
                 } else {
                     player.setFullNameWithPosition(content.trim());
                 }

@@ -16,7 +16,9 @@ public class Player {
     private String lastName;
     private Position position;
     private int quotation;
+    @JsonProperty("teamid")
     private int teamId;
+    private String teamName;
 
     private double efficiency;
 
@@ -56,4 +58,11 @@ public class Player {
         this.efficiency = efficiency;
     }
 
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
 }
