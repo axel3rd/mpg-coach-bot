@@ -1,11 +1,14 @@
 package org.blondin.mpg.out.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Player {
 
     private String fullNameWithPosition;
     private OutType outType;
     private String description;
     private String length;
+    private String team;
 
     public String getFullNameWithPosition() {
         return fullNameWithPosition;
@@ -44,5 +47,17 @@ public class Player {
 
     public void setLength(String length) {
         this.length = length;
+    }
+
+    public String getTeam() {
+        if (StringUtils.isBlank(this.team)) {
+            // TODO : Remove exception
+            throw new UnsupportedOperationException("Team is null, implement");
+        }
+        return this.team;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
     }
 }

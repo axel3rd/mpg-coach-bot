@@ -30,16 +30,17 @@ public class InjuredSuspendedWrapperClient {
      * Return injured or suspended player
      * 
      * @param championship Championship of player
-     * @param name         Name
-     * @param position     Position
+     * @param name         Player Name
+     * @param position     Position (used to improve "out player" matching if not null)
+     * @param teamName     Team Name
      * @param excludes     {@link OutType} to exclude
      * @return Player or null if not found
      */
-    public Player getPlayer(ChampionshipOutType championship, String name, Position position, OutType... excludes) {
+    public Player getPlayer(ChampionshipOutType championship, String playerName, Position position, String teamName, OutType... excludes) {
         if (ChampionshipOutType.LIGUE_2.equals(championship)) {
-            return useOnlyForTestGetMaLigue2Client().getPlayer(name);
+            return useOnlyForTestGetMaLigue2Client().getPlayer(playerName, teamName);
         }
-        return useOnlyForTestGetEquipeActuClient().getPlayer(championship, name, position, excludes);
+        return useOnlyForTestGetEquipeActuClient().getPlayer(championship, playerName, position, teamName, excludes);
     }
 
     public InjuredSuspendedEquipeActuClient useOnlyForTestGetEquipeActuClient() {

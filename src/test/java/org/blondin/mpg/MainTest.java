@@ -75,7 +75,25 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
-    public void testFrenchL2OutPlayers() throws Exception {
+    public void testFrenchL2OutPlayersSecond() throws Exception {
+        // Jacob (Niort) should be in team
+        prepareMainLigue2Mocks("LH9HKBTD-status-4-championship-4", "20190818", "20190818", "20190823");
+        stubFor(get("/league/LH9HKBTD/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LH9HKBTD.20190818.json")));
+        stubFor(post("/league/LH9HKBTD/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LH9HKBTD.20190818-Request.json")))
+                .willReturn(aResponse().withBody("{\"success\":\"teamSaved\"}")));
+
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut().contains("Out: Boissier Remy"));
+        Assert.assertTrue(getLogOut().contains("Out: Gastien Johan"));
+        Assert.assertFalse(getLogOut().contains("Out: Jacob Valentin"));
+    }
+
+    @Test
+    public void testFrenchL2OutPlayersFirst() throws Exception {
         // Boissier (Le Mans) should not be in team
         prepareMainLigue2Mocks("LH9HKBTD-status-4-championship-4", "20190818", "20190818", "20190818");
         stubFor(get("/league/LH9HKBTD/coach")

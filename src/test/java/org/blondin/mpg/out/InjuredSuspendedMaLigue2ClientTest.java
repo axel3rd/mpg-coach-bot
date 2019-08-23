@@ -8,16 +8,45 @@ import static org.mockito.Mockito.spy;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.blondin.mpg.AbstractMockTestClient;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.model.Player;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
+
+    @Test
+    public void testCheckTeamsL2() throws Exception {
+        List<String> mpgTeams = Arrays.asList("Ajaccio", "Auxerre", "Caen", "Chambly", "Châteauroux", "Clermont", "Grenoble", "Guingamp", "Le Havre",
+                "Le Mans", "Lens", "Lorient", "Nancy", "Niort", "Orléans", "Paris", "Rodez", "Sochaux", "Troyes", "Valenciennes");
+        Document doc = Jsoup.parse(FileUtils.readFileToString(
+                new File("src/test/resources/__files", "maligue2.joueurs-blesses-et-suspendus.20190823.html"), Charset.defaultCharset()));
+        List<String> maLigue2Teams = new ArrayList<>();
+        for (Element item : doc.select("tr")) {
+            if (item.selectFirst("th.column-1") != null && "Club".equals(item.selectFirst("th.column-1").text())) {
+                continue;
+            }
+            maLigue2Teams.add(item.selectFirst("td.column-1").text());
+        }
+        for (String mpgTeam : mpgTeams) {
+            boolean contains = false;
+            for (String maLigue2Team : maLigue2Teams) {
+                if (maLigue2Team.contains(mpgTeam)) {
+                    contains = true;
+                }
+            }
+            Assert.assertTrue(mpgTeam, contains);
+        }
+    }
 
     @Test
     public void testLocalMapping() throws Exception {
@@ -40,8 +69,9 @@ public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
         doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "maligue2.joueurs-blesses-et-suspendus.20190822.html"),
                 Charset.defaultCharset())).when(client).getHtmlContent();
 
-        Assert.assertNotNull("Boissier Remy is injured", client.getPlayer("Boissier Remy"));
-        Assert.assertNotNull("Julienne is injured", client.getPlayer("Julienne"));
+        Assert.assertNotNull("Boissier Remy is injured", client.getPlayer("Boissier Remy", "Le Mans"));
+        Assert.assertEquals("Boissier J5", "J5", client.getPlayer("Boissier Remy", "Le Mans").getLength());
+        Assert.assertNotNull("Julienne is injured", client.getPlayer("Julienne", "Le Mans"));
     }
 
     @Test
@@ -50,14 +80,13 @@ public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
         doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "maligue2.joueurs-blesses-et-suspendus.20190818.html"),
                 Charset.defaultCharset())).when(client).getHtmlContent();
 
-        Assert.assertNotNull("Boissier Remy is injured", client.getPlayer("Boissier Remy"));
-        Assert.assertNotNull("Valette is injured", client.getPlayer("Valette"));
-        Assert.assertNotNull("Seka is injured", client.getPlayer("Seka"));
-        Assert.assertNotNull("Boli is injured", client.getPlayer("Saint-Ruf Nicolas"));
-        Assert.assertNotNull("Martins Pereira injured", client.getPlayer("Martins Pereira Jonathan"));
-        Assert.assertNotNull("Saint-Ruf is injured", client.getPlayer("Boli"));
-        Assert.assertNull("Tramoni Matteo is not injured", client.getPlayer("Tramoni Matteo"));
-        Assert.assertNull("Martin Florian is not injured", client.getPlayer("Martin Florian"));
+        Assert.assertNotNull("Boissier Remy is injured", client.getPlayer("Boissier Remy", "Le Mans"));
+        Assert.assertNotNull("Valette is injured", client.getPlayer("Valette", "Nancy"));
+        Assert.assertNotNull("Seka is injured", client.getPlayer("Seka", "Nancy"));
+        Assert.assertNotNull("Boli is injured", client.getPlayer("Saint-Ruf Nicolas", "Orléans"));
+        Assert.assertNotNull("Martins Pereira injured", client.getPlayer("Martins Pereira Jonathan", "Lorient"));
+        Assert.assertNotNull("Saint-Ruf is injured", client.getPlayer("Boli", "Lens"));
+        Assert.assertNull("Tramoni Matteo is not injured", client.getPlayer("Tramoni Matteo", "Ajaccio"));
     }
 
     @Test
