@@ -80,7 +80,7 @@ public class MainTest extends AbstractMockTestClient {
         prepareMainLigue2Mocks("LH9HKBTD-status-4-championship-4", "20190818", "20190818", "20190823");
         stubFor(get("/league/LH9HKBTD/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LH9HKBTD.20190818.json")));
-        stubFor(post("/league/LH9HKBTD/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LH9HKBTD.20190818-Request.json")))
+        stubFor(post("/league/LH9HKBTD/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LH9HKBTD.20190818-Request-2.json")))
                 .willReturn(aResponse().withBody("{\"success\":\"teamSaved\"}")));
 
         Config config = spy(getConfig());
@@ -98,7 +98,7 @@ public class MainTest extends AbstractMockTestClient {
         prepareMainLigue2Mocks("LH9HKBTD-status-4-championship-4", "20190818", "20190818", "20190818");
         stubFor(get("/league/LH9HKBTD/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LH9HKBTD.20190818.json")));
-        stubFor(post("/league/LH9HKBTD/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LH9HKBTD.20190818-Request.json")))
+        stubFor(post("/league/LH9HKBTD/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LH9HKBTD.20190818-Request-1.json")))
                 .willReturn(aResponse().withBody("{\"success\":\"teamSaved\"}")));
 
         Config config = spy(getConfig());
