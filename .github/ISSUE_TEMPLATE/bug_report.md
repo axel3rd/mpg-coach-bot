@@ -27,7 +27,7 @@ Depending your championship, join data files set in attachment.
 - https://www.mpgstats.fr/json/customteam.json/Ligue-2
 - https://www.mpgstats.fr/json/customteam.json/Premier-League
 - https://www.mpgstats.fr/json/customteam.json/Liga
-- https://www.mpgstats.fr/json/customteam.json/SerieA
+- https://www.mpgstats.fr/json/customteam.json/Serie-A
 
 3. The [Players statistics](https://www.mpgstats.fr/) time update data : https://www.mpgstats.fr/json/leagues.json
 

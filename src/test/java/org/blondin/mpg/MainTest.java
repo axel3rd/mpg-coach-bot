@@ -199,7 +199,7 @@ public class MainTest extends AbstractMockTestClient {
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.mercato.serie-a.20190805.json")));
         stubFor(get("/leagues.json")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20190805.json")));
-        stubFor(get("/customteam.json/SerieA")
+        stubFor(get("/customteam.json/Serie-A")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.serie-a.20190805.json")));
         stubFor(get("/blessures-et-suspensions/fodbold/italie/serie-a")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.serie-a.20190805.html")));
