@@ -218,11 +218,11 @@ email = firstName.lastName@gmail.com
 password = foobar
 ```
 
-For release build, use (you will have to fill your GitHub credentials):
+For release build, use:
 ```
 git reset --hard origin/master 
 git branch -m next-version 
-mvn -B clean release:clean release:prepare
+mvn -B clean release:clean release:prepare -Dusername=yourGitHubLogin -Dpassword=yourGitHubPasswordOrToken
 ```
 
 After that, you would have to create pull-request from 'next-version' branch and rebase it on master for next version development.
