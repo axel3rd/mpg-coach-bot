@@ -396,7 +396,7 @@ public class MainTest extends AbstractMockTestClient {
                 new ObjectMapper().readValue(new File("src/test/resources/__files", "mpgstats.ligue-1.20181017.json"), Championship.class));
 
         InjuredSuspendedEquipeActuClient outPlayersEquipeActuClient = spy(InjuredSuspendedEquipeActuClient.class);
-        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.ligue-1.20181017.html"), Charset.defaultCharset()))
+        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.ligue-1.20181017.html"), Charset.forName("UTF-8")))
                 .when(outPlayersEquipeActuClient).getHtmlContent(ChampionshipOutType.LIGUE_1);
         InjuredSuspendedWrapperClient outPlayersClient = spy(InjuredSuspendedWrapperClient.class);
         doReturn(outPlayersEquipeActuClient).when(outPlayersClient).useOnlyForTestGetEquipeActuClient();
@@ -645,7 +645,7 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     private String getTestFileToString(String fileName) throws IOException {
-        return FileUtils.readFileToString(new File("src/test/resources/__files", fileName), Charset.defaultCharset());
+        return FileUtils.readFileToString(new File("src/test/resources/__files", fileName), Charset.forName("UTF-8"));
     }
 
 }
