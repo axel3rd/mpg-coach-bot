@@ -3,7 +3,7 @@
     <groupId>org.blondin</groupId>
     <artifactId>mpg-coach-bot</artifactId>
     <packaging>jar</packaging>
-    <version>1.4</version>
+    <version>1.5-SNAPSHOT</version>
     <name>MPG Coach Bot</name>
     <properties>
         <goals>package</goals>
@@ -15,7 +15,7 @@
     </properties>
     <scm>
         <connection>scm:git:https://github.com/axel3rd/mpg-coach-bot</connection>
-        <tag>mpg-coach-bot-1.4</tag>
+        <tag>HEAD</tag>
     </scm>
     <build>
         <pluginManagement>
