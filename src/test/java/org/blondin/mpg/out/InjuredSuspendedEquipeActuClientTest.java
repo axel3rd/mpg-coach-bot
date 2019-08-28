@@ -28,7 +28,7 @@ import org.junit.Test;
 public class InjuredSuspendedEquipeActuClientTest extends AbstractMockTestClient {
 
     private List<String> getEquipeActuTeams(String file) throws IOException {
-        Document doc = Jsoup.parse(FileUtils.readFileToString(new File("src/test/resources/__files", file), Charset.defaultCharset()));
+        Document doc = Jsoup.parse(FileUtils.readFileToString(new File("src/test/resources/__files", file), Charset.forName("UTF-8")));
         List<String> teams = new ArrayList<>();
         for (Element item : doc.select("h1")) {
             teams.add(item.text().trim());
@@ -94,7 +94,7 @@ public class InjuredSuspendedEquipeActuClientTest extends AbstractMockTestClient
     public void testLocalMapping() throws Exception {
         for (String subFile : Arrays.asList("ligue-1", "premier-league", "liga")) {
             List<Player> players = InjuredSuspendedEquipeActuClient.build(Config.build("src/test/resources/mpg.properties.here")).getPlayers(FileUtils
-                    .readFileToString(new File("src/test/resources/__files", "equipeactu." + subFile + ".20181017.html"), Charset.defaultCharset()));
+                    .readFileToString(new File("src/test/resources/__files", "equipeactu." + subFile + ".20181017.html"), Charset.forName("UTF-8")));
             Assert.assertNotNull(players);
             Assert.assertTrue(players.size() > 10);
             for (Player player : players) {
@@ -109,7 +109,7 @@ public class InjuredSuspendedEquipeActuClientTest extends AbstractMockTestClient
     @Test
     public void testSomeInjuries() throws Exception {
         InjuredSuspendedEquipeActuClient client = spy(InjuredSuspendedEquipeActuClient.class);
-        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.ligue-1.20190131.html"), Charset.defaultCharset()))
+        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.ligue-1.20190131.html"), Charset.forName("UTF-8")))
                 .when(client).getHtmlContent(ChampionshipOutType.LIGUE_1);
 
         Assert.assertNotNull("Fares Bahlouli is injured",
@@ -126,7 +126,7 @@ public class InjuredSuspendedEquipeActuClientTest extends AbstractMockTestClient
 
         // Mock
         InjuredSuspendedEquipeActuClient client = spy(InjuredSuspendedEquipeActuClient.class);
-        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.ligue-1.20181017.html"), Charset.defaultCharset()))
+        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.ligue-1.20181017.html"), Charset.forName("UTF-8")))
                 .when(client).getHtmlContent(ChampionshipOutType.LIGUE_1);
 
         // Test
@@ -150,7 +150,7 @@ public class InjuredSuspendedEquipeActuClientTest extends AbstractMockTestClient
         // Mock
         InjuredSuspendedEquipeActuClient client = spy(InjuredSuspendedEquipeActuClient.class);
         doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.premier-league.20181017.html"),
-                Charset.defaultCharset())).when(client).getHtmlContent(ChampionshipOutType.PREMIER_LEAGUE);
+                Charset.forName("UTF-8"))).when(client).getHtmlContent(ChampionshipOutType.PREMIER_LEAGUE);
 
         // Test
         Assert.assertNotNull(client.getPlayer(c, "Yoshinori Muto", Position.UNDEFINED, "Newcastle"));
@@ -173,7 +173,7 @@ public class InjuredSuspendedEquipeActuClientTest extends AbstractMockTestClient
 
         // Mock
         InjuredSuspendedEquipeActuClient client = spy(InjuredSuspendedEquipeActuClient.class);
-        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.liga.20181017.html"), Charset.defaultCharset()))
+        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.liga.20181017.html"), Charset.forName("UTF-8")))
                 .when(client).getHtmlContent(ChampionshipOutType.LIGA);
 
         // Test
