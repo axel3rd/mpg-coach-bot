@@ -64,7 +64,9 @@ public class Main {
 
     static void process(MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedWrapperClient outPlayersClient, Config config) {
         for (League league : mpgClient.getDashboard().getLeagues()) {
-            if (LeagueStatus.TERMINATED.equals(league.getLeagueStatus())) {
+            if (LeagueStatus.TERMINATED.equals(league.getLeagueStatus())
+                    || (!config.getLeaguesInclude().isEmpty() && !config.getLeaguesInclude().contains(league.getId()))
+                    || (!config.getLeaguesExcludes().isEmpty() && config.getLeaguesExcludes().contains(league.getId()))) {
                 // Don't display any logs
                 continue;
             }

@@ -3,6 +3,10 @@ package org.blondin.mpg.config;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +38,8 @@ public class Config {
     private float efficiencySellDefender = 3f;
     private float efficiencySellGoalkeeper = 3f;
     private Proxy proxy;
+    private List<String> leaguesInclude = new ArrayList<>();
+    private List<String> leaguesExcludes = new ArrayList<>();
 
     private Config() {
         super();
@@ -95,6 +101,14 @@ public class Config {
         return valueIfNotDefined;
     }
 
+    private static List<String> parseList(Properties properties, String key, String separator) {
+        String value = parseString(properties, key);
+        if (StringUtils.isBlank(value)) {
+            return Collections.emptyList();
+        }
+        return Arrays.asList(value.split("\\s*" + separator + "\\s*"));
+    }
+
     private static void configMain(Config config, Properties properties, File fileConfig) {
         config.login = parseString(properties, "email");
         config.password = parseString(properties, "password");
@@ -106,6 +120,8 @@ public class Config {
         config.efficiencyRecentFocus = parseBoolean(properties, "efficiency.recent.focus", config.efficiencyRecentFocus);
         config.efficiencyRecentDays = parseInt(properties, "efficiency.recent.days", config.efficiencyRecentDays, 1, config.efficiencyRecentDays);
         config.transactionsProposal = parseBoolean(properties, "transactions.proposal", config.transactionsProposal);
+        config.leaguesInclude = parseList(properties, "leagues.include", ",");
+        config.leaguesExcludes = parseList(properties, "leagues.exclude", ",");
     }
 
     private static void configNoteTacticalSubstitute(Config config, Properties properties) {
@@ -214,6 +230,14 @@ public class Config {
 
     public Proxy getProxy() {
         return proxy;
+    }
+
+    public List<String> getLeaguesInclude() {
+        return leaguesInclude;
+    }
+
+    public List<String> getLeaguesExcludes() {
+        return leaguesExcludes;
     }
 
 }

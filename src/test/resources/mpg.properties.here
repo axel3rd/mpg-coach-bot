@@ -9,6 +9,10 @@ password = foobar
 #efficiency.recent.focus = true
 #efficiency.recent.days = 8
 
+# Include/exclude leagues
+#leagues.include = KX24XMUJ,KLGXSSUM
+#leagues.exclude = LJT3FXDX
+
 # Default notes for tactical substitutes
 #tactical.substitutes = true
 #tactical.substitute.attacker = 6
@@ -32,7 +36,7 @@ transactions.proposal = false
 
 # Usage behind a company proxy
 #proxy.uri = http://company.proxy.com:80
-#proxy.user  =foo
+#proxy.user = foo
 #proxy.password = bar
 
 # Enable debug logs

@@ -17,6 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.ProcessingException;
@@ -72,6 +74,128 @@ public class MainTest extends AbstractMockTestClient {
             // Proxy not configured or real URL not accessible
             Assert.assertEquals("No network", "java.net.UnknownHostException: api.monpetitgazon.com", e.getMessage());
         }
+    }
+
+    @Test
+    public void testLeaguesInclude2() throws Exception {
+        prepareMainLigue1Mocks("LJV92C9Y.LJT3FXDF-status-4", "20190818", "20190818", "20190818");
+        stubFor(get("/league/LJV92C9Y/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJV92C9Y.20190818.json")));
+        stubFor(get("/league/LJT3FXDF/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20190818.json")));
+        stubFor(get("/customteam.json/Premier-League")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20190818.json")));
+        stubFor(get("/blessures-et-suspensions/fodbold/angleterre/championship")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20190818.html")));
+
+        Config config = spy(getConfig());
+        doReturn(false).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        doReturn(Arrays.asList("LJV92C9Y", "LJT3FXDF")).when(config).getLeaguesInclude();
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut().contains("FAKE L1"));
+        Assert.assertTrue(getLogOut().contains("FAKE PL"));
+    }
+
+    @Test
+    public void testLeaguesInclude1() throws Exception {
+        prepareMainLigue1Mocks("LJV92C9Y.LJT3FXDF-status-4", "20190818", "20190818", "20190818");
+        stubFor(get("/league/LJV92C9Y/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJV92C9Y.20190818.json")));
+
+        Config config = spy(getConfig());
+        doReturn(false).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        doReturn(Arrays.asList("LJV92C9Y")).when(config).getLeaguesInclude();
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut().contains("FAKE L1"));
+        Assert.assertFalse(getLogOut().contains("FAKE PL"));
+    }
+
+    @Test
+    public void testLeaguesInclude0() throws Exception {
+        prepareMainLigue1Mocks("LJV92C9Y.LJT3FXDF-status-4", "20190818", "20190818", "20190818");
+        stubFor(get("/league/LJV92C9Y/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJV92C9Y.20190818.json")));
+        stubFor(get("/league/LJT3FXDF/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20190818.json")));
+        stubFor(get("/customteam.json/Premier-League")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20190818.json")));
+        stubFor(get("/blessures-et-suspensions/fodbold/angleterre/championship")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20190818.html")));
+
+        Config config = spy(getConfig());
+        doReturn(false).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        doReturn(Collections.emptyList()).when(config).getLeaguesInclude();
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut().contains("FAKE L1"));
+        Assert.assertTrue(getLogOut().contains("FAKE PL"));
+    }
+
+    @Test
+    public void testLeaguesExclude2() throws Exception {
+        prepareMainLigue1Mocks("LJV92C9Y.LJT3FXDF-status-4", "20190818", "20190818", "20190818");
+
+        Config config = spy(getConfig());
+        doReturn(false).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        doReturn(Arrays.asList("LJV92C9Y", "LJT3FXDF")).when(config).getLeaguesExcludes();
+        executeMainProcess(config);
+        Assert.assertFalse(getLogOut().contains("FAKE L1"));
+        Assert.assertFalse(getLogOut().contains("FAKE PL"));
+    }
+
+    @Test
+    public void testLeaguesExclude1() throws Exception {
+        prepareMainLigue1Mocks("LJV92C9Y.LJT3FXDF-status-4", "20190818", "20190818", "20190818");
+        stubFor(get("/league/LJV92C9Y/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJV92C9Y.20190818.json")));
+
+        Config config = spy(getConfig());
+        doReturn(false).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        doReturn(Arrays.asList("LJT3FXDF")).when(config).getLeaguesExcludes();
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut().contains("FAKE L1"));
+        Assert.assertFalse(getLogOut().contains("FAKE PL"));
+    }
+
+    @Test
+    public void testLeaguesExclude0() throws Exception {
+        prepareMainLigue1Mocks("LJV92C9Y.LJT3FXDF-status-4", "20190818", "20190818", "20190818");
+        stubFor(get("/league/LJV92C9Y/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJV92C9Y.20190818.json")));
+        stubFor(get("/league/LJT3FXDF/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20190818.json")));
+        stubFor(get("/customteam.json/Premier-League")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20190818.json")));
+        stubFor(get("/blessures-et-suspensions/fodbold/angleterre/championship")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20190818.html")));
+
+        Config config = spy(getConfig());
+        doReturn(false).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        doReturn(Collections.emptyList()).when(config).getLeaguesExcludes();
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut().contains("FAKE L1"));
+        Assert.assertTrue(getLogOut().contains("FAKE PL"));
+    }
+
+    @Test
+    public void testLeaguesIncludeAndExclude() throws Exception {
+        prepareMainLigue1Mocks("LJV92C9Y.LJT3FXDF-status-4", "20190818", "20190818", "20190818");
+        stubFor(get("/league/LJV92C9Y/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJV92C9Y.20190818.json")));
+
+        Config config = spy(getConfig());
+        doReturn(false).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        doReturn(Arrays.asList("LJV92C9Y", "LJT3FXDF")).when(config).getLeaguesInclude();
+        doReturn(Arrays.asList("LJT3FXDF")).when(config).getLeaguesExcludes();
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut().contains("FAKE L1"));
+        Assert.assertFalse(getLogOut().contains("FAKE PL"));
     }
 
     @Test

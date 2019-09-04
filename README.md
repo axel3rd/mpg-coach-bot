@@ -139,6 +139,12 @@ To focus on recent efficiency, about team proposal and buy transaction (since v1
     efficiency.recent.focus = false
     efficiency.recent.days = 8
 
+To include only some leagues or remove some of them, leagues id separated by comma (since v1.5):
+
+    # Include/exclude leagues
+    leagues.include = KX24XMUJ,KLGXSSUM
+    leagues.exclude = LJT3FXDX
+
 To enable/disable and change default notes for tactical substitutes (since v1.1):
 
     # Notes for tactical substitutes
