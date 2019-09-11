@@ -17,6 +17,7 @@ import org.blondin.mpg.out.model.OutType;
 import org.blondin.mpg.root.MpgClient;
 import org.blondin.mpg.root.exception.NoMoreGamesException;
 import org.blondin.mpg.root.exception.PlayerNotFoundException;
+import org.blondin.mpg.root.model.ChampionshipType;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.League;
@@ -77,6 +78,10 @@ public class Main {
     static void processLeague(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedWrapperClient outPlayersClient,
             Config config) {
         LOG.info("========== {} ==========", league.getName());
+        if (league.getChampionship().equals(ChampionshipType.CHAMPIONS_LEAGUE)) {
+            LOG.info("\nSorry, Champions League is currently not supported.\n");
+            return;
+        }
         switch (league.getLeagueStatus()) {
         case TERMINATED:
             // Already managed previously

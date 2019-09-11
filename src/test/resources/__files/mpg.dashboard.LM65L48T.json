@@ -1,0 +1,20 @@
+{
+    "data": {
+        "leagues": [
+            {
+                "id": "LM65L48T",
+                "admin_mpg_user_id": "mpg_user_35635",
+                "current_mpg_user": "mpg_user_1920581",
+                "name": "Addiction League",
+                "url": "assets/public/img/league/1.jpg",
+                "leagueStatus": 4,
+                "championship": 6,
+                "mode": 1,
+                "teamStatus": 2,
+                "players": 4
+            }
+        ],
+        "follow": [
+        ]
+    }
+}
