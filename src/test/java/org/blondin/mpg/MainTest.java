@@ -738,7 +738,7 @@ public class MainTest extends AbstractMockTestClient {
                     "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/",
                     "http://localhost:" + getServer().port() + "/2019/08/05/joueurs-blesses-et-suspendus/");
         }
-        Main.process(mpgClientLocal, mpgStatsClientLocal, injuredSuspendedClientLocal, c);
+        Main.process(ApiClients.build(mpgClientLocal, mpgStatsClientLocal, injuredSuspendedClientLocal), c);
     }
 
     private static void prepareMainLigue1Mocks(String fileRootDashboard, String fileStatsLeagues, String dataFileStats, String dataFileEquipeActu) {

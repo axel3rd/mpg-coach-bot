@@ -60,23 +60,23 @@ public class Main {
         MpgClient mpgClient = MpgClient.build(config);
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(config);
         InjuredSuspendedWrapperClient outPlayersClient = InjuredSuspendedWrapperClient.build(config);
-        process(mpgClient, mpgStatsClient, outPlayersClient, config);
+        ApiClients apiClients = ApiClients.build(mpgClient, mpgStatsClient, outPlayersClient);
+        process(apiClients, config);
     }
 
-    static void process(MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedWrapperClient outPlayersClient, Config config) {
-        for (League league : mpgClient.getDashboard().getLeagues()) {
+    static void process(ApiClients apiClients, Config config) {
+        for (League league : apiClients.getMpg().getDashboard().getLeagues()) {
             if (LeagueStatus.TERMINATED.equals(league.getLeagueStatus())
                     || (!config.getLeaguesInclude().isEmpty() && !config.getLeaguesInclude().contains(league.getId()))
                     || (!config.getLeaguesExcludes().isEmpty() && config.getLeaguesExcludes().contains(league.getId()))) {
                 // Don't display any logs
                 continue;
             }
-            processLeague(league, mpgClient, mpgStatsClient, outPlayersClient, config);
+            processLeague(league, apiClients, config);
         }
     }
 
-    static void processLeague(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedWrapperClient outPlayersClient,
-            Config config) {
+    static void processLeague(League league, ApiClients apiClients, Config config) {
         LOG.info("========== {} ==========", league.getName());
         if (league.getChampionship().equals(ChampionshipType.CHAMPIONS_LEAGUE)) {
             LOG.info("\nSorry, Champions League is currently not supported.\n");
@@ -87,7 +87,7 @@ public class Main {
             // Already managed previously
         case CREATION:
         case UNKNOWN:
-            processMercatoChampionship(league, mpgClient, mpgStatsClient, outPlayersClient, config);
+            processMercatoChampionship(league, apiClients, config);
             break;
         case MERCATO:
             if (league.getTeamStatus() == 1) {
@@ -98,28 +98,26 @@ public class Main {
                 LOG.info("\nMercato will be ending, ready for your first match ?\n");
                 return;
             }
-            processMercatoLeague(league, mpgClient, mpgStatsClient, outPlayersClient, config);
+            processMercatoLeague(league, apiClients, config);
             break;
         case GAMES:
-            processGames(league, mpgClient, mpgStatsClient, outPlayersClient, config);
+            processGames(league, apiClients, config);
             break;
         }
     }
 
-    static void processMercatoLeague(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient,
-            InjuredSuspendedWrapperClient outPlayersClient, Config config) {
+    static void processMercatoLeague(League league, ApiClients apiClients, Config config) {
         LOG.info("\nProposal for your mercato:\n");
-        List<Player> players = mpgClient.getMercato(league.getId()).getPlayers();
-        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
-        processMercato(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
+        List<Player> players = apiClients.getMpg().getMercato(league.getId()).getPlayers();
+        calculateEfficiency(players, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
+        processMercato(players, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()));
     }
 
-    static void processMercatoChampionship(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient,
-            InjuredSuspendedWrapperClient outPlayersClient, Config config) {
+    static void processMercatoChampionship(League league, ApiClients apiClients, Config config) {
         LOG.info("\nProposal for your coming soon mercato:\n");
-        List<Player> players = mpgClient.getMercato(league.getChampionship()).getPlayers();
-        calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
-        processMercato(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()));
+        List<Player> players = apiClients.getMpg().getMercato(league.getChampionship()).getPlayers();
+        calculateEfficiency(players, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
+        processMercato(players, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()));
     }
 
     static void processMercato(List<Player> players, InjuredSuspendedWrapperClient outPlayersClient, ChampionshipOutType championship) {
@@ -153,21 +151,20 @@ public class Main {
         LOG.info("");
     }
 
-    static void processGames(League league, MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedWrapperClient outPlayersClient,
-            Config config) {
+    static void processGames(League league, ApiClients apiClients, Config config) {
         try {
 
             // Get players
-            Coach coach = mpgClient.getCoach(league.getId());
+            Coach coach = apiClients.getMpg().getCoach(league.getId());
             List<Player> players = coach.getPlayers();
             completePlayersTeams(players, coach.getTeams());
 
             // Calculate efficiency (notes should be in injured players display), and save for transactions proposal
-            calculateEfficiency(players, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
+            calculateEfficiency(players, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
             List<Player> playersTeam = players.stream().collect(Collectors.toList());
 
             // Remove out players (and write them)
-            removeOutPlayers(players, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()), true);
+            removeOutPlayers(players, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()), true);
 
             // Sort by efficiency
             Collections.sort(players,
@@ -178,7 +175,7 @@ public class Main {
 
             // Auto-update team
             if (config.isTeampUpdate()) {
-                updateTeamWithRetry(league, mpgClient, coach, players, config);
+                updateTeamWithRetry(league, apiClients.getMpg(), coach, players, config);
             }
 
             if (config.isTransactionsProposal()) {
@@ -187,12 +184,12 @@ public class Main {
                             "\nTransaction proposals can not be achieved, you should buy 'MPG expert mode' for this league (very fun, not expensive!)");
                 } else {
                     LOG.info("\nTransactions proposal ...");
-                    TransferBuy transferBuy = mpgClient.getTransferBuy(league.getId());
+                    TransferBuy transferBuy = apiClients.getMpg().getTransferBuy(league.getId());
                     List<Player> playersAvailable = transferBuy.getAvailablePlayers();
-                    removeOutPlayers(playersAvailable, outPlayersClient, ChampionshipTypeWrapper.toOut(league.getChampionship()), false);
-                    calculateEfficiency(playersAvailable, mpgStatsClient, ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false,
-                            false);
-                    writeTransactionsProposal(playersTeam, playersAvailable, transferBuy.getBudget(), outPlayersClient,
+                    removeOutPlayers(playersAvailable, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()), false);
+                    calculateEfficiency(playersAvailable, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config,
+                            false, false);
+                    writeTransactionsProposal(playersTeam, playersAvailable, transferBuy.getBudget(), apiClients.getOutPlayers(),
                             ChampionshipTypeWrapper.toOut(league.getChampionship()), config);
                 }
             }
