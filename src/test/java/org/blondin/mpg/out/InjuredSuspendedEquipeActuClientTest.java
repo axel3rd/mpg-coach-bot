@@ -168,6 +168,20 @@ public class InjuredSuspendedEquipeActuClientTest extends AbstractMockTestClient
     }
 
     @Test
+    public void testFeaturesPremierLeagueSecond() throws Exception {
+        ChampionshipOutType c = ChampionshipOutType.PREMIER_LEAGUE;
+
+        // Mock
+        InjuredSuspendedEquipeActuClient client = spy(InjuredSuspendedEquipeActuClient.class);
+        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.premier-league.20190911.html"),
+                Charset.forName("UTF-8"))).when(client).getHtmlContent(ChampionshipOutType.PREMIER_LEAGUE);
+
+        Assert.assertNotNull(client.getPlayer(c, "Willy Boly", Position.D, "Wolverhampton"));
+        Assert.assertNull(client.getPlayer(c, "Willy Boly", Position.D, "Arsenal"));
+        Assert.assertNull(client.getPlayer(c, "Willy Boly", Position.M, "Wolverhampton"));
+    }
+
+    @Test
     public void testFeaturesLiga() throws Exception {
         ChampionshipOutType c = ChampionshipOutType.LIGA;
 
@@ -195,7 +209,7 @@ public class InjuredSuspendedEquipeActuClientTest extends AbstractMockTestClient
     public void testMock() throws Exception {
         stubFor(get("/blessures-et-suspensions/fodbold/france/ligue-1")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.ligue-1.20181017.html")));
-        stubFor(get("/blessures-et-suspensions/fodbold/angleterre/championship")
+        stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20181017.html")));
         stubFor(get("/blessures-et-suspensions/fodbold/espagne/primera-division")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.liga.20181017.html")));

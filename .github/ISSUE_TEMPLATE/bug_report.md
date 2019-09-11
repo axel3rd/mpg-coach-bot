@@ -35,7 +35,7 @@ Depending your championship, join data files set in attachment.
 
 - http://www.equipeactu.fr/blessures-et-suspensions/fodbold/france/ligue-1
 - http://www.equipeactu.fr/blessures-et-suspensions/fodbold/france/ligue-2
-- http://www.equipeactu.fr/blessures-et-suspensions/fodbold/angleterre/championship
+- http://www.equipeactu.fr/blessures-et-suspensions/fodbold/angleterre/premier-league
 - http://www.equipeactu.fr/blessures-et-suspensions/fodbold/espagne/primera-division
 - http://www.equipeactu.fr/blessures-et-suspensions/fodbold/italie/serie-a
 
