@@ -77,6 +77,13 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testSkipChampionsLeague() throws Exception {
+        prepareMainLigueMocks("LM65L48T", null, -1, null, null, null);
+        executeMainProcess();
+        Assert.assertTrue(getLogOut().contains("Sorry, Champions League is currently not supported."));
+    }
+
+    @Test
     public void testLeaguesInclude2() throws Exception {
         prepareMainLigue1Mocks("LJV92C9Y.LJT3FXDF-status-4", "20190818", "20190818", "20190818");
         stubFor(get("/league/LJV92C9Y/coach")
