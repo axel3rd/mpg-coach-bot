@@ -132,7 +132,7 @@ public class Main {
         for (List<Player> line : Arrays.asList(goals, defenders, midfielders, attackers)) {
             for (Player player : line) {
                 org.blondin.mpg.out.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
-                        PositionWrapper.toOut(player.getPosition()), player.getTeamName(), OutType.INJURY_GREEN);
+                        PositionWrapper.toOut(player.getPosition()), player.getClub(), OutType.INJURY_GREEN);
                 String outInfos = "";
                 if (outPlayer != null) {
                     outInfos = String.format("%s - %s - %s", outPlayer.getOutType(), outPlayer.getDescription(), outPlayer.getLength());
@@ -157,7 +157,7 @@ public class Main {
             // Get players
             Coach coach = apiClients.getMpg().getCoach(league.getId());
             List<Player> players = coach.getPlayers();
-            completePlayersTeams(players, coach.getTeams());
+            completePlayersClubs(players, coach.getTeams());
 
             // Calculate efficiency (notes should be in injured players display), and save for transactions proposal
             calculateEfficiency(players, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
@@ -199,14 +199,17 @@ public class Main {
         LOG.info("");
     }
 
-    private static void completePlayersTeams(List<Player> players, Map<Integer, Team> teams) {
+    /**
+     * Players retrieved from "Coach" has only a teamId. Club (Team name) should be completed manually.
+     */
+    static void completePlayersClubs(List<Player> players, Map<Integer, Team> teams) {
         for (Player player : players) {
             Team team = teams.get(player.getTeamId());
             if (team == null) {
                 throw new UnsupportedOperationException(
                         String.format("Team can not be found for player: %s (teamId: %s)", player.getName(), player.getTeamId()));
             }
-            player.setTeamName(team.getName());
+            player.setClub(team.getName());
         }
     }
 
@@ -293,7 +296,7 @@ public class Main {
             AsciiTable at = getTable(TABLE_POSITION, TABLE_PLAYER_NAME, TABLE_EFFICIENCY, TABLE_QUOTE);
             for (Player player : players2buy) {
                 org.blondin.mpg.out.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
-                        PositionWrapper.toOut(player.getPosition()), player.getTeamName(), OutType.INJURY_GREEN);
+                        PositionWrapper.toOut(player.getPosition()), player.getClub(), OutType.INJURY_GREEN);
                 String s = player.getName();
                 if (outPlayer != null) {
                     s += String.format(" (%s - %s - %s)", outPlayer.getOutType(), outPlayer.getDescription(), outPlayer.getLength());
@@ -316,7 +319,7 @@ public class Main {
         List<Player> outPlayers = new ArrayList<>();
         for (Player player : players) {
             org.blondin.mpg.out.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
-                    PositionWrapper.toOut(player.getPosition()), player.getTeamName(), OutType.INJURY_GREEN);
+                    PositionWrapper.toOut(player.getPosition()), player.getClub(), OutType.INJURY_GREEN);
             if (outPlayer != null) {
                 outPlayers.add(player);
                 if (displayOut) {
