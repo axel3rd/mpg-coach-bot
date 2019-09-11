@@ -536,6 +536,7 @@ public class MainTest extends AbstractMockTestClient {
         List<Player> players = new ArrayList<>(mpgClient.getCoach("fake").getPlayers());
         Assert.assertNotNull("Nkunku should be here",
                 players.stream().filter(customer -> "Nkunku".equals(customer.getLastName())).findAny().orElse(null));
+        Main.completePlayersClubs(players, mpgClient.getCoach("fake").getTeams());
         Main.removeOutPlayers(players, outPlayersClient, ChampionshipOutType.LIGUE_1, false);
         Assert.assertNull("Nkunku should be removed",
                 players.stream().filter(customer -> "Nkunku".equals(customer.getLastName())).findAny().orElse(null));

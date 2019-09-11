@@ -18,7 +18,8 @@ public class Player {
     private int quotation;
     @JsonProperty("teamid")
     private int teamId;
-    private String teamName;
+    @JsonProperty("club")
+    private String club;
 
     private double efficiency;
 
@@ -58,11 +59,11 @@ public class Player {
         this.efficiency = efficiency;
     }
 
-    public String getTeamName() {
-        return teamName;
+    public String getClub() {
+        return club;
     }
 
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
+    public void setClub(String club) {
+        this.club = club;
     }
 }

@@ -1,5 +1,6 @@
 package org.blondin.mpg.out;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.model.OutType;
 import org.blondin.mpg.out.model.Player;
@@ -37,6 +38,9 @@ public class InjuredSuspendedWrapperClient {
      * @return Player or null if not found
      */
     public Player getPlayer(ChampionshipOutType championship, String playerName, Position position, String teamName, OutType... excludes) {
+        if (!ObjectUtils.allNotNull(championship, playerName, position, teamName)) {
+            throw new UnsupportedOperationException("Main parameters (championship, playerName, position, teamName) can not be null");
+        }
         if (ChampionshipOutType.LIGUE_2.equals(championship)) {
             return useOnlyForTestGetMaLigue2Client().getPlayer(playerName, teamName);
         }
