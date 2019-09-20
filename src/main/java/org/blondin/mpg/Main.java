@@ -466,7 +466,7 @@ public class Main {
         int setted = 0;
         for (int i = 0; i < number; i++) {
             if (!players.isEmpty()) {
-                request.getPlayersOnPitch().setPlayer(index + i + 1, players.remove(0).getId());
+                request.getPlayersOnPitch().setPlayer(index + i + 1, players.remove(0).getId()); // NOSONAR : Pop first list item
                 setted++;
             }
         }
