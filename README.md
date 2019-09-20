@@ -30,7 +30,7 @@ This efficiency can be focused on recent days (8 by default) by enabling option 
 
 *Prerequisite: [java](https://www.java.com/fr/download/) should be installed and on your PATH.*
 
-Extract ZIP file and update the given `mpg.properties` file with your *MPG* credentials and main options:
+Download package (Via Download buttons at top of this documentation, not the GitHub "releases" link), extract ZIP files and update the given `mpg.properties` file with your *MPG* credentials and main options:
 
     email = firstName.lastName@gmail.com
     password = foobar
