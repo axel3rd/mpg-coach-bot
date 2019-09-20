@@ -69,7 +69,8 @@ public class Config {
     }
 
     private static String parseString(Properties properties, String key) {
-        return StringUtils.defaultIfBlank(properties.getProperty(key), System.getenv("MPG_" + key.toUpperCase().replaceAll("\\.", "_")));
+        // No SonarQube issues, Keys are known
+        return StringUtils.defaultIfBlank(properties.getProperty(key), System.getenv("MPG_" + key.toUpperCase().replaceAll("\\.", "_"))); // NOSONAR
     }
 
     private static float parseFloat(Properties properties, String key, float valueIfNotDefined) {

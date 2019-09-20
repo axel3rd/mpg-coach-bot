@@ -15,7 +15,7 @@ public class Player {
     }
 
     public Position getPosition() {
-        if (getFullNameWithPosition().matches(".* \\([A-Z]{2}\\)")) {
+        if (getFullNameWithPosition().matches(".* \\([A-Z]{2}\\)")) { // NOSONAR : Secure regexp here
             return Position.getNameByValue(getFullNameWithPosition().substring(getFullNameWithPosition().lastIndexOf('(')));
         }
         return Position.UNDEFINED;
@@ -51,8 +51,7 @@ public class Player {
 
     public String getTeam() {
         if (StringUtils.isBlank(this.team)) {
-            // TODO : Remove exception
-            throw new UnsupportedOperationException("Team is null, implement");
+            throw new UnsupportedOperationException("The team can't be null here, implement problem (should be filled before)");
         }
         return this.team;
     }
