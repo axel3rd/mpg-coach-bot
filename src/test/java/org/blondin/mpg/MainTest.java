@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -527,7 +527,7 @@ public class MainTest extends AbstractMockTestClient {
                 new ObjectMapper().readValue(new File("src/test/resources/__files", "mpgstats.ligue-1.20181017.json"), Championship.class));
 
         InjuredSuspendedEquipeActuClient outPlayersEquipeActuClient = spy(InjuredSuspendedEquipeActuClient.class);
-        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.ligue-1.20181017.html"), Charset.forName("UTF-8")))
+        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.ligue-1.20181017.html"), StandardCharsets.UTF_8))
                 .when(outPlayersEquipeActuClient).getHtmlContent(ChampionshipOutType.LIGUE_1);
         InjuredSuspendedWrapperClient outPlayersClient = spy(InjuredSuspendedWrapperClient.class);
         doReturn(outPlayersEquipeActuClient).when(outPlayersClient).useOnlyForTestGetEquipeActuClient();
@@ -777,7 +777,7 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     private String getTestFileToString(String fileName) throws IOException {
-        return FileUtils.readFileToString(new File("src/test/resources/__files", fileName), Charset.forName("UTF-8"));
+        return FileUtils.readFileToString(new File("src/test/resources/__files", fileName), StandardCharsets.UTF_8);
     }
 
 }

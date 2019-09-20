@@ -51,7 +51,7 @@ public class Main {
 
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { // NOSONAR : args used as file option, no security issue
         String configFile = null;
         if (args != null && args.length > 0) {
             configFile = args[0];
@@ -454,7 +454,7 @@ public class Main {
                     break;
                 }
                 if (StringUtils.isBlank(request.getPlayersOnPitch().getPlayer(i))) {
-                    request.getPlayersOnPitch().setPlayer(i, playersRemaining.remove(0).getId());
+                    request.getPlayersOnPitch().setPlayer(i, playersRemaining.remove(0).getId()); // NOSONAR : Pop first list item
                 }
             }
         }

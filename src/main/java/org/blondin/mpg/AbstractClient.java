@@ -3,7 +3,7 @@ package org.blondin.mpg;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
@@ -116,7 +116,7 @@ public abstract class AbstractClient {
                 response = invocationBuilder.post(Entity.entity(entityRequest, MediaType.APPLICATION_JSON));
             }
             if (Response.Status.OK.getStatusCode() != response.getStatus()) {
-                String content = IOUtils.toString((InputStream) response.getEntity(), Charset.forName("UTF-8"));
+                String content = IOUtils.toString((InputStream) response.getEntity(), StandardCharsets.UTF_8);
                 if (StringUtils.isNoneBlank(content)) {
                     content = " / Content: " + content;
                 }
@@ -139,7 +139,7 @@ public abstract class AbstractClient {
     @SuppressWarnings("unchecked")
     private static <T> T readEntityFromFile(File file, Class<T> entityResponse) throws IOException {
         if (entityResponse.equals(String.class)) {
-            return (T) FileUtils.readFileToString(file, Charset.forName("UTF-8"));
+            return (T) FileUtils.readFileToString(file, StandardCharsets.UTF_8);
         }
         // Perhaps 'enable(DeserializationFeature.UNWRAP_ROOT_VALUE)' to set depending wrapRoot
         return new ObjectMapper().readValue(file, entityResponse);
