@@ -1,7 +1,7 @@
 language: java
-dist: trusty
+dist: xenial
 jdk:
-- oraclejdk8
+- openjdk8
 - oraclejdk11
 cache:
   directories:
@@ -15,7 +15,7 @@ before_script:
 - echo Current build is on Java $JAVA_HOME
 script:
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package
-- if [ "$JAVA_HOME" = "/usr/lib/jvm/java-8-oracle" ]; then mvn sonar:sonar; fi
+- if [ "$JAVA_HOME" = "/usr/lib/jvm/java-1.8.0-openjdk-amd64" ]; then mvn sonar:sonar; fi
 before_deploy:
 - sh ./bintray-before-deploy.sh
 deploy:
