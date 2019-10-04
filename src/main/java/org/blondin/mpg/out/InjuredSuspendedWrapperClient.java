@@ -8,7 +8,7 @@ import org.blondin.mpg.out.model.Position;
 
 /**
  * Wrapper for:<br/>
- * - http://www.equipeactu.fr/blessures-et-suspensions/fodbold/<br/>
+ * - https://www.equipeactu.fr/blessures-et-suspensions/fodbold/<br/>
  * - https://maligue2.fr/2019/08/05/joueurs-blesses-et-suspendus/
  */
 public class InjuredSuspendedWrapperClient {
