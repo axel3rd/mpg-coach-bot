@@ -31,13 +31,13 @@ Depending your championship, join data files set in attachment.
 
 3. The [Players statistics](https://www.mpgstats.fr/) time update data : https://www.mpgstats.fr/json/leagues.json
 
-4. The [Injury / Suspended](http://www.equipeactu.fr/blessures-et-suspensions/fodbold/) data, one full HTML from:
+4. The [Injury / Suspended](https://www.equipeactu.fr/blessures-et-suspensions/fodbold/) data, one full HTML from:
 
-- http://www.equipeactu.fr/blessures-et-suspensions/fodbold/france/ligue-1
-- http://www.equipeactu.fr/blessures-et-suspensions/fodbold/france/ligue-2
-- http://www.equipeactu.fr/blessures-et-suspensions/fodbold/angleterre/premier-league
-- http://www.equipeactu.fr/blessures-et-suspensions/fodbold/espagne/primera-division
-- http://www.equipeactu.fr/blessures-et-suspensions/fodbold/italie/serie-a
+- https://www.equipeactu.fr/blessures-et-suspensions/fodbold/france/ligue-1
+- https://www.equipeactu.fr/blessures-et-suspensions/fodbold/france/ligue-2
+- https://www.equipeactu.fr/blessures-et-suspensions/fodbold/angleterre/premier-league
+- https://www.equipeactu.fr/blessures-et-suspensions/fodbold/espagne/primera-division
+- https://www.equipeactu.fr/blessures-et-suspensions/fodbold/italie/serie-a
 
 **Expected behavior**
 

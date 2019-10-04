@@ -20,7 +20,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 /**
- * http://www.equipeactu.fr/blessures-et-suspensions/fodbold/
+ * https://www.equipeactu.fr/blessures-et-suspensions/fodbold/
  */
 public class InjuredSuspendedEquipeActuClient extends AbstractClient {
 
@@ -58,7 +58,7 @@ public class InjuredSuspendedEquipeActuClient extends AbstractClient {
 
     public static InjuredSuspendedEquipeActuClient build(Config config, String urlOverride) {
         InjuredSuspendedEquipeActuClient client = new InjuredSuspendedEquipeActuClient();
-        client.setUrl(StringUtils.defaultString(urlOverride, "http://www.equipeactu.fr/blessures-et-suspensions/fodbold/"));
+        client.setUrl(StringUtils.defaultString(urlOverride, "https://www.equipeactu.fr/blessures-et-suspensions/fodbold/"));
         client.setProxy(config.getProxy());
         return client;
     }
