@@ -26,7 +26,7 @@ deploy:
     key: $BINTRAY_API_KEY
     skip_cleanup: true
     on:
-      jdk: oraclejdk8    
+      jdk: openjdk8    
     # Tag deployment
   - provider: bintray
     file: bintray-descriptor.json
@@ -35,4 +35,4 @@ deploy:
     skip_cleanup: true
     on:
       tags: true
-      jdk: oraclejdk8
+      jdk: openjdk8
