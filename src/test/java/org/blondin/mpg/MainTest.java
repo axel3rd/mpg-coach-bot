@@ -77,6 +77,19 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testMultipleDivisions() throws Exception {
+        prepareMainLigue1Mocks("multiple-divisions", "20190818", "20190818", "20190818");
+        stubFor(get("/league/LJV92C9Y/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJV92C9Y.20190818.json")));
+
+        Config config = spy(getConfig());
+        doReturn(false).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut().contains("========== Division 2 =========="));
+    }
+
+    @Test
     public void testSkipChampionsLeague() throws Exception {
         prepareMainLigueMocks("LM65L48T", null, -1, null, null, null);
         executeMainProcess();
