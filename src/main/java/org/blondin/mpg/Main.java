@@ -65,7 +65,11 @@ public class Main {
     }
 
     static void process(ApiClients apiClients, Config config) {
-        for (League league : apiClients.getMpg().getDashboard().getLeagues()) {
+        for (League leagueOptionalMaster : apiClients.getMpg().getDashboard().getLeagues()) {
+            League league = leagueOptionalMaster;
+            if (league.isMasterLeague()) {
+                league = league.getSubLeague();
+            }
             if (LeagueStatus.TERMINATED.equals(league.getLeagueStatus())
                     || (!config.getLeaguesInclude().isEmpty() && !config.getLeaguesInclude().contains(league.getId()))
                     || (!config.getLeaguesExcludes().isEmpty() && config.getLeaguesExcludes().contains(league.getId()))) {
