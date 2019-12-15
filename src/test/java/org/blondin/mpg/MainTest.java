@@ -103,7 +103,21 @@ public class MainTest extends AbstractMockTestClient {
         doReturn(true).when(config).isTeampUpdate();
         doReturn(true).when(config).isEfficiencyRecentFocus();
         executeMainProcess(config);
+    }
 
+    @Test
+    public void testUseBonusRedBull() throws Exception {
+        prepareMainLigue2Mocks("LH9HKBTD-LJV92C9Y-LJT3FXDF", "20191212", "20191212", "20191212");
+        stubFor(get("/league/LH9HKBTD/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LH9HKBTD.20191212.redbull.json")));
+        stubFor(post("/league/LH9HKBTD/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LH9HKBTD.20191212.redbull-Request.json")))
+                .willReturn(aResponse().withBody("{\"success\":\"teamSaved\"}")));
+
+        Config config = spy(getConfig());
+        doReturn(Arrays.asList("LH9HKBTD")).when(config).getLeaguesInclude();
+        doReturn(true).when(config).isTeampUpdate();
+        doReturn(true).when(config).isEfficiencyRecentFocus();
+        executeMainProcess(config);
     }
 
     @Test
@@ -190,7 +204,7 @@ public class MainTest extends AbstractMockTestClient {
         Config config = spy(getConfig());
         doReturn(false).when(config).isTeampUpdate();
         doReturn(false).when(config).isTacticalSubstitutes();
-        doReturn(Arrays.asList("LJV92C9Y", "LJT3FXDF")).when(config).getLeaguesExcludes();
+        doReturn(Arrays.asList("LJV92C9Y", "LJT3FXDF")).when(config).getLeaguesExclude();
         executeMainProcess(config);
         Assert.assertFalse(getLogOut().contains("FAKE L1"));
         Assert.assertFalse(getLogOut().contains("FAKE PL"));
@@ -205,7 +219,7 @@ public class MainTest extends AbstractMockTestClient {
         Config config = spy(getConfig());
         doReturn(false).when(config).isTeampUpdate();
         doReturn(false).when(config).isTacticalSubstitutes();
-        doReturn(Arrays.asList("LJT3FXDF")).when(config).getLeaguesExcludes();
+        doReturn(Arrays.asList("LJT3FXDF")).when(config).getLeaguesExclude();
         executeMainProcess(config);
         Assert.assertTrue(getLogOut().contains("FAKE L1"));
         Assert.assertFalse(getLogOut().contains("FAKE PL"));
@@ -226,7 +240,7 @@ public class MainTest extends AbstractMockTestClient {
         Config config = spy(getConfig());
         doReturn(false).when(config).isTeampUpdate();
         doReturn(false).when(config).isTacticalSubstitutes();
-        doReturn(Collections.emptyList()).when(config).getLeaguesExcludes();
+        doReturn(Collections.emptyList()).when(config).getLeaguesExclude();
         executeMainProcess(config);
         Assert.assertTrue(getLogOut().contains("FAKE L1"));
         Assert.assertTrue(getLogOut().contains("FAKE PL"));
@@ -242,7 +256,7 @@ public class MainTest extends AbstractMockTestClient {
         doReturn(false).when(config).isTeampUpdate();
         doReturn(false).when(config).isTacticalSubstitutes();
         doReturn(Arrays.asList("LJV92C9Y", "LJT3FXDF")).when(config).getLeaguesInclude();
-        doReturn(Arrays.asList("LJT3FXDF")).when(config).getLeaguesExcludes();
+        doReturn(Arrays.asList("LJT3FXDF")).when(config).getLeaguesExclude();
         executeMainProcess(config);
         Assert.assertTrue(getLogOut().contains("FAKE L1"));
         Assert.assertFalse(getLogOut().contains("FAKE PL"));

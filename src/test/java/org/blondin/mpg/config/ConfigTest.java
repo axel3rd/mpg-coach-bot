@@ -27,13 +27,15 @@ public class ConfigTest {
         Assert.assertEquals(false, config.isEfficiencyRecentFocus());
         Assert.assertEquals(8, config.getEfficiencyRecentDays());
 
+        Assert.assertEquals(true, config.isUseBonus());
+
         Assert.assertNotNull(config.getProxy());
         Assert.assertFalse(config.getProxy().isConfigured());
 
         Assert.assertNotNull(config.getLeaguesInclude());
         Assert.assertTrue(config.getLeaguesInclude().isEmpty());
-        Assert.assertNotNull(config.getLeaguesExcludes());
-        Assert.assertTrue(config.getLeaguesExcludes().isEmpty());
+        Assert.assertNotNull(config.getLeaguesExclude());
+        Assert.assertTrue(config.getLeaguesExclude().isEmpty());
 
         Assert.assertTrue(config.isTacticalSubstitutes());
         Assert.assertEquals(6.0f, config.getNoteTacticalSubstituteAttacker(), 0);
@@ -62,6 +64,7 @@ public class ConfigTest {
         lines.add("team.update=true");
         lines.add("efficiency.recent.focus=true");
         lines.add("efficiency.recent.days=5");
+        lines.add("use.bonus=false");
         lines.add("leagues.include=KX24XMUJ,KLGXSSUM");
         lines.add("leagues.exclude=LJT3FXDX, FOOBAR42");
         lines.add("tactical.substitutes=false");
@@ -91,16 +94,18 @@ public class ConfigTest {
         Assert.assertEquals(true, config.isEfficiencyRecentFocus());
         Assert.assertEquals(5, config.getEfficiencyRecentDays());
 
+        Assert.assertEquals(false, config.isUseBonus());
+
         Assert.assertEquals(2, config.getLeaguesInclude().size());
         Assert.assertTrue(config.getLeaguesInclude().contains("KX24XMUJ"));
         Assert.assertTrue(config.getLeaguesInclude().contains("KLGXSSUM"));
         Assert.assertFalse(config.getLeaguesInclude().contains("LJT3FXDX"));
         Assert.assertFalse(config.getLeaguesInclude().contains("FOOBAR42"));
-        Assert.assertEquals(2, config.getLeaguesExcludes().size());
-        Assert.assertTrue(config.getLeaguesExcludes().contains("LJT3FXDX"));
-        Assert.assertTrue(config.getLeaguesExcludes().contains("FOOBAR42"));
-        Assert.assertFalse(config.getLeaguesExcludes().contains("KX24XMUJ"));
-        Assert.assertFalse(config.getLeaguesExcludes().contains("KLGXSSUM"));
+        Assert.assertEquals(2, config.getLeaguesExclude().size());
+        Assert.assertTrue(config.getLeaguesExclude().contains("LJT3FXDX"));
+        Assert.assertTrue(config.getLeaguesExclude().contains("FOOBAR42"));
+        Assert.assertFalse(config.getLeaguesExclude().contains("KX24XMUJ"));
+        Assert.assertFalse(config.getLeaguesExclude().contains("KLGXSSUM"));
 
         Assert.assertFalse(config.isTacticalSubstitutes());
         Assert.assertEquals(3.2f, config.getNoteTacticalSubstituteAttacker(), 0);

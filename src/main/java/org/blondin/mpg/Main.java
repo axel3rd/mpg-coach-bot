@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.ChampionshipOutType;
@@ -17,6 +18,7 @@ import org.blondin.mpg.out.model.OutType;
 import org.blondin.mpg.root.MpgClient;
 import org.blondin.mpg.root.exception.NoMoreGamesException;
 import org.blondin.mpg.root.exception.PlayerNotFoundException;
+import org.blondin.mpg.root.model.BonusSelected;
 import org.blondin.mpg.root.model.ChampionshipType;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.CoachRequest;
@@ -72,7 +74,7 @@ public class Main {
             }
             if (LeagueStatus.TERMINATED.equals(league.getLeagueStatus())
                     || (!config.getLeaguesInclude().isEmpty() && !config.getLeaguesInclude().contains(league.getId()))
-                    || (!config.getLeaguesExcludes().isEmpty() && config.getLeaguesExcludes().contains(league.getId()))) {
+                    || (!config.getLeaguesExclude().isEmpty() && config.getLeaguesExclude().contains(league.getId()))) {
                 // Don't display any logs
                 continue;
             }
@@ -426,6 +428,8 @@ public class Main {
         List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList());
         List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList());
 
+        request.setBonusSelected(getBonusSelected(coach, midfielders.get(0).getId(), config));
+
         // Main lines
         setPlayersOnPitch(request, defenders, nbrDefenders, 1);
         setPlayersOnPitch(request, midfielders, nbrMidfielders, 1 + nbrDefenders);
@@ -464,6 +468,23 @@ public class Main {
         }
 
         return request;
+    }
+
+    private static BonusSelected getBonusSelected(Coach coach, String playerIdForRefBull, Config config) {
+        BonusSelected bonusSelected = ObjectUtils.defaultIfNull(coach.getBonusSelected(), new BonusSelected());
+        if (!config.isUseBonus() || bonusSelected.getType() != null) {
+            return bonusSelected;
+        }
+        int matchsRemaining = 1 + (coach.getNbPlayers() - 1) * 2
+                - Integer.valueOf(coach.getMatchId().replaceAll("mpg_match_[^_]+_\\d_", "").replaceAll("_\\d", ""));
+        if (coach.getBonus().getNumber() >= matchsRemaining) {
+            int bonusType = coach.getBonus().getBonusTypeForRemainingMatch(matchsRemaining);
+            bonusSelected.setType(bonusType);
+            if (bonusType == 4) {
+                bonusSelected.setPlayerId(playerIdForRefBull);
+            }
+        }
+        return bonusSelected;
     }
 
     private static int setPlayersOnPitch(CoachRequest request, List<Player> players, int number, int index) {
