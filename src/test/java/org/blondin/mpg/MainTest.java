@@ -770,6 +770,7 @@ public class MainTest extends AbstractMockTestClient {
         prepareMainLigue1Mocks("KLGXSSUG-status-4", "20181114", "20181114", "20181114");
         Config config = spy(getConfig());
         doReturn(true).when(config).isTeampUpdate();
+        doReturn(false).when(config).isUseBonus();
         stubFor(get("/league/KLGXSSUG/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile(coachFileWithoutJsonExtension + ".json")));
         stubFor(post("/league/KLGXSSUG/coach").withRequestBody(equalToJson(getTestFileToString(coachFileWithoutJsonExtension + "-Request.json")))
