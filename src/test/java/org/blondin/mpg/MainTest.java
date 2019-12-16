@@ -103,6 +103,10 @@ public class MainTest extends AbstractMockTestClient {
         doReturn(true).when(config).isTeampUpdate();
         doReturn(true).when(config).isEfficiencyRecentFocus();
         executeMainProcess(config);
+        // Nothing displayed in log about bonus usage
+        Assert.assertTrue(getLogOut().contains("========== D2 MAX =========="));
+        Assert.assertTrue(getLogOut().contains("========== GWADA BOYS =========="));
+        Assert.assertTrue(getLogOut().contains("========== Peter Ouch  =========="));
     }
 
     @Test
@@ -118,6 +122,8 @@ public class MainTest extends AbstractMockTestClient {
         doReturn(true).when(config).isTeampUpdate();
         doReturn(true).when(config).isEfficiencyRecentFocus();
         executeMainProcess(config);
+        // Nothing displayed in log about bonus usage
+        Assert.assertTrue(getLogOut().contains("========== D2 MAX =========="));
     }
 
     @Test
