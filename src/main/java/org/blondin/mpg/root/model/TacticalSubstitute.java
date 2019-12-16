@@ -19,4 +19,16 @@ public class TacticalSubstitute {
         this.rating = rating;
     }
 
+    /**
+     * Convenience method to remove ".0" suffix in the displayed float
+     * 
+     * @return Float
+     */
+    public Number getRating() {
+        if (this.rating == (long) this.rating) {
+            return (long) this.rating;
+        }
+        return this.rating;
+    }
+
 }

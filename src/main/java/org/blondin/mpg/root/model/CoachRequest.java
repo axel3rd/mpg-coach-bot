@@ -3,8 +3,6 @@ package org.blondin.mpg.root.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.ObjectUtils;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CoachRequest {
@@ -37,7 +35,6 @@ public class CoachRequest {
         this.composition = coach.getComposition();
         this.matchId = coach.getMatchId();
         this.realDay = coach.getRealDay();
-        this.bonusSelected = ObjectUtils.defaultIfNull(coach.getBonusSelected(), new BonusSelected());
     }
 
     public PlayersOnPitch getPlayersOnPitch() {
@@ -52,4 +49,7 @@ public class CoachRequest {
         return bonusSelected;
     }
 
+    public void setBonusSelected(BonusSelected bonusSelected) {
+        this.bonusSelected = bonusSelected;
+    }
 }

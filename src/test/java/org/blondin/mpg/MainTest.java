@@ -77,6 +77,50 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testUseBonus() throws Exception {
+        prepareMainLigue2Mocks("LH9HKBTD-LJV92C9Y-LJT3FXDF", "20191212", "20191212", "20191212");
+        stubFor(get("/league/LH9HKBTD/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LH9HKBTD.20191212.json")));
+        stubFor(post("/league/LH9HKBTD/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LH9HKBTD.20191212-Request.json")))
+                .willReturn(aResponse().withBody("{\"success\":\"teamSaved\"}")));
+
+        prepareMainLigue1Mocks("LH9HKBTD-LJV92C9Y-LJT3FXDF", "20191212", "20191212", "20191212");
+        stubFor(get("/league/LJV92C9Y/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJV92C9Y.20191212.json")));
+        stubFor(post("/league/LJV92C9Y/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LJV92C9Y.20191212-Request.json")))
+                .willReturn(aResponse().withBody("{\"success\":\"teamSaved\"}")));
+
+        stubFor(get("/league/LJT3FXDF/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20191212.json")));
+        stubFor(post("/league/LJT3FXDF/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LJT3FXDF.20191212-Request.json")))
+                .willReturn(aResponse().withBody("{\"success\":\"teamSaved\"}")));
+        stubFor(get("/customteam.json/Premier-League")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20191212.json")));
+        stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20191212.html")));
+
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTeampUpdate();
+        doReturn(true).when(config).isEfficiencyRecentFocus();
+        executeMainProcess(config);
+    }
+
+    @Test
+    public void testUseBonusRedBull() throws Exception {
+        prepareMainLigue2Mocks("LH9HKBTD-LJV92C9Y-LJT3FXDF", "20191212", "20191212", "20191212");
+        stubFor(get("/league/LH9HKBTD/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LH9HKBTD.20191212.redbull.json")));
+        stubFor(post("/league/LH9HKBTD/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LH9HKBTD.20191212.redbull-Request.json")))
+                .willReturn(aResponse().withBody("{\"success\":\"teamSaved\"}")));
+
+        Config config = spy(getConfig());
+        doReturn(Arrays.asList("LH9HKBTD")).when(config).getLeaguesInclude();
+        doReturn(true).when(config).isTeampUpdate();
+        doReturn(true).when(config).isEfficiencyRecentFocus();
+        executeMainProcess(config);
+    }
+
+    @Test
     public void testMultipleDivisions() throws Exception {
         prepareMainLigue1Mocks("multiple-divisions", "20190818", "20190818", "20190818");
         stubFor(get("/league/LJV92C9Y/coach")
@@ -160,7 +204,7 @@ public class MainTest extends AbstractMockTestClient {
         Config config = spy(getConfig());
         doReturn(false).when(config).isTeampUpdate();
         doReturn(false).when(config).isTacticalSubstitutes();
-        doReturn(Arrays.asList("LJV92C9Y", "LJT3FXDF")).when(config).getLeaguesExcludes();
+        doReturn(Arrays.asList("LJV92C9Y", "LJT3FXDF")).when(config).getLeaguesExclude();
         executeMainProcess(config);
         Assert.assertFalse(getLogOut().contains("FAKE L1"));
         Assert.assertFalse(getLogOut().contains("FAKE PL"));
@@ -175,7 +219,7 @@ public class MainTest extends AbstractMockTestClient {
         Config config = spy(getConfig());
         doReturn(false).when(config).isTeampUpdate();
         doReturn(false).when(config).isTacticalSubstitutes();
-        doReturn(Arrays.asList("LJT3FXDF")).when(config).getLeaguesExcludes();
+        doReturn(Arrays.asList("LJT3FXDF")).when(config).getLeaguesExclude();
         executeMainProcess(config);
         Assert.assertTrue(getLogOut().contains("FAKE L1"));
         Assert.assertFalse(getLogOut().contains("FAKE PL"));
@@ -196,7 +240,7 @@ public class MainTest extends AbstractMockTestClient {
         Config config = spy(getConfig());
         doReturn(false).when(config).isTeampUpdate();
         doReturn(false).when(config).isTacticalSubstitutes();
-        doReturn(Collections.emptyList()).when(config).getLeaguesExcludes();
+        doReturn(Collections.emptyList()).when(config).getLeaguesExclude();
         executeMainProcess(config);
         Assert.assertTrue(getLogOut().contains("FAKE L1"));
         Assert.assertTrue(getLogOut().contains("FAKE PL"));
@@ -212,7 +256,7 @@ public class MainTest extends AbstractMockTestClient {
         doReturn(false).when(config).isTeampUpdate();
         doReturn(false).when(config).isTacticalSubstitutes();
         doReturn(Arrays.asList("LJV92C9Y", "LJT3FXDF")).when(config).getLeaguesInclude();
-        doReturn(Arrays.asList("LJT3FXDF")).when(config).getLeaguesExcludes();
+        doReturn(Arrays.asList("LJT3FXDF")).when(config).getLeaguesExclude();
         executeMainProcess(config);
         Assert.assertTrue(getLogOut().contains("FAKE L1"));
         Assert.assertFalse(getLogOut().contains("FAKE PL"));
@@ -726,6 +770,7 @@ public class MainTest extends AbstractMockTestClient {
         prepareMainLigue1Mocks("KLGXSSUG-status-4", "20181114", "20181114", "20181114");
         Config config = spy(getConfig());
         doReturn(true).when(config).isTeampUpdate();
+        doReturn(false).when(config).isUseBonus();
         stubFor(get("/league/KLGXSSUG/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile(coachFileWithoutJsonExtension + ".json")));
         stubFor(post("/league/KLGXSSUG/coach").withRequestBody(equalToJson(getTestFileToString(coachFileWithoutJsonExtension + "-Request.json")))

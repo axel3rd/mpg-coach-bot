@@ -24,6 +24,7 @@ public class Config {
     private boolean teampUpdate = false;
     private boolean efficiencyRecentFocus = false;
     private int efficiencyRecentDays = 8;
+    private boolean useBonus = true;
     private boolean tacticalSubstitutesUpdate = true;
     private float noteTacticalSubstituteAttacker = 6;
     private float noteTacticalSubstituteMidfielder = 5;
@@ -39,7 +40,7 @@ public class Config {
     private float efficiencySellGoalkeeper = 3f;
     private Proxy proxy;
     private List<String> leaguesInclude = new ArrayList<>();
-    private List<String> leaguesExcludes = new ArrayList<>();
+    private List<String> leaguesExclude = new ArrayList<>();
 
     private Config() {
         super();
@@ -120,9 +121,10 @@ public class Config {
         config.teampUpdate = parseBoolean(properties, "team.update", config.teampUpdate);
         config.efficiencyRecentFocus = parseBoolean(properties, "efficiency.recent.focus", config.efficiencyRecentFocus);
         config.efficiencyRecentDays = parseInt(properties, "efficiency.recent.days", config.efficiencyRecentDays, 1, config.efficiencyRecentDays);
+        config.useBonus = parseBoolean(properties, "use.bonus", config.useBonus);
         config.transactionsProposal = parseBoolean(properties, "transactions.proposal", config.transactionsProposal);
         config.leaguesInclude = parseList(properties, "leagues.include", ",");
-        config.leaguesExcludes = parseList(properties, "leagues.exclude", ",");
+        config.leaguesExclude = parseList(properties, "leagues.exclude", ",");
     }
 
     private static void configNoteTacticalSubstitute(Config config, Properties properties) {
@@ -177,6 +179,10 @@ public class Config {
 
     public int getEfficiencyRecentDays() {
         return efficiencyRecentDays;
+    }
+
+    public boolean isUseBonus() {
+        return useBonus;
     }
 
     public boolean isTransactionsProposal() {
@@ -237,8 +243,8 @@ public class Config {
         return leaguesInclude;
     }
 
-    public List<String> getLeaguesExcludes() {
-        return leaguesExcludes;
+    public List<String> getLeaguesExclude() {
+        return leaguesExclude;
     }
 
 }

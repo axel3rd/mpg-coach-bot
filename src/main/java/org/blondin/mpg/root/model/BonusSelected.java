@@ -21,4 +21,12 @@ public class BonusSelected {
     public String getPlayerId() {
         return playerId;
     }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public void setPlayerId(String playerId) {
+        this.playerId = playerId;
+    }
 }

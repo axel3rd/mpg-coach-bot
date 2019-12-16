@@ -1,0 +1,44 @@
+{
+    "data": {
+        "leagues": [
+            {
+                "id": "LH9HKBTD",
+                "admin_mpg_user_id": "mpg_user_35635",
+                "current_mpg_user": "mpg_user_955966",
+                "name": "D2 MAX",
+                "url": "assets/public/img/league/1.jpg",
+                "leagueStatus": 4,
+                "championship": 4,
+                "mode": 2,
+                "teamStatus": 1,
+                "players": 10
+            },
+            {
+                "id": "LJV92C9Y",
+                "admin_mpg_user_id": "mpg_user_953561",
+                "current_mpg_user": "mpg_user_955966",
+                "name": "GWADA BOYS",
+                "url": "assets/public/img/league/1.jpg",
+                "leagueStatus": 4,
+                "championship": 1,
+                "mode": 2,
+                "teamStatus": 1,
+                "players": 10
+            },
+            {
+                "id": "LJT3FXDF",
+                "admin_mpg_user_id": "mpg_user_35635",
+                "current_mpg_user": "mpg_user_955966",
+                "name": "Peter Ouch ",
+                "url": "assets/public/img/league/1.jpg",
+                "leagueStatus": 4,
+                "championship": 2,
+                "mode": 2,
+                "teamStatus": 1,
+                "players": 10
+            }
+        ],
+        "follow": [
+        ]
+    }
+}

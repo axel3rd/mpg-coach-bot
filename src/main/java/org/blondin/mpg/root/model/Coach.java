@@ -17,11 +17,18 @@ public class Coach {
     @JsonProperty("composition")
     private int composition;
 
+    @JsonProperty("bonus")
+    private Bonus bonus;
+
     @JsonProperty("bonusSelected")
     private BonusSelected bonusSelected;
 
     @JsonProperty("matchId")
     private String matchId;
+
+    /** Number of players in the league */
+    @JsonProperty("nbPlayers")
+    private int nbPlayers;
 
     @JsonProperty("realday")
     private int realDay;
@@ -37,12 +44,20 @@ public class Coach {
         return composition;
     }
 
+    public Bonus getBonus() {
+        return bonus;
+    }
+
     public BonusSelected getBonusSelected() {
         return bonusSelected;
     }
 
     public String getMatchId() {
         return matchId;
+    }
+
+    public int getNbPlayers() {
+        return nbPlayers;
     }
 
     public int getRealDay() {

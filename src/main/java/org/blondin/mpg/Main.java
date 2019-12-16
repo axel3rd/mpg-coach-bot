@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.ChampionshipOutType;
@@ -17,6 +18,8 @@ import org.blondin.mpg.out.model.OutType;
 import org.blondin.mpg.root.MpgClient;
 import org.blondin.mpg.root.exception.NoMoreGamesException;
 import org.blondin.mpg.root.exception.PlayerNotFoundException;
+import org.blondin.mpg.root.model.Bonus;
+import org.blondin.mpg.root.model.BonusSelected;
 import org.blondin.mpg.root.model.ChampionshipType;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.CoachRequest;
@@ -72,7 +75,7 @@ public class Main {
             }
             if (LeagueStatus.TERMINATED.equals(league.getLeagueStatus())
                     || (!config.getLeaguesInclude().isEmpty() && !config.getLeaguesInclude().contains(league.getId()))
-                    || (!config.getLeaguesExcludes().isEmpty() && config.getLeaguesExcludes().contains(league.getId()))) {
+                    || (!config.getLeaguesExclude().isEmpty() && config.getLeaguesExclude().contains(league.getId()))) {
                 // Don't display any logs
                 continue;
             }
@@ -426,6 +429,9 @@ public class Main {
         List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList());
         List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList());
 
+        request.setBonusSelected(selectBonus(coach.getBonusSelected(), coach.getBonus(), coach.getMatchId(), coach.getNbPlayers(),
+                config.isUseBonus(), midfielders.get(0).getId()));
+
         // Main lines
         setPlayersOnPitch(request, defenders, nbrDefenders, 1);
         setPlayersOnPitch(request, midfielders, nbrMidfielders, 1 + nbrDefenders);
@@ -464,6 +470,29 @@ public class Main {
         }
 
         return request;
+    }
+
+    static BonusSelected selectBonus(BonusSelected previousBonus, Bonus bonus, String matchId, int numberPlayers, boolean useBonus,
+            String playerIdForRefBull) {
+        BonusSelected bonusSelected = ObjectUtils.defaultIfNull(previousBonus, new BonusSelected());
+        if (!useBonus || bonusSelected.getType() != null) {
+            return bonusSelected;
+        }
+        if (bonus == null) {
+            throw new UnsupportedOperationException("Bonus is null, technical problem");
+        }
+        if (numberPlayers <= 0) {
+            throw new UnsupportedOperationException("Number of player could not be <= 0");
+        }
+        int matchsRemaining = 1 + (numberPlayers - 1) * 2 - Integer.valueOf(matchId.replaceAll("mpg_match_[^_]+_\\d_", "").replaceAll("_\\d", ""));
+        if (bonus.getNumber() >= matchsRemaining) {
+            int bonusType = bonus.getBonusTypeForRemainingMatch(matchsRemaining);
+            bonusSelected.setType(bonusType);
+            if (bonusType == 4) {
+                bonusSelected.setPlayerId(playerIdForRefBull);
+            }
+        }
+        return bonusSelected;
     }
 
     private static int setPlayersOnPitch(CoachRequest request, List<Player> players, int number, int index) {

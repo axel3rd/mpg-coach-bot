@@ -139,6 +139,11 @@ To focus on recent efficiency, about team proposal and buy transaction (since v1
     efficiency.recent.focus = false
     efficiency.recent.days = 8
 
+To use bonus if not already selected and some would be lost (since v1.6):
+
+    # Use bonus
+    use.bonus = true
+
 To include only some leagues or remove some of them, leagues id separated by comma (since v1.5):
 
     # Include/exclude leagues
