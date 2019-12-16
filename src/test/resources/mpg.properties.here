@@ -5,8 +5,8 @@ password = foobar
 # Enable auto-update team (Main mocks doesn't have update team request configured)
 team.update = false
 
-# Focus on recent efficiency ('false' by default)
-#efficiency.recent.focus = true
+# Focus on recent efficiency ('true' by default since v1.6, but historical tests implemented with 'false')
+efficiency.recent.focus = false
 #efficiency.recent.days = 8
 
 # Use bonus if not already selected and some would be lost ('true' by default)

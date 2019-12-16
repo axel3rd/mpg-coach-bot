@@ -24,7 +24,7 @@ The efficiency algorithm used to calculate players efficiency score is:
 
 *With efficiency coeff : Attacker = 1.2 ; Midfielder = 1.05 ; Defender = 1.025 ; Goalkeeper = 1 (Before v1.2, 1.2 for all lines).*
 
-This efficiency can be focused on recent days (8 by default) by enabling option `efficiency.recent.focus`.
+This efficiency is focused on recent days (8 by default), current season notation can be used by disabling option `efficiency.recent.focus`.
 
 ## Usage
 
@@ -135,10 +135,10 @@ To update team automatically ('true' by default since v1.6):
     # Enable auto-update team
     team.update=true
 
-To focus on recent efficiency, about team proposal and buy transaction (since v1.3):
+To focus on recent efficiency, about team proposal and buy transaction (since v1.3, 'true' by default since v1.6):
 
     # Focus on recent efficiency
-    efficiency.recent.focus = false
+    efficiency.recent.focus = true
     efficiency.recent.days = 8
 
 To use bonus if not already selected and some would be lost (since v1.6):
@@ -162,7 +162,7 @@ To enable/disable and change default notes for tactical substitutes (since v1.1)
 
 To enable/disable and change default notes for proposal of selling players (since v1.2):
 
-    # Enable sell/buy players proposal (only if 'efficiency.recent.focus' is false)
+    # Enable sell/buy players proposal
     transactions.proposal = true
     
     # Notes for proposal of selling players

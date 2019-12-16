@@ -22,7 +22,7 @@ public class Config {
     private String login;
     private String password;
     private boolean teampUpdate = true;
-    private boolean efficiencyRecentFocus = false;
+    private boolean efficiencyRecentFocus = true;
     private int efficiencyRecentDays = 8;
     private boolean useBonus = true;
     private boolean tacticalSubstitutesUpdate = true;
