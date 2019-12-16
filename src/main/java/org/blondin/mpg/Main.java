@@ -18,6 +18,7 @@ import org.blondin.mpg.out.model.OutType;
 import org.blondin.mpg.root.MpgClient;
 import org.blondin.mpg.root.exception.NoMoreGamesException;
 import org.blondin.mpg.root.exception.PlayerNotFoundException;
+import org.blondin.mpg.root.model.Bonus;
 import org.blondin.mpg.root.model.BonusSelected;
 import org.blondin.mpg.root.model.ChampionshipType;
 import org.blondin.mpg.root.model.Coach;
@@ -428,7 +429,8 @@ public class Main {
         List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList());
         List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList());
 
-        request.setBonusSelected(getBonusSelected(coach, midfielders.get(0).getId(), config));
+        request.setBonusSelected(selectBonus(coach.getBonusSelected(), coach.getBonus(), coach.getMatchId(), coach.getNbPlayers(),
+                config.isUseBonus(), midfielders.get(0).getId()));
 
         // Main lines
         setPlayersOnPitch(request, defenders, nbrDefenders, 1);
@@ -470,15 +472,21 @@ public class Main {
         return request;
     }
 
-    private static BonusSelected getBonusSelected(Coach coach, String playerIdForRefBull, Config config) {
-        BonusSelected bonusSelected = ObjectUtils.defaultIfNull(coach.getBonusSelected(), new BonusSelected());
-        if (!config.isUseBonus() || bonusSelected.getType() != null) {
+    static BonusSelected selectBonus(BonusSelected previousBonus, Bonus bonus, String matchId, int numberPlayers, boolean useBonus,
+            String playerIdForRefBull) {
+        BonusSelected bonusSelected = ObjectUtils.defaultIfNull(previousBonus, new BonusSelected());
+        if (!useBonus || bonusSelected.getType() != null) {
             return bonusSelected;
         }
-        int matchsRemaining = 1 + (coach.getNbPlayers() - 1) * 2
-                - Integer.valueOf(coach.getMatchId().replaceAll("mpg_match_[^_]+_\\d_", "").replaceAll("_\\d", ""));
-        if (coach.getBonus().getNumber() >= matchsRemaining) {
-            int bonusType = coach.getBonus().getBonusTypeForRemainingMatch(matchsRemaining);
+        if (bonus == null) {
+            throw new UnsupportedOperationException("Bonus is null, technical problem");
+        }
+        if (numberPlayers <= 0) {
+            throw new UnsupportedOperationException("Number of player could not be <= 0");
+        }
+        int matchsRemaining = 1 + (numberPlayers - 1) * 2 - Integer.valueOf(matchId.replaceAll("mpg_match_[^_]+_\\d_", "").replaceAll("_\\d", ""));
+        if (bonus.getNumber() >= matchsRemaining) {
+            int bonusType = bonus.getBonusTypeForRemainingMatch(matchsRemaining);
             bonusSelected.setType(bonusType);
             if (bonusType == 4) {
                 bonusSelected.setPlayerId(playerIdForRefBull);
