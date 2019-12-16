@@ -34,7 +34,7 @@ Depending your championship, join data files set in attachment.
 4. The [Injury / Suspended](https://www.equipeactu.fr/blessures-et-suspensions/fodbold/) data, one full HTML from:
 
 - https://www.equipeactu.fr/blessures-et-suspensions/fodbold/france/ligue-1
-- https://www.equipeactu.fr/blessures-et-suspensions/fodbold/france/ligue-2
+- https://maligue2.fr/2019/08/05/joueurs-blesses-et-suspendus/
 - https://www.equipeactu.fr/blessures-et-suspensions/fodbold/angleterre/premier-league
 - https://www.equipeactu.fr/blessures-et-suspensions/fodbold/espagne/primera-division
 - https://www.equipeactu.fr/blessures-et-suspensions/fodbold/italie/serie-a
