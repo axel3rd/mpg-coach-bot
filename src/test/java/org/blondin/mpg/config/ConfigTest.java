@@ -23,7 +23,9 @@ public class ConfigTest {
         Assert.assertEquals("firstName.lastName@gmail.com", config.getLogin());
         Assert.assertEquals("foobar", config.getPassword());
 
-        Assert.assertEquals(true, config.isTeampUpdate());
+        // Team update is disabling in test file (more simple)
+        Assert.assertEquals(false, config.isTeampUpdate());
+        // Focus efficiency is disabling in test file (historical test implemented with this value)
         Assert.assertEquals(false, config.isEfficiencyRecentFocus());
         Assert.assertEquals(8, config.getEfficiencyRecentDays());
 
@@ -62,7 +64,7 @@ public class ConfigTest {
         lines.add("email = firstName.lastName@gmail.com");
         lines.add("password = foobar");
         lines.add("team.update=false");
-        lines.add("efficiency.recent.focus=true");
+        lines.add("efficiency.recent.focus=false");
         lines.add("efficiency.recent.days=5");
         lines.add("use.bonus=false");
         lines.add("leagues.include=KX24XMUJ,KLGXSSUM");
@@ -91,7 +93,7 @@ public class ConfigTest {
         // No login/password, could be overridden by system properties in real Travis tests
 
         Assert.assertEquals(false, config.isTeampUpdate());
-        Assert.assertEquals(true, config.isEfficiencyRecentFocus());
+        Assert.assertEquals(false, config.isEfficiencyRecentFocus());
         Assert.assertEquals(5, config.getEfficiencyRecentDays());
 
         Assert.assertEquals(false, config.isUseBonus());
