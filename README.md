@@ -12,7 +12,7 @@ Automate and optimize your [MPG](http://mpg.football/) weekly league actions, us
 **The common features are:**
 
 - Displaying your teams, line by line, ordered by players efficiency (with injured players)
-- Updating your team (if option `team.update` is enabled)
+- Updating your team
 - Proposing some players to buy, better than the one you have (if option `transactions.proposal` is enabled and *MPG* expert mode is bought)
 - When league not started (aka: *mercato*), the best players to buy for your incoming team
 
@@ -35,9 +35,6 @@ Download package (Via Download buttons at top of this documentation, not the Git
     email = firstName.lastName@gmail.com
     password = foobar
     
-    # Auto update team ('false' by default, since v1.1)
-    team.update = true
-
 Depending your environment system, run `mpg-coach-bot.bat` (Windows) or `mpg-coach-bot.sh` (Linux).
 
 To fully automate update your weekly actions on your *MPG* leagues, you can use a Linux *crontab* (daily at 6pm, for sample).
@@ -132,6 +129,11 @@ If you are using this program the Friday @work, you can have to configure the co
     proxy.uri = http://company.proxy.com:80
     proxy.user = foo
     proxy.password = bar
+
+To update team automatically ('true' by default since v1.6):
+
+    # Enable auto-update team
+    team.update=true
 
 To focus on recent efficiency, about team proposal and buy transaction (since v1.3):
 

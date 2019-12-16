@@ -23,7 +23,7 @@ public class ConfigTest {
         Assert.assertEquals("firstName.lastName@gmail.com", config.getLogin());
         Assert.assertEquals("foobar", config.getPassword());
 
-        Assert.assertEquals(false, config.isTeampUpdate());
+        Assert.assertEquals(true, config.isTeampUpdate());
         Assert.assertEquals(false, config.isEfficiencyRecentFocus());
         Assert.assertEquals(8, config.getEfficiencyRecentDays());
 
@@ -61,7 +61,7 @@ public class ConfigTest {
         List<String> lines = new ArrayList<>();
         lines.add("email = firstName.lastName@gmail.com");
         lines.add("password = foobar");
-        lines.add("team.update=true");
+        lines.add("team.update=false");
         lines.add("efficiency.recent.focus=true");
         lines.add("efficiency.recent.days=5");
         lines.add("use.bonus=false");
@@ -90,7 +90,7 @@ public class ConfigTest {
         Config config = Config.build(configFile.getPath());
         // No login/password, could be overridden by system properties in real Travis tests
 
-        Assert.assertEquals(true, config.isTeampUpdate());
+        Assert.assertEquals(false, config.isTeampUpdate());
         Assert.assertEquals(true, config.isEfficiencyRecentFocus());
         Assert.assertEquals(5, config.getEfficiencyRecentDays());
 

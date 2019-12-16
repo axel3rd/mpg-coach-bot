@@ -21,7 +21,7 @@ public class Config {
 
     private String login;
     private String password;
-    private boolean teampUpdate = false;
+    private boolean teampUpdate = true;
     private boolean efficiencyRecentFocus = false;
     private int efficiencyRecentDays = 8;
     private boolean useBonus = true;
