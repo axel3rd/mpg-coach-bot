@@ -14,6 +14,11 @@ public class StatsDay {
     @JsonProperty("g")
     private int goals;
 
+    public StatsDay(double average, int goals) {
+        this.average = average;
+        this.goals = goals;
+    }
+
     public double getAverage() {
         return average;
     }

@@ -1,9 +1,12 @@
 package org.blondin.mpg.stats.model;
 
 import org.apache.commons.lang3.StringUtils;
+import org.blondin.mpg.root.model.StatsDayOrPositionPlayer;
+import org.blondin.mpg.stats.io.StatsDayOrPositionPlayerDeserializer;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Player
@@ -15,11 +18,11 @@ public class Player {
     private String firstName;
     @JsonProperty("n")
     private String lastName;
+    @JsonDeserialize(using = StatsDayOrPositionPlayerDeserializer.class)
     @JsonProperty("p")
-    private Position positionOld;
+    private StatsDayOrPositionPlayer statsDayOrPosition;
     @JsonProperty("fp")
     private Position position;
-    // @JsonDeserialize(using = StatsPlayerDeserializer.class)
     @JsonProperty("s")
     private Stats stats;
     @JsonProperty("r")
@@ -51,6 +54,9 @@ public class Player {
         if (stats == null) {
             stats = new Stats();
         }
+        if (stats.getStatsDay() == null && statsDayOrPosition != null && statsDayOrPosition.getStatsDay() != null) {
+            stats.setStatsDay(statsDayOrPosition.getStatsDay());
+        }
         return stats;
     }
 
@@ -58,7 +64,10 @@ public class Player {
         if (position != null) {
             return position;
         }
-        return positionOld;
+        if (statsDayOrPosition.getPosition() != null) {
+            return statsDayOrPosition.getPosition();
+        }
+        throw new UnsupportedOperationException("No position found");
     }
 
     public double getEfficiency() {
