@@ -5,9 +5,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.blondin.mpg.root.exception.PlayerNotFoundException;
+import org.blondin.mpg.stats.io.ListPlayerDeserializer;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Championship (mpgstats)
@@ -15,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Championship {
 
+    @JsonDeserialize(using = ListPlayerDeserializer.class)
     @JsonProperty("p")
     private List<Player> players = new ArrayList<>();
 

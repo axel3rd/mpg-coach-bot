@@ -77,6 +77,86 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testMlnstatsEfficiencyRecentFocus() throws Exception {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LH9HKBTD-LJV92C9Y-LJT3FXDF.json")));
+        stubFor(get("/league/LJT3FXDF/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20191212.json")));
+        stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20191218.json")));
+        stubFor(get("/leagues/Premier-League")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.premier-league.20191218.json")));
+        stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20191212.html")));
+
+        Config config = spy(getConfig());
+        doReturn(false).when(config).isTeampUpdate();
+        doReturn(true).when(config).isEfficiencyRecentFocus();
+        doReturn(Arrays.asList("LJT3FXDF")).when(config).getLeaguesInclude();
+        executeMainProcess(config);
+
+        // Main team
+        Assert.assertTrue(getLogOut().contains("| G | Schmeichel Kasper |  5.75 | 24 |"));
+        Assert.assertTrue(getLogOut().contains("| G | Pope Nick         |  5.00 | 13 |"));
+        Assert.assertTrue(getLogOut().contains("| D | Willems Jetro     | 11.40 | 16 |"));
+        Assert.assertTrue(getLogOut().contains("| D | Doherty Matt      | 10.13 | 14 |"));
+        Assert.assertTrue(getLogOut().contains("| D | Cresswell Aaron   |  9.38 | 12 |"));
+        Assert.assertTrue(getLogOut().contains("| D | David Luiz        |  7.21 | 18 |"));
+        Assert.assertTrue(getLogOut().contains("| M | Fleck John        | 31.51 | 16 |"));
+        Assert.assertTrue(getLogOut().contains("| M | Maddison James    | 28.01 | 35 |"));
+        Assert.assertTrue(getLogOut().contains("| M | Grealish Jack     | 12.39 | 26 |"));
+        Assert.assertTrue(getLogOut().contains("| M | Tielemans Youri   | 12.05 | 24 |"));
+        Assert.assertTrue(getLogOut().contains("| M | Wilfred Ndidi     |  6.44 | 27 |"));
+        Assert.assertTrue(getLogOut().contains("| M | McGinn John       |  5.38 | 23 |"));
+        Assert.assertTrue(getLogOut().contains("| M | Hendrick Jeff     |  4.56 | 14 |"));
+        Assert.assertTrue(getLogOut().contains("| A | Vardy Jamie       | 90.22 | 50 |"));
+        Assert.assertTrue(getLogOut().contains("| A | Mané Sadio        | 32.99 | 53 |"));
+        Assert.assertTrue(getLogOut().contains("| A | Gray Andre        |  9.64 | 10 |"));
+        Assert.assertTrue(getLogOut().contains("| A | Wesley            |  3.94 | 16 |"));
+    }
+
+    @Test
+    public void testMlnstatsEfficiencyYearAverage() throws Exception {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LH9HKBTD-LJV92C9Y-LJT3FXDF.json")));
+        stubFor(get("/league/LJT3FXDF/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20191212.json")));
+        stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20191218.json")));
+        stubFor(get("/leagues/Premier-League")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.premier-league.20191218.json")));
+        stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20191212.html")));
+
+        Config config = spy(getConfig());
+        doReturn(false).when(config).isTeampUpdate();
+        doReturn(false).when(config).isEfficiencyRecentFocus();
+        doReturn(Arrays.asList("LJT3FXDF")).when(config).getLeaguesInclude();
+        executeMainProcess(config);
+
+        // Main team
+        Assert.assertTrue(getLogOut().contains("| G | Schmeichel Kasper |   5.82 | 24 |"));
+        Assert.assertTrue(getLogOut().contains("| G | Pope Nick         |   5.29 | 13 |"));
+        Assert.assertTrue(getLogOut().contains("| D | Doherty Matt      |  14.61 | 14 |"));
+        Assert.assertTrue(getLogOut().contains("| D | Willems Jetro     |  13.92 | 16 |"));
+        Assert.assertTrue(getLogOut().contains("| D | Cresswell Aaron   |  13.78 | 12 |"));
+        Assert.assertTrue(getLogOut().contains("| D | David Luiz        |  12.28 | 18 |"));
+        Assert.assertTrue(getLogOut().contains("| M | Maddison James    |  36.59 | 35 |"));
+        Assert.assertTrue(getLogOut().contains("| M | Grealish Jack     |  27.53 | 26 |"));
+        Assert.assertTrue(getLogOut().contains("| M | Fleck John        |  26.61 | 16 |"));
+        Assert.assertTrue(getLogOut().contains("| M | McGinn John       |  25.15 | 23 |"));
+        Assert.assertTrue(getLogOut().contains("| M | Tielemans Youri   |  23.82 | 24 |"));
+        Assert.assertTrue(getLogOut().contains("| M | Wilfred Ndidi     |  18.41 | 27 |"));
+        Assert.assertTrue(getLogOut().contains("| M | Hendrick Jeff     |  12.87 | 14 |"));
+        Assert.assertTrue(getLogOut().contains("| A | Vardy Jamie       | 123.02 | 50 |"));
+        Assert.assertTrue(getLogOut().contains("| A | Mané Sadio        |  66.64 | 53 |"));
+        Assert.assertTrue(getLogOut().contains("| A | Wesley            |  26.80 | 16 |"));
+        Assert.assertTrue(getLogOut().contains("| A | Gray Andre        |  14.21 | 10 |"));
+    }
+
+    @Test
     public void testUseBonus() throws Exception {
         prepareMainLigue2Mocks("LH9HKBTD-LJV92C9Y-LJT3FXDF", "20191212", "20191212", "20191212");
         stubFor(get("/league/LH9HKBTD/coach")

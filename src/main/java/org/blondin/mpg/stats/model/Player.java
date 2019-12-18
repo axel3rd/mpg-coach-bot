@@ -16,7 +16,10 @@ public class Player {
     @JsonProperty("n")
     private String lastName;
     @JsonProperty("p")
+    private Position positionOld;
+    @JsonProperty("fp")
     private Position position;
+    // @JsonDeserialize(using = StatsPlayerDeserializer.class)
     @JsonProperty("s")
     private Stats stats;
     @JsonProperty("r")
@@ -45,11 +48,17 @@ public class Player {
     }
 
     public Stats getStats() {
+        if (stats == null) {
+            stats = new Stats();
+        }
         return stats;
     }
 
     public Position getPosition() {
-        return position;
+        if (position != null) {
+            return position;
+        }
+        return positionOld;
     }
 
     public double getEfficiency() {
