@@ -14,6 +14,10 @@ public class StatsDay {
     @JsonProperty("g")
     private int goals;
 
+    public StatsDay() {
+        super();
+    }
+
     public StatsDay(double average, int goals) {
         this.average = average;
         this.goals = goals;

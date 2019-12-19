@@ -20,9 +20,8 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
 
     @Test
     public void testEfficiencyRecentFocus() {
-        stubFor(get("/leagues.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20190406.json")));
-        stubFor(get("/customteam.json/Ligue-1")
+        stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20190406.json")));
+        stubFor(get("/leagues/Ligue-1")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.ligue-1.20190406.json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
 
@@ -64,13 +63,12 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
 
     @Test
     public void testMockAllLeagues() {
-        stubFor(get("/leagues.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20181017.json")));
-        stubFor(get("/customteam.json/Ligue-1")
+        stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20181017.json")));
+        stubFor(get("/leagues/Ligue-1")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.ligue-1.20181017.json")));
-        stubFor(get("/customteam.json/Premier-League")
+        stubFor(get("/leagues/Premier-League")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20181017.json")));
-        stubFor(get("/customteam.json/Liga")
+        stubFor(get("/leagues/Liga")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.liga.20181017.json")));
 
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());

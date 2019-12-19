@@ -9,7 +9,7 @@ import org.blondin.mpg.stats.model.Championship;
 import org.blondin.mpg.stats.model.LeaguesRefresh;
 
 /**
- * Client for https://www.mpgstats.fr/
+ * Client for https://www.mpgstats.fr/ (Backend API is https://api.mlnstats.com/ since end of 2019)
  */
 public class MpgStatsClient extends AbstractClient {
 
@@ -25,7 +25,7 @@ public class MpgStatsClient extends AbstractClient {
 
     public static MpgStatsClient build(Config config, String urlOverride) {
         MpgStatsClient client = new MpgStatsClient();
-        client.setUrl(StringUtils.defaultString(urlOverride, "https://www.mpgstats.fr/json"));
+        client.setUrl(StringUtils.defaultString(urlOverride, "https://api.mlnstats.com"));
         client.setProxy(config.getProxy());
         return client;
     }
