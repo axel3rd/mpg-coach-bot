@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.blondin.mpg.root.model.StatsDayOrPositionPlayer;
 import org.blondin.mpg.stats.model.Position;
 import org.blondin.mpg.stats.model.StatsDay;
@@ -32,23 +33,17 @@ public class StatsDayOrPositionPlayerDeserializer extends StdDeserializer<StatsD
         StatsDayOrPositionPlayer sop = new StatsDayOrPositionPlayer();
         if (o instanceof String) {
             sop.setPosition(Position.getNameByValue((String) o));
-        }
-        if (o instanceof ArrayList<?>) {
+        } else if (o instanceof ArrayList<?>) {
             Map<Integer, StatsDay> statsDay = new HashMap<>();
             for (ArrayList<?> e : (ArrayList<ArrayList<?>>) o) {
                 Integer day = (Integer) e.get(0);
                 Map<String, Object> values = (Map<String, Object>) e.get(1);
-                double average = 0;
-                if (values.containsKey("n")) {
-                    average = Double.valueOf(values.get("n").toString());
-                }
-                int goals = 0;
-                if (values.containsKey("g")) {
-                    goals = (Integer) values.get("g");
-                }
-                statsDay.put(day, new StatsDay(average, goals));
+                statsDay.put(day, new StatsDay(Double.valueOf(ObjectUtils.defaultIfNull(values.get("n"), 0).toString()),
+                        Integer.valueOf(ObjectUtils.defaultIfNull(values.get("g"), 0).toString())));
             }
             sop.setStatsDay(statsDay);
+        } else {
+            throw new UnsupportedOperationException("Object is not a 'Position' or 'StatsDay' array");
         }
         return sop;
     }
