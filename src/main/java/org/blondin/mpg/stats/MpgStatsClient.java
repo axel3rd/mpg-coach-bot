@@ -9,7 +9,7 @@ import org.blondin.mpg.stats.model.Championship;
 import org.blondin.mpg.stats.model.LeaguesRefresh;
 
 /**
- * Client for https://www.mpgstats.fr/
+ * Client for https://www.mpgstats.fr/ (Backend API is https://api.mlnstats.com/ since end of 2019)
  */
 public class MpgStatsClient extends AbstractClient {
 
@@ -25,7 +25,7 @@ public class MpgStatsClient extends AbstractClient {
 
     public static MpgStatsClient build(Config config, String urlOverride) {
         MpgStatsClient client = new MpgStatsClient();
-        client.setUrl(StringUtils.defaultString(urlOverride, "https://www.mpgstats.fr/json"));
+        client.setUrl(StringUtils.defaultString(urlOverride, "https://api.mlnstats.com"));
         client.setProxy(config.getProxy());
         return client;
     }
@@ -35,10 +35,10 @@ public class MpgStatsClient extends AbstractClient {
             // FR : "Ligue-1" / EN : "Premier-League" / ES : "Liga"
             // Call with infinite cache and verify timestamp after
             LeaguesRefresh leaguesRefresh = getLeaguesRefresh();
-            Championship championship = get("customteam.json/" + type.getValue(), Championship.class, 0);
+            Championship championship = get("leagues/" + type.getValue(), Championship.class, 0);
             if (championship.getDate().before(leaguesRefresh.getDate(championship.getInfos().getId()))) {
                 // Force refresh by using a mini cache time
-                championship = get("customteam.json/" + type.getValue(), Championship.class, 1);
+                championship = get("leagues/" + type.getValue(), Championship.class, 1);
             }
             cache.put(type, championship);
         }
@@ -46,6 +46,6 @@ public class MpgStatsClient extends AbstractClient {
     }
 
     protected synchronized LeaguesRefresh getLeaguesRefresh() {
-        return get("leagues.json", LeaguesRefresh.class, TIME_HOUR_IN_MILLI_SECOND);
+        return get("builds", LeaguesRefresh.class, TIME_HOUR_IN_MILLI_SECOND);
     }
 }

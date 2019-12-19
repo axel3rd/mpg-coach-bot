@@ -20,16 +20,17 @@ Depending your championship, join data files set in attachment.
 - From home : `GET /user/dashboard`
 - From coach: `GET /league/[yourLeagueId]/coach`
 - From transfer : `GET /league/[yourLeagueId]/transfer/buy`
+- From mercato : `GET /league/[yourLeagueId]/mercato`
 
 2. The [Players statistics](https://www.mpgstats.fr/) data, one JSon from:
 
-- https://www.mpgstats.fr/json/customteam.json/Ligue-1
-- https://www.mpgstats.fr/json/customteam.json/Ligue-2
-- https://www.mpgstats.fr/json/customteam.json/Premier-League
-- https://www.mpgstats.fr/json/customteam.json/Liga
-- https://www.mpgstats.fr/json/customteam.json/Serie-A
+- https://api.mlnstats.com/leagues/Ligue-1
+- https://api.mlnstats.com/leagues/Ligue-2
+- https://api.mlnstats.com/leagues/Premier-League
+- https://api.mlnstats.com/leagues/Liga
+- https://api.mlnstats.com/leagues/Serie-A
 
-3. The [Players statistics](https://www.mpgstats.fr/) time update data : https://www.mpgstats.fr/json/leagues.json
+3. The [Players statistics](https://www.mpgstats.fr/) time update data : https://api.mlnstats.com/builds
 
 4. The [Injury / Suspended](https://www.equipeactu.fr/blessures-et-suspensions/fodbold/) data, one full HTML from:
 

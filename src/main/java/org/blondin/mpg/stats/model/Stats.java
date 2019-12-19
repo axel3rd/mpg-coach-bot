@@ -124,4 +124,12 @@ public class Stats {
     void setPreviousMaxSeasonDay(int previousMaxSeasonDay) {
         this.previousMaxSeasonDay = previousMaxSeasonDay;
     }
+
+    Map<Integer, StatsDay> getStatsDay() {
+        return statsDay;
+    }
+
+    void setStatsDay(Map<Integer, StatsDay> statsDay) {
+        this.statsDay = statsDay;
+    }
 }
