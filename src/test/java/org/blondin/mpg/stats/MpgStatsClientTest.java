@@ -21,7 +21,7 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
     @Test
     public void testEfficiencyRecentFocus() {
         stubFor(get("/leagues.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.1.20190406.json")));
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20190406.json")));
         stubFor(get("/customteam.json/Ligue-1")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.ligue-1.20190406.json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
