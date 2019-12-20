@@ -157,6 +157,31 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testUseBonusInt0() throws Exception {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LH9HKBTD-LJV92C9Y-LJT3FXDF.json")));
+        stubFor(get("/league/LJT3FXDF/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20191220.json")));
+        stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20191218.json")));
+        stubFor(get("/leagues/Premier-League")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20191220.json")));
+        stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20191220.html")));
+        stubFor(post("/league/LJT3FXDF/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LJT3FXDF.20191220-Request.json")))
+                .willReturn(aResponse().withBody("{\"success\":\"teamSaved\"}")));
+
+        Config config = spy(getConfig());
+        doReturn(Arrays.asList("LJT3FXDF")).when(config).getLeaguesInclude();
+        doReturn(true).when(config).isTeampUpdate();
+        doReturn(true).when(config).isEfficiencyRecentFocus();
+        executeMainProcess(config);
+        // Nothing displayed in log about bonus usage
+        Assert.assertTrue(getLogOut().contains("========== Peter Ouch  =========="));
+    }
+
+    @Test
     public void testUseBonus() throws Exception {
         prepareMainLigue2Mocks("LH9HKBTD-LJV92C9Y-LJT3FXDF", "20191212", "20191212", "20191212");
         stubFor(get("/league/LH9HKBTD/coach")
