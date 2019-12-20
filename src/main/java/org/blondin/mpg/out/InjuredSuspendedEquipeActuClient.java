@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.model.OutType;
@@ -25,10 +26,13 @@ import org.jsoup.nodes.Element;
 public class InjuredSuspendedEquipeActuClient extends AbstractClient {
 
     private static final EnumMap<ChampionshipOutType, Map<String, String>> TEAM_NAME_WRAPPER;
+    private static final Map<String, String> LOGO_NAME_WRAPPER = new HashMap<>();
 
     private EnumMap<ChampionshipOutType, List<Player>> cache = new EnumMap<>(ChampionshipOutType.class);
 
     static {
+        // Team name "EquipeActu -> MPG" wrapper (by championship)
+
         TEAM_NAME_WRAPPER = new EnumMap<>(ChampionshipOutType.class);
         for (ChampionshipOutType cot : Arrays.asList(ChampionshipOutType.LIGUE_1, ChampionshipOutType.LIGUE_2, ChampionshipOutType.PREMIER_LEAGUE,
                 ChampionshipOutType.SERIE_A, ChampionshipOutType.LIGA)) {
@@ -50,6 +54,26 @@ public class InjuredSuspendedEquipeActuClient extends AbstractClient {
         TEAM_NAME_WRAPPER.get(ChampionshipOutType.LIGA).put("Mallorca", "Majorque");
         TEAM_NAME_WRAPPER.get(ChampionshipOutType.LIGA).put("Sevilla", "Séville");
         TEAM_NAME_WRAPPER.get(ChampionshipOutType.LIGA).put("Valencia", "Valence");
+
+        // Logo name wrapper
+
+        LOGO_NAME_WRAPPER.put("Nimes", "Nîmes");
+        LOGO_NAME_WRAPPER.put("Psg", "PSG");
+        LOGO_NAME_WRAPPER.put("Saint Etienne", "Saint-Étienne");
+
+        LOGO_NAME_WRAPPER.put("Bologna", "Bologne");
+        LOGO_NAME_WRAPPER.put("Napoli", "Naples");
+        LOGO_NAME_WRAPPER.put("Roma", "Rome");
+        LOGO_NAME_WRAPPER.put("Spal", "SPAL 2013");
+
+        LOGO_NAME_WRAPPER.put("Atletico Madrid", "Atlético Madrid");
+        LOGO_NAME_WRAPPER.put("Athletic Club", "Bilbao");
+        LOGO_NAME_WRAPPER.put("Barcelona", "Barcelone");
+        LOGO_NAME_WRAPPER.put("Granada", "Grenade");
+        LOGO_NAME_WRAPPER.put("Leganes", "Leganés");
+        LOGO_NAME_WRAPPER.put("Mallorca", "Majorque");
+        LOGO_NAME_WRAPPER.put("Sevilla", "Séville");
+        LOGO_NAME_WRAPPER.put("Valencia", "Valence");
     }
 
     public static InjuredSuspendedEquipeActuClient build(Config config) {
@@ -130,16 +154,19 @@ public class InjuredSuspendedEquipeActuClient extends AbstractClient {
         return cache.get(championship);
     }
 
-    protected List<Player> getPlayers(String content) {
+    private List<Player> getPlayers(String content) {
         List<Player> players = new ArrayList<>();
         Document doc = Jsoup.parse(content);
         String team = null;
         for (Element item : doc.select("div.injuries_item")) {
-            team = StringUtils.defaultIfBlank(item.parent().previousElementSibling().text().trim(), team);
+            // Retrieve team from name or logo
+            team = parseTeam(item, team);
+
             if (item.selectFirst("div.injuries_name") == null) {
                 // No injured/suspended players in team
                 continue;
             }
+
             Player player = new Player();
             player.setTeam(team);
             player.setOutType(parseOutType(item.selectFirst("div.injuries_type").selectFirst("span").className()));
@@ -149,6 +176,39 @@ public class InjuredSuspendedEquipeActuClient extends AbstractClient {
             players.add(player);
         }
         return players;
+    }
+
+    private static String parseTeam(Element item, String currentTeam) {
+        String team = currentTeam;
+        Element teamItem = item.parent().previousElementSibling();
+        if (teamItem.selectFirst("img") != null) {
+            String teamName = teamItem.text().trim();
+            if (StringUtils.isNotBlank(teamName)) {
+                team = teamName;
+            } else {
+                // No team name, get from png logo name
+                String logoUrl = teamItem.selectFirst("img").attr("src");
+                if (!logoUrl.contains("blank_team")) {
+                    // Some logo can be "blank_team" ... previous team used in this case, no other way
+                    team = logoUrl.substring(logoUrl.lastIndexOf('/') + 1, logoUrl.lastIndexOf(".png"));
+                    team = WordUtils.capitalizeFully(team.replaceAll("-", " "));
+                    if (LOGO_NAME_WRAPPER.containsKey(team)) {
+                        team = LOGO_NAME_WRAPPER.get(team);
+                    }
+                }
+            }
+        }
+
+        if (StringUtils.isBlank(team)) {
+            // Special case of Spain, where 'Alavés' (first team), can be blank :(
+            if (item.selectFirst("div.injuries_playerimg").selectFirst("img").attr("src").contains("spain")) {
+                team = "Alavés";
+            } else {
+                throw new UnsupportedOperationException("Team can't be blank here, parsing problem");
+            }
+        }
+
+        return team;
     }
 
     private static OutType parseOutType(String htmlContent) {
