@@ -15,6 +15,9 @@ public class BonusSelected {
     private String playerId;
 
     public Integer getType() {
+        if (type != null && type == 0) {
+            return null;
+        }
         return type;
     }
 
