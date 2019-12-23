@@ -25,55 +25,81 @@ import org.jsoup.nodes.Element;
  */
 public class InjuredSuspendedEquipeActuClient extends AbstractClient {
 
-    private static final EnumMap<ChampionshipOutType, Map<String, String>> TEAM_NAME_WRAPPER;
+    private static final Map<String, String> TEAM_NAME_WRAPPER = new HashMap<>();
     private static final Map<String, String> LOGO_NAME_WRAPPER = new HashMap<>();
 
     private EnumMap<ChampionshipOutType, List<Player>> cache = new EnumMap<>(ChampionshipOutType.class);
 
     static {
-        // Team name "EquipeActu -> MPG" wrapper (by championship)
+        /*
+         * Team name "EquipeActu -> MPG" wrapper (by championship)
+         */
 
-        TEAM_NAME_WRAPPER = new EnumMap<>(ChampionshipOutType.class);
-        for (ChampionshipOutType cot : Arrays.asList(ChampionshipOutType.LIGUE_1, ChampionshipOutType.LIGUE_2, ChampionshipOutType.PREMIER_LEAGUE,
-                ChampionshipOutType.SERIE_A, ChampionshipOutType.LIGA)) {
-            TEAM_NAME_WRAPPER.put(cot, new HashMap<String, String>());
-        }
+        // Ligue 1
+        TEAM_NAME_WRAPPER.put("Amiens SC", "Amiens");
+        TEAM_NAME_WRAPPER.put("Angers Sco", "Angers");
+        TEAM_NAME_WRAPPER.put("Angers SCO", "Angers");
+        TEAM_NAME_WRAPPER.put("Nimes", "Nîmes");
+        TEAM_NAME_WRAPPER.put("PSG", "Paris");
+        TEAM_NAME_WRAPPER.put("Olympique Lyon", "Lyon");
+        TEAM_NAME_WRAPPER.put("Olympique Lyonnais", "Lyon");
+        TEAM_NAME_WRAPPER.put("Olympique Marseille", "Marseille");
+        TEAM_NAME_WRAPPER.put("Paris Saint Germain", TEAM_NAME_WRAPPER.get("PSG"));
+        TEAM_NAME_WRAPPER.put("Saint Etienne", "Saint-Étienne");
 
-        TEAM_NAME_WRAPPER.get(ChampionshipOutType.LIGUE_1).put("Paris", "PSG");
+        // Premiere League
+        TEAM_NAME_WRAPPER.put("Afc Bournemouth", "Bournemouth");
+        TEAM_NAME_WRAPPER.put("Brighton And Hove Albion", "Brighton");
+        TEAM_NAME_WRAPPER.put("Manchester City", "Man. City");
+        TEAM_NAME_WRAPPER.put("Leicester City", "Leicester");
+        TEAM_NAME_WRAPPER.put("Manchester United", "Man. United");
+        TEAM_NAME_WRAPPER.put("Newcastle United", "Newcastle");
+        TEAM_NAME_WRAPPER.put("Norwich City", "Norwich");
+        TEAM_NAME_WRAPPER.put("Sheffield United", "Sheffield");
+        TEAM_NAME_WRAPPER.put("Sheffield U.", "Sheffield");
+        TEAM_NAME_WRAPPER.put("West Ham United", "West Ham");
+        TEAM_NAME_WRAPPER.put("Wolverhampton Wanderers", "Wolverhampton");
 
-        TEAM_NAME_WRAPPER.get(ChampionshipOutType.PREMIER_LEAGUE).put("Man. City", "Manchester City");
-        TEAM_NAME_WRAPPER.get(ChampionshipOutType.PREMIER_LEAGUE).put("Man. United", "Manchester United");
+        // Serie A
+        TEAM_NAME_WRAPPER.put("Bologne", "Bologna");
+        TEAM_NAME_WRAPPER.put("AC Milan", "Milan");
+        TEAM_NAME_WRAPPER.put("Rome", "Roma");
+        TEAM_NAME_WRAPPER.put("SSC Napoli", "Napoli");
+        TEAM_NAME_WRAPPER.put("SPAL 2013", "Spal");
+        TEAM_NAME_WRAPPER.put("Internazionale", "Inter");
+        TEAM_NAME_WRAPPER.put("SSD Parma", "Parma");
 
-        TEAM_NAME_WRAPPER.get(ChampionshipOutType.SERIE_A).put("Bologna", "Bologne");
-        TEAM_NAME_WRAPPER.get(ChampionshipOutType.SERIE_A).put("Napoli", "Naples");
-        TEAM_NAME_WRAPPER.get(ChampionshipOutType.SERIE_A).put("Roma", "Rome");
-        TEAM_NAME_WRAPPER.get(ChampionshipOutType.SERIE_A).put("Spal", "SPAL 2013");
+        // Ligua
+        TEAM_NAME_WRAPPER.put("Alaves", "Alavés");
+        TEAM_NAME_WRAPPER.put("Celta Vigo", "Celta");
+        TEAM_NAME_WRAPPER.put("Celta De Vigo", "Celta");
+        TEAM_NAME_WRAPPER.put("Deportivo Alavés", "Alavés");
+        TEAM_NAME_WRAPPER.put("Athletic Bilbao", "Bilbao");
+        TEAM_NAME_WRAPPER.put("Atletico Bilbao", "Bilbao");
+        TEAM_NAME_WRAPPER.put("Atlético Madrid", "Atlético");
+        TEAM_NAME_WRAPPER.put("Atletico Madrid", "Atlético");
+        TEAM_NAME_WRAPPER.put("Barcelone", "Barcelona");
+        TEAM_NAME_WRAPPER.put("Grenade", "Granada");
+        TEAM_NAME_WRAPPER.put("Leganes", "Leganés");
+        TEAM_NAME_WRAPPER.put("Majorque", "Mallorca");
+        TEAM_NAME_WRAPPER.put("Séville", "Sevilla");
+        TEAM_NAME_WRAPPER.put("Real Betis", "Betis");
+        TEAM_NAME_WRAPPER.put("Real Valladolid", "Valladolid");
+        TEAM_NAME_WRAPPER.put("Valence", "Valencia");
+        TEAM_NAME_WRAPPER.put("Hellas Verona", "Verona");
 
-        TEAM_NAME_WRAPPER.get(ChampionshipOutType.LIGA).put("Barcelona", "Barcelone");
-        TEAM_NAME_WRAPPER.get(ChampionshipOutType.LIGA).put("Granada", "Grenade");
-        TEAM_NAME_WRAPPER.get(ChampionshipOutType.LIGA).put("Mallorca", "Majorque");
-        TEAM_NAME_WRAPPER.get(ChampionshipOutType.LIGA).put("Sevilla", "Séville");
-        TEAM_NAME_WRAPPER.get(ChampionshipOutType.LIGA).put("Valencia", "Valence");
+        /*
+         * Logo name wrapper
+         */
 
-        // Logo name wrapper
+        // Ligue 1
+        LOGO_NAME_WRAPPER.put("Psg", TEAM_NAME_WRAPPER.get("PSG"));
 
-        LOGO_NAME_WRAPPER.put("Nimes", "Nîmes");
-        LOGO_NAME_WRAPPER.put("Psg", "PSG");
-        LOGO_NAME_WRAPPER.put("Saint Etienne", "Saint-Étienne");
+        // Ligua
+        LOGO_NAME_WRAPPER.put("Athletic Club", TEAM_NAME_WRAPPER.get("Atletico Bilbao"));
 
-        LOGO_NAME_WRAPPER.put("Bologna", "Bologne");
-        LOGO_NAME_WRAPPER.put("Napoli", "Naples");
-        LOGO_NAME_WRAPPER.put("Roma", "Rome");
-        LOGO_NAME_WRAPPER.put("Spal", "SPAL 2013");
-
-        LOGO_NAME_WRAPPER.put("Atletico Madrid", "Atlético Madrid");
-        LOGO_NAME_WRAPPER.put("Athletic Club", "Bilbao");
-        LOGO_NAME_WRAPPER.put("Barcelona", "Barcelone");
-        LOGO_NAME_WRAPPER.put("Granada", "Grenade");
-        LOGO_NAME_WRAPPER.put("Leganes", "Leganés");
-        LOGO_NAME_WRAPPER.put("Mallorca", "Majorque");
-        LOGO_NAME_WRAPPER.put("Sevilla", "Séville");
-        LOGO_NAME_WRAPPER.put("Valencia", "Valence");
+        // Serie A
+        LOGO_NAME_WRAPPER.put("Internazionale", "Inter");
     }
 
     public static InjuredSuspendedEquipeActuClient build(Config config) {
@@ -88,17 +114,16 @@ public class InjuredSuspendedEquipeActuClient extends AbstractClient {
     }
 
     /**
-     * Return team name (equipeActu) from MPG team name
+     * Return MPG team name from EquipeActu team name (because has change during time)
      * 
-     * @param championship The championship
-     * @param mpgTeamName  The MPG team name
-     * @return The EquipeActu team name
+     * @param equipeActuTeamName The EquipeActu team name
+     * @return The MPG team name
      */
-    static String getTeamName(ChampionshipOutType championship, String mpgTeamName) {
-        if (TEAM_NAME_WRAPPER.get(championship).containsKey(mpgTeamName)) {
-            return TEAM_NAME_WRAPPER.get(championship).get(mpgTeamName);
+    private static String getTeamName(String equipeActuTeamName) {
+        if (TEAM_NAME_WRAPPER.containsKey(equipeActuTeamName)) {
+            return TEAM_NAME_WRAPPER.get(equipeActuTeamName);
         }
-        return mpgTeamName;
+        return equipeActuTeamName;
     }
 
     /**
@@ -133,7 +158,7 @@ public class InjuredSuspendedEquipeActuClient extends AbstractClient {
                     && Stream.of(playerName.toLowerCase().split(" ")).allMatch(player.getFullNameWithPosition().toLowerCase()::contains)) {
                 Position pos = player.getPosition();
                 if (Position.UNDEFINED.equals(pos) || Position.UNDEFINED.equals(position) || position.equals(pos)) {
-                    if (StringUtils.isNotBlank(teamName) && !player.getTeam().contains(getTeamName(championship, teamName))) {
+                    if (StringUtils.isNotBlank(teamName) && StringUtils.isNotBlank(player.getTeam()) && !player.getTeam().equals(teamName)) {
                         continue;
                     }
                     return player;
@@ -157,10 +182,14 @@ public class InjuredSuspendedEquipeActuClient extends AbstractClient {
     private List<Player> getPlayers(String content) {
         List<Player> players = new ArrayList<>();
         Document doc = Jsoup.parse(content);
+        boolean oneTeamHasBeenParsed = false;
         String team = null;
         for (Element item : doc.select("div.injuries_item")) {
             // Retrieve team from name or logo
             team = parseTeam(item, team);
+            if (StringUtils.isNoneBlank(team)) {
+                oneTeamHasBeenParsed = true;
+            }
 
             if (item.selectFirst("div.injuries_name") == null) {
                 // No injured/suspended players in team
@@ -168,12 +197,15 @@ public class InjuredSuspendedEquipeActuClient extends AbstractClient {
             }
 
             Player player = new Player();
-            player.setTeam(team);
+            player.setTeam(getTeamName(team));
             player.setOutType(parseOutType(item.selectFirst("div.injuries_type").selectFirst("span").className()));
             player.setFullNameWithPosition(item.selectFirst("div.injuries_playername").text());
             player.setDescription(item.selectFirst("div.injuries_name").text());
             player.setLength(item.selectFirst("div.injuries_length").text());
             players.add(player);
+        }
+        if (!oneTeamHasBeenParsed) {
+            throw new UnsupportedOperationException("No teams have been found, parsing problem");
         }
         return players;
     }
@@ -188,8 +220,10 @@ public class InjuredSuspendedEquipeActuClient extends AbstractClient {
             } else {
                 // No team name, get from png logo name
                 String logoUrl = teamItem.selectFirst("img").attr("src");
-                if (!logoUrl.contains("blank_team")) {
-                    // Some logo can be "blank_team" ... previous team used in this case, no other way
+                if (logoUrl.contains("blank_team")) {
+                    // Some logo can be "blank_team" ... team set to blank in this case
+                    team = null;
+                } else {
                     team = logoUrl.substring(logoUrl.lastIndexOf('/') + 1, logoUrl.lastIndexOf(".png"));
                     team = WordUtils.capitalizeFully(team.replaceAll("-", " "));
                     if (LOGO_NAME_WRAPPER.containsKey(team)) {
@@ -198,16 +232,6 @@ public class InjuredSuspendedEquipeActuClient extends AbstractClient {
                 }
             }
         }
-
-        if (StringUtils.isBlank(team)) {
-            // Special case of Spain, where 'Alavés' (first team), can be blank :(
-            if (item.selectFirst("div.injuries_playerimg").selectFirst("img").attr("src").contains("spain")) {
-                team = "Alavés";
-            } else {
-                throw new UnsupportedOperationException("Team can't be blank here, parsing problem");
-            }
-        }
-
         return team;
     }
 
