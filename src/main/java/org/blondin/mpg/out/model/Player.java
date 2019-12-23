@@ -1,7 +1,5 @@
 package org.blondin.mpg.out.model;
 
-import org.apache.commons.lang3.StringUtils;
-
 public class Player {
 
     private String fullNameWithPosition;
@@ -50,9 +48,6 @@ public class Player {
     }
 
     public String getTeam() {
-        if (StringUtils.isBlank(this.team)) {
-            throw new UnsupportedOperationException("The team can't be null here, implement problem (should be filled before)");
-        }
         return this.team;
     }
 

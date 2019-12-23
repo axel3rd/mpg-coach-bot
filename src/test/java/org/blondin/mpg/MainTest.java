@@ -189,7 +189,8 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(post("/league/LH9HKBTD/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LH9HKBTD.20191212-Request.json")))
                 .willReturn(aResponse().withBody("{\"success\":\"teamSaved\"}")));
 
-        prepareMainLigue1Mocks("LH9HKBTD-LJV92C9Y-LJT3FXDF", "20191212", "20191212", "20191212");
+        // EquipeActu past data ... the 20191212 was corrupted
+        prepareMainLigue1Mocks("LH9HKBTD-LJV92C9Y-LJT3FXDF", "20191212", "20191212", "20190818");
         stubFor(get("/league/LJV92C9Y/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJV92C9Y.20191212.json")));
         stubFor(post("/league/LJV92C9Y/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LJV92C9Y.20191212-Request.json")))
