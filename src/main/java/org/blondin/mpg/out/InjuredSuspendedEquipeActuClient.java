@@ -225,7 +225,7 @@ public class InjuredSuspendedEquipeActuClient extends AbstractClient {
                     team = null;
                 } else {
                     team = logoUrl.substring(logoUrl.lastIndexOf('/') + 1, logoUrl.lastIndexOf(".png"));
-                    team = WordUtils.capitalizeFully(team.replaceAll("-", " "));
+                    team = WordUtils.capitalizeFully(team.replace('-', ' '));
                     if (LOGO_NAME_WRAPPER.containsKey(team)) {
                         team = LOGO_NAME_WRAPPER.get(team);
                     }
