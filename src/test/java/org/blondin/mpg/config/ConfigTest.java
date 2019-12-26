@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.io.FileUtils;
 import org.blondin.mpg.root.model.Position;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -16,6 +18,12 @@ public class ConfigTest {
 
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
+
+    @Before
+    public void setUp() {
+        // Force locale as in AbstractMockTestClient, because Main could be initialized via this test class
+        Locale.setDefault(Locale.ENGLISH);
+    }
 
     @Test
     public void testConfigDefault() {

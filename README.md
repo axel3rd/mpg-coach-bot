@@ -221,7 +221,7 @@ This project is using [Maven](https://maven.apache.org/) as integration tool.
 For development/SNAPSHOT build, use:
 
 ```
-mvn install
+mvn package
 ```
 
 Locally on your computer, you can improve end2end tests by providing file `src/test/resources/mpg.properties` file with *real* data (see `mpg.properties.here` file in directory for details):
