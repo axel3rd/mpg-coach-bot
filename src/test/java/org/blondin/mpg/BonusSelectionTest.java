@@ -3,13 +3,22 @@ package org.blondin.mpg;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
+import java.util.Locale;
+
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.blondin.mpg.root.model.Bonus;
 import org.blondin.mpg.root.model.BonusSelected;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class BonusSelectionTest {
+
+    @Before
+    public void setUp() {
+        // Force locale as in AbstractMockTestClient, because Main is used in this test class
+        Locale.setDefault(Locale.ENGLISH);
+    }
 
     private BonusSelected getBonusSelected(Integer type) {
         return getBonusSelected(type, null);
