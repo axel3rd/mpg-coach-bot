@@ -27,6 +27,7 @@ public class MpgStatsClient extends AbstractClient {
         MpgStatsClient client = new MpgStatsClient();
         client.setUrl(StringUtils.defaultString(urlOverride, "https://api.mlnstats.com"));
         client.setProxy(config.getProxy());
+        client.setSslCertificatesCheck(config.isSslCertificatesCheck());
         return client;
     }
 

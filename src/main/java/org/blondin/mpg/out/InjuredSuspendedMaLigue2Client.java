@@ -26,6 +26,7 @@ public class InjuredSuspendedMaLigue2Client extends AbstractClient {
         InjuredSuspendedMaLigue2Client client = new InjuredSuspendedMaLigue2Client();
         client.setUrl(StringUtils.defaultString(urlOverride, "https://maligue2.fr/2019/08/05/joueurs-blesses-et-suspendus/"));
         client.setProxy(config.getProxy());
+        client.setSslCertificatesCheck(config.isSslCertificatesCheck());
         return client;
     }
 

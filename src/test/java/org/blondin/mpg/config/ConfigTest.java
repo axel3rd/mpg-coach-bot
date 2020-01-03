@@ -64,6 +64,8 @@ public class ConfigTest {
         Assert.assertEquals(1.05f, config.getEfficiencyCoefficient(Position.M), 0);
         Assert.assertEquals(1.025f, config.getEfficiencyCoefficient(Position.D), 0);
         Assert.assertEquals(1f, config.getEfficiencyCoefficient(Position.G), 0);
+
+        Assert.assertEquals(true, config.isSslCertificatesCheck());
     }
 
     @Test
@@ -93,6 +95,7 @@ public class ConfigTest {
         lines.add("proxy.uri=http://company.proxy.com:80");
         lines.add("proxy.user=foo");
         lines.add("proxy.password=bar"); // NOSNOAR : Test wanted
+        lines.add("ssl.certificates.check=false");
 
         File configFile = new File(testFolder.getRoot(), "mpg.properties.test");
         FileUtils.writeLines(configFile, lines);
@@ -138,6 +141,8 @@ public class ConfigTest {
         Assert.assertEquals("http://company.proxy.com:80", config.getProxy().getUri());
         Assert.assertEquals("foo", config.getProxy().getUser());
         Assert.assertEquals("bar", config.getProxy().getPassword());
+
+        Assert.assertEquals(false, config.isSslCertificatesCheck());
     }
 
     @Test
