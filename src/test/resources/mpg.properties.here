@@ -42,6 +42,8 @@ transactions.proposal = false
 #proxy.user = foo
 #proxy.password = bar
 
+# Check SSL certificates of third part Website ('true' by default)
+#ssl.certificates.check = false
+
 # Enable debug logs
 #logs.debug = true
-

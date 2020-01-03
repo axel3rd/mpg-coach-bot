@@ -6,7 +6,15 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -36,6 +44,7 @@ public abstract class AbstractClient {
 
     private Proxy proxy;
     private String url;
+    private boolean sslCertificatesCheck = true;
 
     protected AbstractClient() {
         super();
@@ -47,6 +56,10 @@ public abstract class AbstractClient {
 
     protected void setProxy(Proxy proxy) {
         this.proxy = proxy;
+    }
+
+    protected void setSslCertificatesCheck(boolean sslCertificatesCheck) {
+        this.sslCertificatesCheck = sslCertificatesCheck;
     }
 
     protected <T> T get(String path, Class<T> entityResponse) {
@@ -103,7 +116,15 @@ public abstract class AbstractClient {
                 }
             }
 
-            Client client = ClientBuilder.newClient(createConfigWithPotentialProxy());
+            ClientBuilder clientBuilder = ClientBuilder.newBuilder().withConfig(createConfigWithPotentialProxy());
+            if (!this.sslCertificatesCheck) {
+                final TrustManager[] trustManagerArray = { new NullX509TrustManager() };
+                SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
+                sslContext.init(null, trustManagerArray, new java.security.SecureRandom());
+                clientBuilder.sslContext(sslContext).hostnameVerifier(new NullHostnameVerifier());
+            }
+            Client client = clientBuilder.build();
+
             if (wrapRoot) {
                 client = client.register(ObjectMapperContextResolver.class);
             }
@@ -129,7 +150,7 @@ public abstract class AbstractClient {
                 return readEntityFromFile(cacheFile, entityResponse);
             }
             return response.readEntity(entityResponse);
-        } catch (IOException e) {
+        } catch (IOException | KeyManagementException | NoSuchAlgorithmException e) {
             throw new UnsupportedOperationException(e);
         } finally {
             LOG.debug("Call URL time elaps ms: {}", System.currentTimeMillis() - start);
@@ -162,5 +183,34 @@ public abstract class AbstractClient {
             }
         }
         return config;
+    }
+
+    /**
+     * Host name verifier that does not perform nay checks.
+     */
+    private static class NullHostnameVerifier implements HostnameVerifier {
+        public boolean verify(String hostname, SSLSession session) {
+            return hostname.equalsIgnoreCase(session.getPeerHost());
+        }
+    }
+
+    /**
+     * Trust manager that does not perform nay checks.
+     */
+    private static class NullX509TrustManager implements X509TrustManager {
+
+        @Override
+        public void checkClientTrusted(X509Certificate[] chain, String authType) { // NOSONAR : Wanted for corner case
+            // No checks, so nothing
+        }
+
+        @Override
+        public void checkServerTrusted(X509Certificate[] chain, String authType) { // NOSONAR : Wanted for corner case
+            // No checks, so nothing
+        }
+
+        public X509Certificate[] getAcceptedIssuers() {
+            return new X509Certificate[0];
+        }
     }
 }

@@ -47,6 +47,7 @@ public class MpgClient extends AbstractClient {
         MpgClient client = new MpgClient();
         client.setUrl(StringUtils.defaultString(urlOverride, "https://api.monpetitgazon.com"));
         client.setProxy(config.getProxy());
+        client.setSslCertificatesCheck(config.isSslCertificatesCheck());
         client.signIn(config.getLogin(), config.getPassword());
         return client;
     }

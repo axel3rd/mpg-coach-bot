@@ -41,6 +41,7 @@ public class Config {
     private Proxy proxy;
     private List<String> leaguesInclude = new ArrayList<>();
     private List<String> leaguesExclude = new ArrayList<>();
+    private boolean sslCertificatesCheck = true;
 
     private Config() {
         super();
@@ -125,6 +126,7 @@ public class Config {
         config.transactionsProposal = parseBoolean(properties, "transactions.proposal", config.transactionsProposal);
         config.leaguesInclude = parseList(properties, "leagues.include", ",");
         config.leaguesExclude = parseList(properties, "leagues.exclude", ",");
+        config.sslCertificatesCheck = parseBoolean(properties, "ssl.certificates.check", config.sslCertificatesCheck);
     }
 
     private static void configNoteTacticalSubstitute(Config config, Properties properties) {
@@ -245,6 +247,10 @@ public class Config {
 
     public List<String> getLeaguesExclude() {
         return leaguesExclude;
+    }
+
+    public boolean isSslCertificatesCheck() {
+        return sslCertificatesCheck;
     }
 
 }

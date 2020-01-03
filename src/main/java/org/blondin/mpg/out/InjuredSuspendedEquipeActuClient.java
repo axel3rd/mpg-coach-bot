@@ -110,6 +110,7 @@ public class InjuredSuspendedEquipeActuClient extends AbstractClient {
         InjuredSuspendedEquipeActuClient client = new InjuredSuspendedEquipeActuClient();
         client.setUrl(StringUtils.defaultString(urlOverride, "https://www.equipeactu.fr/blessures-et-suspensions/fodbold/"));
         client.setProxy(config.getProxy());
+        client.setSslCertificatesCheck(config.isSslCertificatesCheck());
         return client;
     }
 

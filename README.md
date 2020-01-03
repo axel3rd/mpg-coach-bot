@@ -133,7 +133,7 @@ If you are using this program the Friday @work, you can have to configure the co
 To update team automatically ('true' by default since v1.6):
 
     # Enable auto-update team
-    team.update=true
+    team.update = true
 
 To focus on recent efficiency, about team proposal and buy transaction (since v1.3, 'true' by default since v1.6):
 
@@ -178,6 +178,11 @@ To change default efficiency coefficient for players (since v1.2):
     efficiency.coefficient.midfielder = 1.05
     efficiency.coefficient.defender = 1.025
     efficiency.coefficient.goalkeeper = 1.0
+
+To enable/disable SSL certificates check (since v1.7):
+
+    # Check SSL certificates of third part Website
+    ssl.certificates.check = true
 
 To add some debug logs about execution (since v1.2):
 
