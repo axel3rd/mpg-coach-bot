@@ -1,5 +1,6 @@
 package org.blondin.mpg.stats;
 
+import java.util.Date;
 import java.util.EnumMap;
 
 import org.apache.commons.lang3.StringUtils;
@@ -35,9 +36,9 @@ public class MpgStatsClient extends AbstractClient {
         if (!cache.containsKey(type)) {
             // FR : "Ligue-1" / EN : "Premier-League" / ES : "Liga"
             // Call with infinite cache and verify timestamp after
-            LeaguesRefresh leaguesRefresh = getLeaguesRefresh();
             Championship championship = get("leagues/" + type.getValue(), Championship.class, 0);
-            if (championship.getDate().before(leaguesRefresh.getDate(championship.getInfos().getId()))) {
+            Date leagueDateRefresh = getLeaguesRefresh().getDate(championship.getInfos().getId());
+            if (leagueDateRefresh == null || championship.getDate().before(leagueDateRefresh)) {
                 // Force refresh by using a mini cache time
                 championship = get("leagues/" + type.getValue(), Championship.class, 1);
             }
