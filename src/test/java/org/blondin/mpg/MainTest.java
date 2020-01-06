@@ -77,6 +77,28 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testPlayersStatsLeagueRefreshDateInvalid() throws Exception {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LH9HKBTD-LJV92C9Y-LJT3FXDF.json")));
+        stubFor(get("/league/LJT3FXDF/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20191212.json")));
+        stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20200106.json")));
+        stubFor(get("/leagues/Premier-League")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.premier-league.20191218.json")));
+        stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20191212.html")));
+
+        Config config = spy(getConfig());
+        doReturn(false).when(config).isTeampUpdate();
+        doReturn(true).when(config).isEfficiencyRecentFocus();
+        doReturn(Arrays.asList("LJT3FXDF")).when(config).getLeaguesInclude();
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut().contains("========== Peter Ouch  =========="));
+    }
+
+    @Test
     public void testMlnstatsEfficiencyRecentFocus() throws Exception {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
@@ -497,6 +519,7 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(get("/mercato/5")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.mercato.serie-a.20190805.json")));
         stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20190805.json")));
+        // 'mpgstats.serie-a.20190805.json' file is about Ligue-1 => this is a 'fake' file without stats about player wanted due to transfer
         stubFor(get("/leagues/Serie-A")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.serie-a.20190805.json")));
         stubFor(get("/blessures-et-suspensions/fodbold/italie/serie-a")
