@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.blondin.mpg.Main;
 import org.blondin.mpg.root.model.Position;
 
@@ -152,7 +152,7 @@ public class Config {
 
     private static void configLogs(Properties properties) {
         if (parseBoolean(properties, "logs.debug", false)) {
-            Logger.getLogger(Main.class.getPackage().getName()).setLevel(Level.DEBUG);
+            Configurator.setLevel(Main.class.getPackage().getName(), Level.DEBUG);
         }
     }
 

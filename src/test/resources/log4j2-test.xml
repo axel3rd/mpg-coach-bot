@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" packages="org.blondin.mpg.test.io">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%m%n" />
+        </Console>
+        <ConsoleTest name="ConsoleTest" />
+    </Appenders>
+    <Loggers>
+        <Logger name="org.blondin.mpg" additivity="false" level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="ConsoleTest" />
+        </Logger>
+        <Root level="error">
+            <AppenderRef ref="Console" />
+        </Root>
+    </Loggers>
+</Configuration>
