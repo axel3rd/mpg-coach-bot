@@ -29,8 +29,7 @@ public abstract class AbstractMockTestClient {
             file.delete();
         }
 
-        // Check log config and reset log test
-        ConsoleTestAppender.checkLogBinding();
+        // Reset logs test of previous method
         ConsoleTestAppender.logTestReset();
     }
 
@@ -51,12 +50,4 @@ public abstract class AbstractMockTestClient {
         return ConsoleTestAppender.getLogOut().toString();
     }
 
-    /**
-     * Get log (stderr) generated during method test execution
-     * 
-     * @return String
-     */
-    protected String getLogErr() {
-        return ConsoleTestAppender.getLogErr().toString();
-    }
 }

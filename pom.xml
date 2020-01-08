@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.blondin</groupId>
     <artifactId>mpg-coach-bot</artifactId>
@@ -11,7 +12,8 @@
         <main.class>org.blondin.mpg.Main</main.class>
         <jdk.version>1.8</jdk.version>
         <jersey.version>2.29.1</jersey.version>
-        <slf4j.version>1.7.29</slf4j.version>
+        <slf4j.version>1.7.30</slf4j.version>
+        <log4j.version>2.13.0</log4j.version>
     </properties>
     <scm>
         <connection>scm:git:https://github.com/axel3rd/mpg-coach-bot</connection>
@@ -114,14 +116,14 @@
             <version>${slf4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>

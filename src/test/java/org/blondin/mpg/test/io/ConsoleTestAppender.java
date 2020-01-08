@@ -1,72 +1,52 @@
 package org.blondin.mpg.test.io;
 
-import java.io.ByteArrayOutputStream;
-
-import org.apache.log4j.ConsoleAppender;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.Core;
+import org.apache.logging.log4j.core.Filter;
+import org.apache.logging.log4j.core.LogEvent;
+import org.apache.logging.log4j.core.appender.AbstractAppender;
+import org.apache.logging.log4j.core.config.Property;
+import org.apache.logging.log4j.core.config.plugins.Plugin;
+import org.apache.logging.log4j.core.config.plugins.PluginAttribute;
+import org.apache.logging.log4j.core.config.plugins.PluginElement;
+import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 
 /**
- * Log4j ConsoleAppender in charge to ensure log test binding
+ * Log4j2 ConsoleAppender in charge to ensure log test binding
  */
-public class ConsoleTestAppender extends ConsoleAppender {
+@Plugin(name = "ConsoleTest", category = Core.CATEGORY_NAME, elementType = Appender.ELEMENT_TYPE)
+public class ConsoleTestAppender extends AbstractAppender {
 
-    /** Lout Out execution */
-    private static ByteArrayOutputStream logOut = new ByteArrayOutputStream();
+    private static StringBuilder logs = new StringBuilder();
 
-    /** Lout Err execution */
-    private static ByteArrayOutputStream logErr = new ByteArrayOutputStream();
+    protected ConsoleTestAppender(String name, Filter filter) {
+        super(name, filter, null, true, Property.EMPTY_ARRAY);
+    }
 
-    /** Binded out logger */
-    private static TeePrintStream teeOut = new TeePrintStream(logOut, System.out);
-
-    /** Binded err logger */
-    private static TeePrintStream teeErr = new TeePrintStream(logErr, System.err);
-
-    static {
-        // Bind out/err
-        // Note : With slf4j logger usage, the associated Stream could be initialized once => TeePrintStream is static and associated Stream reseted
-        // each method (see setUp)
-        System.setOut(teeOut);
-        System.setErr(teeErr);
+    @PluginFactory
+    public static ConsoleTestAppender createAppender(@PluginAttribute("name") String name, @PluginElement("Filter") Filter filter) {
+        return new ConsoleTestAppender(name, filter);
     }
 
     /**
      * reset internal logs
      */
     public static void logTestReset() {
-        logOut.reset();
-        logErr.reset();
+        logs = new StringBuilder();
     }
 
     /**
-     * return output stream
+     * return logs
      * 
-     * @return output stream
+     * @return logs
      */
-    public static ByteArrayOutputStream getLogOut() {
-        // Log wrapper should be flushed to ensure the end usage/content
-        teeOut.flush();
-        return logOut;
+    public static String getLogOut() {
+        return logs.toString();
     }
 
-    /**
-     * return error stream
-     * 
-     * @return error stream
-     */
-    public static ByteArrayOutputStream getLogErr() {
-        // Log wrapper should be flushed to ensure the end usage/content
-        teeErr.flush();
-        return logErr;
-    }
-
-    /**
-     * verify if sdtout stream is our output stream
-     */
-    public static void checkLogBinding() {
-        if (!(System.out instanceof TeePrintStream)) { 
-            throw new UnsupportedOperationException(String.format("Log4j configuration appender is '%s' and not '%s', please review configuration",
-                    System.out.getClass().getName(), ConsoleTestAppender.class.getName()));
-
-        }
+    @Override
+    public void append(LogEvent event) {
+        logs.append(event.getMessage().getFormattedMessage());
+        logs.append(System.getProperty("line.separator"));
     }
 }
