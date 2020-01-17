@@ -92,6 +92,9 @@ public class Main {
         switch (league.getLeagueStatus()) {
         case TERMINATED:
             // Already managed previously
+        case KEEP:
+            LOG.info("\nSome users should select players to kept before Mercato can start, come back soon !\n");
+            break;
         case CREATION:
         case UNKNOWN:
             processMercatoChampionship(league, apiClients, config);

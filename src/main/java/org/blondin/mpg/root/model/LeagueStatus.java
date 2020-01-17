@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum LeagueStatus {
 
-    CREATION(1), UNKNOWN(2), MERCATO(3), GAMES(4), TERMINATED(5);
+    CREATION(1), UNKNOWN(2), MERCATO(3), GAMES(4), TERMINATED(5), KEEP(6);
 
     private final int value;
 
