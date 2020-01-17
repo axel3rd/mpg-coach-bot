@@ -77,6 +77,19 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testLeagueStartPlayerToKept() throws Exception {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LJV92C9Y-LH9HKBTD-status-6.json")));
+
+        Config config = spy(getConfig());
+        doReturn(Arrays.asList("LJT3FXDF")).when(config).getLeaguesExclude();
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut().contains("Some users should select players to kept before Mercato can start, come back soon"));
+    }
+
+    @Test
     public void testPlayersStatsLeagueRefreshDateInvalid() throws Exception {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
