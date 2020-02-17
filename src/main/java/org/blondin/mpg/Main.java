@@ -33,6 +33,7 @@ import org.blondin.mpg.root.model.Team;
 import org.blondin.mpg.root.model.TransferBuy;
 import org.blondin.mpg.stats.ChampionshipStatsType;
 import org.blondin.mpg.stats.MpgStatsClient;
+import org.blondin.mpg.stats.model.CurrentDay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -194,6 +195,11 @@ public class Main {
                             "\nTransaction proposals can not be achieved, you should buy 'MPG expert mode' for this league (very fun, not expensive!)");
                 } else {
                     LOG.info("\nTransactions proposal ...");
+                    CurrentDay cd = apiClients.getStats().getStats(ChampionshipTypeWrapper.toStats(league.getChampionship())).getInfos()
+                            .getAnnualStats().getCurrentDay();
+                    if (cd.getLastDayReached() < cd.getDay()) {
+                        LOG.info("\nWARNING: Last day stats have not fully reached! Please retry tomorrow");
+                    }
                     TransferBuy transferBuy = apiClients.getMpg().getTransferBuy(league.getId());
                     List<Player> playersAvailable = transferBuy.getAvailablePlayers();
                     removeOutPlayers(playersAvailable, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()), false);
