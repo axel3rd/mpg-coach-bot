@@ -77,6 +77,32 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testTransactionProposalWithoutStatsFullyReached() throws Exception {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/user/dashboard").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LH9HKBTD-LJV92C9Y-LJT3FXDF.json")));
+        stubFor(get("/league/LJT3FXDF/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20191212.json")));
+        stubFor(get("/league/LJT3FXDF/transfer/buy")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.transfer.buy.LJT3FXDF.20200217.json")));
+        stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20200106.json")));
+        stubFor(get("/leagues/Premier-League")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.premier-league.20200217.json")));
+        stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20191212.html")));
+
+        Config config = spy(getConfig());
+        doReturn(false).when(config).isTeampUpdate();
+        doReturn(true).when(config).isEfficiencyRecentFocus();
+        doReturn(true).when(config).isTransactionsProposal();
+        doReturn(Arrays.asList("LJT3FXDF")).when(config).getLeaguesInclude();
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut().contains("========== Peter Ouch  =========="));
+        Assert.assertTrue(getLogOut().contains("WARNING: Last day stats have not fully reached! Please retry tomorrow"));
+    }
+
+    @Test
     public void testLeagueStartPlayerToKept() throws Exception {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
@@ -673,7 +699,7 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(get("/league/KX24XMUG/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.20190217.json")));
         stubFor(get("/league/KX24XMUG/transfer/buy")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.transfer.buy.20190217.json")));
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.transfer.buy.KX24XMUG.20190217.json")));
 
         Config config = spy(getConfig());
         doReturn(true).when(config).isTransactionsProposal();
@@ -681,6 +707,7 @@ public class MainTest extends AbstractMockTestClient {
 
         executeMainProcess(config);
         Assert.assertFalse(getLogOut(), getLogOut().contains("Players to sell"));
+        Assert.assertFalse(getLogOut().contains("Last day stats have not fully reached"));
     }
 
     @Test
@@ -689,7 +716,7 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(get("/league/KX24XMUG/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.20190202.json")));
         stubFor(get("/league/KX24XMUG/transfer/buy")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.transfer.buy.20190202.json")));
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.transfer.buy.KX24XMUG.20190202.json")));
 
         Config config = spy(getConfig());
         doReturn(true).when(config).isTransactionsProposal();
@@ -697,6 +724,7 @@ public class MainTest extends AbstractMockTestClient {
         executeMainProcess(config);
         Assert.assertTrue(getLogOut(), getLogOut().contains("Achille Needle"));
         Assert.assertFalse(getLogOut(), getLogOut().contains("Neymar"));
+        Assert.assertFalse(getLogOut().contains("Last day stats have not fully reached"));
     }
 
     @Test
@@ -705,7 +733,7 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(get("/league/KX24XMUG/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.20190217.json")));
         stubFor(get("/league/KX24XMUG/transfer/buy")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.transfer.buy.20190217.json")));
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.transfer.buy.KX24XMUG.20190217.json")));
 
         Config config = spy(getConfig());
         doReturn(true).when(config).isTransactionsProposal();
@@ -713,6 +741,7 @@ public class MainTest extends AbstractMockTestClient {
         executeMainProcess(config);
         Assert.assertTrue(getLogOut(), getLogOut().contains("Achille Needle"));
         Assert.assertFalse(getLogOut(), getLogOut().contains("WARN: Player can't be found in statistics: Wade Paul"));
+        Assert.assertFalse(getLogOut().contains("Last day stats have not fully reached"));
     }
 
     @Test

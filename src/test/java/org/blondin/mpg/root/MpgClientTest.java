@@ -80,7 +80,7 @@ public class MpgClientTest extends AbstractMockTestClient {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
         stubFor(get("/league/KX24XMUG/transfer/buy")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.transfer.buy.20190202.json")));
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.transfer.buy.KX24XMUG.20190202.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         TransferBuy tb = mpgClient.getTransferBuy("KX24XMUG");
         Assert.assertEquals(1, tb.getBudget());

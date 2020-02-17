@@ -9,7 +9,15 @@ public class CurrentDay {
     @JsonProperty("d")
     private int day;
 
+    @JsonProperty("lD")
+    private int lastDayReached;
+
     public int getDay() {
         return day;
     }
+
+    public int getLastDayReached() {
+        return lastDayReached;
+    }
+
 }
