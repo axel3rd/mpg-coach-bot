@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
  */
 public class MpgClient extends AbstractClient {
 
-    public static final String MPG_CLIENT_VERSION = "5.8.1";
+    public static final String MPG_CLIENT_VERSION = "6.2.0";
 
     private static final String PATH_LEAGUE = "league/";
 
