@@ -103,7 +103,7 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
         Assert.assertNotNull(championship);
         Assert.assertNotNull(championship.getInfos());
         Assert.assertEquals(championshipName, championship.getInfos().getName().toLowerCase());
-        Assert.assertNotNull(championship.getInfos().getId());
+        Assert.assertTrue(String.valueOf(championship.getInfos().getId()), championship.getInfos().getId() > 0);
         Assert.assertNotNull(championship.getPlayers());
         Assert.assertTrue(championshipName + ":" + championship.getPlayers().size(), championship.getPlayers().size() > 550);
         boolean atLeastOne = false;

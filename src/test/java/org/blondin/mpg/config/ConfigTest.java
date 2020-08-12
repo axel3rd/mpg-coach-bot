@@ -154,8 +154,9 @@ public class ConfigTest {
         File configFile = new File(testFolder.getRoot(), "mpg.properties.test");
         FileUtils.writeLines(configFile, lines);
 
+        final String configPath = configFile.getPath();
         try {
-            Config.build(configFile.getPath());
+            Config.build(configPath);
             Assert.fail("Days > max");
         } catch (UnsupportedOperationException e) {
             Assert.assertTrue(e.getMessage().contains("efficiency.recent.days"));
@@ -172,8 +173,9 @@ public class ConfigTest {
         File configFile = new File(testFolder.getRoot(), "mpg.properties.test");
         FileUtils.writeLines(configFile, lines);
 
+        final String configPath = configFile.getPath();
         try {
-            Config.build(configFile.getPath());
+            Config.build(configPath);
             Assert.fail("Days > max");
         } catch (UnsupportedOperationException e) {
             Assert.assertTrue(e.getMessage().contains("efficiency.recent.days"));

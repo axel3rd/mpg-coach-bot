@@ -21,16 +21,16 @@ public class SslCertificateTest {
 
     @Test
     public void testSslProblem() {
+
+        final String content = "{ \"key\": \"value\"}";
+        final String url = "/api/test";
+
+        stubFor(get(url).willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(content)));
+
+        AbstractClient client = new AbstractClient() {
+        };
+        client.setUrl("https://localhost:" + server.httpsPort());
         try {
-            final String content = "{ \"key\": \"value\"}";
-            final String url = "/api/test";
-
-            stubFor(get(url).willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(content)));
-
-            AbstractClient client = new AbstractClient() {
-            };
-            client.setUrl("https://localhost:" + server.httpsPort());
-
             client.get(url, String.class);
             Assert.fail("No valid certificate, and no ssl check disabled");
         } catch (ProcessingException e) {
