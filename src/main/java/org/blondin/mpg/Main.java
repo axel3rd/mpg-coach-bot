@@ -241,7 +241,7 @@ public class Main {
                     throw e;
                 }
                 try {
-                    LOG.info("Retrying ...");
+                    LOG.info("Retrying Team update...");
                     Thread.sleep(5000);
                 } catch (InterruptedException e1) { // NOSONAR : Sleep wanted
                     throw new UnsupportedOperationException(e1);

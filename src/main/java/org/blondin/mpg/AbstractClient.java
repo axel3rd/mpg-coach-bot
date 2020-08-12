@@ -3,6 +3,7 @@ package org.blondin.mpg;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -15,6 +16,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -130,12 +132,8 @@ public abstract class AbstractClient {
             }
             WebTarget webTarget = client.target(url).path(path);
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON).headers(headers);
-            Response response = null;
-            if (entityRequest == null) {
-                response = invocationBuilder.get();
-            } else {
-                response = invocationBuilder.post(Entity.entity(entityRequest, MediaType.APPLICATION_JSON));
-            }
+
+            Response response = invokeWithRetry(invocationBuilder, entityRequest, url, path, 0);
             if (Response.Status.OK.getStatusCode() != response.getStatus()) {
                 String content = IOUtils.toString((InputStream) response.getEntity(), StandardCharsets.UTF_8);
                 if (StringUtils.isNoneBlank(content)) {
@@ -155,6 +153,30 @@ public abstract class AbstractClient {
         } finally {
             LOG.debug("Call URL time elaps ms: {}", System.currentTimeMillis() - start);
         }
+    }
+
+    private static Response invokeWithRetry(Invocation.Builder invocationBuilder, Object entityRequest, final String url, final String path,
+            int retryCount) {
+        Response response = null;
+        try {
+            if (entityRequest == null) {
+                response = invocationBuilder.get();
+            } else {
+                response = invocationBuilder.post(Entity.entity(entityRequest, MediaType.APPLICATION_JSON));
+            }
+        } catch (ProcessingException e) {
+            if (e.getCause() instanceof SocketException && retryCount < 10) {
+                LOG.debug("Retrying ('{}' on '{}/{}')...", e.getMessage(), url, path);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e1) { // NOSONAR : Sleep wanted
+                    throw new UnsupportedOperationException(e1);
+                }
+                return invokeWithRetry(invocationBuilder, entityRequest, url, path, ++retryCount);
+            }
+            throw e;
+        }
+        return response;
     }
 
     @SuppressWarnings("unchecked")

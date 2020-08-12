@@ -43,6 +43,7 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.tomakehurst.wiremock.http.Fault;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 
 public class MainTest extends AbstractMockTestClient {
@@ -74,6 +75,28 @@ public class MainTest extends AbstractMockTestClient {
             // Proxy not configured or real URL not accessible
             Assert.assertEquals("No network", "java.net.UnknownHostException: api.monpetitgazon.com", e.getMessage());
         }
+    }
+
+    @Test
+    public void testConnectionReset() throws Exception {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+
+        // CONNECTION_RESET_BY_PEER doesn't work on Windows (block response), EMPTY_RESPONSE throws a SocketException too
+        final String scenario = "Retry Scenario Connection Reset";
+        stubFor(get("/user/dashboard").inScenario(scenario).whenScenarioStateIs(Scenario.STARTED).willSetStateTo("SocketException")
+                .willReturn(aResponse().withFault(Fault.EMPTY_RESPONSE)));
+        // Don't understand why too fault request necessary to have only one :/
+        stubFor(get("/user/dashboard").inScenario(scenario).whenScenarioStateIs("SocketException").willSetStateTo("ValidResponse")
+                .willReturn(aResponse().withFault(Fault.EMPTY_RESPONSE)));
+        stubFor(get("/user/dashboard").inScenario(scenario).whenScenarioStateIs("ValidResponse").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LH9HKBTD-LJV92C9Y-LJT3FXDF.json")));
+
+        Config config = spy(getConfig());
+        doReturn(Arrays.asList("LJV92C9Y", "LJT3FXDF", "LH9HKBTD")).when(config).getLeaguesExclude();
+        executeMainProcess(config);
+        // Log in debug, not testable, so just check process is OK
+        Assert.assertTrue(true);
     }
 
     @Test
@@ -794,7 +817,7 @@ public class MainTest extends AbstractMockTestClient {
         doReturn(true).when(config).isTeampUpdate();
 
         executeMainProcess(config);
-        Assert.assertTrue(getLogOut(), getLogOut().contains("Retrying ..."));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Retrying Team update..."));
     }
 
     @Test
