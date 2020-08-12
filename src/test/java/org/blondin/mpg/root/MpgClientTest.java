@@ -7,6 +7,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 
 import org.blondin.mpg.AbstractMockTestClient;
+import org.blondin.mpg.config.Config;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.Dashboard;
 import org.blondin.mpg.root.model.Player;
@@ -20,8 +21,10 @@ public class MpgClientTest extends AbstractMockTestClient {
     public void testMockSignInKo() throws Exception {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withStatus(401).withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.bad.json")));
+        Config config = getConfig();
+        String url = "http://localhost:" + server.port();
         try {
-            MpgClient.build(getConfig(), "http://localhost:" + server.port());
+            MpgClient.build(config, url);
             Assert.fail("Invalid password is invalid");
         } catch (UnsupportedOperationException e) {
             Assert.assertEquals("Bad credentials",
