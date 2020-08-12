@@ -1,8 +1,8 @@
 language: java
 dist: xenial
 jdk:
-- openjdk8
 - oraclejdk11
+- openjdk8
 cache:
   directories:
   - $HOME/.m2
@@ -15,7 +15,7 @@ before_script:
 - echo Current build is on Java $JAVA_HOME
 script:
 - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package org.jacoco:jacoco-maven-plugin:report
-- if [ "$JAVA_HOME" = "/usr/lib/jvm/java-1.8.0-openjdk-amd64" ]; then mvn sonar:sonar; fi
+- if [ "$JAVA_HOME" = "/home/travis/oraclejdk11" ]; then mvn sonar:sonar; fi
 before_deploy:
 - sh ./bintray-before-deploy.sh
 deploy:
@@ -35,4 +35,4 @@ deploy:
     skip_cleanup: true
     on:
       tags: true
-      jdk: openjdk8
+      jdk: oraclejdk11
