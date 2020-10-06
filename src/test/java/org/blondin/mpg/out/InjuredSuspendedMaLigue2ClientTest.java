@@ -28,8 +28,8 @@ public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
     public void testCheckTeamsL2() throws Exception {
         List<String> mpgTeams = Arrays.asList("Ajaccio", "Auxerre", "Caen", "Chambly", "Châteauroux", "Clermont", "Grenoble", "Guingamp", "Le Havre",
                 "Le Mans", "Lens", "Lorient", "Nancy", "Niort", "Orléans", "Paris", "Rodez", "Sochaux", "Troyes", "Valenciennes");
-        Document doc = Jsoup.parse(FileUtils.readFileToString(
-                new File("src/test/resources/__files", "maligue2.joueurs-blesses-et-suspendus.20190823.html"), Charset.forName("UTF-8")));
+        Document doc = Jsoup.parse(FileUtils.readFileToString(new File(TESTFILES_BASE, "maligue2.joueurs-blesses-et-suspendus.20190823.html"),
+                Charset.forName("UTF-8")));
         List<String> maLigue2Teams = new ArrayList<>();
         for (Element item : doc.select("tr")) {
             if (item.selectFirst("th.column-1") != null && "Club".equals(item.selectFirst("th.column-1").text())) {
@@ -50,9 +50,8 @@ public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
 
     @Test
     public void testLocalMapping() throws Exception {
-        List<Player> players = InjuredSuspendedMaLigue2Client.build(Config.build("src/test/resources/mpg.properties.here"))
-                .getPlayers(FileUtils.readFileToString(new File("src/test/resources/__files", "maligue2.joueurs-blesses-et-suspendus.20190818.html"),
-                        Charset.forName("UTF-8")));
+        List<Player> players = InjuredSuspendedMaLigue2Client.build(Config.build("src/test/resources/mpg.properties.here")).getPlayers(FileUtils
+                .readFileToString(new File(TESTFILES_BASE, "maligue2.joueurs-blesses-et-suspendus.20190818.html"), Charset.forName("UTF-8")));
         Assert.assertNotNull(players);
         Assert.assertEquals(32, players.size());
         for (Player player : players) {
@@ -64,10 +63,22 @@ public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testFrenchAccent() throws Exception {
+
+        InjuredSuspendedMaLigue2Client client = spy(InjuredSuspendedMaLigue2Client.class);
+        doReturn(
+                FileUtils.readFileToString(new File(TESTFILES_BASE, "maligue2.joueurs-blesses-et-suspendus.20201006.html"), Charset.forName("UTF-8")))
+                        .when(client).getHtmlContent();
+
+        Assert.assertNotNull("Barthelme Maxime injured", client.getPlayer("Barthelme Maxime", "Troyes"));
+    }
+
+    @Test
     public void testSomeInjuriesWithNoParentheseEnding() throws Exception {
         InjuredSuspendedMaLigue2Client client = spy(InjuredSuspendedMaLigue2Client.class);
-        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "maligue2.joueurs-blesses-et-suspendus.20190822.html"),
-                Charset.forName("UTF-8"))).when(client).getHtmlContent();
+        doReturn(
+                FileUtils.readFileToString(new File(TESTFILES_BASE, "maligue2.joueurs-blesses-et-suspendus.20190822.html"), Charset.forName("UTF-8")))
+                        .when(client).getHtmlContent();
 
         Assert.assertNotNull("Boissier Remy is injured", client.getPlayer("Boissier Remy", "Le Mans"));
         Assert.assertEquals("Boissier J5", "J5", client.getPlayer("Boissier Remy", "Le Mans").getLength());
@@ -77,8 +88,9 @@ public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
     @Test
     public void testSomeInjuries() throws Exception {
         InjuredSuspendedMaLigue2Client client = spy(InjuredSuspendedMaLigue2Client.class);
-        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "maligue2.joueurs-blesses-et-suspendus.20190818.html"),
-                Charset.forName("UTF-8"))).when(client).getHtmlContent();
+        doReturn(
+                FileUtils.readFileToString(new File(TESTFILES_BASE, "maligue2.joueurs-blesses-et-suspendus.20190818.html"), Charset.forName("UTF-8")))
+                        .when(client).getHtmlContent();
 
         Assert.assertNotNull("Boissier Remy is injured", client.getPlayer("Boissier Remy", "Le Mans"));
         Assert.assertNotNull("Valette is injured", client.getPlayer("Valette", "Nancy"));

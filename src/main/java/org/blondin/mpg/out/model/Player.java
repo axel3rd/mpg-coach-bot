@@ -1,5 +1,7 @@
 package org.blondin.mpg.out.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Player {
 
     private String fullNameWithPosition;
@@ -9,7 +11,7 @@ public class Player {
     private String team;
 
     public String getFullNameWithPosition() {
-        return fullNameWithPosition;
+        return StringUtils.stripAccents(fullNameWithPosition);
     }
 
     public Position getPosition() {

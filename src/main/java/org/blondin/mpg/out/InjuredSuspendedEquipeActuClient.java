@@ -108,7 +108,7 @@ public class InjuredSuspendedEquipeActuClient extends AbstractClient {
 
     public static InjuredSuspendedEquipeActuClient build(Config config, String urlOverride) {
         InjuredSuspendedEquipeActuClient client = new InjuredSuspendedEquipeActuClient();
-        client.setUrl(StringUtils.defaultString(urlOverride, "https://www.equipeactu.fr/blessures-et-suspensions/fodbold/"));
+        client.setUrl(StringUtils.defaultString(urlOverride, "https://www.equipeactu.fr/blessures-et-suspensions/fodbold"));
         client.setProxy(config.getProxy());
         client.setSslCertificatesCheck(config.isSslCertificatesCheck());
         return client;
@@ -155,8 +155,8 @@ public class InjuredSuspendedEquipeActuClient extends AbstractClient {
         List<OutType> excluded = Arrays.asList(ObjectUtils.defaultIfNull(excludes, new OutType[] {}));
 
         for (Player player : getPlayers(championship)) {
-            if (!excluded.contains(player.getOutType())
-                    && Stream.of(playerName.toLowerCase().split(" ")).allMatch(player.getFullNameWithPosition().toLowerCase()::contains)) {
+            if (!excluded.contains(player.getOutType()) && Stream.of(StringUtils.stripAccents(playerName.toLowerCase()).split(" "))
+                    .allMatch(player.getFullNameWithPosition().toLowerCase()::contains)) {
                 Position pos = player.getPosition();
                 if (Position.UNDEFINED.equals(pos) || Position.UNDEFINED.equals(position) || position.equals(pos)) {
                     if (StringUtils.isNotBlank(teamName) && StringUtils.isNotBlank(player.getTeam()) && !player.getTeam().equals(teamName)) {
