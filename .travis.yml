@@ -25,6 +25,7 @@ deploy:
     file: bintray-descriptor.json
     user: axel3rd
     key: $BINTRAY_API_KEY
+    skip_cleanup: true
     on:
       jdk: oraclejdk11    
     # Tag deployment
@@ -32,6 +33,7 @@ deploy:
     file: bintray-descriptor.json
     user: axel3rd
     key: $BINTRAY_API_KEY
+    skip_cleanup: true
     on:
       tags: true
       jdk: oraclejdk11
