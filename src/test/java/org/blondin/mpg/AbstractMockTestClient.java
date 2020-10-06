@@ -14,6 +14,8 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 public abstract class AbstractMockTestClient {
 
+    public static final String TESTFILES_BASE = "src/test/resources/__files";
+
     @Rule
     public WireMockRule server = new WireMockRule(options().dynamicPort().portNumber());
 

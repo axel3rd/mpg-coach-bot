@@ -48,8 +48,8 @@ public class InjuredSuspendedEquipeActuClientTest extends AbstractMockTestClient
         }
 
         InjuredSuspendedEquipeActuClient client = spy(InjuredSuspendedEquipeActuClient.class);
-        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu." + name + "." + date + ".html"),
-                Charset.forName("UTF-8"))).when(client).getHtmlContent(type);
+        doReturn(FileUtils.readFileToString(new File(TESTFILES_BASE, "equipeactu." + name + "." + date + ".html"), Charset.forName("UTF-8")))
+                .when(client).getHtmlContent(type);
         return client;
     }
 
@@ -80,6 +80,12 @@ public class InjuredSuspendedEquipeActuClientTest extends AbstractMockTestClient
             }
         });
         return teams;
+    }
+
+    @Test
+    public void testFrenchAccent() throws Exception {
+        InjuredSuspendedEquipeActuClient clientl1 = getClientFromFile(ChampionshipOutType.LIGUE_1, "20201006");
+        Assert.assertNotNull("Michelin Clement injured", clientl1.getPlayer(ChampionshipOutType.LIGUE_1, "Michelin Clement", Position.D, "Lens"));
     }
 
     @Test

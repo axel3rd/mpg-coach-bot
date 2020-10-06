@@ -78,6 +78,32 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testInjuredLigue1FrenchAccent() throws Exception {
+        prepareMainLigue1Mocks("MLAX7HMK-MLEFEX6G", "20201006", "20201006", "20201006");
+        stubFor(get("/league/MLAX7HMK/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLAX7HMK.20201006.json")));
+
+        Config config = spy(getConfig());
+        doReturn(Arrays.asList("MLAX7HMK")).when(config).getLeaguesInclude();
+        executeMainProcess(config);
+
+        Assert.assertTrue("Michelin Clement injured", getLogOut().contains("Out: Michelin Clement"));
+    }
+
+    @Test
+    public void testInjuredLigue2FrenchAccent() throws Exception {
+        prepareMainLigue2Mocks("MLAX7HMK-MLEFEX6G", "20201006", "20201006", "20201006");
+        stubFor(get("/league/MLEFEX6G/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLEFEX6G.20201006.json")));
+
+        Config config = spy(getConfig());
+        doReturn(Arrays.asList("MLEFEX6G")).when(config).getLeaguesInclude();
+        executeMainProcess(config);
+
+        Assert.assertTrue("Barthelme Maxime injured", getLogOut().contains("Out: Barthelme Maxime"));
+    }
+
+    @Test
     public void testConnectionReset() throws Exception {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
@@ -587,7 +613,8 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(get("/blessures-et-suspensions/fodbold/italie/serie-a")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.serie-a.20190805.html")));
         executeMainProcess();
-        Assert.assertTrue(getLogOut().contains("| A | Cristiano Ronaldo       | 0.00 | 53 |        |"));
+        Assert.assertTrue(getLogOut()
+                .contains("| A | Cristiano Ronaldo       | 0.00 | 53 |                                                                  |"));
     }
 
     @Test
@@ -772,16 +799,16 @@ public class MainTest extends AbstractMockTestClient {
         // Mock initialization
         MpgClient mpgClient = mock(MpgClient.class);
         when(mpgClient.getCoach(anyString())).thenReturn(new ObjectMapper().enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
-                .readValue(new File("src/test/resources/__files", "mpg.coach.20180926.json"), Coach.class));
+                .readValue(new File(TESTFILES_BASE, "mpg.coach.20180926.json"), Coach.class));
         when(mpgClient.getDashboard()).thenReturn(new ObjectMapper().enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
-                .readValue(new File("src/test/resources/__files", "mpg.dashboard.KLGXSSUG-status-4.json"), Dashboard.class));
+                .readValue(new File(TESTFILES_BASE, "mpg.dashboard.KLGXSSUG-status-4.json"), Dashboard.class));
 
         MpgStatsClient mpgStatsClient = mock(MpgStatsClient.class);
-        when(mpgStatsClient.getStats(any())).thenReturn(
-                new ObjectMapper().readValue(new File("src/test/resources/__files", "mpgstats.ligue-1.20181017.json"), Championship.class));
+        when(mpgStatsClient.getStats(any()))
+                .thenReturn(new ObjectMapper().readValue(new File(TESTFILES_BASE, "mpgstats.ligue-1.20181017.json"), Championship.class));
 
         InjuredSuspendedEquipeActuClient outPlayersEquipeActuClient = spy(InjuredSuspendedEquipeActuClient.class);
-        doReturn(FileUtils.readFileToString(new File("src/test/resources/__files", "equipeactu.ligue-1.20181017.html"), StandardCharsets.UTF_8))
+        doReturn(FileUtils.readFileToString(new File(TESTFILES_BASE, "equipeactu.ligue-1.20181017.html"), StandardCharsets.UTF_8))
                 .when(outPlayersEquipeActuClient).getHtmlContent(ChampionshipOutType.LIGUE_1);
         InjuredSuspendedWrapperClient outPlayersClient = spy(InjuredSuspendedWrapperClient.class);
         doReturn(outPlayersEquipeActuClient).when(outPlayersClient).useOnlyForTestGetEquipeActuClient();
@@ -934,25 +961,25 @@ public class MainTest extends AbstractMockTestClient {
     @Test
     public void testProcessUpdateNoPlayersMiroirOptionWithMock() throws Exception {
         subTestProcessUpdateWithMocks("mpg.coach.20181114-noPlayers-MiroirOption");
-        Assert.assertTrue("Assert in previous method", true);
+        Assert.assertTrue("Assert in previous method (NoPlayersMiroirOption)", true);
     }
 
     @Test
     public void testProcessUpdateCompleteNoOptionWithMock() throws Exception {
         subTestProcessUpdateWithMocks("mpg.coach.20181114-Complete-NoOption");
-        Assert.assertTrue("Assert in previous method", true);
+        Assert.assertTrue("Assert in previous method (CompleteNoOption)", true);
     }
 
     @Test
     public void testProcessUpdateNoSubstitutesRotaldoOptionWithMock() throws Exception {
         subTestProcessUpdateWithMocks("mpg.coach.20181114-noSubstitutes-RotaldoOption");
-        Assert.assertTrue("Assert in previous method", true);
+        Assert.assertTrue("Assert in previous method (NoSubstitutesRotaldoOption)", true);
     }
 
     @Test
     public void testProcessUpdateCompleteBoostPlayerWithMock() throws Exception {
         subTestProcessUpdateWithMocks("mpg.coach.20181114-Complete-BoostPlayer");
-        Assert.assertTrue("Assert in previous method", true);
+        Assert.assertTrue("Assert in previous method (CompleteBoostPlayer)", true);
     }
 
     private void executeMainProcess() {
@@ -1014,12 +1041,12 @@ public class MainTest extends AbstractMockTestClient {
                     aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard." + fileRootDashboard + ".json")));
         }
         if (StringUtils.isNotBlank(fileStatsLeagues)) {
-            stubFor(get("/builds").willReturn(
-                    aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues." + fileStatsLeagues + ".json")));
+            stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json")
+                    .withBodyFile(getTestFile("mlnstats.builds." + fileStatsLeagues + ".json", "mpgstats.leagues." + fileStatsLeagues + ".json"))));
         }
         if (StringUtils.isNotBlank(dataFileStats)) {
-            stubFor(get("/leagues/Ligue-" + ligue).willReturn(aResponse().withHeader("Content-Type", "application/json")
-                    .withBodyFile("mpgstats.ligue-" + ligue + "." + dataFileStats + ".json")));
+            stubFor(get("/leagues/Ligue-" + ligue).willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile(getTestFile(
+                    "mlnstats.ligue-" + ligue + "." + dataFileStats + ".json", "mpgstats.ligue-" + ligue + "." + dataFileStats + ".json"))));
         }
         if (StringUtils.isNotBlank(dataFileEquipeActu)) {
             stubFor(get("/blessures-et-suspensions/fodbold/france/ligue-" + ligue).willReturn(aResponse()
@@ -1031,8 +1058,26 @@ public class MainTest extends AbstractMockTestClient {
         }
     }
 
+    /**
+     * Get Test file depending the existence
+     * 
+     * @param choice1 Choice 1
+     * @param choice2 Choice 2
+     * @return Choice 1 if file exist, otherwise Choice 2 if file exit
+     */
+    private static String getTestFile(String choice1, String choice2) {
+        if (new File(TESTFILES_BASE, choice1).exists()) {
+            return choice1;
+        }
+        if (new File(TESTFILES_BASE, choice2).exists()) {
+            return choice2;
+        }
+        throw new UnsupportedOperationException(
+                String.format("Neither files '%s' or '%s' exist in '%s' directory", choice1, choice2, TESTFILES_BASE));
+    }
+
     private String getTestFileToString(String fileName) throws IOException {
-        return FileUtils.readFileToString(new File("src/test/resources/__files", fileName), StandardCharsets.UTF_8);
+        return FileUtils.readFileToString(new File(TESTFILES_BASE, fileName), StandardCharsets.UTF_8);
     }
 
 }
