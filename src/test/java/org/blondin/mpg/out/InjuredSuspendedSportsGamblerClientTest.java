@@ -83,18 +83,6 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
     }
 
     @Test
-    public void testParseWithoutTeamName() throws Exception {
-        InjuredSuspendedSportsGamblerClient clientl1 = getClientFromFile(ChampionshipOutType.LIGUE_1, "20201020");
-        Assert.assertNotNull("Presnel Kimpembe is injured", clientl1.getPlayer(ChampionshipOutType.LIGUE_1, "Presnel Kimpembe", Position.D, "Paris"));
-
-        InjuredSuspendedSportsGamblerClient clientpl = getClientFromFile(ChampionshipOutType.PREMIER_LEAGUE, "20201020");
-        Assert.assertNotNull("Pogba is injured", clientpl.getPlayer(ChampionshipOutType.PREMIER_LEAGUE, "Pogba", Position.M, "Man. United"));
-
-        InjuredSuspendedSportsGamblerClient clientligua = getClientFromFile(ChampionshipOutType.LIGA, "20201020");
-        Assert.assertNotNull("Tomas Pina is injured", clientligua.getPlayer(ChampionshipOutType.LIGA, "Tomas Pina", Position.M, "Alavés"));
-    }
-
-    @Test
     public void testCheckTeams20201020L1() throws Exception {
         List<String> mpgTeams = Arrays.asList("Angers", "Bordeaux", "Brest", "Dijon", "Lens", "Lille", "Lorient", "Lyon", "Marseille", "Metz",
                 "Monaco", "Montpellier", "Nantes", "Nice", "Nîmes", "Paris", "Reims", "Rennes", "Saint-Étienne", "Strasbourg");

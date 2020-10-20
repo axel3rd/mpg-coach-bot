@@ -184,14 +184,12 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractClient {
         List<Player> players = new ArrayList<>();
         Document doc = Jsoup.parse(content);
         boolean oneTeamHasBeenParsed = false;
-//        String team = null;
-//        for (Element item : doc.select("div.injuries_item")) {
-//            // Retrieve team from name or logo
-//            team = parseTeam(item, team);
-//            if (StringUtils.isNoneBlank(team)) {
-//                oneTeamHasBeenParsed = true;
-//            }
-//
+        for (Element item : doc.select("h3.injuries-title")) {
+            String team = item.selectFirst("a").ownText();
+            if (StringUtils.isNoneBlank(team)) {
+                oneTeamHasBeenParsed = true;
+            }
+            System.out.println("I'm here");
 //            if (item.selectFirst("div.injuries_name") == null) {
 //                // No injured/suspended players in team
 //                continue;
@@ -204,7 +202,7 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractClient {
 //            player.setDescription(item.selectFirst("div.injuries_name").text());
 //            player.setLength(item.selectFirst("div.injuries_length").text());
 //            players.add(player);
-//        }
+        }
         if (!oneTeamHasBeenParsed) {
             throw new UnsupportedOperationException("No teams have been found, parsing problem");
         }
