@@ -78,6 +78,22 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testInjuredSuspendedsportsgambler() throws Exception {
+
+        // TODO Implement
+
+        // Ligue 1
+        Assert.assertTrue("Verratti Marco injured",
+                getLogOut().contains("Out: Verratti Marco (M - 4.07) - INJURY_RED - Thigh injury (since 14/10) - Early November 2020"));
+        Assert.assertTrue("Caqueret Maxence injured",
+                getLogOut().contains("Out: Caqueret Maxence (M - 3.71) - INJURY_RED - COVID-19 (since 10/10) - A few weeks"));
+
+        // PL
+        Assert.assertTrue("Vardy Jamie injured",
+                getLogOut().contains("Out: Vardy Jamie (A - 32.93) - INJURY_ORANGE - Calf Injury (since 16/10) - Doubtful"));
+    }
+
+    @Test
     public void testInjuredLigue1FrenchAccent() throws Exception {
         prepareMainLigue1Mocks("MLAX7HMK-MLEFEX6G", "20201006", "20201006", "20201006");
         stubFor(get("/league/MLAX7HMK/coach")
