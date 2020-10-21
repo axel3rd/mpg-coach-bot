@@ -44,6 +44,7 @@ public class InjuredSuspendedWrapperClient {
         if (ChampionshipOutType.LIGUE_2.equals(championship)) {
             return useOnlyForTestGetMaLigue2Client().getPlayer(playerName, teamName);
         }
+        // TODO: use sportsgambler here, but fallback on equipeActu if unreachable (proxy blacklist, ...)
         return useOnlyForTestGetEquipeActuClient().getPlayer(championship, playerName, position, teamName, excludes);
     }
 

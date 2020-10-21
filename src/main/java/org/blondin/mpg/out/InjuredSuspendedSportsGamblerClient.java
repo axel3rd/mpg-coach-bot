@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.model.OutType;
@@ -26,7 +25,6 @@ import org.jsoup.nodes.Element;
 public class InjuredSuspendedSportsGamblerClient extends AbstractClient {
 
     private static final Map<String, String> TEAM_NAME_WRAPPER = new HashMap<>();
-    private static final Map<String, String> LOGO_NAME_WRAPPER = new HashMap<>();
 
     private EnumMap<ChampionshipOutType, List<Player>> cache = new EnumMap<>(ChampionshipOutType.class);
 
@@ -36,70 +34,28 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractClient {
          */
 
         // Ligue 1
-//        TEAM_NAME_WRAPPER.put("Amiens SC", "Amiens");
-//        TEAM_NAME_WRAPPER.put("Angers Sco", "Angers");
-//        TEAM_NAME_WRAPPER.put("Angers SCO", "Angers");
-//        TEAM_NAME_WRAPPER.put("Nimes", "Nîmes");
-//        TEAM_NAME_WRAPPER.put("PSG", "Paris");
-//        TEAM_NAME_WRAPPER.put("Olympique Lyon", "Lyon");
-//        TEAM_NAME_WRAPPER.put("Olympique Lyonnais", "Lyon");
-//        TEAM_NAME_WRAPPER.put("Olympique Marseille", "Marseille");
-//        TEAM_NAME_WRAPPER.put("Paris Saint Germain", TEAM_NAME_WRAPPER.get("PSG"));
-//        TEAM_NAME_WRAPPER.put("Saint Etienne", "Saint-Étienne");
+        TEAM_NAME_WRAPPER.put("Paris Saint Germain", "Paris");
+        TEAM_NAME_WRAPPER.put("Saint Etienne", "Saint-Étienne");
+        TEAM_NAME_WRAPPER.put("Nimes", "Nîmes");
 
         // Premiere League
-//        TEAM_NAME_WRAPPER.put("Afc Bournemouth", "Bournemouth");
-//        TEAM_NAME_WRAPPER.put("Brighton And Hove Albion", "Brighton");
-//        TEAM_NAME_WRAPPER.put("Manchester City", "Man. City");
-//        TEAM_NAME_WRAPPER.put("Leicester City", "Leicester");
-//        TEAM_NAME_WRAPPER.put("Manchester United", "Man. United");
-//        TEAM_NAME_WRAPPER.put("Newcastle United", "Newcastle");
-//        TEAM_NAME_WRAPPER.put("Norwich City", "Norwich");
-//        TEAM_NAME_WRAPPER.put("Sheffield United", "Sheffield");
-//        TEAM_NAME_WRAPPER.put("Sheffield U.", "Sheffield");
-//        TEAM_NAME_WRAPPER.put("West Ham United", "West Ham");
-//        TEAM_NAME_WRAPPER.put("Wolverhampton Wanderers", "Wolverhampton");
+        TEAM_NAME_WRAPPER.put("Manchester City", "Man. City");
+        TEAM_NAME_WRAPPER.put("Manchester United", "Man. United");
+        TEAM_NAME_WRAPPER.put("Newcastle United", "Newcastle");
+        TEAM_NAME_WRAPPER.put("Sheffield United", "Sheffield");
+        TEAM_NAME_WRAPPER.put("West Bromwich Albion", "West Bromwich");
+        TEAM_NAME_WRAPPER.put("Wolverhampton Wanderers", "Wolverhampton");
 
         // Serie A
-//        TEAM_NAME_WRAPPER.put("Bologne", "Bologna");
-//        TEAM_NAME_WRAPPER.put("AC Milan", "Milan");
-//        TEAM_NAME_WRAPPER.put("Rome", "Roma");
-//        TEAM_NAME_WRAPPER.put("SSC Napoli", "Napoli");
-//        TEAM_NAME_WRAPPER.put("SPAL 2013", "Spal");
-//        TEAM_NAME_WRAPPER.put("Internazionale", "Inter");
-//        TEAM_NAME_WRAPPER.put("SSD Parma", "Parma");
+        TEAM_NAME_WRAPPER.put("AC Milan", "Milan");
+        TEAM_NAME_WRAPPER.put("SSC Napoli", "Napoli");
 
         // Ligua
-//        TEAM_NAME_WRAPPER.put("Alaves", "Alavés");
-//        TEAM_NAME_WRAPPER.put("Celta Vigo", "Celta");
-//        TEAM_NAME_WRAPPER.put("Celta De Vigo", "Celta");
-//        TEAM_NAME_WRAPPER.put("Deportivo Alavés", "Alavés");
-//        TEAM_NAME_WRAPPER.put("Athletic Bilbao", "Bilbao");
-//        TEAM_NAME_WRAPPER.put("Atletico Bilbao", "Bilbao");
-//        TEAM_NAME_WRAPPER.put("Atlético Madrid", "Atlético");
-//        TEAM_NAME_WRAPPER.put("Atletico Madrid", "Atlético");
-//        TEAM_NAME_WRAPPER.put("Barcelone", "Barcelona");
-//        TEAM_NAME_WRAPPER.put("Grenade", "Granada");
-//        TEAM_NAME_WRAPPER.put("Leganes", "Leganés");
-//        TEAM_NAME_WRAPPER.put("Majorque", "Mallorca");
-//        TEAM_NAME_WRAPPER.put("Séville", "Sevilla");
-//        TEAM_NAME_WRAPPER.put("Real Betis", "Betis");
-//        TEAM_NAME_WRAPPER.put("Real Valladolid", "Valladolid");
-//        TEAM_NAME_WRAPPER.put("Valence", "Valencia");
-//        TEAM_NAME_WRAPPER.put("Hellas Verona", "Verona");
+        TEAM_NAME_WRAPPER.put("Celta Vigo", "Celta");
+        TEAM_NAME_WRAPPER.put("Athletic Bilbao", "Bilbao");
+        TEAM_NAME_WRAPPER.put("Atlético Madrid", "Atlético");
+        TEAM_NAME_WRAPPER.put("Cadiz", "Cadix");
 
-        /*
-         * Logo name wrapper
-         */
-
-        // Ligue 1
-        // LOGO_NAME_WRAPPER.put("Psg", TEAM_NAME_WRAPPER.get("PSG"));
-
-        // Ligua
-        // LOGO_NAME_WRAPPER.put("Athletic Club", TEAM_NAME_WRAPPER.get("Atletico Bilbao"));
-
-        // Serie A
-        // LOGO_NAME_WRAPPER.put("Internazionale", "Inter");
     }
 
     public static InjuredSuspendedSportsGamblerClient build(Config config) {
@@ -115,16 +71,16 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractClient {
     }
 
     /**
-     * Return MPG team name from EquipeActu team name (because has change during time)
+     * Return MPG team name from sportsgambler team name (because has change during time)
      * 
-     * @param equipeActuTeamName The EquipeActu team name
+     * @param sportsgambler The sportsgambler team name
      * @return The MPG team name
      */
-    private static String getTeamName(String equipeActuTeamName) {
-        if (TEAM_NAME_WRAPPER.containsKey(equipeActuTeamName)) {
-            return TEAM_NAME_WRAPPER.get(equipeActuTeamName);
+    private static String getTeamName(String sportsgamblerTeamName) {
+        if (TEAM_NAME_WRAPPER.containsKey(sportsgamblerTeamName)) {
+            return TEAM_NAME_WRAPPER.get(sportsgamblerTeamName);
         }
-        return equipeActuTeamName;
+        return sportsgamblerTeamName;
     }
 
     /**
@@ -189,19 +145,25 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractClient {
             if (StringUtils.isNoneBlank(team)) {
                 oneTeamHasBeenParsed = true;
             }
-            System.out.println("I'm here");
-//            if (item.selectFirst("div.injuries_name") == null) {
-//                // No injured/suspended players in team
-//                continue;
-//            }
-//
-//            Player player = new Player();
-//            player.setTeam(getTeamName(team));
-//            player.setOutType(parseOutType(item.selectFirst("div.injuries_type").selectFirst("span").className()));
-//            player.setFullNameWithPosition(item.selectFirst("div.injuries_playername").text());
-//            player.setDescription(item.selectFirst("div.injuries_name").text());
-//            player.setLength(item.selectFirst("div.injuries_length").text());
-//            players.add(player);
+
+            for (Element line : item.nextElementSibling().select("tbody").first().select("tr")) {
+                if (line.select("td").size() == 1) {
+                    // No players injured or suspended for this this
+                    if (!line.selectFirst("td").text().contains("No players are currently injured or suspended")) {
+                        throw new UnsupportedOperationException(
+                                String.format("Only one line, but not with correct message for no injured/suspended players: %s",
+                                        line.selectFirst("td").ownText()));
+                    }
+                    break;
+                }
+                Player player = new Player();
+                player.setTeam(getTeamName(team));
+                player.setOutType(parseOutType(line.select("td").get(0)));
+                player.setFullNameWithPosition(line.select("td").get(1).text());
+                player.setDescription(line.select("td").get(2).text());
+                player.setLength(line.select("td").get(3).text());
+                players.add(player);
+            }
         }
         if (!oneTeamHasBeenParsed) {
             throw new UnsupportedOperationException("No teams have been found, parsing problem");
@@ -209,37 +171,20 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractClient {
         return players;
     }
 
-    private static String parseTeam(Element item, String currentTeam) {
-        String team = currentTeam;
-        Element teamItem = item.parent().previousElementSibling();
-        if (teamItem.selectFirst("img") != null) {
-            String teamName = teamItem.text().trim();
-            if (StringUtils.isNotBlank(teamName)) {
-                team = teamName;
-            } else {
-                // No team name, get from png logo name
-                String logoUrl = teamItem.selectFirst("img").attr("src");
-                if (logoUrl.contains("blank_team")) {
-                    // Some logo can be "blank_team" ... team set to blank in this case
-                    team = null;
-                } else {
-                    team = logoUrl.substring(logoUrl.lastIndexOf('/') + 1, logoUrl.lastIndexOf(".png"));
-                    team = WordUtils.capitalizeFully(team.replace('-', ' '));
-                    if (LOGO_NAME_WRAPPER.containsKey(team)) {
-                        team = LOGO_NAME_WRAPPER.get(team);
-                    }
-                }
+    private static OutType parseOutType(Element e) {
+        if (e.selectFirst("img") != null) {
+            String image = e.selectFirst("img").attr("src");
+            if (StringUtils.isNotBlank(image)) {
+                int begin = image.lastIndexOf('/');
+                int end = image.indexOf(".png");
+                String type = image.substring(begin + 1, end);
+                return OutType.getNameByValue(type);
             }
         }
-        return team;
-    }
-
-    private static OutType parseOutType(String htmlContent) {
-        final String prefix = "sitesprite icon_";
-        if (!StringUtils.startsWith(htmlContent, prefix)) {
-            throw new UnsupportedOperationException(String.format("HTML content should start with prefix '%s': %s ", prefix, htmlContent));
+        if ("?".equals(e.text())) {
+            return OutType.INJURY_ORANGE;
         }
-        return OutType.getNameByValue(htmlContent.substring(prefix.length()));
+        throw new UnsupportedOperationException(String.format("Element 'out' not supported: %s", e.toString()));
     }
 
 }

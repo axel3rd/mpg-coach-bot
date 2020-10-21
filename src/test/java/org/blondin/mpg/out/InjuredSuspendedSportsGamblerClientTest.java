@@ -57,8 +57,8 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
         Collection<String> teams = getTeams(getClientFromFile(championship, date).getPlayers(championship));
         for (String mpgTeam : mpgTeams) {
             boolean contains = false;
-            for (String equipeActuTeam : teams) {
-                if (equipeActuTeam.equals(mpgTeam)) {
+            for (String sportsgamblerTeam : teams) {
+                if (sportsgamblerTeam.equals(mpgTeam)) {
                     contains = true;
                 }
             }
@@ -90,7 +90,6 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
         // Some teams has no injured at this date
         List<String> mpgTeamsWithoutNoInjured = new ArrayList<String>(mpgTeams);
         mpgTeamsWithoutNoInjured.remove("Lille");
-
         testMappingTeams(mpgTeamsWithoutNoInjured, ChampionshipOutType.LIGUE_1, "20201020");
     }
 
@@ -112,7 +111,7 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
         List<String> mpgTeamsWithoutNoInjured = new ArrayList<String>(mpgTeams);
         mpgTeamsWithoutNoInjured.remove("Fiorentina");
 
-        testMappingTeams(mpgTeams, ChampionshipOutType.SERIE_A, "20201020");
+        testMappingTeams(mpgTeamsWithoutNoInjured, ChampionshipOutType.SERIE_A, "20201020");
     }
 
     @Test
@@ -144,6 +143,10 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
 
     @Test
     public void testFeaturesLigue1() throws Exception {
+        // TODO: Team accent (ex: Nîmes), Zinedine Ferhat should be injured
+        // TODO: Team different name, Paris vs "Paris Saint Germain"
+        // TODO: Team different name ('-'), "Saint-Etienne" vs "Saint Etienne"
+
         ChampionshipOutType c = ChampionshipOutType.LIGUE_1;
 
         // Mock
@@ -187,6 +190,8 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
 
     @Test
     public void testFeaturesLiga() throws Exception {
+        // TODO: Team accent Atlético
+
         ChampionshipOutType c = ChampionshipOutType.LIGA;
 
         // Mock
