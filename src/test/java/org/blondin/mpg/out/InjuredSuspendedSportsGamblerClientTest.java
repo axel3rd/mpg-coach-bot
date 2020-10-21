@@ -128,7 +128,8 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
 
     @Test
     public void testLocalMapping() throws Exception {
-        for (ChampionshipOutType c : Arrays.asList(ChampionshipOutType.LIGUE_1, ChampionshipOutType.PREMIER_LEAGUE, ChampionshipOutType.LIGA)) {
+        for (ChampionshipOutType c : Arrays.asList(ChampionshipOutType.LIGUE_1, ChampionshipOutType.PREMIER_LEAGUE, ChampionshipOutType.LIGA,
+                ChampionshipOutType.SERIE_A)) {
             List<Player> players = getClientFromFile(c, "20201020").getPlayers(c);
             Assert.assertNotNull(players);
             Assert.assertTrue(players.size() > 10);
@@ -143,8 +144,6 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
 
     @Test
     public void testFeaturesLigue1() throws Exception {
-        // TODO: Team accent (ex: Nîmes), Zinedine Ferhat should be injured
-        // TODO: Team different name, Paris vs "Paris Saint Germain"
         // TODO: Team different name ('-'), "Saint-Etienne" vs "Saint Etienne"
 
         ChampionshipOutType c = ChampionshipOutType.LIGUE_1;
@@ -153,44 +152,58 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
         InjuredSuspendedSportsGamblerClient client = getClientFromFile(c, "20201020");
 
         // Test
-        Assert.assertNotNull(client.getPlayer(c, "Presnel Kimpembe", Position.UNDEFINED, "Paris"));
-        Assert.assertNotNull(client.getPlayer(c, "preSnel kimpeMbe", Position.UNDEFINED, "Paris"));
-        Assert.assertNotNull(client.getPlayer(c, "Kimpembe Presnel", Position.UNDEFINED, "Paris"));
+        Assert.assertNotNull(client.getPlayer(c, "Zinedine Ferhat", Position.UNDEFINED, "Nîmes"));
+        Assert.assertNotNull(client.getPlayer(c, "zinEdine ferHat", Position.UNDEFINED, "Nîmes"));
+        Assert.assertNotNull(client.getPlayer(c, "Ferhat Zinedine", Position.UNDEFINED, "Nîmes"));
 
-        Player p = client.getPlayer(c, "Jesé", Position.UNDEFINED, "Paris");
+        Player p = client.getPlayer(c, "Kasper Dolberg", Position.UNDEFINED, "Nice");
         Assert.assertNotNull(p);
-        Assert.assertEquals(OutType.INJURY_ORANGE, p.getOutType());
-        Assert.assertEquals("Blessure à la hanche (depuis 29/09)", p.getDescription());
-        Assert.assertEquals("Inconnu", p.getLength());
+        Assert.assertEquals("Kasper Dolberg", p.getFullNameWithPosition());
+        Assert.assertEquals(OutType.INJURY_RED, p.getOutType());
+        Assert.assertEquals("Sprained ankle", p.getDescription());
+        Assert.assertEquals("Early November", p.getLength());
 
-        Assert.assertNull(client.getPlayer(c, "Presnel Kimpembe", Position.UNDEFINED, "Paris", OutType.SUSPENDED));
+        p = client.getPlayer(c, "Angel Di Maria", Position.UNDEFINED, "Paris");
+        Assert.assertNotNull(p);
+        Assert.assertEquals("Angel Di Maria", p.getFullNameWithPosition());
+        Assert.assertEquals(OutType.SUSPENDED, p.getOutType());
+        Assert.assertEquals("Disciplinary", p.getDescription());
+        Assert.assertEquals("2 games", p.getLength());
+
+        p = client.getPlayer(c, "Timothée Kolodziejczak", Position.UNDEFINED, "Saint-Étienne");
+        Assert.assertNotNull(p);
+        Assert.assertEquals("Timothee Kolodziejczak", p.getFullNameWithPosition());
+        Assert.assertEquals(OutType.SUSPENDED, p.getOutType());
+        Assert.assertEquals("Straight red", p.getDescription());
+        Assert.assertEquals("1 game", p.getLength());
     }
 
     @Test
     public void testFeaturesPremierLeague() throws Exception {
+
         ChampionshipOutType c = ChampionshipOutType.PREMIER_LEAGUE;
 
         // Mock
         InjuredSuspendedSportsGamblerClient client = getClientFromFile(c, "20201020");
 
         // Test
-        Assert.assertNotNull(client.getPlayer(c, "Yoshinori Muto", Position.UNDEFINED, "Newcastle"));
-        Assert.assertNotNull(client.getPlayer(c, "yoshinori muto", Position.UNDEFINED, "Newcastle"));
-        Assert.assertNotNull(client.getPlayer(c, "Kenedy", Position.UNDEFINED, "Newcastle"));
+        Assert.assertNotNull(client.getPlayer(c, "Vardy Jamie", Position.UNDEFINED, "Leicester"));
+        Assert.assertNotNull(client.getPlayer(c, "Jamie Vardy", Position.UNDEFINED, "Leicester"));
+        Assert.assertNotNull(client.getPlayer(c, "jaMie VardY", Position.UNDEFINED, "Leicester"));
 
-        Player p = client.getPlayer(c, "Danilo", Position.UNDEFINED, "Man. City");
+        Player p = client.getPlayer(c, "Söyüncü Çaglar", Position.UNDEFINED, "Leicester");
         Assert.assertNotNull(p);
+        Assert.assertEquals("Caglar Soyuncu", p.getFullNameWithPosition());
         Assert.assertEquals(OutType.INJURY_ORANGE, p.getOutType());
-        Assert.assertEquals("Blessure à la cheville (depuis 16/10)", p.getDescription());
-        Assert.assertEquals("Inconnu", p.getLength());
+        Assert.assertEquals("Knock injury", p.getDescription());
+        Assert.assertEquals("Doubtful", p.getLength());
 
-        Assert.assertNotNull(client.getPlayer(c, "José Holebas", Position.UNDEFINED, "Watford"));
-        Assert.assertNull(client.getPlayer(c, "José Holebas", Position.UNDEFINED, "Watford", OutType.SUSPENDED));
+        Assert.assertNotNull(client.getPlayer(c, "Anthony Martial", Position.UNDEFINED, "Man. United"));
+        Assert.assertNull(client.getPlayer(c, "Anthony Martial", Position.UNDEFINED, "Man. United", OutType.SUSPENDED));
     }
 
     @Test
     public void testFeaturesLiga() throws Exception {
-        // TODO: Team accent Atlético
 
         ChampionshipOutType c = ChampionshipOutType.LIGA;
 
@@ -198,18 +211,15 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
         InjuredSuspendedSportsGamblerClient client = getClientFromFile(c, "20201020");
 
         // Test
-        Assert.assertNotNull(client.getPlayer(c, "Unai Bustinza", Position.UNDEFINED, "Leganés"));
-        Assert.assertNotNull(client.getPlayer(c, "unai bustinza", Position.UNDEFINED, "Leganés"));
-        Assert.assertNotNull(client.getPlayer(c, "CheMa", Position.UNDEFINED, "Levante"));
+        Assert.assertNotNull(client.getPlayer(c, "Saúl Ñíguez", Position.UNDEFINED, "Atlético"));
+        Assert.assertNotNull(client.getPlayer(c, "Lodi Renan", Position.UNDEFINED, "Atlético"));
 
-        Player p = client.getPlayer(c, "Antonio Luna Rodriguez", Position.UNDEFINED, "Levante");
+        Player p = client.getPlayer(c, "Álvaro Odriozola", Position.UNDEFINED, "Real Madrid");
         Assert.assertNotNull(p);
         Assert.assertEquals(OutType.INJURY_ORANGE, p.getOutType());
-        Assert.assertEquals("Blessure musculaire (depuis 03/10)", p.getDescription());
-        Assert.assertEquals("Au jour le jour", p.getLength());
+        Assert.assertEquals("Calf Injury", p.getDescription());
+        Assert.assertEquals("Doubtful", p.getLength());
 
-        Assert.assertNotNull(client.getPlayer(c, "Álvaro Medrán", Position.UNDEFINED, "Rayo Vallecano"));
-        Assert.assertNull(client.getPlayer(c, "Álvaro Medrán", Position.UNDEFINED, "Rayo Vallecano", OutType.SUSPENDED, OutType.INJURY_ORANGE));
     }
 
     @Test
@@ -220,39 +230,31 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
         InjuredSuspendedSportsGamblerClient client = getClientFromFile(c, "20201020");
 
         // Test
-        Assert.assertNotNull(client.getPlayer(c, "Unai Bustinza", Position.UNDEFINED, "Leganés"));
-        Assert.assertNotNull(client.getPlayer(c, "unai bustinza", Position.UNDEFINED, "Leganés"));
-        Assert.assertNotNull(client.getPlayer(c, "CheMa", Position.UNDEFINED, "Levante"));
-
-        Player p = client.getPlayer(c, "Antonio Luna Rodriguez", Position.UNDEFINED, "Levante");
-        Assert.assertNotNull(p);
-        Assert.assertEquals(OutType.INJURY_ORANGE, p.getOutType());
-        Assert.assertEquals("Blessure musculaire (depuis 03/10)", p.getDescription());
-        Assert.assertEquals("Au jour le jour", p.getLength());
-
-        Assert.assertNotNull(client.getPlayer(c, "Álvaro Medrán", Position.UNDEFINED, "Rayo Vallecano"));
-        Assert.assertNull(client.getPlayer(c, "Álvaro Medrán", Position.UNDEFINED, "Rayo Vallecano", OutType.SUSPENDED, OutType.INJURY_ORANGE));
+        Assert.assertNull(client.getPlayer(c, "Alex Sandro", Position.UNDEFINED, "Juventus", OutType.SUSPENDED, OutType.INJURY_ORANGE));
     }
 
     @Test
     public void testMock() throws Exception {
-        stubFor(get("/blessures-et-suspensions/fodbold/france/ligue-1")
+        stubFor(get("/football/injuries-suspensions/france-ligue-1/")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.ligue-1.20201020.html")));
-        stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
+        stubFor(get("/football/injuries-suspensions/england-premier-league/")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.premier-league.20201020.html")));
-        stubFor(get("/blessures-et-suspensions/fodbold/espagne/primera-division")
+        stubFor(get("/football/injuries-suspensions/spain-la-liga/")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.liga.20201020.html")));
+        stubFor(get("/football/injuries-suspensions/italy-serie-a/")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.serie-a.20201020.html")));
 
-        InjuredSuspendedEquipeActuClient injuredSuspendedClient = InjuredSuspendedEquipeActuClient.build(getConfig(),
-                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        InjuredSuspendedSportsGamblerClient injuredSuspendedClient = InjuredSuspendedSportsGamblerClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/football/injuries-suspensions/");
 
         // Remove cache
-        File tmpFile = InjuredSuspendedEquipeActuClient.getCacheFile("http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/",
-                "france/ligue-1");
+        File tmpFile = InjuredSuspendedSportsGamblerClient.getCacheFile("http://localhost:" + getServer().port() + "/football/injuries-suspensions/",
+                "france-ligue-1/");
         tmpFile.delete();
         Assert.assertFalse(tmpFile.exists());
 
-        for (ChampionshipOutType type : Arrays.asList(ChampionshipOutType.LIGUE_1, ChampionshipOutType.PREMIER_LEAGUE, ChampionshipOutType.LIGA)) {
+        for (ChampionshipOutType type : Arrays.asList(ChampionshipOutType.LIGUE_1, ChampionshipOutType.PREMIER_LEAGUE, ChampionshipOutType.LIGA,
+                ChampionshipOutType.SERIE_A)) {
             List<Player> players = injuredSuspendedClient.getPlayers(type);
             Assert.assertNotNull(players);
             Assert.assertTrue(String.valueOf(players.size()), players.size() > 10);
@@ -261,8 +263,8 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
         // Verify cache file has been created, recall and verify date file doesn't change
         Assert.assertTrue(tmpFile.exists());
         long cacheDate = tmpFile.lastModified();
-        injuredSuspendedClient = InjuredSuspendedEquipeActuClient.build(getConfig(),
-                "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/");
+        injuredSuspendedClient = InjuredSuspendedSportsGamblerClient.build(getConfig(),
+                "http://localhost:" + getServer().port() + "/football/injuries-suspensions/");
         injuredSuspendedClient.getPlayers(ChampionshipOutType.LIGUE_1);
         Assert.assertEquals(cacheDate, tmpFile.lastModified());
     }

@@ -170,7 +170,22 @@ public class InjuredSuspendedEquipeActuClient extends AbstractClient {
     }
 
     public String getHtmlContent(ChampionshipOutType championship) {
-        return get(championship.getValue(), String.class, TIME_HOUR_IN_MILLI_SECOND);
+        return get(getUrlSuffix(championship), String.class, TIME_HOUR_IN_MILLI_SECOND);
+    }
+
+    private String getUrlSuffix(ChampionshipOutType championship) {
+        switch (championship) {
+        case LIGUE_1:
+            return "france/ligue-1";
+        case PREMIER_LEAGUE:
+            return "angleterre/premier-league";
+        case LIGA:
+            return "espagne/primera-division";
+        case SERIE_A:
+            return "italie/serie-a";
+        default:
+            throw new UnsupportedOperationException(String.format("Championship type not supported: %s", championship));
+        }
     }
 
     public List<Player> getPlayers(ChampionshipOutType championship) {

@@ -91,6 +91,11 @@ public class MainTest extends AbstractMockTestClient {
         // PL
         Assert.assertTrue("Vardy Jamie injured",
                 getLogOut().contains("Out: Vardy Jamie (A - 32.93) - INJURY_ORANGE - Calf Injury (since 16/10) - Doubtful"));
+
+        // Italie
+        Assert.assertTrue("Alex Sandro injured",
+                getLogOut().contains("Out: Alex Sandro (D - 0.00) - INJURY_ORANGE - Muscle injury (since 18/09) - Doubtful"));
+
     }
 
     @Test

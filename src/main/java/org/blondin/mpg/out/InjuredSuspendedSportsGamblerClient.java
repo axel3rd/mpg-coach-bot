@@ -64,7 +64,7 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractClient {
 
     public static InjuredSuspendedSportsGamblerClient build(Config config, String urlOverride) {
         InjuredSuspendedSportsGamblerClient client = new InjuredSuspendedSportsGamblerClient();
-        client.setUrl(StringUtils.defaultString(urlOverride, "https://www.sportsgambler.com/football"));
+        client.setUrl(StringUtils.defaultString(urlOverride, "https://www.sportsgambler.com/football/injuries-suspensions/"));
         client.setProxy(config.getProxy());
         client.setSslCertificatesCheck(config.isSslCertificatesCheck());
         return client;
@@ -126,7 +126,22 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractClient {
     }
 
     public String getHtmlContent(ChampionshipOutType championship) {
-        return get(championship.getValue(), String.class, TIME_HOUR_IN_MILLI_SECOND);
+        return get(getUrlSuffix(championship), String.class, TIME_HOUR_IN_MILLI_SECOND);
+    }
+
+    private String getUrlSuffix(ChampionshipOutType championship) {
+        switch (championship) {
+        case LIGUE_1:
+            return "france-ligue-1/";
+        case PREMIER_LEAGUE:
+            return "england-premier-league/";
+        case LIGA:
+            return "spain-la-liga/";
+        case SERIE_A:
+            return "italy-serie-a/";
+        default:
+            throw new UnsupportedOperationException(String.format("Championship type not supported: %s", championship));
+        }
     }
 
     public List<Player> getPlayers(ChampionshipOutType championship) {
