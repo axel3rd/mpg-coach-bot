@@ -13,15 +13,18 @@ import org.blondin.mpg.out.model.Position;
  */
 public class InjuredSuspendedWrapperClient {
 
+    private static InjuredSuspendedSportsGamblerClient sportsGamblerClient = null;
     private static InjuredSuspendedEquipeActuClient equipeActuClient = null;
     private static InjuredSuspendedMaLigue2Client maLigue2Client = null;
 
     public static InjuredSuspendedWrapperClient build(Config config) {
-        return build(config, null, null);
+        return build(config, null, null, null);
     }
 
-    public static InjuredSuspendedWrapperClient build(Config config, String urlOverrideEquipeActu, String urlOverrideMaLigue2) {
+    public static InjuredSuspendedWrapperClient build(Config config, String urlOverrideSportsGambler, String urlOverrideEquipeActu,
+            String urlOverrideMaLigue2) {
         InjuredSuspendedWrapperClient client = new InjuredSuspendedWrapperClient();
+        sportsGamblerClient = InjuredSuspendedSportsGamblerClient.build(config, urlOverrideSportsGambler);
         equipeActuClient = InjuredSuspendedEquipeActuClient.build(config, urlOverrideEquipeActu);
         maLigue2Client = InjuredSuspendedMaLigue2Client.build(config, urlOverrideMaLigue2);
         return client;
@@ -42,9 +45,12 @@ public class InjuredSuspendedWrapperClient {
             throw new UnsupportedOperationException("Main parameters (championship, playerName, position, teamName) can not be null");
         }
         if (ChampionshipOutType.LIGUE_2.equals(championship)) {
-            return useOnlyForTestGetMaLigue2Client().getPlayer(playerName, teamName);
+            return maLigue2Client.getPlayer(playerName, teamName);
         }
         // TODO: use sportsgambler here, but fallback on equipeActu if unreachable (proxy blacklist, ...)
+        if (true) {
+            return sportsGamblerClient.getPlayer(championship, playerName, teamName);
+        }
         return useOnlyForTestGetEquipeActuClient().getPlayer(championship, playerName, position, teamName, excludes);
     }
 
@@ -52,7 +58,4 @@ public class InjuredSuspendedWrapperClient {
         return equipeActuClient;
     }
 
-    private InjuredSuspendedMaLigue2Client useOnlyForTestGetMaLigue2Client() {
-        return maLigue2Client;
-    }
 }

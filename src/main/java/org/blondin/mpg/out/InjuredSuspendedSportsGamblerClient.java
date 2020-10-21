@@ -14,7 +14,6 @@ import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.model.OutType;
 import org.blondin.mpg.out.model.Player;
-import org.blondin.mpg.out.model.Position;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -88,13 +87,12 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractClient {
      * 
      * @param championship Championship of player
      * @param playerName   Player Name
-     * @param position     Position
      * @param teamName     Team Name
      * @return Player or null if not found
      */
-    public Player getPlayer(ChampionshipOutType championship, String playerName, Position position, String teamName) {
+    public Player getPlayer(ChampionshipOutType championship, String playerName, String teamName) {
         OutType[] excludes = null;
-        return getPlayer(championship, playerName, position, teamName, excludes);
+        return getPlayer(championship, playerName, teamName, excludes);
     }
 
     /**
@@ -107,19 +105,16 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractClient {
      * @param excludes     {@link OutType} to exclude
      * @return Player or null if not found
      */
-    public Player getPlayer(ChampionshipOutType championship, String playerName, Position position, String teamName, OutType... excludes) {
+    public Player getPlayer(ChampionshipOutType championship, String playerName, String teamName, OutType... excludes) {
         List<OutType> excluded = Arrays.asList(ObjectUtils.defaultIfNull(excludes, new OutType[] {}));
 
         for (Player player : getPlayers(championship)) {
             if (!excluded.contains(player.getOutType()) && Stream.of(StringUtils.stripAccents(playerName.toLowerCase()).split(" "))
                     .allMatch(player.getFullNameWithPosition().toLowerCase()::contains)) {
-                Position pos = player.getPosition();
-                if (Position.UNDEFINED.equals(pos) || Position.UNDEFINED.equals(position) || position.equals(pos)) {
-                    if (StringUtils.isNotBlank(teamName) && StringUtils.isNotBlank(player.getTeam()) && !player.getTeam().equals(teamName)) {
-                        continue;
-                    }
-                    return player;
+                if (StringUtils.isNotBlank(teamName) && StringUtils.isNotBlank(player.getTeam()) && !player.getTeam().equals(teamName)) {
+                    continue;
                 }
+                return player;
             }
         }
         return null;
