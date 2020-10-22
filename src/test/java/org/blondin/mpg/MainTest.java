@@ -12,6 +12,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -38,6 +39,7 @@ import org.blondin.mpg.out.ChampionshipOutType;
 import org.blondin.mpg.out.InjuredSuspendedEquipeActuClient;
 import org.blondin.mpg.out.InjuredSuspendedWrapperClient;
 import org.blondin.mpg.root.MpgClient;
+import org.blondin.mpg.root.exception.UrlForbiddenException;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.Dashboard;
 import org.blondin.mpg.root.model.Player;
@@ -206,6 +208,8 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20200106.json")));
         stubFor(get("/leagues/Premier-League")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.premier-league.20200217.json")));
+        stubFor(get("/football/injuries-suspensions/england-premier-league/")
+                .willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
         stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20191212.html")));
 
@@ -243,6 +247,8 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20200106.json")));
         stubFor(get("/leagues/Premier-League")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.premier-league.20191218.json")));
+        stubFor(get("/football/injuries-suspensions/england-premier-league/")
+                .willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
         stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20191212.html")));
 
@@ -265,6 +271,8 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20191218.json")));
         stubFor(get("/leagues/Premier-League")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.premier-league.20191218.json")));
+        stubFor(get("/football/injuries-suspensions/england-premier-league/")
+                .willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
         stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20191212.html")));
 
@@ -305,6 +313,8 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20191218.json")));
         stubFor(get("/leagues/Premier-League")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.premier-league.20191218.json")));
+        stubFor(get("/football/injuries-suspensions/england-premier-league/")
+                .willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
         stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20191212.html")));
 
@@ -345,6 +355,8 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20191218.json")));
         stubFor(get("/leagues/Premier-League")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20191220.json")));
+        stubFor(get("/football/injuries-suspensions/england-premier-league/")
+                .willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
         stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20191220.html")));
         stubFor(post("/league/LJT3FXDF/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LJT3FXDF.20191220-Request.json")))
@@ -380,6 +392,8 @@ public class MainTest extends AbstractMockTestClient {
                 .willReturn(aResponse().withBody("{\"success\":\"teamSaved\"}")));
         stubFor(get("/leagues/Premier-League")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20191212.json")));
+        stubFor(get("/football/injuries-suspensions/england-premier-league/")
+                .willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
         stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20191212.html")));
 
@@ -439,6 +453,8 @@ public class MainTest extends AbstractMockTestClient {
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20190818.json")));
         stubFor(get("/leagues/Premier-League")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20190818.json")));
+        stubFor(get("/football/injuries-suspensions/england-premier-league/")
+                .willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
         stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20190911.html")));
 
@@ -475,6 +491,8 @@ public class MainTest extends AbstractMockTestClient {
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20190818.json")));
         stubFor(get("/leagues/Premier-League")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20190818.json")));
+        stubFor(get("/football/injuries-suspensions/england-premier-league/")
+                .willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
         stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20190911.html")));
 
@@ -524,6 +542,8 @@ public class MainTest extends AbstractMockTestClient {
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20190818.json")));
         stubFor(get("/leagues/Premier-League")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20190818.json")));
+        stubFor(get("/football/injuries-suspensions/england-premier-league/")
+                .willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
         stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20190911.html")));
 
@@ -596,6 +616,8 @@ public class MainTest extends AbstractMockTestClient {
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20190818.json")));
         stubFor(get("/leagues/Premier-League")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20190818.json")));
+        stubFor(get("/football/injuries-suspensions/england-premier-league/")
+                .willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
         stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20190911.html")));
         stubFor(post("/league/LJT3FXDF/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.LJT3FXDF.20190818-Request.json")))
@@ -632,6 +654,8 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20190806.json")));
         stubFor(get("/leagues/Premier-League")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20190805.json")));
+        stubFor(get("/football/injuries-suspensions/england-premier-league/")
+                .willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
         stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20190911.html")));
         stubFor(post("/league/KJVB6L7C/coach").withRequestBody(equalToJson(getTestFileToString("mpg.coach.KJVB6L7C.20190807-Request.json")))
@@ -678,6 +702,7 @@ public class MainTest extends AbstractMockTestClient {
         // 'mpgstats.serie-a.20190805.json' file is about Ligue-1 => this is a 'fake' file without stats about player wanted due to transfer
         stubFor(get("/leagues/Serie-A")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.serie-a.20190805.json")));
+        stubFor(get("/football/injuries-suspensions/italy-serie-a/").willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
         stubFor(get("/blessures-et-suspensions/fodbold/italie/serie-a")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.serie-a.20190805.html")));
         executeMainProcess();
@@ -696,6 +721,8 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20190805.json")));
         stubFor(get("/leagues/Premier-League")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.premier-league.20190805.json")));
+        stubFor(get("/football/injuries-suspensions/england-premier-league/")
+                .willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
         stubFor(get("/blessures-et-suspensions/fodbold/angleterre/premier-league")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.premier-league.20190911.html")));
 
@@ -879,7 +906,8 @@ public class MainTest extends AbstractMockTestClient {
         doReturn(FileUtils.readFileToString(new File(TESTFILES_BASE, "equipeactu.ligue-1.20181017.html"), StandardCharsets.UTF_8))
                 .when(outPlayersEquipeActuClient).getHtmlContent(ChampionshipOutType.LIGUE_1);
         InjuredSuspendedWrapperClient outPlayersClient = spy(InjuredSuspendedWrapperClient.class);
-        doReturn(outPlayersEquipeActuClient).when(outPlayersClient).useOnlyForTestGetEquipeActuClient();
+        doReturn(outPlayersEquipeActuClient).when(outPlayersClient).useDirectlyOnlyForTestGetEquipeActuClient();
+        doThrow(UrlForbiddenException.class).when(outPlayersClient).useDirectlyOnlyForTestGetSportsGamblerClient();
 
         // Test out (on cloned list)
         List<Player> players = new ArrayList<>(mpgClient.getCoach("fake").getPlayers());
@@ -1096,9 +1124,14 @@ public class MainTest extends AbstractMockTestClient {
     private static void prepareMainFrenchLigue1Mocks(String fileRootDashboard, String fileStatsLeagues, String dataFileStats,
             String dataFileSportsGamblerOrEquipeActu) {
         try {
-            Date sportsGamblerSwitch = new SimpleDateFormat("yyyyMMdddd").parse("20201010");
-            Date now = new Date();
-            if (now.after(sportsGamblerSwitch)) {
+            if (StringUtils.isBlank(dataFileSportsGamblerOrEquipeActu)) {
+                prepareMainFrenchLigueMocks(fileRootDashboard, fileStatsLeagues, 1, dataFileStats, null, null, null);
+                return;
+            }
+            final SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdddd");
+            Date sportsGamblerSwitch = dateParser.parse("20201010");
+            Date dataFileDate = dateParser.parse(dataFileSportsGamblerOrEquipeActu);
+            if (dataFileDate.after(sportsGamblerSwitch)) {
                 prepareMainFrenchLigueMocks(fileRootDashboard, fileStatsLeagues, 1, dataFileStats, dataFileSportsGamblerOrEquipeActu, null, null);
             } else {
                 prepareMainFrenchLigueMocks(fileRootDashboard, fileStatsLeagues, 1, dataFileStats, null, dataFileSportsGamblerOrEquipeActu, null);
@@ -1137,6 +1170,10 @@ public class MainTest extends AbstractMockTestClient {
         if (StringUtils.isNotBlank(dataFileEquipeActu)) {
             stubFor(get("/blessures-et-suspensions/fodbold/france/ligue-" + ligue).willReturn(aResponse()
                     .withHeader("Content-Type", "application/json").withBodyFile("equipeactu.ligue-" + ligue + "." + dataFileEquipeActu + ".html")));
+
+            // 403 on SportsGambler, to force FallBack on EquipeActu
+            stubFor(get("/football/injuries-suspensions/france-ligue-" + ligue + "/")
+                    .willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
         }
         if (StringUtils.isNotBlank(dataFileMaLigue2)) {
             stubFor(get("/2019/08/05/joueurs-blesses-et-suspendus/").willReturn(aResponse().withHeader("Content-Type", "application/json")

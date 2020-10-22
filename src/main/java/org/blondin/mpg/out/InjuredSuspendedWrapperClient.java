@@ -50,15 +50,19 @@ public class InjuredSuspendedWrapperClient {
             return maLigue2Client.getPlayer(playerName, teamName);
         }
         try {
-            return sportsGamblerClient.getPlayer(championship, playerName, teamName);
+            return useDirectlyOnlyForTestGetSportsGamblerClient().getPlayer(championship, playerName, teamName);
         } catch (UrlForbiddenException e) {
             // Fallback on EquipeActu if SportsGambler not reachable
-            return useOnlyForTestGetEquipeActuClient().getPlayer(championship, playerName, position, teamName, excludes);
+            return useDirectlyOnlyForTestGetEquipeActuClient().getPlayer(championship, playerName, position, teamName, excludes);
         }
     }
 
-    public InjuredSuspendedEquipeActuClient useOnlyForTestGetEquipeActuClient() {
+    public InjuredSuspendedEquipeActuClient useDirectlyOnlyForTestGetEquipeActuClient() {
         return equipeActuClient;
+    }
+
+    public InjuredSuspendedSportsGamblerClient useDirectlyOnlyForTestGetSportsGamblerClient() {
+        return sportsGamblerClient;
     }
 
 }
