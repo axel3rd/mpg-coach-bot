@@ -27,15 +27,12 @@ public class ConfigTest {
 
     @Test
     public void testConfigDefault() {
+        // Less than 25 assert for SonarQube
         Config config = Config.build("src/test/resources/mpg.properties.here");
         Assert.assertEquals("firstName.lastName@gmail.com", config.getLogin());
         Assert.assertEquals("foobar", config.getPassword());
 
-        // Team update is disabling in test file (more simple)
-        Assert.assertEquals(false, config.isTeampUpdate());
-        // Focus efficiency is disabling in test file (historical test implemented with this value)
-        Assert.assertEquals(false, config.isEfficiencyRecentFocus());
-        Assert.assertEquals(8, config.getEfficiencyRecentDays());
+        Assert.assertEquals(true, config.isSslCertificatesCheck());
 
         Assert.assertEquals(true, config.isUseBonus());
 
@@ -52,6 +49,19 @@ public class ConfigTest {
         Assert.assertEquals(5.0f, config.getNoteTacticalSubstituteDefender(), 0);
         Assert.assertEquals(5.0f, config.getNoteTacticalSubstituteMidfielder(), 0);
 
+    }
+
+    @Test
+    public void testConfigDefaultEfficiency() {
+        // Less than 25 assert for SonarQube
+        Config config = Config.build("src/test/resources/mpg.properties.here");
+
+        // Team update is disabling in test file (more simple)
+        Assert.assertEquals(false, config.isTeampUpdate());
+        // Focus efficiency is disabling in test file (historical test implemented with this value)
+        Assert.assertEquals(false, config.isEfficiencyRecentFocus());
+        Assert.assertEquals(8, config.getEfficiencyRecentDays());
+
         // For unit tests, transactions proposal is not enable by default
         Assert.assertEquals(false, config.isTransactionsProposal());
 
@@ -64,8 +74,6 @@ public class ConfigTest {
         Assert.assertEquals(1.05f, config.getEfficiencyCoefficient(Position.M), 0);
         Assert.assertEquals(1.025f, config.getEfficiencyCoefficient(Position.D), 0);
         Assert.assertEquals(1f, config.getEfficiencyCoefficient(Position.G), 0);
-
-        Assert.assertEquals(true, config.isSslCertificatesCheck());
     }
 
     @Test
@@ -125,6 +133,19 @@ public class ConfigTest {
         Assert.assertEquals(2f, config.getNoteTacticalSubstituteDefender(), 0);
         Assert.assertEquals(1f, config.getNoteTacticalSubstituteMidfielder(), 0);
 
+        Assert.assertNotNull(config.getProxy());
+        Assert.assertTrue(config.getProxy().isConfigured());
+        Assert.assertEquals("http://company.proxy.com:80", config.getProxy().getUri());
+        Assert.assertEquals("foo", config.getProxy().getUser());
+        Assert.assertEquals("bar", config.getProxy().getPassword());
+
+        Assert.assertEquals(false, config.isSslCertificatesCheck());
+
+        testCompleteEfficiency(config);
+    }
+
+    private void testCompleteEfficiency(Config config) {
+        // Less than 25 assert for SonarQube
         Assert.assertEquals(false, config.isTransactionsProposal());
         Assert.assertEquals(5f, config.getEfficiencySell(Position.A), 0);
         Assert.assertEquals(4f, config.getEfficiencySell(Position.M), 0);
@@ -135,14 +156,6 @@ public class ConfigTest {
         Assert.assertEquals(2f, config.getEfficiencyCoefficient(Position.M), 0);
         Assert.assertEquals(4f, config.getEfficiencyCoefficient(Position.D), 0);
         Assert.assertEquals(5f, config.getEfficiencyCoefficient(Position.G), 0);
-
-        Assert.assertNotNull(config.getProxy());
-        Assert.assertTrue(config.getProxy().isConfigured());
-        Assert.assertEquals("http://company.proxy.com:80", config.getProxy().getUri());
-        Assert.assertEquals("foo", config.getProxy().getUser());
-        Assert.assertEquals("bar", config.getProxy().getPassword());
-
-        Assert.assertEquals(false, config.isSslCertificatesCheck());
     }
 
     @Test

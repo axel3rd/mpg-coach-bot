@@ -1,16 +1,11 @@
 package org.blondin.mpg.out;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.model.OutType;
 import org.blondin.mpg.out.model.Player;
@@ -21,11 +16,9 @@ import org.jsoup.nodes.Element;
 /**
  * https://www.sportsgambler.com/football/injuries-suspensions/
  */
-public class InjuredSuspendedSportsGamblerClient extends AbstractClient {
+public class InjuredSuspendedSportsGamblerClient extends AbstractInjuredSuspendedNotL2 {
 
     private static final Map<String, String> TEAM_NAME_WRAPPER = new HashMap<>();
-
-    private EnumMap<ChampionshipOutType, List<Player>> cache = new EnumMap<>(ChampionshipOutType.class);
 
     static {
         /*
@@ -69,62 +62,13 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractClient {
         return client;
     }
 
-    /**
-     * Return MPG team name from sportsgambler team name (because has change during time)
-     * 
-     * @param sportsgambler The sportsgambler team name
-     * @return The MPG team name
-     */
-    private static String getTeamName(String sportsgamblerTeamName) {
-        if (TEAM_NAME_WRAPPER.containsKey(sportsgamblerTeamName)) {
-            return TEAM_NAME_WRAPPER.get(sportsgamblerTeamName);
-        }
-        return sportsgamblerTeamName;
+    @Override
+    Map<String, String> getMpgTeamNameWrapper() {
+        return TEAM_NAME_WRAPPER;
     }
 
-    /**
-     * Return injured or suspended player
-     * 
-     * @param championship Championship of player
-     * @param playerName   Player Name
-     * @param teamName     Team Name
-     * @return Player or null if not found
-     */
-    public Player getPlayer(ChampionshipOutType championship, String playerName, String teamName) {
-        OutType[] excludes = null;
-        return getPlayer(championship, playerName, teamName, excludes);
-    }
-
-    /**
-     * Return injured or suspended player
-     * 
-     * @param championship Championship of player
-     * @param playerName   Player Name
-     * @param position     Position
-     * @param teamName     Team Name
-     * @param excludes     {@link OutType} to exclude
-     * @return Player or null if not found
-     */
-    public Player getPlayer(ChampionshipOutType championship, String playerName, String teamName, OutType... excludes) {
-        List<OutType> excluded = Arrays.asList(ObjectUtils.defaultIfNull(excludes, new OutType[] {}));
-
-        for (Player player : getPlayers(championship)) {
-            if (!excluded.contains(player.getOutType()) && Stream.of(StringUtils.stripAccents(playerName.toLowerCase()).split(" "))
-                    .allMatch(player.getFullNameWithPosition().toLowerCase()::contains)) {
-                if (StringUtils.isNotBlank(teamName) && StringUtils.isNotBlank(player.getTeam()) && !player.getTeam().equals(teamName)) {
-                    continue;
-                }
-                return player;
-            }
-        }
-        return null;
-    }
-
-    public String getHtmlContent(ChampionshipOutType championship) {
-        return get(getUrlSuffix(championship), String.class, TIME_HOUR_IN_MILLI_SECOND);
-    }
-
-    private String getUrlSuffix(ChampionshipOutType championship) {
+    @Override
+    public String getUrlSuffix(ChampionshipOutType championship) {
         switch (championship) {
         case LIGUE_1:
             return "france-ligue-1/";
@@ -139,14 +83,8 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractClient {
         }
     }
 
-    public List<Player> getPlayers(ChampionshipOutType championship) {
-        if (!cache.containsKey(championship)) {
-            cache.put(championship, getPlayers(getHtmlContent(championship)));
-        }
-        return cache.get(championship);
-    }
-
-    private List<Player> getPlayers(String content) {
+    @Override
+    public List<Player> getPlayers(String content) {
         List<Player> players = new ArrayList<>();
         Document doc = Jsoup.parse(content);
         boolean oneTeamHasBeenParsed = false;
@@ -167,7 +105,7 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractClient {
                     break;
                 }
                 Player player = new Player();
-                player.setTeam(getTeamName(team));
+                player.setTeam(getMpgTeamName(team));
                 player.setOutType(parseOutType(line.select("td").get(0)));
                 player.setFullNameWithPosition(line.select("td").get(1).text());
                 player.setDescription(line.select("td").get(2).text());

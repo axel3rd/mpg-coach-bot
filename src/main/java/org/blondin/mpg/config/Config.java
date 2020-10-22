@@ -56,7 +56,9 @@ public class Config {
         Properties properties = new Properties();
         if (fileConfig.exists()) {
             try {
-                properties.load(new FileInputStream(fileConfig));
+                try (FileInputStream in = new FileInputStream(fileConfig)) {
+                    properties.load(in);
+                }
             } catch (IOException e) {
                 // Nothing
             }
