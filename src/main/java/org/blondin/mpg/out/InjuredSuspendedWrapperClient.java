@@ -5,23 +5,28 @@ import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.model.OutType;
 import org.blondin.mpg.out.model.Player;
 import org.blondin.mpg.out.model.Position;
+import org.blondin.mpg.root.exception.UrlForbiddenException;
 
 /**
  * Wrapper for:<br/>
+ * - https://www.sportsgambler.com/football/injuries-suspensions<br/>
+ * - https://maligue2.fr/2019/08/05/joueurs-blesses-et-suspendus/<br/>
  * - https://www.equipeactu.fr/blessures-et-suspensions/fodbold/<br/>
- * - https://maligue2.fr/2019/08/05/joueurs-blesses-et-suspendus/
  */
 public class InjuredSuspendedWrapperClient {
 
+    private static InjuredSuspendedSportsGamblerClient sportsGamblerClient = null;
     private static InjuredSuspendedEquipeActuClient equipeActuClient = null;
     private static InjuredSuspendedMaLigue2Client maLigue2Client = null;
 
     public static InjuredSuspendedWrapperClient build(Config config) {
-        return build(config, null, null);
+        return build(config, null, null, null);
     }
 
-    public static InjuredSuspendedWrapperClient build(Config config, String urlOverrideEquipeActu, String urlOverrideMaLigue2) {
+    public static InjuredSuspendedWrapperClient build(Config config, String urlOverrideSportsGambler, String urlOverrideEquipeActu,
+            String urlOverrideMaLigue2) {
         InjuredSuspendedWrapperClient client = new InjuredSuspendedWrapperClient();
+        sportsGamblerClient = InjuredSuspendedSportsGamblerClient.build(config, urlOverrideSportsGambler);
         equipeActuClient = InjuredSuspendedEquipeActuClient.build(config, urlOverrideEquipeActu);
         maLigue2Client = InjuredSuspendedMaLigue2Client.build(config, urlOverrideMaLigue2);
         return client;
@@ -42,16 +47,22 @@ public class InjuredSuspendedWrapperClient {
             throw new UnsupportedOperationException("Main parameters (championship, playerName, position, teamName) can not be null");
         }
         if (ChampionshipOutType.LIGUE_2.equals(championship)) {
-            return useOnlyForTestGetMaLigue2Client().getPlayer(playerName, teamName);
+            return maLigue2Client.getPlayer(playerName, teamName);
         }
-        return useOnlyForTestGetEquipeActuClient().getPlayer(championship, playerName, position, teamName, excludes);
+        try {
+            return useDirectlyOnlyForTestGetSportsGamblerClient().getPlayer(championship, playerName, teamName);
+        } catch (UrlForbiddenException e) {
+            // Fallback on EquipeActu if SportsGambler not reachable
+            return useDirectlyOnlyForTestGetEquipeActuClient().getPlayer(championship, playerName, position, teamName, excludes);
+        }
     }
 
-    public InjuredSuspendedEquipeActuClient useOnlyForTestGetEquipeActuClient() {
+    public InjuredSuspendedEquipeActuClient useDirectlyOnlyForTestGetEquipeActuClient() {
         return equipeActuClient;
     }
 
-    private InjuredSuspendedMaLigue2Client useOnlyForTestGetMaLigue2Client() {
-        return maLigue2Client;
+    public InjuredSuspendedSportsGamblerClient useDirectlyOnlyForTestGetSportsGamblerClient() {
+        return sportsGamblerClient;
     }
+
 }

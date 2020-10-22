@@ -1,19 +1,22 @@
 
 package org.blondin.mpg.out.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum OutType {
 
-    INJURY_GREEN("injury_green"), INJURY_ORANGE("injury_orange"), INJURY_RED("injury"), SUSPENDED("suspended"), ASBENT("absent");
+    INJURY_GREEN("injury_green"), INJURY_ORANGE("injury_orange"), INJURY_RED("injury", "cross"), SUSPENDED("suspended", "red"), ASBENT("absent");
 
-    private final String value;
+    private final List<String> values;
 
-    private OutType(final String value) {
-        this.value = value;
+    private OutType(final String... values) {
+        this.values = Arrays.asList(values);
     }
 
     public static OutType getNameByValue(final String value) {
         for (final OutType s : OutType.values()) {
-            if (s.value.equals(value)) {
+            if (s.values.contains(value)) {
                 return s;
             }
         }

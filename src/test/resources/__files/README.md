@@ -40,9 +40,13 @@ The `XXX` should be replaced by a use case scenario (like data, some league, ...
 
 | **File** | **URL** | **Description** |
 | --- | --- | --- |
-| `equipeactu.liga.XXX.html` | https://www.equipeactu.fr/blessures-et-suspensions/fodbold/espagne/primera-division | Injury / Suspended players for **Liga (Spain)** |
-| `equipeactu.ligue-1.XXX.html` | https://www.equipeactu.fr/blessures-et-suspensions/fodbold/france/ligue-1 | Injury / Suspended players for **Ligue 1 (France)** |
-| `equipeactu.ligue-2.XXX.html` |  | **Not used**, see below and [#99](https://github.com/axel3rd/mpg-coach-bot/issues/99), EquipeActu Website doesn't contain Ligue 2 (France) |
-| `equipeactu.premier-league.XXX.html` | https://www.equipeactu.fr/blessures-et-suspensions/fodbold/angleterre/premier-league | Injury / Suspended players for **Premiere League (England)** |
-| `equipeactu.serie-a.XXX.html` | https://www.equipeactu.fr/blessures-et-suspensions/fodbold/italie/serie-a | Injury / Suspended players for **Seria A (Italia)** |
 | `maligue2.joueurs-blesses-et-suspendus.XXX.html` | https://maligue2.fr/2019/08/05/joueurs-blesses-et-suspendus/ | Injury / Suspended players for **Ligue 2 (France)** |
+| `sportsgambler.liga.XXX.html` | https://www.sportsgambler.com/football/injuries-suspensions/spain-la-liga/ | Injury / Suspended players for **Liga (Spain)** |
+| `sportsgambler.ligue-1.XXX.html` | https://www.sportsgambler.com/football/injuries-suspensions/france-ligue-1/ | Injury / Suspended players for **Ligue 1 (France)** |
+| `sportsgambler.premier-league.XXX.html` | https://www.sportsgambler.com/football/injuries-suspensions/england-premier-league/ | Injury / Suspended players for **Premiere League (England)** |
+| `sportsgambler.serie-a.XXX.html` | https://www.sportsgambler.com/football/injuries-suspensions/italy-serie-a/ | Injury / Suspended players for **Seria A (Italia)** |
+| `equipeactu.liga.XXX.html` | https://www.equipeactu.fr/blessures-et-suspensions/fodbold/espagne/primera-division | **Deprecated since October 20, 2020** ([#169](https://github.com/axel3rd/mpg-coach-bot/issues/169)). Injury / Suspended players for **Liga (Spain)** |
+| `equipeactu.ligue-1.XXX.html` | https://www.equipeactu.fr/blessures-et-suspensions/fodbold/france/ligue-1 | **Deprecated since October 20, 2020** ([#169](https://github.com/axel3rd/mpg-coach-bot/issues/169)). Injury / Suspended players for **Ligue 1 (France)** |
+| `equipeactu.premier-league.XXX.html` | https://www.equipeactu.fr/blessures-et-suspensions/fodbold/angleterre/premier-league | **Deprecated since October 20, 2020** ([#169](https://github.com/axel3rd/mpg-coach-bot/issues/169)). Injury / Suspended players for **Premiere League (England)** |
+| `equipeactu.serie-a.XXX.html` | https://www.equipeactu.fr/blessures-et-suspensions/fodbold/italie/serie-a | **Deprecated since October 20, 2020** ([#169](https://github.com/axel3rd/mpg-coach-bot/issues/169)). Injury / Suspended players for **Seria A (Italia)** |
+| `equipeactu.ligue-2.XXX.html` |  | **Not used**, see below and [#99](https://github.com/axel3rd/mpg-coach-bot/issues/99), EquipeActu Website doesn't contain Ligue 2 (France) |

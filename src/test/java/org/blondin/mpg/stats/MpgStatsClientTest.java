@@ -25,6 +25,13 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.ligue-1.20190406.json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
 
+        testEfficiencyRecentFocusNeymar(mpgStatsClient);
+        testEfficiencyRecentFocusMBappe(mpgStatsClient);
+        testEfficiencyRecentFocusTrapp(mpgStatsClient);
+
+    }
+
+    private void testEfficiencyRecentFocusNeymar(MpgStatsClient mpgStatsClient) {
         Player playerNeymar = mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_1).getPlayer("Neymar");
         Assert.assertNotNull(playerNeymar);
         Assert.assertEquals(6.77, playerNeymar.getStats().getAverage(0), 0);
@@ -37,7 +44,9 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
         Assert.assertEquals(13, playerNeymar.getStats().getMatchs(0));
         Assert.assertEquals(0, playerNeymar.getStats().getMatchs(1));
         Assert.assertEquals(0, playerNeymar.getStats().getMatchs(8));
+    }
 
+    private void testEfficiencyRecentFocusMBappe(MpgStatsClient mpgStatsClient) {
         Player playerMBappe = mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_1).getPlayer("Mbappé");
         Assert.assertNotNull(playerMBappe);
         Assert.assertEquals(6.79, playerMBappe.getStats().getAverage(0), 0);
@@ -53,12 +62,14 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
         Assert.assertEquals(7, playerMBappe.getStats().getMatchs(8));
         Assert.assertEquals(2, playerMBappe.getStats().getMatchs(2));
         Assert.assertEquals(2, playerMBappe.getStats().getMatchs(3));
+    }
 
-        Player playerMTrap = mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_1).getPlayer("Trapp");
-        Assert.assertNotNull(playerMTrap);
-        Assert.assertEquals(0, playerMTrap.getStats().getAverage(1), 0);
-        Assert.assertEquals(0, playerMTrap.getStats().getGoals(1));
-        Assert.assertEquals(0, playerMTrap.getStats().getMatchs(1));
+    private void testEfficiencyRecentFocusTrapp(MpgStatsClient mpgStatsClient) {
+        Player playerTrap = mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_1).getPlayer("Trapp");
+        Assert.assertNotNull(playerTrap);
+        Assert.assertEquals(0, playerTrap.getStats().getAverage(1), 0);
+        Assert.assertEquals(0, playerTrap.getStats().getGoals(1));
+        Assert.assertEquals(0, playerTrap.getStats().getMatchs(1));
     }
 
     @Test

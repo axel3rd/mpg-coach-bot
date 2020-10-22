@@ -1,0 +1,64 @@
+{
+    "data": {
+        "leagues": [
+            {
+                "id": "MLAX7HMK",
+                "admin_mpg_user_id": "mpg_user_953561",
+                "current_mpg_user": "mpg_user_955966",
+                "name": "Des Cartons",
+                "url": "assets/public/img/league/1.jpg",
+                "leagueStatus": 4,
+                "championship": 1,
+                "mode": 2,
+                "teamStatus": 2,
+                "players": 10
+            },
+            {
+                "id": "MLEFEX6G",
+                "admin_mpg_user_id": "mpg_user_953561",
+                "current_mpg_user": "mpg_user_955966",
+                "name": "Des Papiers",
+                "url": "assets/public/img/league/1.jpg",
+                "leagueStatus": 4,
+                "championship": 4,
+                "mode": 2,
+                "teamStatus": 2,
+                "players": 10
+            },
+            {
+                "id": "MN7VSYBM",
+                "admin_mpg_user_id": "mpg_user_600737",
+                "current_mpg_user": "mpg_user_955966",
+                "name": "Le capre giocano a calcio",
+                "url": "assets/public/img/league/1.jpg",
+                "leagueStatus": 4,
+                "championship": 5,
+                "mode": 2,
+                "teamStatus": 2,
+                "players": 10
+            },
+            {
+                "id": "MLMHBPCB",
+                "admin_mpg_user_id": "mpg_user_35635",
+                "current_mpg_user": "mpg_user_955966",
+                "name": "The Whiner Takes It All",
+                "url": "assets/public/img/league/1.jpg",
+                "leagueStatus": 4,
+                "championship": 2,
+                "mode": 2,
+                "teamStatus": 2,
+                "players": 10
+            }
+        ],
+        "follow": [
+            {
+                "id": "mpg_league_MRLUPPKN",
+                "name": "Chigue des Lampions ",
+                "mode": 1,
+                "status": 4,
+                "championship": 6,
+                "image": "assets/public/img/league/1.jpg"
+            }
+        ]
+    }
+}
