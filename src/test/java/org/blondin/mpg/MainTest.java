@@ -4,8 +4,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
+import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
@@ -25,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.ProcessingException;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -82,7 +86,22 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testInjuredSuspendedSportsGamblerFallBackEquipeActu() throws Exception {
-        // TODO Implement
+        prepareMainFrenchLigueMocks("MLAX7HMK-MLEFEX6G-MN7VSYBM-MLMHBPCB", "20201021", 1, "20201021", null, "20201006", null);
+        stubFor(get("/league/MLAX7HMK/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLAX7HMK.20201021.json")));
+        // 403 for sportgambler
+        stubFor(get("/football/injuries-suspensions/france-ligue-1/").willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
+
+        // Only L1
+        Config config = spy(getConfig());
+        doReturn(Arrays.asList("MLAX7HMK")).when(config).getLeaguesInclude();
+
+        executeMainProcess(config);
+
+        // Asserts
+        Assert.assertTrue(getLogOut().contains("========== Des Cartons =========="));
+        verify(19, getRequestedFor(urlMatching("/football/injuries-suspensions/france-ligue-1/")));
+        verify(1, getRequestedFor(urlMatching("/blessures-et-suspensions/fodbold/france/ligue-1")));
     }
 
     @Test
@@ -113,8 +132,6 @@ public class MainTest extends AbstractMockTestClient {
         Config config = spy(getConfig());
         doReturn(Arrays.asList("MLEFEX6G")).when(config).getLeaguesExclude();
         executeMainProcess(config);
-
-        // TODO Implement
 
         // Ligue 1
         Assert.assertTrue("Verratti Marco injured", getLogOut().contains("Out: Verratti Marco (M - 4.07) - INJURY_RED - Unknown - Early November"));

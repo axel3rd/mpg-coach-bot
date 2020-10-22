@@ -30,6 +30,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.config.Proxy;
+import org.blondin.mpg.root.exception.UrlForbiddenException;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
@@ -134,6 +135,9 @@ public abstract class AbstractClient {
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON).headers(headers);
 
             Response response = invokeWithRetry(invocationBuilder, entityRequest, url, path, 0);
+            if (Response.Status.FORBIDDEN.getStatusCode() == response.getStatus()) {
+                throw new UrlForbiddenException(String.format("Forbidden URL: %s", url));
+            }
             if (Response.Status.OK.getStatusCode() != response.getStatus()) {
                 String content = IOUtils.toString((InputStream) response.getEntity(), StandardCharsets.UTF_8);
                 if (StringUtils.isNoneBlank(content)) {

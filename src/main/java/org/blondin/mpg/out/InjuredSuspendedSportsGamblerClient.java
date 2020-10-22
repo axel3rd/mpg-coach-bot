@@ -63,7 +63,7 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractClient {
 
     public static InjuredSuspendedSportsGamblerClient build(Config config, String urlOverride) {
         InjuredSuspendedSportsGamblerClient client = new InjuredSuspendedSportsGamblerClient();
-        client.setUrl(StringUtils.defaultString(urlOverride, "https://www.sportsgambler.com/football/injuries-suspensions/"));
+        client.setUrl(StringUtils.defaultString(urlOverride, "https://www.sportsgambler.com/football/injuries-suspensions"));
         client.setProxy(config.getProxy());
         client.setSslCertificatesCheck(config.isSslCertificatesCheck());
         return client;

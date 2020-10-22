@@ -5,11 +5,13 @@ import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.model.OutType;
 import org.blondin.mpg.out.model.Player;
 import org.blondin.mpg.out.model.Position;
+import org.blondin.mpg.root.exception.UrlForbiddenException;
 
 /**
  * Wrapper for:<br/>
+ * - https://www.sportsgambler.com/football/injuries-suspensions<br/>
+ * - https://maligue2.fr/2019/08/05/joueurs-blesses-et-suspendus/<br/>
  * - https://www.equipeactu.fr/blessures-et-suspensions/fodbold/<br/>
- * - https://maligue2.fr/2019/08/05/joueurs-blesses-et-suspendus/
  */
 public class InjuredSuspendedWrapperClient {
 
@@ -47,11 +49,12 @@ public class InjuredSuspendedWrapperClient {
         if (ChampionshipOutType.LIGUE_2.equals(championship)) {
             return maLigue2Client.getPlayer(playerName, teamName);
         }
-        // TODO: use sportsgambler here, but fallback on equipeActu if unreachable (proxy blacklist, ...)
-        if (true) {
+        try {
             return sportsGamblerClient.getPlayer(championship, playerName, teamName);
+        } catch (UrlForbiddenException e) {
+            // Fallback on EquipeActu if SportsGambler not reachable
+            return useOnlyForTestGetEquipeActuClient().getPlayer(championship, playerName, position, teamName, excludes);
         }
-        return useOnlyForTestGetEquipeActuClient().getPlayer(championship, playerName, position, teamName, excludes);
     }
 
     public InjuredSuspendedEquipeActuClient useOnlyForTestGetEquipeActuClient() {
