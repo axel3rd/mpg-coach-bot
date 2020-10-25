@@ -34,7 +34,7 @@ public class LogsTest extends AbstractMockTestClient {
         final String content = "{ \"msg\": \"foobar\"}";
         final String path = "/api/test";
         stubFor(get(path).willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(content)));
-        AbstractClient client = new AbstractClient() {
+        AbstractClient client = new AbstractClient(null) {
         };
         String url = "http://localhost:" + server.port();
         client.setUrl(url);
@@ -59,7 +59,7 @@ public class LogsTest extends AbstractMockTestClient {
         final String content = "{ \"msg\": \"foobar\"}";
         final String path = "/api/test";
         stubFor(get(path).willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(content)));
-        AbstractClient client = new AbstractClient() {
+        AbstractClient client = new AbstractClient(null) {
         };
         String url = "http://localhost:" + server.port();
         client.setUrl(url);

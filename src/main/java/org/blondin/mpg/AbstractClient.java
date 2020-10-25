@@ -10,6 +10,7 @@ import java.nio.file.StandardCopyOption;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
+import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -29,6 +30,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.blondin.mpg.config.Config;
 import org.blondin.mpg.config.Proxy;
 import org.blondin.mpg.root.exception.UrlForbiddenException;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
@@ -45,24 +47,39 @@ public abstract class AbstractClient {
 
     protected static final long TIME_HOUR_IN_MILLI_SECOND = 3600000;
 
-    private Proxy proxy;
     private String url;
-    private boolean sslCertificatesCheck = true;
+    private final Proxy proxy;
+    private final boolean sslCertificatesCheck;
+    private final long requestWaitTimeMilliSecond;
+    private final List<String> requestWaitUrls;
+    private boolean requestHasToWaitTime = false;
+    private long requestLastCall = 0;
 
-    protected AbstractClient() {
+    protected AbstractClient(Config config) {
         super();
+        if (config != null) {
+            this.proxy = config.getProxy();
+            this.sslCertificatesCheck = config.isSslCertificatesCheck();
+            this.requestWaitTimeMilliSecond = config.getRequestWaitTime() * (long) 1000;
+            this.requestWaitUrls = config.getRequestWaitUrls();
+        } else {
+            this.proxy = null;
+            this.sslCertificatesCheck = true;
+            this.requestWaitTimeMilliSecond = 0;
+            this.requestWaitUrls = null;
+        }
     }
 
     protected void setUrl(String url) {
         this.url = url;
-    }
-
-    protected void setProxy(Proxy proxy) {
-        this.proxy = proxy;
-    }
-
-    protected void setSslCertificatesCheck(boolean sslCertificatesCheck) {
-        this.sslCertificatesCheck = sslCertificatesCheck;
+        if (requestWaitUrls != null) {
+            for (String u : requestWaitUrls) {
+                if (url.startsWith(u)) {
+                    requestHasToWaitTime = true;
+                    return;
+                }
+            }
+        }
     }
 
     protected <T> T get(String path, Class<T> entityResponse) {
@@ -134,6 +151,7 @@ public abstract class AbstractClient {
             WebTarget webTarget = client.target(url).path(path);
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON).headers(headers);
 
+            waitBeforeNextRequest();
             Response response = invokeWithRetry(invocationBuilder, entityRequest, url, path, 0);
             if (Response.Status.FORBIDDEN.getStatusCode() == response.getStatus()) {
                 throw new UrlForbiddenException(String.format("Forbidden URL: %s", url));
@@ -181,6 +199,20 @@ public abstract class AbstractClient {
             throw e;
         }
         return response;
+    }
+
+    private void waitBeforeNextRequest() {
+        if (!requestHasToWaitTime) {
+            return;
+        }
+        if (System.currentTimeMillis() < requestWaitTimeMilliSecond + requestLastCall) {
+            try {
+                Thread.sleep(requestWaitTimeMilliSecond);
+            } catch (InterruptedException e) { // NOSONAR : Sleep wanted
+                throw new UnsupportedOperationException(e);
+            }
+        }
+        requestLastCall = System.currentTimeMillis();
     }
 
     @SuppressWarnings("unchecked")

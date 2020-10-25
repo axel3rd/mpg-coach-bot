@@ -46,7 +46,7 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
             throw new UnsupportedOperationException("Unknow championship type");
         }
 
-        InjuredSuspendedSportsGamblerClient client = spy(InjuredSuspendedSportsGamblerClient.class);
+        InjuredSuspendedSportsGamblerClient client = spy(InjuredSuspendedSportsGamblerClient.build(null));
         doReturn(FileUtils.readFileToString(new File(TESTFILES_BASE, "sportsgambler." + name + "." + date + ".html"), Charset.forName("UTF-8")))
                 .when(client).getHtmlContent(type);
         return client;

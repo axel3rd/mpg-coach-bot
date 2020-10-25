@@ -35,8 +35,8 @@ public class MpgClient extends AbstractClient {
 
     private final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
 
-    private MpgClient() {
-        super();
+    private MpgClient(Config config) {
+        super(config);
     }
 
     public static MpgClient build(Config config) {
@@ -44,10 +44,8 @@ public class MpgClient extends AbstractClient {
     }
 
     public static MpgClient build(Config config, String urlOverride) {
-        MpgClient client = new MpgClient();
+        MpgClient client = new MpgClient(config);
         client.setUrl(StringUtils.defaultString(urlOverride, "https://api.monpetitgazon.com"));
-        client.setProxy(config.getProxy());
-        client.setSslCertificatesCheck(config.isSslCertificatesCheck());
         client.signIn(config.getLogin(), config.getPassword());
         return client;
     }

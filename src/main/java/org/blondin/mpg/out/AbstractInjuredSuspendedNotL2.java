@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
+import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.model.OutType;
 import org.blondin.mpg.out.model.Player;
 import org.blondin.mpg.out.model.Position;
@@ -16,6 +17,10 @@ import org.blondin.mpg.out.model.Position;
 public abstract class AbstractInjuredSuspendedNotL2 extends AbstractClient {
 
     private EnumMap<ChampionshipOutType, List<Player>> cache = new EnumMap<>(ChampionshipOutType.class);
+
+    protected AbstractInjuredSuspendedNotL2(Config config) {
+        super(config);
+    }
 
     /**
      * Return injured or suspended player

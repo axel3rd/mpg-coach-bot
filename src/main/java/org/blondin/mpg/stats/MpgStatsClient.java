@@ -16,8 +16,8 @@ public class MpgStatsClient extends AbstractClient {
 
     private EnumMap<ChampionshipStatsType, Championship> cache = new EnumMap<>(ChampionshipStatsType.class);
 
-    private MpgStatsClient() {
-        super();
+    private MpgStatsClient(Config config) {
+        super(config);
     }
 
     public static MpgStatsClient build(Config config) {
@@ -25,10 +25,8 @@ public class MpgStatsClient extends AbstractClient {
     }
 
     public static MpgStatsClient build(Config config, String urlOverride) {
-        MpgStatsClient client = new MpgStatsClient();
+        MpgStatsClient client = new MpgStatsClient(config);
         client.setUrl(StringUtils.defaultString(urlOverride, "https://api.mlnstats.com"));
-        client.setProxy(config.getProxy());
-        client.setSslCertificatesCheck(config.isSslCertificatesCheck());
         return client;
     }
 

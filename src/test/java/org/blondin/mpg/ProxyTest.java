@@ -4,10 +4,13 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 import java.util.Base64;
 
 import org.apache.commons.lang3.StringUtils;
+import org.blondin.mpg.config.Config;
 import org.blondin.mpg.config.Proxy;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -78,10 +81,11 @@ public class ProxyTest {
 
     @Test
     public void testProxyMockNoAuthent() {
-        AbstractClient client = new AbstractClient() {
+        Config config = mock(Config.class);
+        doReturn(new Proxy("http://localhost:" + proxy.getListenAddress().getPort(), null, null)).when(config).getProxy();
+        AbstractClient client = new AbstractClient(config) {
         };
         client.setUrl("http://localhost:" + server.port());
-        client.setProxy(new Proxy("http://localhost:" + proxy.getListenAddress().getPort(), null, null));
 
         try {
             client.get("/", String.class);
@@ -92,10 +96,11 @@ public class ProxyTest {
 
     @Test
     public void testProxyMockBadAuthent() {
-        AbstractClient client = new AbstractClient() {
+        Config config = mock(Config.class);
+        doReturn(new Proxy("http://localhost:" + proxy.getListenAddress().getPort(), "bar", "foo")).when(config).getProxy();
+        AbstractClient client = new AbstractClient(config) {
         };
         client.setUrl("http://localhost:" + server.port());
-        client.setProxy(new Proxy("http://localhost:" + proxy.getListenAddress().getPort(), "bar", "foo"));
 
         try {
             client.get("/", String.class);
@@ -111,10 +116,11 @@ public class ProxyTest {
 
         stubFor(get(url).willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(content)));
 
-        AbstractClient client = new AbstractClient() {
+        Config config = mock(Config.class);
+        doReturn(new Proxy("http://localhost:" + proxy.getListenAddress().getPort(), "foo", "bar")).when(config).getProxy();
+        AbstractClient client = new AbstractClient(config) {
         };
         client.setUrl("http://localhost:" + server.port());
-        client.setProxy(new Proxy("http://localhost:" + proxy.getListenAddress().getPort(), "foo", "bar"));
 
         Assert.assertEquals(content, client.get(url, String.class));
     }

@@ -65,7 +65,7 @@ public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
     @Test
     public void testFrenchAccent() throws Exception {
 
-        InjuredSuspendedMaLigue2Client client = spy(InjuredSuspendedMaLigue2Client.class);
+        InjuredSuspendedMaLigue2Client client = spy(InjuredSuspendedMaLigue2Client.build(null));
         doReturn(
                 FileUtils.readFileToString(new File(TESTFILES_BASE, "maligue2.joueurs-blesses-et-suspendus.20201006.html"), Charset.forName("UTF-8")))
                         .when(client).getHtmlContent();
@@ -75,7 +75,7 @@ public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
 
     @Test
     public void testSomeInjuriesWithNoParentheseEnding() throws Exception {
-        InjuredSuspendedMaLigue2Client client = spy(InjuredSuspendedMaLigue2Client.class);
+        InjuredSuspendedMaLigue2Client client = spy(InjuredSuspendedMaLigue2Client.build(null));
         doReturn(
                 FileUtils.readFileToString(new File(TESTFILES_BASE, "maligue2.joueurs-blesses-et-suspendus.20190822.html"), Charset.forName("UTF-8")))
                         .when(client).getHtmlContent();
@@ -87,7 +87,7 @@ public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
 
     @Test
     public void testSomeInjuries() throws Exception {
-        InjuredSuspendedMaLigue2Client client = spy(InjuredSuspendedMaLigue2Client.class);
+        InjuredSuspendedMaLigue2Client client = spy(InjuredSuspendedMaLigue2Client.build(null));
         doReturn(
                 FileUtils.readFileToString(new File(TESTFILES_BASE, "maligue2.joueurs-blesses-et-suspendus.20190818.html"), Charset.forName("UTF-8")))
                         .when(client).getHtmlContent();

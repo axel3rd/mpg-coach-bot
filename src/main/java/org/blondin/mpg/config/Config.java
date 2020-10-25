@@ -42,6 +42,8 @@ public class Config {
     private List<String> leaguesInclude = new ArrayList<>();
     private List<String> leaguesExclude = new ArrayList<>();
     private boolean sslCertificatesCheck = true;
+    private List<String> requestWaitUrls = Arrays.asList("https://www.sportsgambler.com");
+    private int requestWaitTime = 1;
 
     private Config() {
         super();
@@ -68,6 +70,7 @@ public class Config {
         configEfficiencyCoefficient(config, properties);
         configEfficiencySell(config, properties);
         configProxy(config, properties);
+        configRequestWait(config, properties);
         configLogs(properties);
         return config;
     }
@@ -158,6 +161,14 @@ public class Config {
         }
     }
 
+    private static void configRequestWait(Config config, Properties properties) {
+        config.requestWaitTime = parseInt(properties, "request.wait.time", config.requestWaitTime, 1, 999);
+        String urls = parseString(properties, "request.wait.urls");
+        if (StringUtils.isNoneBlank(urls)) {
+            config.requestWaitUrls = Arrays.asList(urls.trim().split("\\s*,\\s*"));
+        }
+    }
+
     private static void configProxy(Config config, Properties properties) {
         String uri = parseString(properties, "proxy.uri");
         String user = parseString(properties, "proxy.user");
@@ -241,6 +252,14 @@ public class Config {
 
     public Proxy getProxy() {
         return proxy;
+    }
+
+    public int getRequestWaitTime() {
+        return requestWaitTime;
+    }
+
+    public List<String> getRequestWaitUrls() {
+        return requestWaitUrls;
     }
 
     public List<String> getLeaguesInclude() {

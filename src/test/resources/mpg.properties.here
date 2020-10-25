@@ -45,5 +45,9 @@ transactions.proposal = false
 # Check SSL certificates of third part Website ('true' by default)
 #ssl.certificates.check = false
 
+# Wait time (in seconds) for successive requests on URLs (list separated by comma)
+#request.wait.urls=https://www.sportsgambler.com
+#request.wait.time=1
+
 # Enable debug logs
 #logs.debug = true
