@@ -50,15 +50,17 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractInjuredSuspende
 
     }
 
+    private InjuredSuspendedSportsGamblerClient(Config config) {
+        super(config);
+    }
+
     public static InjuredSuspendedSportsGamblerClient build(Config config) {
         return build(config, null);
     }
 
     public static InjuredSuspendedSportsGamblerClient build(Config config, String urlOverride) {
-        InjuredSuspendedSportsGamblerClient client = new InjuredSuspendedSportsGamblerClient();
+        InjuredSuspendedSportsGamblerClient client = new InjuredSuspendedSportsGamblerClient(config);
         client.setUrl(StringUtils.defaultString(urlOverride, "https://www.sportsgambler.com/football/injuries-suspensions"));
-        client.setProxy(config.getProxy());
-        client.setSslCertificatesCheck(config.isSslCertificatesCheck());
         return client;
     }
 

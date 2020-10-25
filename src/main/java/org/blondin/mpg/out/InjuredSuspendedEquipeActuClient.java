@@ -94,15 +94,17 @@ public class InjuredSuspendedEquipeActuClient extends AbstractInjuredSuspendedNo
         LOGO_NAME_WRAPPER.put("Internazionale", "Inter");
     }
 
+    private InjuredSuspendedEquipeActuClient(Config config) {
+        super(config);
+    }
+
     public static InjuredSuspendedEquipeActuClient build(Config config) {
         return build(config, null);
     }
 
     public static InjuredSuspendedEquipeActuClient build(Config config, String urlOverride) {
-        InjuredSuspendedEquipeActuClient client = new InjuredSuspendedEquipeActuClient();
+        InjuredSuspendedEquipeActuClient client = new InjuredSuspendedEquipeActuClient(config);
         client.setUrl(StringUtils.defaultString(urlOverride, "https://www.equipeactu.fr/blessures-et-suspensions/fodbold"));
-        client.setProxy(config.getProxy());
-        client.setSslCertificatesCheck(config.isSslCertificatesCheck());
         return client;
     }
 

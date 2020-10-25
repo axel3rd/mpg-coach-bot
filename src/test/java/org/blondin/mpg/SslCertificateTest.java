@@ -5,9 +5,12 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 import javax.ws.rs.ProcessingException;
 
+import org.blondin.mpg.config.Config;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -27,7 +30,7 @@ public class SslCertificateTest {
 
         stubFor(get(url).willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(content)));
 
-        AbstractClient client = new AbstractClient() {
+        AbstractClient client = new AbstractClient(null) {
         };
         client.setUrl("https://localhost:" + server.httpsPort());
         try {
@@ -45,10 +48,11 @@ public class SslCertificateTest {
 
         stubFor(get(url).willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(content)));
 
-        AbstractClient client = new AbstractClient() {
+        Config config = mock(Config.class);
+        doReturn(false).when(config).isSslCertificatesCheck();
+        AbstractClient client = new AbstractClient(config) {
         };
         client.setUrl("https://localhost:" + server.httpsPort());
-        client.setSslCertificatesCheck(false);
 
         Assert.assertEquals(content, client.get(url, String.class));
     }

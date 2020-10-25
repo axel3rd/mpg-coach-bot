@@ -18,15 +18,17 @@ public class InjuredSuspendedMaLigue2Client extends AbstractClient {
 
     private List<Player> cache = null;
 
+    private InjuredSuspendedMaLigue2Client(Config config) {
+        super(config);
+    }
+
     public static InjuredSuspendedMaLigue2Client build(Config config) {
         return build(config, null);
     }
 
     public static InjuredSuspendedMaLigue2Client build(Config config, String urlOverride) {
-        InjuredSuspendedMaLigue2Client client = new InjuredSuspendedMaLigue2Client();
+        InjuredSuspendedMaLigue2Client client = new InjuredSuspendedMaLigue2Client(config);
         client.setUrl(StringUtils.defaultString(urlOverride, "https://maligue2.fr/2019/08/05/joueurs-blesses-et-suspendus/"));
-        client.setProxy(config.getProxy());
-        client.setSslCertificatesCheck(config.isSslCertificatesCheck());
         return client;
     }
 

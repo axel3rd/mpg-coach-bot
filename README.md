@@ -184,6 +184,12 @@ To enable/disable SSL certificates check (since v1.7):
     # Check SSL certificates of third part Website
     ssl.certificates.check = true
 
+To avoid any temporary ban on some third-party websites, wait a little before between successive requests (since v1.7.1):
+
+    # Wait time (in seconds) for successive requests on URLs (list separated by comma)
+    request.wait.urls=https://www.sportsgambler.com
+    request.wait.time=1
+
 To add some debug logs about execution (since v1.2):
 
     # Enable debug logs

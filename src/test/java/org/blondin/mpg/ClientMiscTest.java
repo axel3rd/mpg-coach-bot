@@ -2,12 +2,19 @@ package org.blondin.mpg;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
+import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Map;
 
+import org.blondin.mpg.config.Config;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -32,10 +39,9 @@ public class ClientMiscTest {
         final String content = "{ \"msg\": \"foobar\"}";
         final String path = "/api/test";
         stubFor(get(path).willReturn(aResponse().withStatus(400).withHeader("Content-Type", "application/json").withBody(content)));
-        AbstractClient client = new AbstractClient() {
+        AbstractClient client = new AbstractClient(null) {
         };
-        String url = "http://localhost:" + server.port();
-        client.setUrl(url);
+        client.setUrl("http://localhost:" + server.port());
 
         try {
             client.get(path, String.class);
@@ -51,10 +57,9 @@ public class ClientMiscTest {
     public void testErrorNoContentMock() throws Exception {
         final String path = "/api/test";
         stubFor(get(path).willReturn(aResponse().withStatus(400)));
-        AbstractClient client = new AbstractClient() {
+        AbstractClient client = new AbstractClient(null) {
         };
-        String url = "http://localhost:" + server.port();
-        client.setUrl(url);
+        client.setUrl("http://localhost:" + server.port());
 
         try {
             client.get(path, String.class);
@@ -71,7 +76,7 @@ public class ClientMiscTest {
         final String content = "{ \"key\": \"value\"}";
         final String path = "/api/test";
         stubFor(get(path).willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(content)));
-        AbstractClient client = new AbstractClient() {
+        AbstractClient client = new AbstractClient(null) {
         };
         String url = "http://localhost:" + server.port();
         client.setUrl(url);
@@ -109,7 +114,7 @@ public class ClientMiscTest {
 
         stubFor(get(path).willReturn(aResponse().withHeader("Content-Type", "text/html").withBody(content)));
 
-        AbstractClient client = new AbstractClient() {
+        AbstractClient client = new AbstractClient(null) {
         };
         String url = "http://localhost:" + server.port();
         client.setUrl(url);
@@ -131,5 +136,29 @@ public class ClientMiscTest {
         Assert.assertEquals("Hello", client.get(path, String.class, 1));
         Assert.assertTrue(cacheFile.exists());
         Assert.assertTrue(String.format("Saved time: %s, last time: %s", saveTime, cacheFile.lastModified()), cacheFile.lastModified() > saveTime);
+    }
+
+    @Test
+    public void testWaitBeforeSuccessiveRequestsMock() throws Exception {
+        final String content = "Hello";
+        final String path = "/api/test";
+
+        stubFor(get(path).willReturn(aResponse().withHeader("Content-Type", "text/html").withBody(content)));
+
+        Config c = mock(Config.class);
+        when(c.getRequestWaitTime()).thenReturn(1);
+        when(c.getRequestWaitUrls()).thenReturn(Arrays.asList("http://localhost"));
+        AbstractClient client = new AbstractClient(c) {
+        };
+        client.setUrl("http://localhost:" + server.port());
+
+        long begin = System.currentTimeMillis();
+        client.get(path, String.class);
+        client.get(path, String.class);
+        client.get(path, String.class);
+        long time = System.currentTimeMillis() - begin;
+
+        Assert.assertTrue("Second request should be delayed (current:" + time + ")", time > 2000);
+        verify(3, getRequestedFor(urlMatching(path)));
     }
 }

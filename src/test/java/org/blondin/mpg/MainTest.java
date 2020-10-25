@@ -902,7 +902,7 @@ public class MainTest extends AbstractMockTestClient {
         when(mpgStatsClient.getStats(any()))
                 .thenReturn(new ObjectMapper().readValue(new File(TESTFILES_BASE, "mpgstats.ligue-1.20181017.json"), Championship.class));
 
-        InjuredSuspendedEquipeActuClient outPlayersEquipeActuClient = spy(InjuredSuspendedEquipeActuClient.class);
+        InjuredSuspendedEquipeActuClient outPlayersEquipeActuClient = spy(InjuredSuspendedEquipeActuClient.build(null));
         doReturn(FileUtils.readFileToString(new File(TESTFILES_BASE, "equipeactu.ligue-1.20181017.html"), StandardCharsets.UTF_8))
                 .when(outPlayersEquipeActuClient).getHtmlContent(ChampionshipOutType.LIGUE_1);
         InjuredSuspendedWrapperClient outPlayersClient = spy(InjuredSuspendedWrapperClient.class);
