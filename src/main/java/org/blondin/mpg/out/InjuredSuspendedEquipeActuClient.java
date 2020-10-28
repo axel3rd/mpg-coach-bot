@@ -10,6 +10,7 @@ import org.apache.commons.text.WordUtils;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.model.OutType;
 import org.blondin.mpg.out.model.Player;
+import org.blondin.mpg.root.exception.TeamsNotFoundException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -156,7 +157,7 @@ public class InjuredSuspendedEquipeActuClient extends AbstractInjuredSuspendedNo
             players.add(player);
         }
         if (!oneTeamHasBeenParsed) {
-            throw new UnsupportedOperationException("No teams have been found, parsing problem");
+            throw new TeamsNotFoundException("No teams have been found on EquipeActu, parsing problem");
         }
         return players;
     }
