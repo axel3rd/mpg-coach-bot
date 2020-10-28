@@ -102,7 +102,7 @@ public class MainTest extends AbstractMockTestClient {
 
         // Asserts
         Assert.assertTrue(getLogOut().contains("========== Des Cartons =========="));
-        verify(19, getRequestedFor(urlMatching("/football/injuries-suspensions/france-ligue-1/")));
+        verify(1, getRequestedFor(urlMatching("/football/injuries-suspensions/france-ligue-1/")));
         verify(1, getRequestedFor(urlMatching("/blessures-et-suspensions/fodbold/france/ligue-1")));
     }
 

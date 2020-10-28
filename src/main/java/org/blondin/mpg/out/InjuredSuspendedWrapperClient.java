@@ -5,7 +5,10 @@ import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.model.OutType;
 import org.blondin.mpg.out.model.Player;
 import org.blondin.mpg.out.model.Position;
+import org.blondin.mpg.root.exception.TeamsNotFoundException;
 import org.blondin.mpg.root.exception.UrlForbiddenException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Wrapper for:<br/>
@@ -15,9 +18,11 @@ import org.blondin.mpg.root.exception.UrlForbiddenException;
  */
 public class InjuredSuspendedWrapperClient {
 
+    private static final Logger LOG = LoggerFactory.getLogger(InjuredSuspendedWrapperClient.class);
     private static InjuredSuspendedSportsGamblerClient sportsGamblerClient = null;
     private static InjuredSuspendedEquipeActuClient equipeActuClient = null;
     private static InjuredSuspendedMaLigue2Client maLigue2Client = null;
+    private boolean sportsGamblerReachable = true;
 
     public static InjuredSuspendedWrapperClient build(Config config) {
         return build(config, null, null, null);
@@ -50,11 +55,18 @@ public class InjuredSuspendedWrapperClient {
             return maLigue2Client.getPlayer(playerName, teamName);
         }
         try {
-            return useDirectlyOnlyForTestGetSportsGamblerClient().getPlayer(championship, playerName, teamName);
+            if (sportsGamblerReachable) {
+                return useDirectlyOnlyForTestGetSportsGamblerClient().getPlayer(championship, playerName, teamName);
+            }
         } catch (UrlForbiddenException e) {
-            // Fallback on EquipeActu if SportsGambler not reachable
-            return useDirectlyOnlyForTestGetEquipeActuClient().getPlayer(championship, playerName, position, teamName, excludes);
+            LOG.error("WARN: SportsGambler is not reacheable, fallback to EquipeActu...");
+            sportsGamblerReachable = false;
+        } catch (TeamsNotFoundException e) {
+            LOG.error("WARN: No teams found on SportsGambler, fallback to EquipeActu...");
+            LOG.error("(Your IP is perhaps temporary ban, try to increase 'request.wait.time' parameter)");
         }
+        // Fallback on EquipeActu if SportsGambler not reachable
+        return useDirectlyOnlyForTestGetEquipeActuClient().getPlayer(championship, playerName, position, teamName, excludes);
     }
 
     public InjuredSuspendedEquipeActuClient useDirectlyOnlyForTestGetEquipeActuClient() {

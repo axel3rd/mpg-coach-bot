@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.model.OutType;
 import org.blondin.mpg.out.model.Player;
+import org.blondin.mpg.root.exception.TeamsNotFoundException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -116,7 +117,7 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractInjuredSuspende
             }
         }
         if (!oneTeamHasBeenParsed) {
-            throw new UnsupportedOperationException("No teams have been found, parsing problem");
+            throw new TeamsNotFoundException("No teams have been found on SportsGambler, parsing problem");
         }
         return players;
     }
