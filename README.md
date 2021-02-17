@@ -1,5 +1,4 @@
-
-[![Build Status](https://travis-ci.org/axel3rd/mpg-coach-bot.svg?branch=master)](https://travis-ci.org/axel3rd/mpg-coach-bot) [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=org.blondin%3Ampg-coach-bot&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.blondin%3Ampg-coach-bot) [ ![Download](https://api.bintray.com/packages/axel3rd/generic/mpg-coach-bot/images/download.svg) ](https://bintray.com/axel3rd/generic/mpg-coach-bot/_latestVersion#files) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Development version: [ ![download](https://api.bintray.com/packages/axel3rd/generic-dev/mpg-coach-bot/images/download.svg) ](https://bintray.com/axel3rd/generic-dev/mpg-coach-bot/_latestVersion#files)
+[![Build Status](https://github.com/axel3rd/mpg-coach-bot/workflows/Development%20Build/badge.svg)](https://github.com/axel3rd/mpg-coach-bot/actions?query=workflow%3A%22Development+Build%22) [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=org.blondin%3Ampg-coach-bot&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.blondin%3Ampg-coach-bot)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![Download](https://img.shields.io/github/v/release/axel3rd/mpg-coach-bot)](https://github.com/axel3rd/mpg-coach-bot/releases/latest)
 
 # mpg-coach-bot
 
@@ -30,7 +29,7 @@ This efficiency is focused on recent days (8 by default), current season notatio
 
 *Prerequisite: [java](https://www.java.com/fr/download/) should be installed and on your PATH.*
 
-Download package (Via Download buttons at top of this documentation, not the GitHub "releases" link), extract ZIP files and update the given `mpg.properties` file with your *MPG* credentials and main options:
+Download package `mpg-coach-bot-X.Y.zip` file from [releases](https://github.com/axel3rd/mpg-coach-bot/releases) (or development SNAPSHOT from [packages](https://github.com/orgs/axel3rd/packages?repo_name=mpg-coach-bot)), extract ZIP files and update the given `mpg.properties` file with your *MPG* credentials and main options:
 
     email = firstName.lastName@gmail.com
     password = foobar

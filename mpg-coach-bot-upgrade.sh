@@ -11,21 +11,25 @@ fi
 echo "Version to upgrade: $VERSION";
 cd $(dirname $0)
 
-REPO="generic";
 echo "$VERSION" | grep "SNAPSHOT" > /dev/null
 if [ $? -eq 0 ]; then
-  REPO="generic-dev";
+    echo "ERROR: SNAPSHOT version update is currently not supported (GitHub packages does not allow non-authenticated access), exiting";
+    exit 1;
 fi
 
 FILE_PREFIX="mpg-coach-bot";
 FILE_DOWNLOAD="$FILE_PREFIX-$VERSION.zip";
-URL="https://dl.bintray.com/axel3rd/$REPO/$FILE_DOWNLOAD"
+URL="https://github.com/axel3rd/mpg-coach-bot/releases/download/mpg-coach-bot-$VERSION/$FILE_DOWNLOAD"
 
 echo "Download: $URL";
 curl -L "$URL" -o "$FILE_DOWNLOAD";
+if [ $? -ne 0 ]; then
+    echo "ERROR: Package cannot be downloaded, exiting";
+    exit 1;
+fi
 
-rm "$FILE_PREFIX-"*".jar";
-rm "mpg-coach-bot.sh";
+rm -f "$FILE_PREFIX-"*".jar";
+rm -f "mpg-coach-bot.sh";
 
 unzip "$FILE_DOWNLOAD" "mpg-coach-bot.sh";
 unzip "$FILE_DOWNLOAD" "$FILE_PREFIX-$VERSION.jar";
