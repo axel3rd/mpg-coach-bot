@@ -6,7 +6,8 @@ import java.util.List;
 
 public enum OutType {
 
-    INJURY_GREEN("injury_green"), INJURY_ORANGE("injury_orange"), INJURY_RED("injury", "cross"), SUSPENDED("suspended", "red"), ASBENT("absent");
+    INJURY_GREEN("injury_green"), INJURY_ORANGE("injury_orange", "injury-questionmark"), INJURY_RED("injury", "injury-plus", "cross"),
+    SUSPENDED("suspended", "red", "redcard"), ASBENT("absent");
 
     private final List<String> values;
 

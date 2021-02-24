@@ -6,7 +6,7 @@ MPG (Mon Petit Gazon) coach bot, to automate and optimize weekly league actions
 
 ## Concept
 
-Automate and optimize your [MPG](http://mpg.football/) weekly league actions, using external data like [mpgstats](https://www.mpgstats.fr) and [sportsgambler](https://www.sportsgambler.com/football/injuries-suspensions/).
+Automate and optimize your [MPG](http://mpg.football/) weekly league actions, using external data like [mpgstats](https://www.mpgstats.fr) and [sportsgambler](https://www.sportsgambler.com/injuries/football/).
 
 **The common features are:**
 

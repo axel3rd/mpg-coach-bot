@@ -15,7 +15,7 @@ public class Player {
     }
 
     public Position getPosition() {
-        if (getFullNameWithPosition().matches(".* \\([A-Z]{2}\\)")) { // NOSONAR : Secure regexp here
+        if (getFullNameWithPosition().matches(".* \\([A-Z]{1,2}\\)")) { // NOSONAR : Secure regexp here
             return Position.getNameByValue(getFullNameWithPosition().substring(getFullNameWithPosition().lastIndexOf('(')));
         }
         return Position.UNDEFINED;
