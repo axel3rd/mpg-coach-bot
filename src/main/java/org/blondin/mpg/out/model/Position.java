@@ -1,22 +1,25 @@
 
 package org.blondin.mpg.out.model;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum Position {
 
-    A("(AT)"), M("(MI)"), D("(DF)"), G("(GK)"), UNDEFINED("");
+    A("(AT)", "(F)"), M("(MI)", "(M)"), D("(DF)", "(D)"), G("(GK)", "(G)"), UNDEFINED("");
 
-    private final String value;
+    private final List<String> values;
 
-    private Position(final String value) {
-        this.value = value;
+    private Position(final String... values) {
+        this.values = Arrays.asList(values);
     }
 
     @JsonCreator
     public static Position getNameByValue(final String value) {
         for (final Position s : Position.values()) {
-            if (s.value.equals(value)) {
+            if (s.values.contains(value)) {
                 return s;
             }
         }

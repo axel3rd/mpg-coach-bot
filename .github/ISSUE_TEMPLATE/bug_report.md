@@ -32,13 +32,13 @@ Depending your championship, join data files set in attachment.
 
 3. The [Players statistics](https://www.mpgstats.fr/) time update data : https://api.mlnstats.com/builds
 
-4. The [Injury / Suspended](https://www.sportsgambler.com/football/injuries-suspensions/) data, one full HTML from:
+4. The [Injury / Suspended](https://www.sportsgambler.com/injuries/football/) data, one full HTML from:
 
 - https://maligue2.fr/2019/08/05/joueurs-blesses-et-suspendus/
-- https://www.sportsgambler.com/football/injuries-suspensions/france-ligue-1/
-- https://www.sportsgambler.com/football/injuries-suspensions/england-premier-league/
-- https://www.sportsgambler.com/football/injuries-suspensions/spain-la-liga/
-- https://www.sportsgambler.com/football/injuries-suspensions/italy-serie-a/
+- https://www.sportsgambler.com/injuries/football/france-ligue-1/
+- https://www.sportsgambler.com/injuries/football/england-premier-league/
+- https://www.sportsgambler.com/injuries/football/spain-la-liga/
+- https://www.sportsgambler.com/injuries/football/italy-serie-a/
 
 **Expected behavior**
 

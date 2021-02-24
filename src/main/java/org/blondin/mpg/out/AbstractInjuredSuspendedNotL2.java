@@ -32,7 +32,7 @@ public abstract class AbstractInjuredSuspendedNotL2 extends AbstractClient {
      */
     public final Player getPlayer(ChampionshipOutType championship, String playerName, String teamName) {
         OutType[] excludes = null;
-        return getPlayer(championship, playerName, null, teamName, excludes);
+        return getPlayer(championship, playerName, Position.UNDEFINED, teamName, excludes);
     }
 
     /**
@@ -60,7 +60,7 @@ public abstract class AbstractInjuredSuspendedNotL2 extends AbstractClient {
      * @return Player or null if not found
      */
     public Player getPlayer(ChampionshipOutType championship, String playerName, String teamName, OutType... excludes) {
-        return getPlayer(championship, playerName, null, teamName, excludes);
+        return getPlayer(championship, playerName, Position.UNDEFINED, teamName, excludes);
     }
 
     /**
@@ -75,7 +75,6 @@ public abstract class AbstractInjuredSuspendedNotL2 extends AbstractClient {
      */
     public Player getPlayer(ChampionshipOutType championship, String playerName, Position position, String teamName, OutType... excludes) {
         List<OutType> excluded = Arrays.asList(ObjectUtils.defaultIfNull(excludes, new OutType[] {}));
-
         for (Player player : getPlayers(championship)) {
             if (!excluded.contains(player.getOutType()) && Stream.of(StringUtils.stripAccents(playerName.toLowerCase()).split(" "))
                     .allMatch(player.getFullNameWithPosition().toLowerCase()::contains)) {
@@ -92,9 +91,7 @@ public abstract class AbstractInjuredSuspendedNotL2 extends AbstractClient {
     }
 
     final List<Player> getPlayers(ChampionshipOutType championship) {
-        if (!cache.containsKey(championship)) {
-            cache.put(championship, getPlayers(getHtmlContent(championship)));
-        }
+        cache.computeIfAbsent(championship, k -> getPlayers(getHtmlContent(championship)));
         return cache.get(championship);
     }
 

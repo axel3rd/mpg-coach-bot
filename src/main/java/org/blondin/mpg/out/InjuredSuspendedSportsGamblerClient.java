@@ -15,7 +15,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 /**
- * https://www.sportsgambler.com/football/injuries-suspensions/
+ * https://www.sportsgambler.com/injuries/football/
  */
 public class InjuredSuspendedSportsGamblerClient extends AbstractInjuredSuspendedNotL2 {
 
@@ -28,7 +28,9 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractInjuredSuspende
 
         // Ligue 1
         TEAM_NAME_WRAPPER.put("Paris Saint Germain", "Paris");
+        TEAM_NAME_WRAPPER.put("PSG", "Paris");
         TEAM_NAME_WRAPPER.put("Saint Etienne", "Saint-Étienne");
+        TEAM_NAME_WRAPPER.put("Saint-Etienne", "Saint-Étienne");
         TEAM_NAME_WRAPPER.put("Nimes", "Nîmes");
 
         // Premiere League
@@ -38,17 +40,22 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractInjuredSuspende
         TEAM_NAME_WRAPPER.put("Sheffield United", "Sheffield");
         TEAM_NAME_WRAPPER.put("West Bromwich Albion", "West Bromwich");
         TEAM_NAME_WRAPPER.put("Wolverhampton Wanderers", "Wolverhampton");
+        TEAM_NAME_WRAPPER.put("West Brom", "West Bromwich");
 
         // Serie A
         TEAM_NAME_WRAPPER.put("AC Milan", "Milan");
+        TEAM_NAME_WRAPPER.put("Inter Milan", "Inter");
         TEAM_NAME_WRAPPER.put("SSC Napoli", "Napoli");
+        TEAM_NAME_WRAPPER.put("Hellas Verona", "Verona");
 
         // Ligua
+        TEAM_NAME_WRAPPER.put("Alaves", "Alavés");
         TEAM_NAME_WRAPPER.put("Celta Vigo", "Celta");
         TEAM_NAME_WRAPPER.put("Athletic Bilbao", "Bilbao");
         TEAM_NAME_WRAPPER.put("Atlético Madrid", "Atlético");
+        TEAM_NAME_WRAPPER.put("Atletico Madrid", "Atlético");
         TEAM_NAME_WRAPPER.put("Cadiz", "Cadix");
-
+        TEAM_NAME_WRAPPER.put("Real Betis", "Betis");
     }
 
     private InjuredSuspendedSportsGamblerClient(Config config) {
@@ -61,7 +68,7 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractInjuredSuspende
 
     public static InjuredSuspendedSportsGamblerClient build(Config config, String urlOverride) {
         InjuredSuspendedSportsGamblerClient client = new InjuredSuspendedSportsGamblerClient(config);
-        client.setUrl(StringUtils.defaultString(urlOverride, "https://www.sportsgambler.com/football/injuries-suspensions"));
+        client.setUrl(StringUtils.defaultString(urlOverride, "https://www.sportsgambler.com/injuries/football"));
         return client;
     }
 
@@ -97,24 +104,13 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractInjuredSuspende
                 oneTeamHasBeenParsed = true;
             }
 
-            for (Element line : item.nextElementSibling().select("tbody").first().select("tr")) {
-                if (line.select("td").size() == 1) {
-                    // No players injured or suspended for this this
-                    if (!line.selectFirst("td").text().contains("No players are currently injured or suspended")) {
-                        throw new UnsupportedOperationException(
-                                String.format("Only one line, but not with correct message for no injured/suspended players: %s",
-                                        line.selectFirst("td").ownText()));
-                    }
-                    break;
-                }
-                Player player = new Player();
-                player.setTeam(getMpgTeamName(team));
-                player.setOutType(parseOutType(line.select("td").get(0)));
-                player.setFullNameWithPosition(line.select("td").get(1).text());
-                player.setDescription(line.select("td").get(2).text());
-                player.setLength(line.select("td").get(3).text());
-                players.add(player);
+            // SportGambler changes html content in February 2021
+            if (item.nextElementSibling().select("tbody").isEmpty()) {
+                players.addAll(parsingPlayersAfterFebruaray2021(item, getMpgTeamName(team)));
+            } else {
+                players.addAll(parsingPlayersBeforeFebruaray2021(item, getMpgTeamName(team)));
             }
+
         }
         if (!oneTeamHasBeenParsed) {
             throw new TeamsNotFoundException("No teams have been found on SportsGambler, parsing problem");
@@ -122,7 +118,44 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractInjuredSuspende
         return players;
     }
 
-    private static OutType parseOutType(Element e) {
+    private List<Player> parsingPlayersAfterFebruaray2021(Element item, String team) {
+        List<Player> players = new ArrayList<>();
+        for (Element line : item.parent().select("div.inj-row")) {
+            Element p = line.select("div.inj-container").first();
+            Player player = new Player();
+            player.setTeam(team);
+            player.setOutType(OutType.getNameByValue(p.select("span.inj-type").first().className().substring(9)));
+            player.setFullNameWithPosition(p.select("span.inj-player").first().text() + " (" + p.select("span.inj-position").first().text() + ")");
+            player.setDescription(p.select("span.inj-info").first().text());
+            player.setLength(p.select("span.inj-return").first().text());
+            players.add(player);
+        }
+        return players;
+    }
+
+    private List<Player> parsingPlayersBeforeFebruaray2021(Element item, String team) {
+        List<Player> players = new ArrayList<>();
+        for (Element line : item.nextElementSibling().select("tbody").first().select("tr")) {
+            if (line.select("td").size() == 1) {
+                // No players injured or suspended for this team
+                if (!line.selectFirst("td").text().contains("No players are currently injured or suspended")) {
+                    throw new UnsupportedOperationException(String.format(
+                            "Only one line, but not with correct message for no injured/suspended players: %s", line.selectFirst("td").ownText()));
+                }
+                break;
+            }
+            Player player = new Player();
+            player.setTeam(team);
+            player.setOutType(parseOutTypeBeforeFebruary2021(line.select("td").get(0)));
+            player.setFullNameWithPosition(line.select("td").get(1).text());
+            player.setDescription(line.select("td").get(2).text());
+            player.setLength(line.select("td").get(3).text());
+            players.add(player);
+        }
+        return players;
+    }
+
+    private static OutType parseOutTypeBeforeFebruary2021(Element e) {
         if (e.selectFirst("img") != null) {
             String image = e.selectFirst("img").attr("src");
             if (StringUtils.isNotBlank(image)) {
