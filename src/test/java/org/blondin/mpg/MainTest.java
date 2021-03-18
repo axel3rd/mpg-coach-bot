@@ -87,6 +87,21 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testInjuredLigue2ServiceUnavailable() throws Exception {
+        prepareMainFrenchLigue2Mocks("MLAX7HMK-MLEFEX6G", "20201006", "20201006", null);
+        stubFor(get("/2019/08/05/joueurs-blesses-et-suspendus/")
+                .willReturn(aResponse().withStatus(Response.Status.SERVICE_UNAVAILABLE.getStatusCode())));
+        stubFor(get("/league/MLEFEX6G/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLEFEX6G.20201006.json")));
+
+        Config config = spy(getConfig());
+        doReturn(Arrays.asList("MLEFEX6G")).when(config).getLeaguesInclude();
+        executeMainProcess(config);
+
+        Assert.assertTrue("Maligue2.fr is unavailable", getLogOut().contains("L2 injured/suspended players not taken into account"));
+    }
+
+    @Test
     public void testInjuredSuspendedSportsGamblerFallBackEquipeActu() throws Exception {
         prepareMainFrenchLigueMocks("MLAX7HMK-MLEFEX6G-MN7VSYBM-MLMHBPCB", "20201021", 1, "20201021", null, "20201006", null);
         stubFor(get("/league/MLAX7HMK/coach")

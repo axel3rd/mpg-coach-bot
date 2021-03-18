@@ -18,6 +18,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.ProcessingException;
+import javax.ws.rs.ServiceUnavailableException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -155,6 +156,9 @@ public abstract class AbstractClient {
             Response response = invokeWithRetry(invocationBuilder, entityRequest, url, path, 0);
             if (Response.Status.FORBIDDEN.getStatusCode() == response.getStatus()) {
                 throw new UrlForbiddenException(String.format("Forbidden URL: %s", url));
+            }
+            if (Response.Status.SERVICE_UNAVAILABLE.getStatusCode() == response.getStatus()) {
+                throw new ServiceUnavailableException(String.format("Service Unavailable URL: %s", url));
             }
             if (Response.Status.OK.getStatusCode() != response.getStatus()) {
                 String content = IOUtils.toString((InputStream) response.getEntity(), StandardCharsets.UTF_8);
