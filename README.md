@@ -234,7 +234,7 @@ For development/SNAPSHOT build, use:
 mvn package
 ```
 
-Locally on your computer, you can improve end2end tests by providing file `src/test/resources/mpg.properties` file with *real* data (see `mpg.properties.here` file in directory for details):
+Locally on your computer, you can improve end2end tests by providing file `src/test/resources/mpg.properties` file (which is not a symlink!) with *real* data (see `mpg.properties.here` file in directory for details):
 
 ```
 email = firstName.lastName@gmail.com
