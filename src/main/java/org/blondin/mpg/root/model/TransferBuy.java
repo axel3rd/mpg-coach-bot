@@ -10,6 +10,7 @@ public class TransferBuy {
 
     private int budget;
     private List<Player> availablePlayers;
+    private List<Player> userPlayers;
 
     public int getBudget() {
         return budget;
@@ -17,5 +18,9 @@ public class TransferBuy {
 
     public List<Player> getAvailablePlayers() {
         return availablePlayers;
+    }
+
+    public List<Player> getUserPlayers() {
+        return userPlayers;
     }
 }

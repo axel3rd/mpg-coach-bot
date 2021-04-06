@@ -16,10 +16,12 @@ public class Player {
     private String lastName;
     private Position position;
     private int quotation;
+    private int pricePaid;
     @JsonProperty("teamid")
     private int teamId;
     @JsonProperty("club")
     private String club;
+    private PlayerStatus status;
 
     private double efficiency;
 
@@ -65,5 +67,13 @@ public class Player {
 
     public void setClub(String club) {
         this.club = club;
+    }
+
+    public PlayerStatus getStatus() {
+        return status;
+    }
+
+    public int getPricePaid() {
+        return pricePaid;
     }
 }

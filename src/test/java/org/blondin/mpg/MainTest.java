@@ -87,6 +87,39 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testTransactionsProposalIndexOutOfBoundsException() throws Exception {
+        stubFor(post("/user/signIn")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20200106.json")));
+        stubFor(get("/user/dashboard").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.MLAX7HMK-MLEFEX6G-MN7VSYBM-MLMHBPCB.json")));
+        stubFor(get("/league/MN7VSYBM/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MN7VSYBM.20210406.json")));
+        stubFor(get("/league/MN7VSYBM/transfer/buy")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.transfer.buy.MN7VSYBM.20210406.json")));
+        stubFor(get("/leagues/Serie-A")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.serie-a.20210406.json")));
+        stubFor(get("/injuries/football/italy-serie-a/")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.serie-a.20210406.html")));
+
+        // Only SerieA
+        Config config = spy(getConfig());
+        doReturn(Arrays.asList("MN7VSYBM")).when(config).getLeaguesInclude();
+        doReturn(true).when(config).isTransactionsProposal();
+
+        executeMainProcess(config);
+
+        // 3 goalkeepers proposed
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Montipò Lorenzo     |  4.97 | 13 |"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Sepe Luigi          |  4.78 | 11 |"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Provedel Ivan       |  3.93 | 13 |"));
+
+        // Current players under buy should not be part of budget
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Budget: 2"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Budget if last field players by line sold: 36"));
+    }
+
+    @Test
     public void testInjuredLigue2ServiceUnavailable() throws Exception {
         prepareMainFrenchLigue2Mocks("MLAX7HMK-MLEFEX6G", "20201006", "20201006", null);
         stubFor(get("/2019/08/05/joueurs-blesses-et-suspendus/")
