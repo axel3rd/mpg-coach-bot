@@ -27,6 +27,7 @@ import org.blondin.mpg.root.model.League;
 import org.blondin.mpg.root.model.LeagueStatus;
 import org.blondin.mpg.root.model.Mode;
 import org.blondin.mpg.root.model.Player;
+import org.blondin.mpg.root.model.PlayerStatus;
 import org.blondin.mpg.root.model.Position;
 import org.blondin.mpg.root.model.TacticalSubstitute;
 import org.blondin.mpg.root.model.Team;
@@ -205,7 +206,9 @@ public class Main {
                     removeOutPlayers(playersAvailable, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()), false);
                     calculateEfficiency(playersAvailable, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config,
                             false, false);
-                    writeTransactionsProposal(playersTeam, playersAvailable, transferBuy.getBudget(), apiClients.getOutPlayers(),
+                    Integer currentPlayersBuy = transferBuy.getUserPlayers().stream().filter(p -> p.getStatus().equals(PlayerStatus.PROPOSAL))
+                            .map(Player::getPricePaid).collect(Collectors.summingInt(Integer::intValue));
+                    writeTransactionsProposal(playersTeam, playersAvailable, transferBuy.getBudget() - currentPlayersBuy, apiClients.getOutPlayers(),
                             ChampionshipTypeWrapper.toOut(league.getChampionship()), config);
                 }
             }
@@ -257,10 +260,13 @@ public class Main {
         List<Player> players2Sell = playersTeam.stream().filter(p -> p.getEfficiency() <= config.getEfficiencySell(p.getPosition()))
                 .collect(Collectors.toList());
 
-        // Remove goals if same team as the first
-        Player goalFirst = playersTeam.stream().filter(p -> p.getPosition().equals(Position.G))
-                .sorted(Comparator.comparing(Player::getEfficiency).reversed()).collect(Collectors.toList()).get(0);
-        players2Sell.removeIf(p -> p.getPosition().equals(Position.G) && p.getTeamId() == goalFirst.getTeamId());
+        // Remove goalkeeper(s) (if exist) and same team as the first
+        List<Player> goalkeepers = playersTeam.stream().filter(p -> p.getPosition().equals(Position.G))
+                .sorted(Comparator.comparing(Player::getEfficiency).reversed()).collect(Collectors.toList());
+        final Player goalFirst = goalkeepers.isEmpty() ? new Player() : goalkeepers.get(0);
+        if (!goalkeepers.isEmpty()) {
+            players2Sell.removeIf(p -> p.getPosition().equals(Position.G) && p.getTeamId() == goalkeepers.get(0).getTeamId());
+        }
 
         int cash = budget;
         if (!config.isEfficiencyRecentFocus() && !players2Sell.isEmpty()) {
@@ -285,8 +291,8 @@ public class Main {
                 .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation)).collect(Collectors.toList()).get(0);
         Player attackerLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.A))
                 .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation)).collect(Collectors.toList()).get(0);
-        cash += goalFirst.getQuotation() + defenderLast.getQuotation() + midfielderLast.getQuotation() + attackerLast.getQuotation();
-        LOG.info("Budget if last players by line sold: {}", cash);
+        cash += defenderLast.getQuotation() + midfielderLast.getQuotation() + attackerLast.getQuotation();
+        LOG.info("Budget if last field players by line sold: {}", cash);
 
         final int budgetPotential = cash;
         List<Player> players2buy = new ArrayList<>();
