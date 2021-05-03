@@ -87,6 +87,21 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testBonusUberEatsUpdate() throws Exception {
+        prepareMainFrenchLigue1Mocks("KLGXSSUG-status-4", "20181114", "20181114", "20181114");
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTeampUpdate();
+        doReturn(false).when(config).isUseBonus();
+        stubFor(get("/league/KLGXSSUG/coach").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.20181114-Complete-BoostInjuredPlayer.json")));
+        stubFor(post("/league/KLGXSSUG/coach")
+                .withRequestBody(equalToJson(getTestFileToString("mpg.coach.20181114-Complete-BoostInjuredPlayer-Request.json")))
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.post.success.json")));
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Updating team"));
+    }
+
+    @Test
     public void testTransactionsProposalIndexOutOfBoundsException() throws Exception {
         stubFor(post("/user/signIn")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
