@@ -444,8 +444,9 @@ public class Main {
         List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList());
         List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList());
 
+        String playerIdForBonus = midfielders.get(0).getId();
         request.setBonusSelected(selectBonus(coach.getBonusSelected(), coach.getBonus(), coach.getMatchId(), coach.getNbPlayers(),
-                config.isUseBonus(), midfielders.get(0).getId()));
+                config.isUseBonus(), playerIdForBonus));
 
         // Main lines
         setPlayersOnPitch(request, defenders, nbrDefenders, 1);
@@ -484,7 +485,26 @@ public class Main {
             }
         }
 
+        // If Bonus is player power up (type=4 / RedBull/ UberEats), verify that player is on pitch, override otherwise
+        verifyBonusPlayerOverrideOnPitch(request, playerIdForBonus);
+
         return request;
+    }
+
+    static void verifyBonusPlayerOverrideOnPitch(CoachRequest request, String playerIdEnfored) {
+        if (request.getBonusSelected() != null && request.getBonusSelected().getType() != null && request.getBonusSelected().getType() == 4) {
+            boolean onPitch = false;
+            String playerIdSelected = request.getBonusSelected().getPlayerId();
+            for (int i = 1; i <= 11; i++) {
+                if (playerIdSelected.equals(request.getPlayersOnPitch().getPlayer(i))) {
+                    onPitch = true;
+                    break;
+                }
+            }
+            if (!onPitch) {
+                request.getBonusSelected().setPlayerId(playerIdEnfored);
+            }
+        }
     }
 
     static BonusSelected selectBonus(BonusSelected previousBonus, Bonus bonus, String matchId, int numberPlayers, boolean useBonus,
