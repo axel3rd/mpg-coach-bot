@@ -1,28 +1,28 @@
 package org.blondin.mpg.root;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
-import org.blondin.mpg.root.exception.NoMoreGamesException;
 import org.blondin.mpg.root.model.ChampionshipType;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.Dashboard;
+import org.blondin.mpg.root.model.Division;
 import org.blondin.mpg.root.model.League;
 import org.blondin.mpg.root.model.Mercato;
 import org.blondin.mpg.root.model.MercatoChampionship;
 import org.blondin.mpg.root.model.MercatoLeague;
+import org.blondin.mpg.root.model.PoolPlayers;
+import org.blondin.mpg.root.model.Team;
 import org.blondin.mpg.root.model.TransferBuy;
 import org.blondin.mpg.root.model.UserSignIn;
-
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 /**
  * Client for https://www.mpgstats.fr/
@@ -32,6 +32,10 @@ public class MpgClient extends AbstractClient {
     public static final String MPG_CLIENT_VERSION = "8.2.0";
 
     private final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
+
+    private EnumMap<ChampionshipType, PoolPlayers> cache = new EnumMap<>(ChampionshipType.class);
+
+    private String userId;
 
     private MpgClient(Config config) {
         super(config);
@@ -48,25 +52,36 @@ public class MpgClient extends AbstractClient {
         return client;
     }
 
-    public Coach getCoach(String league) {
-        final String path = "division/" + league + "/coach";
-        try {
-            return get(path, headers, Coach.class);
-        } catch (ProcessingException e) {
-            if (e.getCause() instanceof JsonMappingException
-                    && e.getCause().getMessage().contains("Root name 'success' does not match expected ('data')")) {
-                String response = get(path, headers, String.class);
-                if (response.contains("noMoreGames")) {
-                    throw new NoMoreGamesException();
-                }
-                throw new UnsupportedOperationException(String.format("Coach response not supported: %s", response));
-            }
-            throw e;
+    public String getUserId() {
+        if (StringUtils.isBlank(userId)) {
+            throw new UnsupportedOperationException("Please sigin first");
         }
+        return userId;
     }
 
     public Dashboard getDashboard() {
         return get("dashboard/leagues", headers, Dashboard.class);
+    }
+
+    public Division getDivision(String leagueDivisionId) {
+        if (!StringUtils.startsWith(leagueDivisionId, "mpg_division_")) {
+            throw new UnsupportedOperationException(String.format("League id '%s' should start with 'mpg_division_'", leagueDivisionId));
+        }
+        return get("division/" + leagueDivisionId + "", headers, Division.class);
+    }
+
+    public Team getTeam(String leagueTeamId) {
+        if (!StringUtils.startsWith(leagueTeamId, "mpg_team_")) {
+            throw new UnsupportedOperationException(String.format("League id '%s' should start with 'mpg_team_'", leagueTeamId));
+        }
+        return get("/team/" + leagueTeamId, headers, Team.class);
+    }
+
+    public Coach getCoach(String leagueDivisionId) {
+        if (!StringUtils.startsWith(leagueDivisionId, "mpg_division_")) {
+            throw new UnsupportedOperationException(String.format("League id '%s' should start with 'mpg_division_'", leagueDivisionId));
+        }
+        return get("division/" + leagueDivisionId + "/coach", headers, Coach.class);
     }
 
     public Mercato getMercato(ChampionshipType championship) {
@@ -77,8 +92,19 @@ public class MpgClient extends AbstractClient {
         return get("todo-currently-not-found/" + league + "/mercato", headers, MercatoLeague.class);
     }
 
-    public TransferBuy getTransferBuy(String league) {
-        return get("division/" + league + "/available-players", headers, TransferBuy.class);
+    public TransferBuy getTransferBuy(String leagueDivisionId) {
+        if (!StringUtils.startsWith(leagueDivisionId, "mpg_division_")) {
+            throw new UnsupportedOperationException(String.format("League id '%s' should start with 'mpg_division_'", leagueDivisionId));
+        }
+        return get("division/" + leagueDivisionId + "/available-players", headers, TransferBuy.class);
+    }
+
+    public PoolPlayers getPoolPlayers(ChampionshipType championship) {
+        if (!cache.containsKey(championship)) {
+            PoolPlayers pool = get("championship-players-pool/" + championship.value(), headers, PoolPlayers.class);
+            cache.put(championship, pool);
+        }
+        return cache.get(championship);
     }
 
     private void signIn(String login, String password) {
@@ -86,8 +112,9 @@ public class MpgClient extends AbstractClient {
         entity.put("login", login);
         entity.put("password", password);
         entity.put("language", "fr-FR");
-        String token = post("user/sign-in", entity, UserSignIn.class).getToken();
-        headers.add("authorization", token);
+        UserSignIn usi = post("user/sign-in", entity, UserSignIn.class);
+        this.userId = usi.getUserId();
+        headers.add("authorization", usi.getToken());
         // headers.add("client-version", MPG_CLIENT_VERSION);
     }
 

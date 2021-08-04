@@ -8,15 +8,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Player {
 
-    @JsonProperty("playerid")
     private String id;
-    @JsonProperty("firstname")
     private String firstName;
-    @JsonProperty("lastname")
     private String lastName;
     private Position position;
     private int quotation;
+    @JsonProperty("price")
     private int pricePaid;
+
     @JsonProperty("teamid")
     private int teamId;
     @JsonProperty("club")
@@ -49,7 +48,14 @@ public class Player {
         return quotation;
     }
 
+    public int getPricePaid() {
+        return pricePaid;
+    }
+
     public int getTeamId() {
+        if (true) {
+            throw new UnsupportedOperationException("Usage should be checked");
+        }
         return teamId;
     }
 
@@ -62,6 +68,9 @@ public class Player {
     }
 
     public String getClub() {
+        if (true) {
+            throw new UnsupportedOperationException("Usage should be checked");
+        }
         return club;
     }
 
@@ -70,10 +79,10 @@ public class Player {
     }
 
     public PlayerStatus getStatus() {
+        if (true) {
+            throw new UnsupportedOperationException("Usage should be checked");
+        }
         return status;
     }
 
-    public int getPricePaid() {
-        return pricePaid;
-    }
 }

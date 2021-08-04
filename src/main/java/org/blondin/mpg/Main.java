@@ -21,6 +21,7 @@ import org.blondin.mpg.root.exception.PlayerNotFoundException;
 import org.blondin.mpg.root.model.Bonus;
 import org.blondin.mpg.root.model.BonusSelected;
 import org.blondin.mpg.root.model.ChampionshipType;
+import org.blondin.mpg.root.model.Club;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.League;
@@ -30,7 +31,6 @@ import org.blondin.mpg.root.model.Player;
 import org.blondin.mpg.root.model.PlayerStatus;
 import org.blondin.mpg.root.model.Position;
 import org.blondin.mpg.root.model.TacticalSubstitute;
-import org.blondin.mpg.root.model.Team;
 import org.blondin.mpg.root.model.TransferBuy;
 import org.blondin.mpg.stats.ChampionshipStatsType;
 import org.blondin.mpg.stats.MpgStatsClient;
@@ -72,10 +72,12 @@ public class Main {
     static void process(ApiClients apiClients, Config config) {
         for (League leagueOptionalMaster : apiClients.getMpg().getDashboard().getLeagues()) {
             League league = leagueOptionalMaster;
-            if (league.isMasterLeague()) {
+
+            // TODO: Waiting feedback about Multiple division leagues
+            if (false && league.isMasterLeague()) {
                 league = league.getSubLeague();
             }
-            if (LeagueStatus.TERMINATED.equals(league.getLeagueStatus())
+            if (LeagueStatus.TERMINATED.equals(league.getStatus())
                     || (!config.getLeaguesInclude().isEmpty() && !config.getLeaguesInclude().contains(league.getId()))
                     || (!config.getLeaguesExclude().isEmpty() && config.getLeaguesExclude().contains(league.getId()))) {
                 // Don't display any logs
@@ -91,7 +93,7 @@ public class Main {
             LOG.info("\nSorry, Champions League is currently not supported.\n");
             return;
         }
-        switch (league.getLeagueStatus()) {
+        switch (league.getStatus()) {
         case TERMINATED:
             // Already managed previously
         case KEEP:
@@ -221,9 +223,9 @@ public class Main {
     /**
      * Players retrieved from "Coach" has only a teamId. Club (Team name) should be completed manually.
      */
-    static void completePlayersClubs(List<Player> players, Map<Integer, Team> teams) {
+    static void completePlayersClubs(List<Player> players, Map<Integer, Club> teams) {
         for (Player player : players) {
-            Team team = teams.get(player.getTeamId());
+            Club team = teams.get(player.getTeamId());
             if (team == null) {
                 throw new UnsupportedOperationException(
                         String.format("Team can not be found for player: %s (teamId: %s)", player.getName(), player.getTeamId()));

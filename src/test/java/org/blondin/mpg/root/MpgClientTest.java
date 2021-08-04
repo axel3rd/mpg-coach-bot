@@ -8,9 +8,17 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 
 import org.blondin.mpg.AbstractMockTestClient;
 import org.blondin.mpg.config.Config;
+import org.blondin.mpg.root.model.ChampionshipType;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.Dashboard;
+import org.blondin.mpg.root.model.Division;
+import org.blondin.mpg.root.model.League;
+import org.blondin.mpg.root.model.LeagueStatus;
+import org.blondin.mpg.root.model.Mode;
 import org.blondin.mpg.root.model.Player;
+import org.blondin.mpg.root.model.PoolPlayers;
+import org.blondin.mpg.root.model.Position;
+import org.blondin.mpg.root.model.Team;
 import org.blondin.mpg.root.model.TransferBuy;
 import org.junit.Assert;
 import org.junit.Test;
@@ -42,29 +50,6 @@ public class MpgClientTest extends AbstractMockTestClient {
     }
 
     @Test
-    public void testMockCoachMobileApp() throws Exception {
-        stubFor(post("/user/sign-in")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/coach")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLEFEX6G.20210804.json")));
-        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
-        Coach coach = mpgClient.getCoach("MLEFEX6G");
-        Assert.assertNotNull(coach);
-        Assert.assertNotNull(coach.getPlayers());
-        Assert.assertTrue(coach.getPlayers().size() > 10);
-        for (Player player : coach.getPlayers()) {
-            Assert.assertNotNull(player);
-            Assert.assertNotNull(player.getId());
-            Assert.assertNotNull(player.getPosition());
-            Assert.assertNotNull(player.getName(), player.getFirstName());
-            Assert.assertNotNull(player.getName(), player.getLastName());
-            Assert.assertNotNull(player.getName());
-            Assert.assertEquals(player.getName(), (player.getLastName() + " " + player.getFirstName()).trim());
-            Assert.assertFalse(player.getName(), player.getName().contains("null"));
-        }
-    }
-
-    @Test
     public void testMockDashboard() throws Exception {
         stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
@@ -74,20 +59,89 @@ public class MpgClientTest extends AbstractMockTestClient {
         Dashboard dashboard = mpgClient.getDashboard();
         Assert.assertNotNull(dashboard);
         Assert.assertNotNull(dashboard.getLeagues());
-        Assert.assertEquals("MLEFEX6G", dashboard.getLeagues().get(0).getId());
-        Assert.assertEquals("mpg_division_MLEFEX6G_3_1", dashboard.getLeagues().get(0).getDivisionId());
-        Assert.assertEquals("Ligue 2 Fous", dashboard.getLeagues().get(0).getName());
+        League l = dashboard.getLeagues().get(0);
+        Assert.assertEquals("MLEFEX6G", l.getId());
+        Assert.assertEquals("mpg_division_MLEFEX6G_3_1", l.getDivisionId());
+        Assert.assertEquals("Ligue 2 Fous", l.getName());
+        Assert.assertEquals(ChampionshipType.LIGUE_2, l.getChampionship());
+        Assert.assertEquals(Mode.EXPERT, l.getMode());
+        Assert.assertEquals(LeagueStatus.GAMES, l.getStatus());
+    }
+
+    @Test
+    public void testMockDivision() throws Exception {
+        stubFor(post("/user/sign-in")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.MLEFEX6G.json")));
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        Division division = mpgClient.getDivision("mpg_division_MLEFEX6G_3_1");
+        Assert.assertNotNull(division);
+        Assert.assertNotNull(division.getUsersTeams());
+        Assert.assertTrue(division.getUsersTeams().size() > 0);
+        Assert.assertEquals("mpg_team_MLEFEX6G_3_1_2", division.getTeam(mpgClient.getUserId()));
+    }
+
+    @Test
+    public void testMockTeam() throws Exception {
+        stubFor(post("/user/sign-in")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/team/mpg_team_MLEFEX6G_3_1_2")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.MLEFEX6G.20210804.json")));
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        Team team = mpgClient.getTeam("mpg_team_MLEFEX6G_3_1_2");
+        Assert.assertNotNull(team);
+        Assert.assertEquals("Axel Football Club", team.getName());
+        Assert.assertEquals(0, team.getBudget());
+        Assert.assertNotNull(team.getSquad());
+        Assert.assertEquals(20, team.getSquad().size());
+        Player p = team.getSquad().get("mpg_championship_player_220359");
+        Assert.assertNotNull(p);
+        Assert.assertEquals(32, p.getPricePaid());
+    }
+
+    @Test
+    public void testMockCoach() throws Exception {
+        stubFor(post("/user/sign-in")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLEFEX6G.20210804.empty.json")));
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        Coach coach = mpgClient.getCoach("mpg_division_MLEFEX6G_3_1");
+        Assert.assertNotNull(coach);
+        Assert.assertTrue(coach.getComposition() > 0);
+    }
+
+    @Test
+    public void testMockPoolPlayers() throws Exception {
+        stubFor(post("/user/sign-in")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/championship-players-pool/4")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.poolPlayers.2.2021.json")));
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        PoolPlayers pool = mpgClient.getPoolPlayers(ChampionshipType.LIGUE_2);
+        Assert.assertNotNull(pool);
+        Assert.assertNotNull(pool.getPlayers());
+        Assert.assertTrue(pool.getPlayers().size() > 40);
+
+        Player p = mpgClient.getPoolPlayers(ChampionshipType.LIGUE_2).getPlayer("mpg_championship_player_220359");
+        Assert.assertNotNull(p);
+        Assert.assertEquals("Prevot Maxence", p.getName());
+        Assert.assertEquals("Prevot", p.getLastName());
+        Assert.assertEquals("Maxence", p.getFirstName());
+        Assert.assertEquals(Position.G, p.getPosition());
+        Assert.assertEquals(18, p.getQuotation());
+        Assert.assertEquals("mpg_championship_player_220359", p.getId());
     }
 
     @Test
     public void testMockTransferBuy() throws Exception {
         stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/league/KX24XMUG/transfer/buy")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.transfer.buy.KX24XMUG.20190202.json")));
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/available-players")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.trading.buy.MLEFEX6G.20210804.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
-        TransferBuy tb = mpgClient.getTransferBuy("KX24XMUG");
-        Assert.assertEquals(1, tb.getBudget());
+        TransferBuy tb = mpgClient.getTransferBuy("mpg_division_MLEFEX6G_3_1");
         Assert.assertTrue(tb.getAvailablePlayers().size() > 10);
     }
 }

@@ -5,23 +5,25 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonRootName(value = "data")
 public class Coach {
+
+    private String captain;
+
+    @JsonProperty("matchTeamFormation")
+    private MatchTeamFormation matchTeamFormation;
+
+    @JsonProperty("selectedBonus")
+    private BonusSelected bonusSelected;
+
+    // Useless below parameters ?
 
     @JsonProperty("players")
     private List<Player> players;
 
-    @JsonProperty("composition")
-    private int composition;
-
     @JsonProperty("bonus")
     private Bonus bonus;
-
-    @JsonProperty("bonusSelected")
-    private BonusSelected bonusSelected;
 
     @JsonProperty("matchId")
     private String matchId;
@@ -34,37 +36,57 @@ public class Coach {
     private int realDay;
 
     @JsonProperty("teams")
-    private Map<Integer, Team> teams;
-
-    public List<Player> getPlayers() {
-        return players;
-    }
+    private Map<Integer, Club> teams;
 
     public int getComposition() {
-        return composition;
-    }
-
-    public Bonus getBonus() {
-        return bonus;
+        return matchTeamFormation.getComposition();
     }
 
     public BonusSelected getBonusSelected() {
         return bonusSelected;
     }
 
+    // Useless below functions ?
+
+    public List<Player> getPlayers() {
+        if (true) {
+            throw new UnsupportedOperationException("Usage should be analysed");
+        }
+        return players;
+    }
+
+    public Bonus getBonus() {
+        if (true) {
+            throw new UnsupportedOperationException("Usage should be analysed");
+        }
+        return bonus;
+    }
+
     public String getMatchId() {
+        if (true) {
+            throw new UnsupportedOperationException("Usage should be analysed");
+        }
         return matchId;
     }
 
     public int getNbPlayers() {
+        if (true) {
+            throw new UnsupportedOperationException("Usage should be analysed");
+        }
         return nbPlayers;
     }
 
     public int getRealDay() {
+        if (true) {
+            throw new UnsupportedOperationException("Usage should be analysed");
+        }
         return realDay;
     }
 
-    public Map<Integer, Team> getTeams() {
+    public Map<Integer, Club> getTeams() {
+        if (true) {
+            throw new UnsupportedOperationException("Usage should be analysed");
+        }
         return teams;
     }
 

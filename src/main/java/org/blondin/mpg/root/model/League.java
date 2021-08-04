@@ -12,8 +12,9 @@ public class League {
     private String leagueId;
     private String divisionId;
     private String name;
+    @JsonProperty("championshipId")
     private ChampionshipType championship;
-    private LeagueStatus leagueStatus;
+    private LeagueStatus status;
     private Mode mode;
     private int teamStatus;
     @JsonProperty("isMasterLeague")
@@ -37,8 +38,8 @@ public class League {
         return championship;
     }
 
-    public LeagueStatus getLeagueStatus() {
-        return leagueStatus;
+    public LeagueStatus getStatus() {
+        return status;
     }
 
     public Mode getMode() {
@@ -46,14 +47,23 @@ public class League {
     }
 
     public int getTeamStatus() {
+        if (true) {
+            throw new UnsupportedOperationException("Usage should be analysed");
+        }
         return teamStatus;
     }
 
     public boolean isMasterLeague() {
+        if (true) {
+            throw new UnsupportedOperationException("Usage should be analysed");
+        }
         return isMasterLeague;
     }
 
     public League getSubLeague() {
+        if (true) {
+            throw new UnsupportedOperationException("Usage should be analysed");
+        }
         return subLeague;
     }
 }
