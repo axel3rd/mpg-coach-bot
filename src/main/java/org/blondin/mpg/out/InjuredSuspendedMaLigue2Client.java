@@ -1,7 +1,9 @@
 package org.blondin.mpg.out;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
@@ -16,6 +18,15 @@ import org.jsoup.nodes.TextNode;
 
 public class InjuredSuspendedMaLigue2Client extends AbstractClient {
 
+    private static final Map<String, String> TEAM_NAME_WRAPPER = new HashMap<>();
+
+    static {
+        /*
+         * Team name "maligue2 -> MPG" wrapper
+         */
+        TEAM_NAME_WRAPPER.put("QRM", "Quevilly Rouen");
+    }
+
     private List<Player> cache = null;
 
     private InjuredSuspendedMaLigue2Client(Config config) {
@@ -28,7 +39,7 @@ public class InjuredSuspendedMaLigue2Client extends AbstractClient {
 
     public static InjuredSuspendedMaLigue2Client build(Config config, String urlOverride) {
         InjuredSuspendedMaLigue2Client client = new InjuredSuspendedMaLigue2Client(config);
-        client.setUrl(StringUtils.defaultString(urlOverride, "https://maligue2.fr/2019/08/05/joueurs-blesses-et-suspendus/"));
+        client.setUrl(StringUtils.defaultString(urlOverride, "https://maligue2.fr/2020/08/20/joueurs-blesses-et-suspendus/"));
         return client;
     }
 
@@ -37,6 +48,13 @@ public class InjuredSuspendedMaLigue2Client extends AbstractClient {
             cache = getPlayers(getHtmlContent());
         }
         return cache;
+    }
+
+    static String getMpgTeamName(String name) {
+        if (TEAM_NAME_WRAPPER.containsKey(name)) {
+            return TEAM_NAME_WRAPPER.get(name);
+        }
+        return name;
     }
 
     public Player getPlayer(String playerName, String teamName) {
@@ -87,7 +105,7 @@ public class InjuredSuspendedMaLigue2Client extends AbstractClient {
                     continue;
                 }
                 Player player = new Player();
-                player.setTeam(team);
+                player.setTeam(getMpgTeamName(team));
                 player.setOutType(outType);
                 player.setLength("");
                 player.setDescription("");

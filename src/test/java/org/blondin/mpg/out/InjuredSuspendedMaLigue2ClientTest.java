@@ -25,7 +25,43 @@ import org.junit.Test;
 public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
 
     @Test
-    public void testCheckTeamsL2() throws Exception {
+    public void testCheckTeams2021L2() throws Exception {
+        List<String> mpgTeams = Arrays.asList("Ajaccio", "Amiens", "Auxerre", "Bastia", "Caen", "Dijon", "Dunkerque", "Grenoble", "Guingamp",
+                "Le Havre", "Nancy", "Nîmes", "Niort", "Paris FC", "Pau", "Quevilly Rouen", "Rodez", "Sochaux", "Toulouse", "Valenciennes");
+        Document doc = Jsoup.parse(FileUtils.readFileToString(new File(TESTFILES_BASE, "maligue2.joueurs-blesses-et-suspendus.20210804.html"),
+                Charset.forName("UTF-8")));
+        List<String> maLigue2Teams = new ArrayList<>();
+        for (Element item : doc.select("tr")) {
+            if (item.selectFirst("th.column-1") != null && "Club".equals(item.selectFirst("th.column-1").text())) {
+                continue;
+            }
+            maLigue2Teams.add(InjuredSuspendedMaLigue2Client.getMpgTeamName(item.selectFirst("td.column-1").text()));
+        }
+        for (String mpgTeam : mpgTeams) {
+            boolean contains = false;
+            for (String maLigue2Team : maLigue2Teams) {
+                if (maLigue2Team.contains(mpgTeam)) {
+                    contains = true;
+                }
+            }
+            Assert.assertTrue(mpgTeam, contains);
+        }
+    }
+
+    @Test
+    public void testInjuriesSameName() throws Exception {
+        InjuredSuspendedMaLigue2Client client = spy(InjuredSuspendedMaLigue2Client.build(null));
+        doReturn(
+                FileUtils.readFileToString(new File(TESTFILES_BASE, "maligue2.joueurs-blesses-et-suspendus.20210804.html"), Charset.forName("UTF-8")))
+                        .when(client).getHtmlContent();
+
+        Assert.assertNull("Ba from Niort is NOT injured", client.getPlayer("Ba", "Niort"));
+        Assert.assertNotNull("Ba from Dunkerque is injured", client.getPlayer("Ba", "Dunkerque"));
+        Assert.assertNotNull("Ba from Guingamp is injured", client.getPlayer("Ba", "Guingamp"));
+    }
+
+    @Test
+    public void testCheckTeams2019L2() throws Exception {
         List<String> mpgTeams = Arrays.asList("Ajaccio", "Auxerre", "Caen", "Chambly", "Châteauroux", "Clermont", "Grenoble", "Guingamp", "Le Havre",
                 "Le Mans", "Lens", "Lorient", "Nancy", "Niort", "Orléans", "Paris", "Rodez", "Sochaux", "Troyes", "Valenciennes");
         Document doc = Jsoup.parse(FileUtils.readFileToString(new File(TESTFILES_BASE, "maligue2.joueurs-blesses-et-suspendus.20190823.html"),
@@ -64,7 +100,6 @@ public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
 
     @Test
     public void testFrenchAccent() throws Exception {
-
         InjuredSuspendedMaLigue2Client client = spy(InjuredSuspendedMaLigue2Client.build(null));
         doReturn(
                 FileUtils.readFileToString(new File(TESTFILES_BASE, "maligue2.joueurs-blesses-et-suspendus.20201006.html"), Charset.forName("UTF-8")))
@@ -103,15 +138,15 @@ public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
 
     @Test
     public void testMock() throws Exception {
-        stubFor(get("/2019/08/05/joueurs-blesses-et-suspendus/").willReturn(
+        stubFor(get("/2020/08/20/joueurs-blesses-et-suspendus/").willReturn(
                 aResponse().withHeader("Content-Type", "application/json").withBodyFile("maligue2.joueurs-blesses-et-suspendus.20190818.html")));
 
         InjuredSuspendedMaLigue2Client injuredSuspendedClient = InjuredSuspendedMaLigue2Client.build(getConfig(),
-                "http://localhost:" + getServer().port() + "/2019/08/05/joueurs-blesses-et-suspendus/");
+                "http://localhost:" + getServer().port() + "/2020/08/20/joueurs-blesses-et-suspendus/");
 
         // Remove cache
         File tmpFile = InjuredSuspendedMaLigue2Client
-                .getCacheFile("http://localhost:" + getServer().port() + "/2019/08/05/joueurs-blesses-et-suspendus/", "");
+                .getCacheFile("http://localhost:" + getServer().port() + "/2020/08/20/joueurs-blesses-et-suspendus/", "");
         tmpFile.delete();
         Assert.assertFalse(tmpFile.exists());
 
@@ -123,7 +158,7 @@ public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
         Assert.assertTrue(tmpFile.exists());
         long cacheDate = tmpFile.lastModified();
         injuredSuspendedClient = InjuredSuspendedMaLigue2Client.build(getConfig(),
-                "http://localhost:" + getServer().port() + "/2019/08/05/joueurs-blesses-et-suspendus/");
+                "http://localhost:" + getServer().port() + "/2020/08/20/joueurs-blesses-et-suspendus/");
         injuredSuspendedClient.getPlayers();
         Assert.assertEquals(cacheDate, tmpFile.lastModified());
     }
