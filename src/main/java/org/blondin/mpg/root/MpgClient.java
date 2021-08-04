@@ -29,9 +29,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
  */
 public class MpgClient extends AbstractClient {
 
-    public static final String MPG_CLIENT_VERSION = "6.9.1";
-
-    private static final String PATH_LEAGUE = "league/";
+    public static final String MPG_CLIENT_VERSION = "8.2.0";
 
     private final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
 
@@ -45,19 +43,19 @@ public class MpgClient extends AbstractClient {
 
     public static MpgClient build(Config config, String urlOverride) {
         MpgClient client = new MpgClient(config);
-        client.setUrl(StringUtils.defaultString(urlOverride, "https://api.monpetitgazon.com"));
+        client.setUrl(StringUtils.defaultString(urlOverride, "https://api.mpg.football"));
         client.signIn(config.getLogin(), config.getPassword());
         return client;
     }
 
     public Coach getCoach(String league) {
-        final String path = PATH_LEAGUE + league + "/coach";
+        final String path = "division/" + league + "/coach";
         try {
-            return get(path, headers, Coach.class, true);
+            return get(path, headers, Coach.class);
         } catch (ProcessingException e) {
             if (e.getCause() instanceof JsonMappingException
                     && e.getCause().getMessage().contains("Root name 'success' does not match expected ('data')")) {
-                String response = get(path, headers, String.class, true);
+                String response = get(path, headers, String.class);
                 if (response.contains("noMoreGames")) {
                     throw new NoMoreGamesException();
                 }
@@ -68,7 +66,7 @@ public class MpgClient extends AbstractClient {
     }
 
     public Dashboard getDashboard() {
-        return get("user/dashboard", headers, Dashboard.class, true);
+        return get("dashboard/leagues", headers, Dashboard.class);
     }
 
     public Mercato getMercato(ChampionshipType championship) {
@@ -76,25 +74,25 @@ public class MpgClient extends AbstractClient {
     }
 
     public Mercato getMercato(String league) {
-        return get(PATH_LEAGUE + league + "/mercato", headers, MercatoLeague.class);
+        return get("todo-currently-not-found/" + league + "/mercato", headers, MercatoLeague.class);
     }
 
     public TransferBuy getTransferBuy(String league) {
-        return get(PATH_LEAGUE + league + "/transfer/buy", headers, TransferBuy.class);
+        return get("division/" + league + "/available-players", headers, TransferBuy.class);
     }
 
     private void signIn(String login, String password) {
         Map<String, String> entity = new HashMap<>();
-        entity.put("email", login);
+        entity.put("login", login);
         entity.put("password", password);
         entity.put("language", "fr-FR");
-        String token = post("user/signIn", entity, UserSignIn.class).getToken();
+        String token = post("user/sign-in", entity, UserSignIn.class).getToken();
         headers.add("authorization", token);
-        headers.add("client-version", MPG_CLIENT_VERSION);
+        // headers.add("client-version", MPG_CLIENT_VERSION);
     }
 
     public void updateCoach(League league, CoachRequest coachRequest) {
-        String result = post(PATH_LEAGUE + league.getId() + "/coach", headers, coachRequest, String.class);
+        String result = put("/match-team-formation/mpg_match_team_formation_LEAGUE_ID_X_Y_Z", headers, coachRequest, String.class);
         if (!"{\"success\":\"teamSaved\"}".equals(result)) {
             throw new UnsupportedOperationException(String.format("The team has been updated, result message: %s", result));
         }

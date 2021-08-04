@@ -19,7 +19,7 @@ public class MpgClientTest extends AbstractMockTestClient {
 
     @Test
     public void testMockSignInKo() throws Exception {
-        stubFor(post("/user/signIn")
+        stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withStatus(401).withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.bad.json")));
         Config config = getConfig();
         String url = "http://localhost:" + server.port();
@@ -34,21 +34,21 @@ public class MpgClientTest extends AbstractMockTestClient {
 
     @Test
     public void testMockSignInOk() throws Exception {
-        stubFor(post("/user/signIn")
-                .withRequestBody(equalToJson("{\"email\":\"firstName.lastName@gmail.com\",\"password\":\"foobar\",\"language\":\"fr-FR\"}"))
+        stubFor(post("/user/sign-in")
+                .withRequestBody(equalToJson("{\"login\":\"firstName.lastName@gmail.com\",\"password\":\"foobar\",\"language\":\"fr-FR\"}"))
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
         MpgClient.build(getConfig(), "http://localhost:" + server.port());
         Assert.assertTrue(true);
     }
 
     @Test
-    public void testMockCoach() throws Exception {
-        stubFor(post("/user/signIn")
+    public void testMockCoachMobileApp() throws Exception {
+        stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/league/KLGXSSUG/coach")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.20180926.json")));
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLEFEX6G.20210804.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
-        Coach coach = mpgClient.getCoach("KLGXSSUG");
+        Coach coach = mpgClient.getCoach("MLEFEX6G");
         Assert.assertNotNull(coach);
         Assert.assertNotNull(coach.getPlayers());
         Assert.assertTrue(coach.getPlayers().size() > 10);
@@ -66,21 +66,22 @@ public class MpgClientTest extends AbstractMockTestClient {
 
     @Test
     public void testMockDashboard() throws Exception {
-        stubFor(post("/user/signIn")
+        stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/user/dashboard")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.KLGXSSUG-status-4.json")));
+        stubFor(get("/dashboard/leagues")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.MLEFEX6G-status-4.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         Dashboard dashboard = mpgClient.getDashboard();
         Assert.assertNotNull(dashboard);
         Assert.assertNotNull(dashboard.getLeagues());
-        Assert.assertEquals("KLGXSSUG", dashboard.getLeagues().get(0).getId());
-        Assert.assertEquals("Rock on the grass", dashboard.getLeagues().get(0).getName());
+        Assert.assertEquals("MLEFEX6G", dashboard.getLeagues().get(0).getId());
+        Assert.assertEquals("mpg_division_MLEFEX6G_3_1", dashboard.getLeagues().get(0).getDivisionId());
+        Assert.assertEquals("Ligue 2 Fous", dashboard.getLeagues().get(0).getName());
     }
 
     @Test
     public void testMockTransferBuy() throws Exception {
-        stubFor(post("/user/signIn")
+        stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
         stubFor(get("/league/KX24XMUG/transfer/buy")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.transfer.buy.KX24XMUG.20190202.json")));

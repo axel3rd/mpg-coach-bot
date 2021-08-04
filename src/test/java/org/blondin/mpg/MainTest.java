@@ -66,7 +66,7 @@ public class MainTest extends AbstractMockTestClient {
                 Main.main(new String[] { config });
             }
         } catch (ProcessingException e) {
-            Assert.assertEquals("No network", "java.net.UnknownHostException: api.monpetitgazon.com", e.getMessage());
+            Assert.assertEquals("No network", "java.net.UnknownHostException: api.mpg.football", e.getMessage());
         }
     }
 
@@ -82,8 +82,21 @@ public class MainTest extends AbstractMockTestClient {
                     e.getMessage());
         } catch (ProcessingException e) {
             // Proxy not configured or real URL not accessible
-            Assert.assertEquals("No network", "java.net.UnknownHostException: api.monpetitgazon.com", e.getMessage());
+            Assert.assertEquals("No network", "java.net.UnknownHostException: api.mpg.football", e.getMessage());
         }
+    }
+
+    @Test
+    public void testMobileAppApiSimpleAfter20210719() throws Exception {
+        prepareMainFrenchLigue2Mocks("MLEFEX6G-status-4", "20210804", "20210804", "20210804");
+        Config config = spy(getConfig());
+        doReturn(false).when(config).isTeampUpdate();
+        doReturn(false).when(config).isUseBonus();
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLEFEX6G.20210804.json")));
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Ba"));
+        Assert.assertFalse(getLogOut(), getLogOut().contains("Updating team"));
     }
 
     @Test
@@ -103,10 +116,10 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testTransactionsProposalIndexOutOfBoundsException() throws Exception {
-        stubFor(post("/user/signIn")
+        stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
         stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20200106.json")));
-        stubFor(get("/user/dashboard").willReturn(
+        stubFor(get("/dashboard/leagues").willReturn(
                 aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.MLAX7HMK-MLEFEX6G-MN7VSYBM-MLMHBPCB.json")));
         stubFor(get("/league/MN7VSYBM/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MN7VSYBM.20210406.json")));
@@ -137,7 +150,7 @@ public class MainTest extends AbstractMockTestClient {
     @Test
     public void testInjuredLigue2ServiceUnavailable() throws Exception {
         prepareMainFrenchLigue2Mocks("MLAX7HMK-MLEFEX6G", "20201006", "20201006", null);
-        stubFor(get("/2019/08/05/joueurs-blesses-et-suspendus/")
+        stubFor(get("/2020/08/20/joueurs-blesses-et-suspendus/")
                 .willReturn(aResponse().withStatus(Response.Status.SERVICE_UNAVAILABLE.getStatusCode())));
         stubFor(get("/league/MLEFEX6G/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLEFEX6G.20201006.json")));
@@ -238,17 +251,17 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testConnectionReset() throws Exception {
-        stubFor(post("/user/signIn")
+        stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
 
         // CONNECTION_RESET_BY_PEER doesn't work on Windows (block response), EMPTY_RESPONSE throws a SocketException too
         final String scenario = "Retry Scenario Connection Reset";
-        stubFor(get("/user/dashboard").inScenario(scenario).whenScenarioStateIs(Scenario.STARTED).willSetStateTo("SocketException")
+        stubFor(get("/dashboard/leagues").inScenario(scenario).whenScenarioStateIs(Scenario.STARTED).willSetStateTo("SocketException")
                 .willReturn(aResponse().withFault(Fault.EMPTY_RESPONSE)));
         // Don't understand why too fault request necessary to have only one :/
-        stubFor(get("/user/dashboard").inScenario(scenario).whenScenarioStateIs("SocketException").willSetStateTo("ValidResponse")
+        stubFor(get("/dashboard/leagues").inScenario(scenario).whenScenarioStateIs("SocketException").willSetStateTo("ValidResponse")
                 .willReturn(aResponse().withFault(Fault.EMPTY_RESPONSE)));
-        stubFor(get("/user/dashboard").inScenario(scenario).whenScenarioStateIs("ValidResponse").willReturn(
+        stubFor(get("/dashboard/leagues").inScenario(scenario).whenScenarioStateIs("ValidResponse").willReturn(
                 aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LH9HKBTD-LJV92C9Y-LJT3FXDF.json")));
 
         Config config = spy(getConfig());
@@ -260,9 +273,9 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testTransactionProposalWithoutStatsFullyReached() throws Exception {
-        stubFor(post("/user/signIn")
+        stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/user/dashboard").willReturn(
+        stubFor(get("/dashboard/leagues").willReturn(
                 aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LH9HKBTD-LJV92C9Y-LJT3FXDF.json")));
         stubFor(get("/league/LJT3FXDF/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20191212.json")));
@@ -287,9 +300,9 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testLeagueStartPlayerToKept() throws Exception {
-        stubFor(post("/user/signIn")
+        stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/user/dashboard").willReturn(
+        stubFor(get("/dashboard/leagues").willReturn(
                 aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LJV92C9Y-LH9HKBTD-status-6.json")));
 
         Config config = spy(getConfig());
@@ -300,9 +313,9 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testPlayersStatsLeagueRefreshDateInvalid() throws Exception {
-        stubFor(post("/user/signIn")
+        stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/user/dashboard").willReturn(
+        stubFor(get("/dashboard/leagues").willReturn(
                 aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LH9HKBTD-LJV92C9Y-LJT3FXDF.json")));
         stubFor(get("/league/LJT3FXDF/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20191212.json")));
@@ -323,9 +336,9 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testMlnstatsEfficiencyRecentFocus() throws Exception {
-        stubFor(post("/user/signIn")
+        stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/user/dashboard").willReturn(
+        stubFor(get("/dashboard/leagues").willReturn(
                 aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LH9HKBTD-LJV92C9Y-LJT3FXDF.json")));
         stubFor(get("/league/LJT3FXDF/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20191212.json")));
@@ -364,9 +377,9 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testMlnstatsEfficiencyYearAverage() throws Exception {
-        stubFor(post("/user/signIn")
+        stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/user/dashboard").willReturn(
+        stubFor(get("/dashboard/leagues").willReturn(
                 aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LH9HKBTD-LJV92C9Y-LJT3FXDF.json")));
         stubFor(get("/league/LJT3FXDF/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20191212.json")));
@@ -405,9 +418,9 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testUseBonusInt0() throws Exception {
-        stubFor(post("/user/signIn")
+        stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/user/dashboard").willReturn(
+        stubFor(get("/dashboard/leagues").willReturn(
                 aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LH9HKBTD-LJV92C9Y-LJT3FXDF.json")));
         stubFor(get("/league/LJT3FXDF/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.LJT3FXDF.20191220.json")));
@@ -688,9 +701,9 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testMercatoEnding() throws Exception {
-        stubFor(post("/user/signIn")
+        stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/user/dashboard").willReturn(
+        stubFor(get("/dashboard/leagues").willReturn(
                 aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.qyOG7BuuZcv-status-3-teamStatus-2.json")));
         executeMainProcess();
         Assert.assertTrue(getLogOut().contains("Mercato will be ending, ready for your first match"));
@@ -698,9 +711,9 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testUpdateTeamPremierLeague532WithTransactionProposalButNotEnabled() throws Exception {
-        stubFor(post("/user/signIn")
+        stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/user/dashboard")
+        stubFor(get("/dashboard/leagues")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.KJVB6L7C-status-4.json")));
         stubFor(get("/league/KJVB6L7C/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.KJVB6L7C.20190807.json")));
@@ -744,9 +757,9 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testSerieASupportSeasonStart() throws Exception {
-        stubFor(post("/user/signIn")
+        stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/user/dashboard")
+        stubFor(get("/dashboard/leagues")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.XXXXXXXX-status-1.json")));
         stubFor(get("/mercato/5")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.mercato.serie-a.20190805.json")));
@@ -764,9 +777,9 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testMercatoSeasonStart() throws Exception {
-        stubFor(post("/user/signIn")
+        stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/user/dashboard")
+        stubFor(get("/dashboard/leagues")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.LJT3FXDF-status-1.json")));
         stubFor(get("/mercato/2")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.mercato.premier-league.20190805.json")));
@@ -1166,7 +1179,7 @@ public class MainTest extends AbstractMockTestClient {
         if (injuredSuspendedClientLocal == null) {
             injuredSuspendedClientLocal = InjuredSuspendedWrapperClient.build(c, "http://localhost:" + getServer().port() + "/injuries/football/",
                     "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/",
-                    "http://localhost:" + getServer().port() + "/2019/08/05/joueurs-blesses-et-suspendus/");
+                    "http://localhost:" + getServer().port() + "/2020/08/20/joueurs-blesses-et-suspendus/");
         }
         Main.process(ApiClients.build(mpgClientLocal, mpgStatsClientLocal, injuredSuspendedClientLocal), c);
     }
@@ -1198,10 +1211,10 @@ public class MainTest extends AbstractMockTestClient {
 
     private static void prepareMainFrenchLigueMocks(String fileRootDashboard, String fileStatsLeagues, int ligue, String dataFileStats,
             String dataFileSportsGambler, String dataFileEquipeActu, String dataFileMaLigue2) {
-        stubFor(post("/user/signIn")
+        stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
         if (StringUtils.isNotBlank(fileRootDashboard)) {
-            stubFor(get("/user/dashboard").willReturn(
+            stubFor(get("/dashboard/leagues").willReturn(
                     aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard." + fileRootDashboard + ".json")));
         }
         if (StringUtils.isNotBlank(fileStatsLeagues)) {
@@ -1225,7 +1238,7 @@ public class MainTest extends AbstractMockTestClient {
                     .willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
         }
         if (StringUtils.isNotBlank(dataFileMaLigue2)) {
-            stubFor(get("/2019/08/05/joueurs-blesses-et-suspendus/").willReturn(aResponse().withHeader("Content-Type", "application/json")
+            stubFor(get("/2020/08/20/joueurs-blesses-et-suspendus/").willReturn(aResponse().withHeader("Content-Type", "application/json")
                     .withBodyFile("maligue2.joueurs-blesses-et-suspendus." + dataFileMaLigue2 + ".html")));
         }
     }
