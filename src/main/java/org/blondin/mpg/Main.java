@@ -548,14 +548,29 @@ public class Main {
             throw new UnsupportedOperationException("Bonus is null, technical problem");
         }
         if (bonuses.values().stream().reduce(0, Integer::sum) >= matchsRemaining) {
-            // TODO: To update
-            // int bonusType = bonus.getBonusTypeForRemainingMatch(matchsRemaining);
-            // bonusSelected.setType(bonusType);
-            // if (bonusType == 4) {
-            // bonusSelected.setPlayerId(playerIdForRefBull);
-            // }
+            String bonus = getBestBonus(bonuses, matchsRemaining);
+            bonusSelected.setName(bonus);
+            if ("boostOnePlayer".equals(bonus)) {
+                bonusSelected.setPlayerId(playerIdIfNeeded);
+            }
         }
         return bonusSelected;
+    }
+
+    private static String getBestBonus(Map<String, Integer> bonuses, int matchsRemaining) {
+        int bonusTooMuch = bonuses.values().stream().reduce(0, Integer::sum) - matchsRemaining - 1;
+        List<String> bonusLowerPriority = SelectedBonus.getBonusPriority().stream().collect(Collectors.toList());
+        Collections.reverse(bonusLowerPriority);
+        for (String b : bonusLowerPriority) {
+            for (int bi = 0; bi < bonuses.get(b); bi++) {
+                if (bonusTooMuch > 0) {
+                    bonusTooMuch--;
+                } else {
+                    return b;
+                }
+            }
+        }
+        throw new UnsupportedOperationException("Bonus cannot be null here, bug in selection algorithm !");
     }
 
     private static int setPlayersOnPitch(CoachRequest request, List<Player> players, int number, int index) {
