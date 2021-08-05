@@ -118,6 +118,7 @@ public class MpgClientTest extends AbstractMockTestClient {
         Coach coach = mpgClient.getCoach("mpg_division_MLEFEX6G_3_1");
         Assert.assertNotNull(coach);
         Assert.assertTrue(coach.getComposition() > 0);
+        Assert.assertEquals("mpg_match_team_formation_MLEFEX6G_3_1_2_2_2", coach.getIdMatch());
     }
 
     @Test

@@ -104,6 +104,7 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(post("/match-team-formation/mpg_match_team_formation_MLEFEX6G_3_1_2_2_2")
                 .withRequestBody(equalToJson(getTestFileToString("mpg.coach.MLEFEX6G.20210804-Request.json")))
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody("{\"success\":\"teamSaved\"}")));
+        // TODO: Output should be checked with realcase
         executeMainProcess(config);
         Assert.assertTrue(getLogOut(), getLogOut().contains("Ligue 2 Fous"));
         Assert.assertTrue(getLogOut(), getLogOut().contains("Ba"));

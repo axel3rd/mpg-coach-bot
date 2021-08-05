@@ -1,8 +1,5 @@
 package org.blondin.mpg.root.model;
 
-import java.util.List;
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -17,17 +14,9 @@ public class Coach {
     @JsonProperty("selectedBonus")
     private SelectedBonus bonusSelected;
 
-    // Useless below parameters ?
-
-    @JsonProperty("players")
-    private List<Player> players;
-
-    /** Number of players in the league */
-    @JsonProperty("nbPlayers")
-    private int nbPlayers;
-
-    @JsonProperty("teams")
-    private Map<Integer, Club> teams;
+    public String getIdMatch() {
+        return matchTeamFormation.getId();
+    }
 
     public int getComposition() {
         return matchTeamFormation.getComposition();
@@ -35,29 +24,6 @@ public class Coach {
 
     public SelectedBonus getBonusSelected() {
         return bonusSelected;
-    }
-
-    // Useless below functions ?
-
-    public List<Player> getPlayers() {
-        if (true) {
-            throw new UnsupportedOperationException("Usage should be analysed");
-        }
-        return players;
-    }
-
-    public int getNbPlayers() {
-        if (true) {
-            throw new UnsupportedOperationException("Usage should be analysed");
-        }
-        return nbPlayers;
-    }
-
-    public Map<Integer, Club> getTeams() {
-        if (true) {
-            throw new UnsupportedOperationException("Usage should be analysed");
-        }
-        return teams;
     }
 
 }

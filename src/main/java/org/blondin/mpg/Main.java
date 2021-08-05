@@ -268,7 +268,7 @@ public class Main {
         final long maxRetry = 10;
         for (int i = 1; i <= 10; i++) {
             try {
-                mpgClient.updateCoach(league, getCoachRequest(team, coach, players, division.getGameRemaining(), config));
+                mpgClient.updateCoach(coach.getIdMatch(), getCoachRequest(team, coach, players, division.getGameRemaining(), config));
                 break;
             } catch (UnsupportedOperationException e) {
                 if (i == maxRetry || !"Unsupported status code: 400 Bad Request / Content: {\"error\":\"badRequest\"}".equals(e.getMessage())) {
