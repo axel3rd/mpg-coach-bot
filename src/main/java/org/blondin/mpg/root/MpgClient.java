@@ -18,7 +18,6 @@ import org.blondin.mpg.root.model.Dashboard;
 import org.blondin.mpg.root.model.Division;
 import org.blondin.mpg.root.model.League;
 import org.blondin.mpg.root.model.Mercato;
-import org.blondin.mpg.root.model.MercatoChampionship;
 import org.blondin.mpg.root.model.MercatoLeague;
 import org.blondin.mpg.root.model.PoolPlayers;
 import org.blondin.mpg.root.model.Team;
@@ -85,10 +84,6 @@ public class MpgClient extends AbstractClient {
         return get("division/" + leagueDivisionId + "/coach", headers, Coach.class);
     }
 
-    public Mercato getMercato(ChampionshipType championship) {
-        return get("mercato/" + championship.value(), headers, MercatoChampionship.class);
-    }
-
     public Mercato getMercato(String league) {
         return get("todo-currently-not-found/" + league + "/mercato", headers, MercatoLeague.class);
     }
@@ -127,6 +122,9 @@ public class MpgClient extends AbstractClient {
     }
 
     public void updateCoach(League league, CoachRequest coachRequest) {
+        if (true) {
+            throw new UnsupportedOperationException("Find where find mpg_match_team_formation_LEAGUE_ID_X_Y_Z");
+        }
         String result = put("/match-team-formation/mpg_match_team_formation_LEAGUE_ID_X_Y_Z", headers, coachRequest, String.class);
         if (!"{\"success\":\"teamSaved\"}".equals(result)) {
             throw new UnsupportedOperationException(String.format("The team has been updated, result message: %s", result));

@@ -127,13 +127,15 @@ public class Main {
     static void processMercatoLeague(League league, ApiClients apiClients, Config config) {
         LOG.info("\nProposal for your mercato:\n");
         List<Player> players = apiClients.getMpg().getMercato(league.getId()).getPlayers();
+        completePlayersClub(players, apiClients.getMpg().getClubs());
         calculateEfficiency(players, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
         processMercato(players, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()));
     }
 
     static void processMercatoChampionship(League league, ApiClients apiClients, Config config) {
         LOG.info("\nProposal for your coming soon mercato:\n");
-        List<Player> players = apiClients.getMpg().getMercato(league.getChampionship()).getPlayers();
+        List<Player> players = apiClients.getMpg().getPoolPlayers(league.getChampionship()).getPlayers();
+        completePlayersClub(players, apiClients.getMpg().getClubs());
         calculateEfficiency(players, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
         processMercato(players, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()));
     }

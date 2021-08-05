@@ -41,7 +41,7 @@ public class Stats {
      * @return number of goals
      */
     public int getGoals(int days) {
-        if (currentSeasonDay == 0 && days <= 0) {
+        if (currentSeasonDay <= 1 && days <= 0) {
             return oldGoals;
         }
         if (days <= 0) {
@@ -67,7 +67,7 @@ public class Stats {
      * @return note
      */
     public double getAverage(int days) {
-        if (currentSeasonDay == 0 && days <= 0) {
+        if (currentSeasonDay <= 1 && days <= 0) {
             return oldAverage;
         }
         if (days <= 0) {
@@ -98,7 +98,7 @@ public class Stats {
      * @return number of matchs
      */
     public int getMatchs(int days) {
-        if (currentSeasonDay == 0 && days <= 0) {
+        if (currentSeasonDay <= 1 && days <= 0) {
             return oldMatchs;
         }
         if (days <= 0) {

@@ -71,8 +71,24 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
-    public void testMobileProcessFromEmptyCoach() throws Exception {
-        prepareMainFrenchLigue2Mocks("MLEFEX6G-status-4", "2021", "20210804", "20210804", "20210804");
+    public void testPrepareMercatoTurn0Day0() throws Exception {
+        prepareMainFrenchLigue1Mocks("MLAX7HMK-status-1", "2021", "20210805", "20210805");
+        Config config = spy(getConfig());
+        doReturn(Arrays.asList("MLAX7HMK")).when(config).getLeaguesInclude();
+        doReturn(Arrays.asList("MLEFEX6G")).when(config).getLeaguesExclude();
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Proposal for your coming soon mercato"));
+
+        // When championship not started (incoming day 1 in statistics), the previous year should be taken
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| A | Mbappé Kylian        | 6315.94 | 40 |"));
+
+        // Test some injuries
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| D | Maripán Guillermo    |  919.24 | 18 | INJURY_RED - Leg injury - Mid July |"));
+    }
+
+    @Test
+    public void testProcessFromEmptyCoach() throws Exception {
+        prepareMainFrenchLigue2Mocks("MLEFEX6G-status-4", "2021", "20210804", "20210804");
         Config config = spy(getConfig());
         doReturn(true).when(config).isTeampUpdate();
         doReturn(true).when(config).isUseBonus();
@@ -162,7 +178,7 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testInjuredSuspendedSportsGamblerFallBackEquipeActu() throws Exception {
-        prepareMainFrenchLigueMocks("MLAX7HMK-MLEFEX6G-MN7VSYBM-MLMHBPCB", 1, null, "20201021", "20201021", null, "20201006", null);
+        prepareMainFrenchLigueMocks("MLAX7HMK-MLEFEX6G-MN7VSYBM-MLMHBPCB", 1, null, "20201021", null, "20201006", null);
         stubFor(get("/league/MLAX7HMK/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLAX7HMK.20201021.json")));
         // 403 for sportgambler
@@ -507,7 +523,7 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testSkipChampionsLeague() throws Exception {
-        prepareMainFrenchLigueMocks("LM65L48T", -1, null, null, null, null, null, null);
+        prepareMainFrenchLigueMocks("LM65L48T", -1, null, null, null, null, null);
         executeMainProcess();
         Assert.assertTrue(getLogOut().contains("Sorry, Champions League is currently not supported."));
     }
@@ -1149,45 +1165,32 @@ public class MainTest extends AbstractMockTestClient {
         Main.process(ApiClients.build(mpgClientLocal, mpgStatsClientLocal, injuredSuspendedClientLocal), c);
     }
 
-    private static void prepareMainFrenchLigue2Mocks(String dashboard, String fileStatsLeagues, String dataFileStats, String dataFileMaLigue2) {
-        // TODO: Should be removed
-        prepareMainFrenchLigueMocks(dashboard, 2, null, fileStatsLeagues, dataFileStats, null, null, dataFileMaLigue2);
-    }
-
-    private static void prepareMainFrenchLigue1Mocks(String dashboard, String fileStatsLeagues, String dataFileStats,
-            String dataFileSportsGamblerOrEquipeActu) {
-        prepareMainFrenchLigue1Mocks(dashboard, null, fileStatsLeagues, dataFileStats, dataFileSportsGamblerOrEquipeActu);
-    }
-
-    private static void prepareMainFrenchLigue1Mocks(String dashboard, String poolPlayerYear, String buildStatsLeaguesDate, String statsLeaguesDate,
+    private static void prepareMainFrenchLigue1Mocks(String dashboard, String poolPlayerYear, String statsLeaguesDate,
             String sportsGamblerDateOrEquipeActu) {
         try {
             if (StringUtils.isBlank(sportsGamblerDateOrEquipeActu)) {
-                prepareMainFrenchLigueMocks(dashboard, 1, null, buildStatsLeaguesDate, statsLeaguesDate, null, null, null);
+                prepareMainFrenchLigueMocks(dashboard, 1, null, statsLeaguesDate, null, null, null);
                 return;
             }
             final SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdddd");
             Date sportsGamblerSwitch = dateParser.parse("20201010");
             Date dataFileDate = dateParser.parse(sportsGamblerDateOrEquipeActu);
             if (dataFileDate.after(sportsGamblerSwitch)) {
-                prepareMainFrenchLigueMocks(dashboard, 1, poolPlayerYear, buildStatsLeaguesDate, statsLeaguesDate, sportsGamblerDateOrEquipeActu,
-                        null, null);
+                prepareMainFrenchLigueMocks(dashboard, 1, poolPlayerYear, statsLeaguesDate, sportsGamblerDateOrEquipeActu, null, null);
             } else {
-                prepareMainFrenchLigueMocks(dashboard, 1, poolPlayerYear, buildStatsLeaguesDate, statsLeaguesDate, null,
-                        sportsGamblerDateOrEquipeActu, null);
+                prepareMainFrenchLigueMocks(dashboard, 1, poolPlayerYear, statsLeaguesDate, null, sportsGamblerDateOrEquipeActu, null);
             }
         } catch (ParseException e) {
             throw new UnsupportedOperationException(e);
         }
     }
 
-    private static void prepareMainFrenchLigue2Mocks(String dashboard, String poolPlayerYear, String buildStatsLeaguesDate, String statsLeaguesDate,
-            String maLigue2Date) {
-        prepareMainFrenchLigueMocks(dashboard, 2, poolPlayerYear, buildStatsLeaguesDate, statsLeaguesDate, null, null, maLigue2Date);
+    private static void prepareMainFrenchLigue2Mocks(String dashboard, String poolPlayerYear, String statsLeaguesDate, String maLigue2Date) {
+        prepareMainFrenchLigueMocks(dashboard, 2, poolPlayerYear, statsLeaguesDate, null, null, maLigue2Date);
     }
 
-    private static void prepareMainFrenchLigueMocks(String dashboard, int frenchLigue, String poolPlayerYear, String buildStatsLeaguesDate,
-            String statsLeaguesDate, String sportsGamblerDate, String equipeActuDate, String maLigue2Date) {
+    private static void prepareMainFrenchLigueMocks(String dashboard, int frenchLigue, String poolPlayerYear, String statsLeaguesDate,
+            String sportsGamblerDate, String equipeActuDate, String maLigue2Date) {
         try {
             SimpleDateFormat dateDayFormat = new SimpleDateFormat("yyyyMMdd");
             SimpleDateFormat dateYearFormat = new SimpleDateFormat("yyyy");
@@ -1205,13 +1208,11 @@ public class MainTest extends AbstractMockTestClient {
                 stubFor(get("/championship-clubs").willReturn(
                         aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.clubs." + poolPlayerYear + ".json")));
             }
-            if (StringUtils.isNotBlank(buildStatsLeaguesDate)) {
-                dateDayFormat.parse(buildStatsLeaguesDate);
-                stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile(
-                        getTestFile("mlnstats.builds." + buildStatsLeaguesDate + ".json", "mpgstats.leagues." + buildStatsLeaguesDate + ".json"))));
-            }
             if (StringUtils.isNotBlank(statsLeaguesDate)) {
                 dateDayFormat.parse(statsLeaguesDate);
+                dateDayFormat.parse(statsLeaguesDate);
+                stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile(
+                        getTestFile("mlnstats.builds." + statsLeaguesDate + ".json", "mpgstats.leagues." + statsLeaguesDate + ".json"))));
                 stubFor(get("/leagues/Ligue-" + frenchLigue).willReturn(aResponse().withHeader("Content-Type", "application/json")
                         .withBodyFile(getTestFile("mlnstats.ligue-" + frenchLigue + "." + statsLeaguesDate + ".json",
                                 "mpgstats.ligue-" + frenchLigue + "." + statsLeaguesDate + ".json"))));

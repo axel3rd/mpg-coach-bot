@@ -1,0 +1,197 @@
+{
+  "leaguesDivisionsItems": [
+    {
+      "leagueId": "mpg_league_MLEFEX6G",
+      "name": "Ligue 2 Fous",
+      "adminId": "user_953561",
+      "status": 4,
+      "season": 3,
+      "mode": 2,
+      "createdAt": "2020-08-23T16:35:09Z",
+      "mercatoState": {
+        "divisionsLeft": 0,
+        "usersLeft": 0
+      },
+      "championshipId": 4,
+      "rating": "mpg",
+      "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/b7b4327b-7cfb-4df3-becc-2b16c9d5381b.jpg",
+      "totalDivisions": 1,
+      "totalUsers": 10,
+      "totalMissedPosts": 0,
+      "divisionNumber": 1,
+      "nextRealGameWeekDate": "2021-08-07T13:00:00Z",
+      "currentTeamRanking": 9,
+      "currentTeamVariation": -1,
+      "divisionStatus": 4,
+      "divisionId": "mpg_division_MLEFEX6G_3_1",
+      "divisionTotalUsers": 10,
+      "liveState": {
+        "currentGameWeek": 2,
+        "firstRealGameWeek": 2,
+        "formationsStatuses": {
+          "mpg_team_MLEFEX6G_3_1_0": 1,
+          "mpg_team_MLEFEX6G_3_1_1": 1,
+          "mpg_team_MLEFEX6G_3_1_2": 2,
+          "mpg_team_MLEFEX6G_3_1_3": 1,
+          "mpg_team_MLEFEX6G_3_1_4": 1,
+          "mpg_team_MLEFEX6G_3_1_5": 2,
+          "mpg_team_MLEFEX6G_3_1_6": 2,
+          "mpg_team_MLEFEX6G_3_1_7": 2,
+          "mpg_team_MLEFEX6G_3_1_8": 1,
+          "mpg_team_MLEFEX6G_3_1_9": 2
+        },
+        "liveAt": "2021-07-30T06:34:57Z",
+        "totalGameWeeks": 18,
+        "standings": {
+          "mpg_team_MLEFEX6G_3_1_5": {
+            "rank": 1,
+            "variation": 1
+          },
+          "mpg_team_MLEFEX6G_3_1_7": {
+            "rank": 2,
+            "variation": 1
+          },
+          "mpg_team_MLEFEX6G_3_1_8": {
+            "rank": 3,
+            "variation": 1
+          },
+          "mpg_team_MLEFEX6G_3_1_1": {
+            "rank": 4,
+            "variation": 1
+          },
+          "mpg_team_MLEFEX6G_3_1_4": {
+            "rank": 5,
+            "variation": 0
+          },
+          "mpg_team_MLEFEX6G_3_1_9": {
+            "rank": 6,
+            "variation": 0
+          },
+          "mpg_team_MLEFEX6G_3_1_6": {
+            "rank": 7,
+            "variation": -1
+          },
+          "mpg_team_MLEFEX6G_3_1_0": {
+            "rank": 8,
+            "variation": -1
+          },
+          "mpg_team_MLEFEX6G_3_1_2": {
+            "rank": 9,
+            "variation": -1
+          },
+          "mpg_team_MLEFEX6G_3_1_3": {
+            "rank": 10,
+            "variation": -1
+          }
+        }
+      },
+      "currentFormationStatus": 2
+    },
+    {
+      "leagueId": "mpg_league_MLAX7HMK",
+      "name": "Du Tyran 🐐",
+      "adminId": "user_953561",
+      "status": 1,
+      "season": 3,
+      "mode": 1,
+      "createdAt": "2020-08-22T08:22:40Z",
+      "mercatoState": {},
+      "championshipId": 1,
+      "rating": "mpg",
+      "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/162a6145-03c5-4895-8456-6855a9bd4c15.jpg",
+      "totalDivisions": 1,
+      "totalUsers": 10,
+      "totalMissedPosts": 0,
+      "validDivisions": true
+    },
+    {
+      "leagueId": "mpg_league_MN7VSYBM",
+      "name": "Giro Far Breton",
+      "adminId": "user_600737",
+      "status": 5,
+      "season": 2,
+      "mode": 2,
+      "createdAt": "2020-09-14T11:12:30Z",
+      "mercatoState": {
+        "divisionsLeft": 0,
+        "usersLeft": 0
+      },
+      "championshipId": 5,
+      "rating": "mpg",
+      "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/bb817a04-6bca-403d-86f8-87077cb95112.jpg",
+      "totalDivisions": 1,
+      "totalUsers": 10,
+      "totalMissedPosts": 0,
+      "finishedState": {
+        "seasonEndDate": "2021-07-19T06:24:57Z",
+        "winner": {
+          "firstName": "Celine",
+          "jerseyUrl": "https://s3-eu-west-3.amazonaws.com/jersey.mpg.football/prod/jersey_0_1598369796008.png",
+          "team": {
+            "abbreviation": "FZA",
+            "gear": {
+              "home": {
+                "jerseyId": "mpg_jersey_0_1598369796008"
+              }
+            },
+            "id": "mpg_team_MN7VSYBM_2_1_0",
+            "name": "Forza"
+          },
+          "userId": "user_600737",
+          "username": "Celine#KBN2"
+        }
+      },
+      "divisionNumber": 1,
+      "currentTeamRanking": 6,
+      "currentTeamVariation": -1,
+      "divisionStatus": 5,
+      "divisionId": "mpg_division_MN7VSYBM_2_1",
+      "divisionTotalUsers": 10
+    },
+    {
+      "leagueId": "mpg_league_MLMHBPCB",
+      "name": "Invariant Brits",
+      "adminId": "user_35635",
+      "status": 5,
+      "season": 2,
+      "mode": 2,
+      "createdAt": "2020-08-26T08:50:30Z",
+      "mercatoState": {
+        "divisionsLeft": 0,
+        "usersLeft": 0
+      },
+      "championshipId": 2,
+      "rating": "mpg",
+      "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/906387dc-2dbe-464d-a21e-a16f0cff5001.jpg",
+      "totalDivisions": 1,
+      "totalUsers": 10,
+      "totalMissedPosts": 0,
+      "finishedState": {
+        "seasonEndDate": "2021-07-19T06:24:43Z",
+        "winner": {
+          "firstName": "Bertrand",
+          "jerseyUrl": "https://s3-eu-west-3.amazonaws.com/jersey.mpg.football/prod/jersey_backup_3_527fa887fa2f56122ca3cfac7daea8f0.png",
+          "team": {
+            "abbreviation": "🔴⚪",
+            "gear": {
+              "home": {
+                "jerseyId": "mpg_jersey_backup_3_527fa887fa2f56122ca3cfac7daea8f0"
+              }
+            },
+            "id": "mpg_team_MLMHBPCB_2_1_0",
+            "name": "North London"
+          },
+          "userId": "user_35635",
+          "username": "Bertrand#23TL"
+        }
+      },
+      "divisionNumber": 1,
+      "currentTeamRanking": 3,
+      "currentTeamVariation": 0,
+      "divisionStatus": 5,
+      "divisionId": "mpg_division_MLMHBPCB_2_1",
+      "divisionTotalUsers": 10
+    }
+  ],
+  "defaultOrder": true
+}
