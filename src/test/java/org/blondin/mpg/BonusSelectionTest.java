@@ -3,11 +3,11 @@ package org.blondin.mpg;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
-import org.apache.commons.lang3.reflect.FieldUtils;
-import org.blondin.mpg.root.model.Bonus;
-import org.blondin.mpg.root.model.BonusSelected;
+import org.blondin.mpg.root.model.SelectedBonus;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,77 +20,73 @@ public class BonusSelectionTest {
         Locale.setDefault(Locale.ENGLISH);
     }
 
-    private BonusSelected getBonusSelected(Integer type) {
-        return getBonusSelected(type, null);
+    private SelectedBonus getBonusSelected(String name) {
+        return getBonusSelected(name, null);
     }
 
-    private BonusSelected getBonusSelected(Integer type, String playerId) {
-        BonusSelected bs = mock(BonusSelected.class);
-        doReturn(type).when(bs).getType();
+    private SelectedBonus getBonusSelected(String name, String playerId) {
+        SelectedBonus bs = mock(SelectedBonus.class);
+        doReturn(name).when(bs).getName();
         doReturn(playerId).when(bs).getPlayerId();
         return bs;
     }
 
-    private Bonus getBonus(int b1, int b2, int b3, int b4, int b5, int b6, int b7) {
-        Bonus b = new Bonus();
-        try {
-            FieldUtils.writeDeclaredField(b, "bonus1", b1, true);
-            FieldUtils.writeDeclaredField(b, "bonus2", b2, true);
-            FieldUtils.writeDeclaredField(b, "bonus3", b3, true);
-            FieldUtils.writeDeclaredField(b, "bonus4", b4, true);
-            FieldUtils.writeDeclaredField(b, "bonus5", b5, true);
-            FieldUtils.writeDeclaredField(b, "bonus6", b6, true);
-            FieldUtils.writeDeclaredField(b, "bonus7", b7, true);
-        } catch (IllegalAccessException e) {
-            throw new UnsupportedOperationException(e);
-        }
-        return b;
+    private Map<String, Integer> getBonus(int b1, int b2, int b3, int b4, int b5, int b6, int b7) {
+        Map<String, Integer> bonuses = new HashMap<>();
+        bonuses.put("removeGoal", b1);
+        bonuses.put("boostAllPlayers", b2);
+        bonuses.put("nerfGoalkeeper", b3);
+        bonuses.put("boostOnePlayer", b4);
+        bonuses.put("mirror", b5);
+        bonuses.put("removeRandomPlayer", b6);
+        bonuses.put("blockTacticalSubs", b7);
+        return bonuses;
     }
 
     @Test
     public void testBonusSelection() {
-        Assert.assertEquals(4, Main.selectBonus(null, getBonus(0, 0, 0, 1, 0, 0, 0), "mpg_match_XX_1_18_1", 10, true, "fake").getType().intValue());
-        Assert.assertEquals("fake", Main.selectBonus(null, getBonus(0, 0, 0, 1, 0, 0, 0), "mpg_match_XX_1_18_1", 10, true, "fake").getPlayerId());
-        Assert.assertNull(Main.selectBonus(null, getBonus(0, 1, 0, 1, 1, 1, 1), "mpg_match_XX_1_18_1", 10, true, "fake").getPlayerId());
-        Assert.assertNull(Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), "mpg_match_XX_1_3_1", 10, true, "fake").getType());
-        Assert.assertEquals(2, Main.selectBonus(null, getBonus(0, 1, 0, 1, 1, 1, 1), "mpg_match_XX_1_18_1", 10, true, "fake").getType().intValue());
-        Assert.assertEquals(1, Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), "mpg_match_XX_1_18_1", 10, true, "fake").getType().intValue());
-        Assert.assertEquals(7, Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), "mpg_match_XX_1_10_1", 10, true, "fake").getType().intValue());
+        Assert.assertEquals("boostOnePlayer", Main.selectBonus(null, getBonus(0, 0, 0, 1, 0, 0, 0), 0, true, "fake").getName());
+        Assert.assertEquals("fake", Main.selectBonus(null, getBonus(0, 0, 0, 1, 0, 0, 0), 0, true, "fake").getPlayerId());
+        Assert.assertNull(Main.selectBonus(null, getBonus(0, 1, 0, 1, 1, 1, 1), 0, true, "fake").getPlayerId());
+        Assert.assertNull(Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), 15, true, "fake").getName());
+        Assert.assertEquals("boostAllPlayers", Main.selectBonus(null, getBonus(0, 1, 0, 1, 1, 1, 1), 0, true, "fake").getName());
+        Assert.assertEquals("removeGoal", Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), 0, true, "fake").getName());
+        Assert.assertEquals("blockTacticalSubs", Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), 0, true, "fake").getName());
     }
 
     @Test
     public void testBonusAlreadySelected() {
-        Assert.assertEquals(1,
-                Main.selectBonus(getBonusSelected(1), getBonus(1, 1, 1, 3, 1, 1, 1), "mpg_match_XX_1_10_1", 10, true, "fake").getType().intValue());
+        Assert.assertEquals("nerfGoalkeeper",
+                Main.selectBonus(getBonusSelected("nerfGoalkeeper"), getBonus(1, 1, 1, 3, 1, 1, 1), 1, true, "fake").getName());
     }
 
     @Test
     public void testBonusSelectionNotUsed() {
         // No previous bonus
-        Assert.assertNotNull(Main.selectBonus(null, null, "mpg_match_XX_1_18_1", 10, false, "fake"));
-        Assert.assertNull(Main.selectBonus(null, null, "mpg_match_XX_1_18_1", 10, false, "fake").getType());
-        Assert.assertNull(Main.selectBonus(null, null, "mpg_match_XX_1_18_1", 10, false, "fake").getPlayerId());
+        Assert.assertNotNull(Main.selectBonus(null, null, 0, false, "fake"));
+        Assert.assertNull(Main.selectBonus(null, null, 0, false, "fake").getName());
+        Assert.assertNull(Main.selectBonus(null, null, 0, false, "fake").getPlayerId());
 
         // Previous bonus wallet
-        BonusSelected bs = getBonusSelected(1);
-        Assert.assertNotNull(Main.selectBonus(bs, null, "mpg_match_XX_1_18_1", 10, false, "fake"));
-        Assert.assertEquals(1, Main.selectBonus(bs, null, "mpg_match_XX_1_18_1", 10, false, "fake").getType().intValue());
-        Assert.assertNull(Main.selectBonus(bs, null, "mpg_match_XX_1_18_1", 10, false, "fake").getPlayerId());
+        SelectedBonus bs = getBonusSelected("removeGoal");
+        Assert.assertNotNull(Main.selectBonus(bs, null, 0, false, "fake"));
+        Assert.assertEquals("removeGoal", Main.selectBonus(bs, null, 0, false, "fake").getName());
+        Assert.assertNull(Main.selectBonus(bs, null, 0, false, "fake").getPlayerId());
 
         // Previous bonus redbull
-        bs = getBonusSelected(4, "foobar");
-        Assert.assertNotNull(Main.selectBonus(bs, null, "mpg_match_XX_1_18_1", 10, false, "fake"));
-        Assert.assertEquals(4, Main.selectBonus(bs, null, "mpg_match_XX_1_18_1", 10, false, "fake").getType().intValue());
-        Assert.assertEquals("foobar", Main.selectBonus(bs, null, "mpg_match_XX_1_18_1", 10, false, "fake").getPlayerId());
+        bs = getBonusSelected("boostOnePlayer", "foobar");
+        Assert.assertNotNull(Main.selectBonus(bs, null, 0, false, "fake"));
+        Assert.assertEquals("boostOnePlayer", Main.selectBonus(bs, null, 0, false, "fake").getName());
+        Assert.assertEquals("foobar", Main.selectBonus(bs, null, 0, false, "fake").getPlayerId());
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testBonusSelectionBadInputBonus() {
-        Main.selectBonus(null, null, "mpg_match_XX_1_42_1", 10, true, "fake");
+        Main.selectBonus(null, null, -1, true, "fake");
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testBonusSelectionBadInputPlayers() {
-        Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), "mpg_match_XX_1_42_1", -200, true, "fake");
+        Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), -200, true, "fake");
     }
 }

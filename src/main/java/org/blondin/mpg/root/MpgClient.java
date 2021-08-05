@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.root.model.ChampionshipType;
+import org.blondin.mpg.root.model.Clubs;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.Dashboard;
@@ -33,8 +34,8 @@ public class MpgClient extends AbstractClient {
 
     private final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
 
-    private EnumMap<ChampionshipType, PoolPlayers> cache = new EnumMap<>(ChampionshipType.class);
-
+    private EnumMap<ChampionshipType, PoolPlayers> cachePlayers = new EnumMap<>(ChampionshipType.class);
+    private Clubs clubs;
     private String userId;
 
     private MpgClient(Config config) {
@@ -100,11 +101,18 @@ public class MpgClient extends AbstractClient {
     }
 
     public PoolPlayers getPoolPlayers(ChampionshipType championship) {
-        if (!cache.containsKey(championship)) {
+        if (!cachePlayers.containsKey(championship)) {
             PoolPlayers pool = get("championship-players-pool/" + championship.value(), headers, PoolPlayers.class);
-            cache.put(championship, pool);
+            cachePlayers.put(championship, pool);
         }
-        return cache.get(championship);
+        return cachePlayers.get(championship);
+    }
+
+    public synchronized Clubs getClubs() {
+        if (clubs == null) {
+            clubs = get("championship-clubs", headers, Clubs.class);
+        }
+        return clubs;
     }
 
     private void signIn(String login, String password) {

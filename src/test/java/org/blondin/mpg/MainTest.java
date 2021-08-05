@@ -9,24 +9,17 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.Response;
@@ -35,23 +28,14 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.config.Config;
-import org.blondin.mpg.out.ChampionshipOutType;
-import org.blondin.mpg.out.InjuredSuspendedEquipeActuClient;
 import org.blondin.mpg.out.InjuredSuspendedWrapperClient;
 import org.blondin.mpg.root.MpgClient;
-import org.blondin.mpg.root.exception.UrlForbiddenException;
-import org.blondin.mpg.root.model.Coach;
-import org.blondin.mpg.root.model.Dashboard;
-import org.blondin.mpg.root.model.Player;
 import org.blondin.mpg.stats.ChampionshipStatsType;
 import org.blondin.mpg.stats.MpgStatsClient;
-import org.blondin.mpg.stats.model.Championship;
 import org.blondin.mpg.test.io.ConsoleTestAppender;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.http.Fault;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 
@@ -87,17 +71,31 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
-    public void testMobileAppApiSimpleAfter20210719() throws Exception {
-        prepareMainFrenchLigue2Mocks("MLEFEX6G-status-4", "20210804", "20210804", "20210804");
+    public void testMobileProcessFromEmptyCoach() throws Exception {
+        prepareMainFrenchLigue2Mocks("MLEFEX6G-status-4", "2021", "20210804", "20210804", "20210804");
         Config config = spy(getConfig());
-        doReturn(false).when(config).isTeampUpdate();
-        doReturn(false).when(config).isUseBonus();
+        doReturn(true).when(config).isTeampUpdate();
+        doReturn(true).when(config).isUseBonus();
+        doReturn(true).when(config).isTransactionsProposal();
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.MLEFEX6G.20210804.json")));
+        stubFor(get("/team/mpg_team_MLEFEX6G_3_1_2")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.MLEFEX6G.20210804.json")));
         stubFor(get("/division/mpg_division_MLEFEX6G_3_1/coach")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLEFEX6G.20210804.json")));
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLEFEX6G.20210804.empty.json")));
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/available-players")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.trading.buy.MLEFEX6G.20210804.json")));
+        stubFor(post("/match-team-formation/mpg_match_team_formation_MLEFEX6G_3_1_2_2_2")
+                .withRequestBody(equalToJson(getTestFileToString("mpg.coach.MLEFEX6G.20210804-Request.json")))
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBody("{\"success\":\"teamSaved\"}")));
         executeMainProcess(config);
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Ligue 2 Fous"));
         Assert.assertTrue(getLogOut(), getLogOut().contains("Ba"));
-        Assert.assertFalse(getLogOut(), getLogOut().contains("Updating team"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Updating team"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Transactions proposal"));
     }
+
+    // TODO: Remove below methods
 
     @Test
     public void testBonusUberEatsUpdate() throws Exception {
@@ -164,7 +162,7 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testInjuredSuspendedSportsGamblerFallBackEquipeActu() throws Exception {
-        prepareMainFrenchLigueMocks("MLAX7HMK-MLEFEX6G-MN7VSYBM-MLMHBPCB", "20201021", 1, "20201021", null, "20201006", null);
+        prepareMainFrenchLigueMocks("MLAX7HMK-MLEFEX6G-MN7VSYBM-MLMHBPCB", 1, null, "20201021", "20201021", null, "20201006", null);
         stubFor(get("/league/MLAX7HMK/coach")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLAX7HMK.20201021.json")));
         // 403 for sportgambler
@@ -509,7 +507,7 @@ public class MainTest extends AbstractMockTestClient {
 
     @Test
     public void testSkipChampionsLeague() throws Exception {
-        prepareMainFrenchLigueMocks("LM65L48T", null, -1, null, null, null, null);
+        prepareMainFrenchLigueMocks("LM65L48T", -1, null, null, null, null, null, null);
         executeMainProcess();
         Assert.assertTrue(getLogOut().contains("Sorry, Champions League is currently not supported."));
     }
@@ -954,39 +952,6 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
-    public void testProcessWithLocalMapping() throws Exception {
-        // Mock initialization
-        MpgClient mpgClient = mock(MpgClient.class);
-        when(mpgClient.getCoach(anyString())).thenReturn(new ObjectMapper().enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
-                .readValue(new File(TESTFILES_BASE, "mpg.coach.20180926.json"), Coach.class));
-        when(mpgClient.getDashboard()).thenReturn(new ObjectMapper().enable(DeserializationFeature.UNWRAP_ROOT_VALUE)
-                .readValue(new File(TESTFILES_BASE, "mpg.dashboard.KLGXSSUG-status-4.json"), Dashboard.class));
-
-        MpgStatsClient mpgStatsClient = mock(MpgStatsClient.class);
-        when(mpgStatsClient.getStats(any()))
-                .thenReturn(new ObjectMapper().readValue(new File(TESTFILES_BASE, "mpgstats.ligue-1.20181017.json"), Championship.class));
-
-        InjuredSuspendedEquipeActuClient outPlayersEquipeActuClient = spy(InjuredSuspendedEquipeActuClient.build(null));
-        doReturn(FileUtils.readFileToString(new File(TESTFILES_BASE, "equipeactu.ligue-1.20181017.html"), StandardCharsets.UTF_8))
-                .when(outPlayersEquipeActuClient).getHtmlContent(ChampionshipOutType.LIGUE_1);
-        InjuredSuspendedWrapperClient outPlayersClient = spy(InjuredSuspendedWrapperClient.class);
-        doReturn(outPlayersEquipeActuClient).when(outPlayersClient).useDirectlyOnlyForTestGetEquipeActuClient();
-        doThrow(UrlForbiddenException.class).when(outPlayersClient).useDirectlyOnlyForTestGetSportsGamblerClient();
-
-        // Test out (on cloned list)
-        List<Player> players = new ArrayList<>(mpgClient.getCoach("fake").getPlayers());
-        Assert.assertNotNull("Nkunku should be here",
-                players.stream().filter(customer -> "Nkunku".equals(customer.getLastName())).findAny().orElse(null));
-        Main.completePlayersClubs(players, mpgClient.getCoach("fake").getTeams());
-        Main.removeOutPlayers(players, outPlayersClient, ChampionshipOutType.LIGUE_1, false);
-        Assert.assertNull("Nkunku should be removed",
-                players.stream().filter(customer -> "Nkunku".equals(customer.getLastName())).findAny().orElse(null));
-
-        // Run global process
-        executeMainProcess(mpgClient, mpgStatsClient, outPlayersClient, getConfig());
-    }
-
-    @Test
     public void testNoTacticalSubstitutes() throws Exception {
         prepareMainFrenchLigue1Mocks("KX24XMUG-status-4", "20190211", "20190211", "20190211");
         stubFor(get("/league/KX24XMUG/coach")
@@ -1184,62 +1149,95 @@ public class MainTest extends AbstractMockTestClient {
         Main.process(ApiClients.build(mpgClientLocal, mpgStatsClientLocal, injuredSuspendedClientLocal), c);
     }
 
-    private static void prepareMainFrenchLigue1Mocks(String fileRootDashboard, String fileStatsLeagues, String dataFileStats,
+    private static void prepareMainFrenchLigue2Mocks(String dashboard, String fileStatsLeagues, String dataFileStats, String dataFileMaLigue2) {
+        // TODO: Should be removed
+        prepareMainFrenchLigueMocks(dashboard, 2, null, fileStatsLeagues, dataFileStats, null, null, dataFileMaLigue2);
+    }
+
+    private static void prepareMainFrenchLigue1Mocks(String dashboard, String fileStatsLeagues, String dataFileStats,
             String dataFileSportsGamblerOrEquipeActu) {
+        prepareMainFrenchLigue1Mocks(dashboard, null, fileStatsLeagues, dataFileStats, dataFileSportsGamblerOrEquipeActu);
+    }
+
+    private static void prepareMainFrenchLigue1Mocks(String dashboard, String poolPlayerYear, String buildStatsLeaguesDate, String statsLeaguesDate,
+            String sportsGamblerDateOrEquipeActu) {
         try {
-            if (StringUtils.isBlank(dataFileSportsGamblerOrEquipeActu)) {
-                prepareMainFrenchLigueMocks(fileRootDashboard, fileStatsLeagues, 1, dataFileStats, null, null, null);
+            if (StringUtils.isBlank(sportsGamblerDateOrEquipeActu)) {
+                prepareMainFrenchLigueMocks(dashboard, 1, null, buildStatsLeaguesDate, statsLeaguesDate, null, null, null);
                 return;
             }
             final SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdddd");
             Date sportsGamblerSwitch = dateParser.parse("20201010");
-            Date dataFileDate = dateParser.parse(dataFileSportsGamblerOrEquipeActu);
+            Date dataFileDate = dateParser.parse(sportsGamblerDateOrEquipeActu);
             if (dataFileDate.after(sportsGamblerSwitch)) {
-                prepareMainFrenchLigueMocks(fileRootDashboard, fileStatsLeagues, 1, dataFileStats, dataFileSportsGamblerOrEquipeActu, null, null);
+                prepareMainFrenchLigueMocks(dashboard, 1, poolPlayerYear, buildStatsLeaguesDate, statsLeaguesDate, sportsGamblerDateOrEquipeActu,
+                        null, null);
             } else {
-                prepareMainFrenchLigueMocks(fileRootDashboard, fileStatsLeagues, 1, dataFileStats, null, dataFileSportsGamblerOrEquipeActu, null);
+                prepareMainFrenchLigueMocks(dashboard, 1, poolPlayerYear, buildStatsLeaguesDate, statsLeaguesDate, null,
+                        sportsGamblerDateOrEquipeActu, null);
             }
         } catch (ParseException e) {
             throw new UnsupportedOperationException(e);
         }
     }
 
-    private static void prepareMainFrenchLigue2Mocks(String fileRootDashboard, String fileStatsLeagues, String dataFileStats,
-            String dataFileMaLigue2) {
-        prepareMainFrenchLigueMocks(fileRootDashboard, fileStatsLeagues, 2, dataFileStats, null, null, dataFileMaLigue2);
+    private static void prepareMainFrenchLigue2Mocks(String dashboard, String poolPlayerYear, String buildStatsLeaguesDate, String statsLeaguesDate,
+            String maLigue2Date) {
+        prepareMainFrenchLigueMocks(dashboard, 2, poolPlayerYear, buildStatsLeaguesDate, statsLeaguesDate, null, null, maLigue2Date);
     }
 
-    private static void prepareMainFrenchLigueMocks(String fileRootDashboard, String fileStatsLeagues, int ligue, String dataFileStats,
-            String dataFileSportsGambler, String dataFileEquipeActu, String dataFileMaLigue2) {
-        stubFor(post("/user/sign-in")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        if (StringUtils.isNotBlank(fileRootDashboard)) {
-            stubFor(get("/dashboard/leagues").willReturn(
-                    aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard." + fileRootDashboard + ".json")));
-        }
-        if (StringUtils.isNotBlank(fileStatsLeagues)) {
-            stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json")
-                    .withBodyFile(getTestFile("mlnstats.builds." + fileStatsLeagues + ".json", "mpgstats.leagues." + fileStatsLeagues + ".json"))));
-        }
-        if (StringUtils.isNotBlank(dataFileStats)) {
-            stubFor(get("/leagues/Ligue-" + ligue).willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile(getTestFile(
-                    "mlnstats.ligue-" + ligue + "." + dataFileStats + ".json", "mpgstats.ligue-" + ligue + "." + dataFileStats + ".json"))));
-        }
-        if (StringUtils.isNotBlank(dataFileSportsGambler)) {
-            stubFor(get("/injuries/football/france-ligue-" + ligue + "/").willReturn(aResponse().withHeader("Content-Type", "application/json")
-                    .withBodyFile("sportsgambler.ligue-" + ligue + "." + dataFileSportsGambler + ".html")));
-        }
-        if (StringUtils.isNotBlank(dataFileEquipeActu)) {
-            stubFor(get("/blessures-et-suspensions/fodbold/france/ligue-" + ligue).willReturn(aResponse()
-                    .withHeader("Content-Type", "application/json").withBodyFile("equipeactu.ligue-" + ligue + "." + dataFileEquipeActu + ".html")));
+    private static void prepareMainFrenchLigueMocks(String dashboard, int frenchLigue, String poolPlayerYear, String buildStatsLeaguesDate,
+            String statsLeaguesDate, String sportsGamblerDate, String equipeActuDate, String maLigue2Date) {
+        try {
+            SimpleDateFormat dateDayFormat = new SimpleDateFormat("yyyyMMdd");
+            SimpleDateFormat dateYearFormat = new SimpleDateFormat("yyyy");
+            stubFor(post("/user/sign-in")
+                    .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+            if (StringUtils.isNotBlank(dashboard)) {
+                stubFor(get("/dashboard/leagues")
+                        .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard." + dashboard + ".json")));
+            }
+            if (StringUtils.isNotBlank(poolPlayerYear)) {
+                dateYearFormat.parse(poolPlayerYear);
+                stubFor(get("/championship-players-pool/" + (frenchLigue == 1 ? 1 : 4))
+                        .willReturn(aResponse().withHeader("Content-Type", "application/json")
+                                .withBodyFile("mpg.poolPlayers." + frenchLigue + "." + poolPlayerYear + ".json")));
+                stubFor(get("/championship-clubs").willReturn(
+                        aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.clubs." + poolPlayerYear + ".json")));
+            }
+            if (StringUtils.isNotBlank(buildStatsLeaguesDate)) {
+                dateDayFormat.parse(buildStatsLeaguesDate);
+                stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile(
+                        getTestFile("mlnstats.builds." + buildStatsLeaguesDate + ".json", "mpgstats.leagues." + buildStatsLeaguesDate + ".json"))));
+            }
+            if (StringUtils.isNotBlank(statsLeaguesDate)) {
+                dateDayFormat.parse(statsLeaguesDate);
+                stubFor(get("/leagues/Ligue-" + frenchLigue).willReturn(aResponse().withHeader("Content-Type", "application/json")
+                        .withBodyFile(getTestFile("mlnstats.ligue-" + frenchLigue + "." + statsLeaguesDate + ".json",
+                                "mpgstats.ligue-" + frenchLigue + "." + statsLeaguesDate + ".json"))));
+            }
+            if (StringUtils.isNotBlank(sportsGamblerDate)) {
+                dateDayFormat.parse(sportsGamblerDate);
+                stubFor(get("/injuries/football/france-ligue-" + frenchLigue + "/")
+                        .willReturn(aResponse().withHeader("Content-Type", "application/json")
+                                .withBodyFile("sportsgambler.ligue-" + frenchLigue + "." + sportsGamblerDate + ".html")));
+            }
+            if (StringUtils.isNotBlank(equipeActuDate)) {
+                dateDayFormat.parse(equipeActuDate);
+                stubFor(get("/blessures-et-suspensions/fodbold/france/ligue-" + frenchLigue)
+                        .willReturn(aResponse().withHeader("Content-Type", "application/json")
+                                .withBodyFile("equipeactu.ligue-" + frenchLigue + "." + equipeActuDate + ".html")));
 
-            // 403 on SportsGambler, to force FallBack on EquipeActu
-            stubFor(get("/injuries/football/france-ligue-" + ligue + "/")
-                    .willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
-        }
-        if (StringUtils.isNotBlank(dataFileMaLigue2)) {
-            stubFor(get("/2020/08/20/joueurs-blesses-et-suspendus/").willReturn(aResponse().withHeader("Content-Type", "application/json")
-                    .withBodyFile("maligue2.joueurs-blesses-et-suspendus." + dataFileMaLigue2 + ".html")));
+                // 403 on SportsGambler, to force FallBack on EquipeActu
+                stubFor(get("/injuries/football/france-ligue-" + frenchLigue + "/")
+                        .willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
+            }
+            if (StringUtils.isNotBlank(maLigue2Date)) {
+                stubFor(get("/2020/08/20/joueurs-blesses-et-suspendus/").willReturn(aResponse().withHeader("Content-Type", "application/json")
+                        .withBodyFile("maligue2.joueurs-blesses-et-suspendus." + maLigue2Date + ".html")));
+            }
+        } catch (ParseException e) {
+            throw new UnsupportedOperationException("Input is not in correct date format: " + e.getMessage(), e);
         }
     }
 

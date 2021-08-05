@@ -11,6 +11,7 @@ public class League {
     @JsonProperty("leagueId")
     private String leagueId;
     private String divisionId;
+    private int divisionTotalUsers;
     private String name;
     @JsonProperty("championshipId")
     private ChampionshipType championship;
@@ -28,6 +29,10 @@ public class League {
 
     public String getDivisionId() {
         return divisionId;
+    }
+
+    public int getDivisionTotalUsers() {
+        return divisionTotalUsers;
     }
 
     public String getName() {

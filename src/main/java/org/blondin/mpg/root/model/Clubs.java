@@ -5,12 +5,11 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Club {
+public class Clubs {
 
-    private Map<String, String> name;
+    private Map<String, Club> championshipClubs;
 
-    public String getName() {
-        // All club have same name
-        return this.name.get("fr-FR");
+    public Map<String, Club> getChampionshipClubs() {
+        return championshipClubs;
     }
 }

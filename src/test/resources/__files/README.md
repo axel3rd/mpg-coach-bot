@@ -15,12 +15,13 @@ The `XXX` should be replaced by a use case scenario (like data, some league, ...
 | `mpg.dashboard.XXX.json` | https://api.mpg.football/dashboard/leagues | **Dashboard / Home** |
 | `mpg.division.XXX.json` | https://api.mpg.football/division/mpg_division_MLEXXXXX_3_1 | **User->Team association** |
 | `mpg.team.XXX.json` | https://api.mpg.football/team/mpg_team_MLEXXXXX_3_1_2 | **Current User Team** |
-| `mpg.poolPlayers.X.YYYY.json` | https://api.mpg.football/championship-players-pool/X | **League Pool Player** |
 | `mpg.coach.XXX.json` | https://api.mpg.football/TODO | **coach**, `GET` requests |
 | `mpg.coach.XXX-Request-XXX.json` | https://api.mpg.football/match-team-formation/[matchTeamFormation.id] | MPG league **coach**, `PUT` requests |
 | `mpg.mercato.XXX.json` | https://api.mpg.football/TODO | MPG league **mercato** |
 | `mpg.trading.buy.XXX.json` | https://api.mpg.football/division/mpg_division_MLEXXXXX_3_1/available-players | MPG league **transfer** |
 | `mpg.user-signIn.XXX.json` | https://api.mpg.football/user/sign-in | **Login** |
+| `mpg.poolPlayers.X.YYYY.json` | https://api.mpg.football/championship-players-pool/X | **League Pool Player** |
+| `mpg.clubs.YYYY.json` | https://api.mpg.football/championship-clubs | **Clubs details** |
 
 ### Players statistics
 

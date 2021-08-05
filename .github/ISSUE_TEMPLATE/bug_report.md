@@ -23,10 +23,11 @@ Depending your championship, join data files set in attachment.
 | dashboard  | `GET /dashboard/leagues` | Retrieve **divisionId** (~ `mpg_division_MLEXXXXX_3_1`) | 
 | division | `GET /division/mpg_division_MLEXXXXX_3_1` | Retrieve `mpg_team_MLEXXXXX_3_1_2` team for user league |
 | team | `GET /team/mpg_team_MLEXXXXX_3_1_2` |  Retrieve Team and Bonus for team |
-| poolPlayer | `GET /championship-players-pool/X` | Retrieve league players details (With `X`: 1=Ligue-1 / 2=Premier-League / 3=Liga / 4=Ligue-2 / 5=Serie-A) |
 | coach | `GET /division/mpg_division_MLEXXXXX_3_1/coach` | Retrieve formation |
 | transfer | `GET /division/mpg_division_MLEXXXXX_3_1/available-players` | Retrieve available players |
 | mercato | `GET TODO` | Retrieves players details for incoming mercato |
+| poolPlayer | `GET /championship-players-pool/X` | Retrieve league players details (With `X`: 1=Ligue-1 / 2=Premier-League / 3=Liga / 4=Ligue-2 / 5=Serie-A) |
+| clubs | `GET /championship-clubs` | Retrieve club names |
 
 2. The [Players statistics](https://www.mpgstats.fr/) data, one JSon from:
 

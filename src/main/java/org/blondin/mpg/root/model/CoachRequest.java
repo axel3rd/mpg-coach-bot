@@ -16,25 +16,14 @@ public class CoachRequest {
     @JsonProperty("tacticalsubstitutes")
     private List<TacticalSubstitute> tacticalsubstitutes = new ArrayList<>();
 
-    @JsonProperty("bonusSelected")
-    private BonusSelected bonusSelected = new BonusSelected();
+    @JsonProperty("selectedBonus")
+    private SelectedBonus bonusSelected = new SelectedBonus();
 
-    @JsonProperty("matchId")
-    private String matchId;
-
-    @JsonProperty("realday")
-    private int realDay;
-
-    public CoachRequest(Coach coach) {
-        if (coach.getComposition() < 343 || coach.getComposition() > 541) {
-            throw new UnsupportedOperationException(String.format("Invalid composition: %s", coach.getComposition()));
+    public CoachRequest(int composition) {
+        if (composition < 343 || composition > 541) {
+            throw new UnsupportedOperationException(String.format("Invalid composition: %s", composition));
         }
-        if (coach.getRealDay() < 1) {
-            throw new UnsupportedOperationException(String.format("Invalid real day: %s", coach.getRealDay()));
-        }
-        this.composition = coach.getComposition();
-        this.matchId = coach.getMatchId();
-        this.realDay = coach.getRealDay();
+        this.composition = composition;
     }
 
     public PlayersOnPitch getPlayersOnPitch() {
@@ -45,11 +34,11 @@ public class CoachRequest {
         return tacticalsubstitutes;
     }
 
-    public BonusSelected getBonusSelected() {
+    public SelectedBonus getBonusSelected() {
         return bonusSelected;
     }
 
-    public void setBonusSelected(BonusSelected bonusSelected) {
+    public void setBonusSelected(SelectedBonus bonusSelected) {
         this.bonusSelected = bonusSelected;
     }
 }

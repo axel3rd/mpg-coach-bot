@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  * - Chapron: removeRandomPlayer<br>
  * -
  */
-public class BonusSelected {
+public class SelectedBonus {
 
     // TODO: Order bonus by priority !!
 
@@ -24,6 +24,14 @@ public class BonusSelected {
     @JsonInclude(Include.NON_NULL)
     private String playerId;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getPlayerId() {
         return playerId;
     }
@@ -32,11 +40,4 @@ public class BonusSelected {
         this.playerId = playerId;
     }
 
-    public Integer getType() {
-        throw new UnsupportedOperationException("Now it is name");
-    }
-
-    public void setType(int t) {
-        throw new UnsupportedOperationException("Now it is name");
-    }
 }

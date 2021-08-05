@@ -15,13 +15,9 @@ public class Player {
     private int quotation;
     @JsonProperty("price")
     private int pricePaid;
-
-    @JsonProperty("teamid")
-    private int teamId;
-    @JsonProperty("club")
-    private String club;
+    private String clubId;
+    private String clubName;
     private PlayerStatus status;
-
     private double efficiency;
 
     public String getId() {
@@ -52,11 +48,23 @@ public class Player {
         return pricePaid;
     }
 
-    public int getTeamId() {
-        if (true) {
-            throw new UnsupportedOperationException("Usage should be checked");
+    public void setPricePaid(int pricePaid) {
+        this.pricePaid = pricePaid;
+    }
+
+    public String getClubId() {
+        return clubId;
+    }
+
+    public String getClubName() {
+        if (StringUtils.isBlank(clubName)) {
+            throw new UnsupportedOperationException("Club Name has not be filled, problem");
         }
-        return teamId;
+        return clubName;
+    }
+
+    public void setClubName(String clubName) {
+        this.clubName = clubName;
     }
 
     public double getEfficiency() {
@@ -67,20 +75,10 @@ public class Player {
         this.efficiency = efficiency;
     }
 
-    public String getClub() {
-        if (true) {
-            throw new UnsupportedOperationException("Usage should be checked");
-        }
-        return club;
-    }
-
-    public void setClub(String club) {
-        this.club = club;
-    }
-
     public PlayerStatus getStatus() {
         if (true) {
-            throw new UnsupportedOperationException("Usage should be checked");
+            // TODO: Should be checked with real use case from mobile app API
+            return PlayerStatus.BUY;
         }
         return status;
     }

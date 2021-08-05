@@ -9,6 +9,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import org.blondin.mpg.AbstractMockTestClient;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.root.model.ChampionshipType;
+import org.blondin.mpg.root.model.Club;
+import org.blondin.mpg.root.model.Clubs;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.Dashboard;
 import org.blondin.mpg.root.model.Division;
@@ -66,6 +68,7 @@ public class MpgClientTest extends AbstractMockTestClient {
         Assert.assertEquals(ChampionshipType.LIGUE_2, l.getChampionship());
         Assert.assertEquals(Mode.EXPERT, l.getMode());
         Assert.assertEquals(LeagueStatus.GAMES, l.getStatus());
+        Assert.assertEquals(10, l.getDivisionTotalUsers());
     }
 
     @Test
@@ -73,13 +76,16 @@ public class MpgClientTest extends AbstractMockTestClient {
         stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
         stubFor(get("/division/mpg_division_MLEFEX6G_3_1")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.MLEFEX6G.json")));
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.MLEFEX6G.20210804.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         Division division = mpgClient.getDivision("mpg_division_MLEFEX6G_3_1");
         Assert.assertNotNull(division);
         Assert.assertNotNull(division.getUsersTeams());
         Assert.assertTrue(division.getUsersTeams().size() > 0);
         Assert.assertEquals("mpg_team_MLEFEX6G_3_1_2", division.getTeam(mpgClient.getUserId()));
+        Assert.assertEquals(2, division.getGameCurrent());
+        Assert.assertEquals(18, division.getGameTotal());
+        Assert.assertEquals(17, division.getGameRemaining());
     }
 
     @Test
@@ -92,7 +98,9 @@ public class MpgClientTest extends AbstractMockTestClient {
         Team team = mpgClient.getTeam("mpg_team_MLEFEX6G_3_1_2");
         Assert.assertNotNull(team);
         Assert.assertEquals("Axel Football Club", team.getName());
-        Assert.assertEquals(0, team.getBudget());
+        Assert.assertEquals(42, team.getBudget());
+        Assert.assertNotNull(team.getBonuses());
+        Assert.assertEquals(10, team.getBonusesNumber());
         Assert.assertNotNull(team.getSquad());
         Assert.assertEquals(20, team.getSquad().size());
         Player p = team.getSquad().get("mpg_championship_player_220359");
@@ -110,6 +118,22 @@ public class MpgClientTest extends AbstractMockTestClient {
         Coach coach = mpgClient.getCoach("mpg_division_MLEFEX6G_3_1");
         Assert.assertNotNull(coach);
         Assert.assertTrue(coach.getComposition() > 0);
+    }
+
+    @Test
+    public void testMockClubs() throws Exception {
+        stubFor(post("/user/sign-in")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/championship-clubs")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.clubs.2021.json")));
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        Clubs clubs = mpgClient.getClubs();
+        Assert.assertNotNull(clubs);
+        Assert.assertNotNull(clubs.getChampionshipClubs());
+        Assert.assertTrue(clubs.getChampionshipClubs().size() > 40);
+        Club club = clubs.getChampionshipClubs().get("mpg_championship_club_693");
+        Assert.assertNotNull(club);
+        Assert.assertEquals("Sochaux", club.getName());
     }
 
     @Test
