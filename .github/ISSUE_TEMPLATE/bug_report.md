@@ -24,8 +24,7 @@ Depending your championship, join data files set in attachment.
 | division | `GET /division/mpg_division_MLEXXXXX_3_1` | Retrieve `mpg_team_MLEXXXXX_3_1_2` team for user league |
 | team | `GET /team/mpg_team_MLEXXXXX_3_1_2` |  Retrieve Team and Bonus for team |
 | coach | `GET /division/mpg_division_MLEXXXXX_3_1/coach` | Retrieve formation |
-| transfer | `GET /division/mpg_division_MLEXXXXX_3_1/available-players` | Retrieve available players |
-| mercato | `GET TODO` | Retrieves players details for incoming mercato |
+| availablePlayers | `GET /division/mpg_division_MLEXXXXX_3_1/available-players` | Retrieves available players details for incoming mercato or trading |
 | poolPlayer | `GET /championship-players-pool/X` | Retrieve league players details (With `X`: 1=Ligue-1 / 2=Premier-League / 3=Liga / 4=Ligue-2 / 5=Serie-A) |
 | clubs | `GET /championship-clubs` | Retrieve club names |
 

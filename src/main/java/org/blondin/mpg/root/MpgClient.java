@@ -16,19 +16,15 @@ import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.Dashboard;
 import org.blondin.mpg.root.model.Division;
-import org.blondin.mpg.root.model.Mercato;
-import org.blondin.mpg.root.model.MercatoLeague;
 import org.blondin.mpg.root.model.PoolPlayers;
 import org.blondin.mpg.root.model.Team;
-import org.blondin.mpg.root.model.TransferBuy;
+import org.blondin.mpg.root.model.AvailablePlayers;
 import org.blondin.mpg.root.model.UserSignIn;
 
 /**
  * Client for https://www.mpgstats.fr/
  */
 public class MpgClient extends AbstractClient {
-
-    public static final String MPG_CLIENT_VERSION = "8.2.0";
 
     private final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
 
@@ -83,15 +79,11 @@ public class MpgClient extends AbstractClient {
         return get("division/" + leagueDivisionId + "/coach", headers, Coach.class);
     }
 
-    public Mercato getMercato(String league) {
-        return get("todo-currently-not-found/" + league + "/mercato", headers, MercatoLeague.class);
-    }
-
-    public TransferBuy getTransferBuy(String leagueDivisionId) {
+    public AvailablePlayers getAvailablePlayers(String leagueDivisionId) {
         if (!StringUtils.startsWith(leagueDivisionId, "mpg_division_")) {
             throw new UnsupportedOperationException(String.format("League id '%s' should start with 'mpg_division_'", leagueDivisionId));
         }
-        return get("division/" + leagueDivisionId + "/available-players", headers, TransferBuy.class);
+        return get("division/" + leagueDivisionId + "/available-players", headers, AvailablePlayers.class);
     }
 
     public PoolPlayers getPoolPlayers(ChampionshipType championship) {
@@ -117,7 +109,6 @@ public class MpgClient extends AbstractClient {
         UserSignIn usi = post("user/sign-in", entity, UserSignIn.class);
         this.userId = usi.getUserId();
         headers.add("authorization", usi.getToken());
-        // headers.add("client-version", MPG_CLIENT_VERSION);
     }
 
     public void updateCoach(String matchId, CoachRequest coachRequest) {
@@ -125,8 +116,8 @@ public class MpgClient extends AbstractClient {
             throw new UnsupportedOperationException(String.format("Coach match id '%s' should start with 'mpg_match_team_formation_'", matchId));
         }
         String result = put("/match-team-formation/" + matchId, headers, coachRequest, String.class);
-        if (!"{\"success\":\"teamSaved\"}".equals(result)) {
-            throw new UnsupportedOperationException(String.format("The team has been updated, result message: %s", result));
+        if (!"{\"success\":true}".equals(result)) {
+            throw new UnsupportedOperationException(String.format("The team has not been updated, result message: %s", result));
         }
     }
 

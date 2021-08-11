@@ -1,0 +1,43 @@
+{
+    "leaguesDivisionsItems": [
+        {
+            "leagueId": "mpg_league_MLAX7HMK",
+            "name": "Du Tyran 🐐",
+            "adminId": "user_953561",
+            "status": 3,
+            "season": 3,
+            "mode": 1,
+            "createdAt": "2020-08-22T08:22:40Z",
+            "mercatoState": {
+                "nextMercatoTurn": "2021-08-13T12:00:00Z",
+                "teamsStatuses": {
+                    "mpg_team_MLAX7HMK_3_1_0": 2,
+                    "mpg_team_MLAX7HMK_3_1_1": 2,
+                    "mpg_team_MLAX7HMK_3_1_2": 2,
+                    "mpg_team_MLAX7HMK_3_1_3": 2,
+                    "mpg_team_MLAX7HMK_3_1_4": 2,
+                    "mpg_team_MLAX7HMK_3_1_5": 2,
+                    "mpg_team_MLAX7HMK_3_1_6": 2,
+                    "mpg_team_MLAX7HMK_3_1_7": 2,
+                    "mpg_team_MLAX7HMK_3_1_8": 2,
+                    "mpg_team_MLAX7HMK_3_1_9": 1
+                },
+                "turn": 1
+            },
+            "championshipId": 1,
+            "rating": "mpg",
+            "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/162a6145-03c5-4895-8456-6855a9bd4c15.jpg",
+            "totalDivisions": 1,
+            "totalUsers": 10,
+            "totalMissedPosts": 0,
+            "mercatoStartDate": "2021-08-11T12:00:00Z",
+            "mercatoStartIn": -631,
+            "divisionNumber": 1,
+            "divisionStatus": 3,
+            "divisionId": "mpg_division_MLAX7HMK_3_1",
+            "divisionTotalUsers": 10,
+            "currentTeamStatus": 2
+        }
+    ],
+    "defaultOrder": true
+}

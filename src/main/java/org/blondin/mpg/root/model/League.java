@@ -17,11 +17,7 @@ public class League {
     private ChampionshipType championship;
     private LeagueStatus status;
     private Mode mode;
-    private int teamStatus;
-    @JsonProperty("isMasterLeague")
-    private boolean isMasterLeague;
-    @JsonProperty("league")
-    private League subLeague;
+    private int currentTeamStatus;
 
     public String getId() {
         return StringUtils.removeStart(leagueId, "mpg_league_");
@@ -51,24 +47,8 @@ public class League {
         return mode;
     }
 
-    public int getTeamStatus() {
-        if (true) {
-            throw new UnsupportedOperationException("Usage should be analysed");
-        }
-        return teamStatus;
+    public int getCurrentTeamStatus() {
+        return currentTeamStatus;
     }
 
-    public boolean isMasterLeague() {
-        if (true) {
-            throw new UnsupportedOperationException("Usage should be analysed");
-        }
-        return isMasterLeague;
-    }
-
-    public League getSubLeague() {
-        if (true) {
-            throw new UnsupportedOperationException("Usage should be analysed");
-        }
-        return subLeague;
-    }
 }

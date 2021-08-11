@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.ChampionshipOutType;
@@ -35,7 +34,6 @@ import org.blondin.mpg.root.model.Position;
 import org.blondin.mpg.root.model.SelectedBonus;
 import org.blondin.mpg.root.model.TacticalSubstitute;
 import org.blondin.mpg.root.model.Team;
-import org.blondin.mpg.root.model.TransferBuy;
 import org.blondin.mpg.stats.ChampionshipStatsType;
 import org.blondin.mpg.stats.MpgStatsClient;
 import org.blondin.mpg.stats.model.CurrentDay;
@@ -74,13 +72,7 @@ public class Main {
     }
 
     static void process(ApiClients apiClients, Config config) {
-        for (League leagueOptionalMaster : apiClients.getMpg().getDashboard().getLeagues()) {
-            League league = leagueOptionalMaster;
-
-            // TODO: Waiting feedback about Multiple division leagues
-            if (false && league.isMasterLeague()) {
-                league = league.getSubLeague();
-            }
+        for (League league : apiClients.getMpg().getDashboard().getLeagues()) {
             if (LeagueStatus.TERMINATED.equals(league.getStatus())
                     || (!config.getLeaguesInclude().isEmpty() && !config.getLeaguesInclude().contains(league.getId()))
                     || (!config.getLeaguesExclude().isEmpty() && config.getLeaguesExclude().contains(league.getId()))) {
@@ -108,11 +100,12 @@ public class Main {
             processMercatoChampionship(league, apiClients, config);
             break;
         case MERCATO:
-            if (league.getTeamStatus() == 1) {
+            if (league.getCurrentTeamStatus() == 2) {
                 LOG.info("\nMercato round is closed, come back soon for the next !\n");
                 return;
             }
-            if (league.getTeamStatus() == 2) {
+            if (league.getCurrentTeamStatus() == 2) {
+                // TODO : To analyse
                 LOG.info("\nMercato will be ending, ready for your first match ?\n");
                 return;
             }
@@ -126,7 +119,7 @@ public class Main {
 
     static void processMercatoLeague(League league, ApiClients apiClients, Config config) {
         LOG.info("\nProposal for your mercato:\n");
-        List<Player> players = apiClients.getMpg().getMercato(league.getId()).getPlayers();
+        List<Player> players = apiClients.getMpg().getAvailablePlayers(league.getDivisionId()).getAvailablePlayers();
         completePlayersClub(players, apiClients.getMpg().getClubs());
         calculateEfficiency(players, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
         processMercato(players, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()));
@@ -195,11 +188,11 @@ public class Main {
                     Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed());
 
             // Write optimized team
-            writeTeamOptimized(players);
+            writeTeamOptimized(players, config.isDebug());
 
             // Auto-update team
             if (config.isTeampUpdate()) {
-                updateTeamWithRetry(apiClients.getMpg(), league, division, team, coach, players, config);
+                updateTeamWithRetry(apiClients.getMpg(), division, team, coach, players, config);
             }
 
             if (config.isTransactionsProposal()) {
@@ -213,8 +206,7 @@ public class Main {
                     if (cd.getLastDayReached() < cd.getDay()) {
                         LOG.info("\nWARNING: Last day stats have not fully reached! Please retry tomorrow");
                     }
-                    TransferBuy transferBuy = apiClients.getMpg().getTransferBuy(league.getDivisionId());
-                    List<Player> playersAvailable = transferBuy.getAvailablePlayers();
+                    List<Player> playersAvailable = apiClients.getMpg().getAvailablePlayers(league.getDivisionId()).getAvailablePlayers();
                     completePlayersClub(playersAvailable, apiClients.getMpg().getClubs());
                     removeOutPlayers(playersAvailable, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()), false);
                     calculateEfficiency(playersAvailable, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config,
@@ -262,8 +254,7 @@ public class Main {
         }
     }
 
-    private static void updateTeamWithRetry(MpgClient mpgClient, League league, Division division, Team team, Coach coach, List<Player> players,
-            Config config) {
+    private static void updateTeamWithRetry(MpgClient mpgClient, Division division, Team team, Coach coach, List<Player> players, Config config) {
         LOG.info("\nUpdating team ...");
         final long maxRetry = 10;
         for (int i = 1; i <= 10; i++) {
@@ -386,7 +377,7 @@ public class Main {
         return players;
     }
 
-    private static void writeTeamOptimized(List<Player> players) {
+    private static void writeTeamOptimized(List<Player> players, boolean isDebug) {
         LOG.info("\nOptimized team:");
         AsciiTable at = getTable(TABLE_POSITION, TABLE_PLAYER_NAME, TABLE_EFFICIENCY, TABLE_QUOTE);
         Position lp = Position.G;
@@ -396,8 +387,11 @@ public class Main {
                 lp = player.getPosition();
                 at.addRule();
             }
-            AT_Row row = at.addRow(player.getPosition(), player.getName(), FORMAT_DECIMAL_DOUBLE.format(player.getEfficiency()),
-                    player.getQuotation());
+            String playerName = player.getName();
+            if (isDebug) {
+                playerName += " (" + player.getId() + ")";
+            }
+            AT_Row row = at.addRow(player.getPosition(), playerName, FORMAT_DECIMAL_DOUBLE.format(player.getEfficiency()), player.getQuotation());
             setTableFormatRowPaddingSpace(row);
             row.getCells().get(2).getContext().setTextAlignment(TextAlignment.RIGHT);
         }
@@ -446,7 +440,7 @@ public class Main {
     private static int getCurrentDay(MpgStatsClient stats, ChampionshipStatsType championship) {
         int daysPeriod = stats.getStats(championship).getInfos().getAnnualStats().getCurrentDay().getDay();
         // If league not started, we take the number of day of season, because average will be on this period
-        if (daysPeriod == 0) {
+        if (daysPeriod == 0 || stats.getStats(championship).getInfos().getAnnualStats().getCurrentDay().getPlayed() == 0) {
             // The previous season statistics could be null, in this case current annual max day is used
             daysPeriod = stats.getStats(championship).getInfos().getLastStats() == null
                     ? stats.getStats(championship).getInfos().getAnnualStats().getMaxDay()
@@ -476,7 +470,6 @@ public class Main {
         List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList());
 
         String playerIdForBonus = midfielders.get(0).getId();
-        // TODO complete with correct bonus
         request.setBonusSelected(selectBonus(coach.getBonusSelected(), team.getBonuses(), gameRemaining, config.isUseBonus(), playerIdForBonus));
 
         // Main lines
@@ -540,15 +533,16 @@ public class Main {
 
     static SelectedBonus selectBonus(SelectedBonus previousBonus, Map<String, Integer> bonuses, int matchsRemaining, boolean useBonus,
             String playerIdIfNeeded) {
-        SelectedBonus bonusSelected = ObjectUtils.defaultIfNull(previousBonus, new SelectedBonus());
-        if (!useBonus || bonusSelected.getName() != null) {
-            return bonusSelected;
+        if (!useBonus || (previousBonus != null && previousBonus.getName() != null)) {
+            return previousBonus;
         }
         if (bonuses == null) {
             throw new UnsupportedOperationException("Bonus is null, technical problem");
         }
+        SelectedBonus bonusSelected = null;
         if (bonuses.values().stream().reduce(0, Integer::sum) >= matchsRemaining) {
             String bonus = getBestBonus(bonuses, matchsRemaining);
+            bonusSelected = new SelectedBonus();
             bonusSelected.setName(bonus);
             if ("boostOnePlayer".equals(bonus)) {
                 bonusSelected.setPlayerId(playerIdIfNeeded);
@@ -590,7 +584,7 @@ public class Main {
         if (StringUtils.isBlank(playerIdSubstitute) || StringUtils.isBlank(playerIdStart)) {
             return;
         }
-        request.getTacticalsubstitutes().add(new TacticalSubstitute(playerIdSubstitute, playerIdStart, rating));
+        request.getTacticalSubstitutes().add(new TacticalSubstitute(playerIdSubstitute, playerIdStart, rating));
     }
 
     private static AsciiTable getTable(Object... columnTitle) {

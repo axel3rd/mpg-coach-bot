@@ -49,7 +49,7 @@ public class BonusSelectionTest {
         Assert.assertEquals("boostOnePlayer", Main.selectBonus(null, getBonus(0, 0, 0, 1, 0, 0, 0), 0, true, "fake").getName());
         Assert.assertEquals("fake", Main.selectBonus(null, getBonus(0, 0, 0, 1, 0, 0, 0), 0, true, "fake").getPlayerId());
         Assert.assertNull(Main.selectBonus(null, getBonus(0, 1, 0, 1, 1, 1, 1), 0, true, "fake").getPlayerId());
-        Assert.assertNull(Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), 15, true, "fake").getName());
+        Assert.assertNull(Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), 15, true, "fake"));
         Assert.assertEquals("boostAllPlayers", Main.selectBonus(null, getBonus(0, 1, 0, 1, 1, 1, 1), 0, true, "fake").getName());
         Assert.assertEquals("removeGoal", Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), 0, true, "fake").getName());
         Assert.assertEquals("removeRandomPlayer", Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), 9, true, "fake").getName());
@@ -64,9 +64,7 @@ public class BonusSelectionTest {
     @Test
     public void testBonusSelectionNotUsed() {
         // No previous bonus
-        Assert.assertNotNull(Main.selectBonus(null, null, 0, false, "fake"));
-        Assert.assertNull(Main.selectBonus(null, null, 0, false, "fake").getName());
-        Assert.assertNull(Main.selectBonus(null, null, 0, false, "fake").getPlayerId());
+        Assert.assertNull(Main.selectBonus(null, null, 0, false, "fake"));
 
         // Previous bonus wallet
         SelectedBonus bs = getBonusSelected("removeGoal");

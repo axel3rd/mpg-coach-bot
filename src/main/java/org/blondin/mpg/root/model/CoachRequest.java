@@ -3,35 +3,37 @@ package org.blondin.mpg.root.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CoachRequest {
+    @JsonProperty("composition")
+    private String composition;
 
     @JsonProperty("playersOnPitch")
     private PlayersOnPitch playersOnPitch = new PlayersOnPitch();
 
-    @JsonProperty("composition")
-    private int composition;
-
-    @JsonProperty("tacticalsubstitutes")
-    private List<TacticalSubstitute> tacticalsubstitutes = new ArrayList<>();
+    @JsonProperty("tacticalSubs")
+    private List<TacticalSubstitute> tacticalSubstitutes = new ArrayList<>();
 
     @JsonProperty("selectedBonus")
-    private SelectedBonus bonusSelected = new SelectedBonus();
+    @JsonInclude(Include.NON_NULL)
+    private SelectedBonus bonusSelected;
 
     public CoachRequest(int composition) {
         if (composition < 343 || composition > 541) {
             throw new UnsupportedOperationException(String.format("Invalid composition: %s", composition));
         }
-        this.composition = composition;
+        this.composition = String.valueOf(composition);
     }
 
     public PlayersOnPitch getPlayersOnPitch() {
         return playersOnPitch;
     }
 
-    public List<TacticalSubstitute> getTacticalsubstitutes() {
-        return tacticalsubstitutes;
+    public List<TacticalSubstitute> getTacticalSubstitutes() {
+        return tacticalSubstitutes;
     }
 
     public SelectedBonus getBonusSelected() {

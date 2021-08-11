@@ -8,6 +8,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 
 import org.blondin.mpg.AbstractMockTestClient;
 import org.blondin.mpg.config.Config;
+import org.blondin.mpg.root.model.AvailablePlayers;
 import org.blondin.mpg.root.model.ChampionshipType;
 import org.blondin.mpg.root.model.Club;
 import org.blondin.mpg.root.model.Clubs;
@@ -21,7 +22,6 @@ import org.blondin.mpg.root.model.Player;
 import org.blondin.mpg.root.model.PoolPlayers;
 import org.blondin.mpg.root.model.Position;
 import org.blondin.mpg.root.model.Team;
-import org.blondin.mpg.root.model.TransferBuy;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -52,7 +52,7 @@ public class MpgClientTest extends AbstractMockTestClient {
     }
 
     @Test
-    public void testMockDashboard() throws Exception {
+    public void testMockDashboardGame() throws Exception {
         stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
         stubFor(get("/dashboard/leagues")
@@ -69,6 +69,28 @@ public class MpgClientTest extends AbstractMockTestClient {
         Assert.assertEquals(Mode.EXPERT, l.getMode());
         Assert.assertEquals(LeagueStatus.GAMES, l.getStatus());
         Assert.assertEquals(10, l.getDivisionTotalUsers());
+    }
+
+    @Test
+    public void testMockDashboardMercatoWaitNextTurn() throws Exception {
+        stubFor(post("/user/sign-in")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/dashboard/leagues").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.MLAX7HMK-status-3-waitMercatoNextTurn.json")));
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        Dashboard dashboard = mpgClient.getDashboard();
+        Assert.assertNotNull(dashboard);
+        Assert.assertNotNull(dashboard.getLeagues());
+        League l = dashboard.getLeagues().get(0);
+        Assert.assertEquals("MLAX7HMK", l.getId());
+        Assert.assertEquals("mpg_division_MLAX7HMK_3_1", l.getDivisionId());
+        Assert.assertEquals(ChampionshipType.LIGUE_1, l.getChampionship());
+        Assert.assertEquals(Mode.NORMAL, l.getMode());
+        Assert.assertEquals(LeagueStatus.MERCATO, l.getStatus());
+        Assert.assertEquals(10, l.getDivisionTotalUsers());
+
+        // The current mercato state: wait next turn
+        Assert.assertEquals(2, l.getCurrentTeamStatus());
     }
 
     @Test
@@ -160,13 +182,13 @@ public class MpgClientTest extends AbstractMockTestClient {
     }
 
     @Test
-    public void testMockTransferBuy() throws Exception {
+    public void testMockAvailablePlayers() throws Exception {
         stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/available-players")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.trading.buy.MLEFEX6G.20210804.json")));
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/available-players").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.available.players.MLEFEX6G.20210804.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
-        TransferBuy tb = mpgClient.getTransferBuy("mpg_division_MLEFEX6G_3_1");
+        AvailablePlayers tb = mpgClient.getAvailablePlayers("mpg_division_MLEFEX6G_3_1");
         Assert.assertTrue(tb.getAvailablePlayers().size() > 10);
     }
 }

@@ -44,6 +44,7 @@ public class Config {
     private boolean sslCertificatesCheck = true;
     private List<String> requestWaitUrls = Arrays.asList("https://www.sportsgambler.com");
     private int requestWaitTime = 1;
+    private boolean debug = false;
 
     private Config() {
         super();
@@ -71,7 +72,7 @@ public class Config {
         configEfficiencySell(config, properties);
         configProxy(config, properties);
         configRequestWait(config, properties);
-        configLogs(properties);
+        configLogs(config, properties);
         return config;
     }
 
@@ -155,8 +156,9 @@ public class Config {
         config.efficiencySellGoalkeeper = parseFloat(properties, "efficiency.sell.goalkeeper", config.efficiencySellGoalkeeper);
     }
 
-    private static void configLogs(Properties properties) {
+    private static void configLogs(Config config, Properties properties) {
         if (parseBoolean(properties, "logs.debug", false)) {
+            config.debug = true;
             Configurator.setLevel(Main.class.getPackage().getName(), Level.DEBUG);
         }
     }
@@ -274,4 +276,7 @@ public class Config {
         return sslCertificatesCheck;
     }
 
+    public boolean isDebug() {
+        return debug;
+    }
 }
