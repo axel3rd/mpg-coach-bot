@@ -104,8 +104,7 @@ public class Main {
                 LOG.info("\nMercato round is closed, come back soon for the next !\n");
                 return;
             }
-            if (league.getCurrentTeamStatus() == 2) {
-                // TODO : To analyse
+            if (league.getCurrentTeamStatus() == 3) {
                 LOG.info("\nMercato will be ending, ready for your first match ?\n");
                 return;
             }

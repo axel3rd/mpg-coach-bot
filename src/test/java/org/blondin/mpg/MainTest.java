@@ -55,13 +55,22 @@ public class MainTest extends AbstractMockTestClient {
             Assert.fail("Credentials are invalid");
         } catch (UnsupportedOperationException e) {
             // Credentials in sample file are fake
-            Assert.assertEquals("Bad credentials",
-                    "Unsupported status code: 401 Unauthorized / Content: {\"success\":false,\"error\":\"incorrectPasswordUser\",\"code\":819}",
-                    e.getMessage());
+            Assert.assertTrue("Bad credentials", e.getMessage().contains("Forbidden URL"));
         } catch (ProcessingException e) {
             // Proxy not configured or real URL not accessible
             Assert.assertEquals("No network", "java.net.UnknownHostException: api.mpg.football", e.getMessage());
         }
+    }
+
+    @Test
+    public void testMercatoEnd() throws Exception {
+        stubFor(post("/user/sign-in")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/dashboard/leagues").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.MLAX7HMK-status-3-mercatoEnd.json")));
+        Config config = spy(getConfig());
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Mercato will be ending, ready for your first match"));
     }
 
     @Test
