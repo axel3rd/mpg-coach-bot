@@ -28,7 +28,6 @@ import org.blondin.mpg.root.model.League;
 import org.blondin.mpg.root.model.LeagueStatus;
 import org.blondin.mpg.root.model.Mode;
 import org.blondin.mpg.root.model.Player;
-import org.blondin.mpg.root.model.PlayerStatus;
 import org.blondin.mpg.root.model.PoolPlayers;
 import org.blondin.mpg.root.model.Position;
 import org.blondin.mpg.root.model.SelectedBonus;
@@ -210,8 +209,8 @@ public class Main {
                     removeOutPlayers(playersAvailable, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()), false);
                     calculateEfficiency(playersAvailable, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config,
                             false, false);
-                    Integer currentPlayersBuy = team.getSquad().values().stream().filter(p -> p.getStatus().equals(PlayerStatus.PROPOSAL))
-                            .map(Player::getPricePaid).collect(Collectors.summingInt(Integer::intValue));
+
+                    Integer currentPlayersBuy = team.getBids().stream().map(Player::getPricePaid).collect(Collectors.summingInt(Integer::intValue));
                     writeTransactionsProposal(playersTeam, playersAvailable, team.getBudget() - currentPlayersBuy, apiClients.getOutPlayers(),
                             ChampionshipTypeWrapper.toOut(league.getChampionship()), config);
                 }

@@ -1,5 +1,6 @@
 package org.blondin.mpg.root.model;
 
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -10,6 +11,7 @@ public class Team {
     private String name;
     private int budget;
     private Map<String, Player> squad;
+    private List<Player> bids;
     private Map<String, Integer> bonuses;
 
     public Map<String, Integer> getBonuses() {
@@ -32,4 +34,7 @@ public class Team {
         return squad;
     }
 
+    public List<Player> getBids() {
+        return bids;
+    }
 }

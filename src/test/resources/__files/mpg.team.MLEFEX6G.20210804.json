@@ -134,6 +134,11 @@
         }
     },
     "bids": [
+        {
+            "id": "mpg_championship_player_489889",
+            "price": 1,
+            "bidDate": "2021-08-11T17:04:37Z"
+        }
     ],
     "bonuses": {
         "removeGoal": 1,

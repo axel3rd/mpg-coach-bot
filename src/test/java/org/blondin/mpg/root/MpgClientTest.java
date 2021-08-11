@@ -128,6 +128,8 @@ public class MpgClientTest extends AbstractMockTestClient {
         Player p = team.getSquad().get("mpg_championship_player_220359");
         Assert.assertNotNull(p);
         Assert.assertEquals(32, p.getPricePaid());
+        Assert.assertNotNull(team.getBids());
+        Assert.assertEquals(1, team.getBids().size());
     }
 
     @Test

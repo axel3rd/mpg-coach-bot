@@ -17,7 +17,6 @@ public class Player {
     private int pricePaid;
     private String clubId;
     private String clubName;
-    private PlayerStatus status;
     private double efficiency;
 
     public String getId() {
@@ -73,14 +72,6 @@ public class Player {
 
     public void setEfficiency(double efficiency) {
         this.efficiency = efficiency;
-    }
-
-    public PlayerStatus getStatus() {
-        if (true) {
-            // TODO: Should be checked with real use case from mobile app API
-            return PlayerStatus.BUY;
-        }
-        return status;
     }
 
 }
