@@ -117,7 +117,7 @@ public class Main {
 
     static void processMercatoLeague(League league, ApiClients apiClients, Config config) {
         LOG.info("\nProposal for your mercato:\n");
-        List<Player> players = apiClients.getMpg().getAvailablePlayers(league.getDivisionId()).getAvailablePlayers();
+        List<Player> players = apiClients.getMpg().getAvailablePlayers(league.getDivisionId()).getList();
         completePlayersClub(players, apiClients.getMpg().getClubs());
         calculateEfficiency(players, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
         processMercato(players, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()));
@@ -204,7 +204,7 @@ public class Main {
                     if (cd.getLastDayReached() < cd.getDay()) {
                         LOG.info("\nWARNING: Last day stats have not fully reached! Please retry tomorrow");
                     }
-                    List<Player> playersAvailable = apiClients.getMpg().getAvailablePlayers(league.getDivisionId()).getAvailablePlayers();
+                    List<Player> playersAvailable = apiClients.getMpg().getAvailablePlayers(league.getDivisionId()).getList();
                     completePlayersClub(playersAvailable, apiClients.getMpg().getClubs());
                     removeOutPlayers(playersAvailable, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()), false);
                     calculateEfficiency(playersAvailable, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config,

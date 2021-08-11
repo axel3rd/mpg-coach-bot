@@ -191,6 +191,6 @@ public class MpgClientTest extends AbstractMockTestClient {
                 aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.available.players.MLEFEX6G.20210804.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         AvailablePlayers tb = mpgClient.getAvailablePlayers("mpg_division_MLEFEX6G_3_1");
-        Assert.assertTrue(tb.getAvailablePlayers().size() > 10);
+        Assert.assertTrue(tb.getList().size() > 10);
     }
 }

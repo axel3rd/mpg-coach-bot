@@ -4,14 +4,16 @@ package org.blondin.mpg.root.model;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AvailablePlayers {
 
-    private List<Player> availablePlayers;
+    @JsonProperty("availablePlayers")
+    private List<Player> list;
 
-    public List<Player> getAvailablePlayers() {
-        return availablePlayers;
+    public List<Player> getList() {
+        return list;
     }
 
 }
