@@ -1,0 +1,153 @@
+{
+    "id": "mpg_team_MLEFEX6G_3_1_2",
+    "type": "mpg_team",
+    "name": "Axel Football Club",
+    "abbreviation": "AFC",
+    "gear": {
+        "home": {
+            "jerseyId": "mpg_jersey_backup_5_e1c5cb798cf638ded8ba80125be693cc"
+        }
+    },
+    "status": 3,
+    "budget": 42,
+    "buyableRemoveGoal": 1,
+    "squad": {
+        "mpg_championship_player_92353": {
+            "id": "mpg_championship_player_92353",
+            "price": 45,
+            "bidDate": "2021-07-28T18:01:02Z",
+            "status": 1
+        },
+        "mpg_championship_player_512711": {
+            "id": "mpg_championship_player_512711",
+            "price": 12,
+            "bidDate": "2021-07-28T18:01:02Z",
+            "status": 1
+        },
+        "mpg_championship_player_511596": {
+            "id": "mpg_championship_player_511596",
+            "price": 53,
+            "bidDate": "2021-07-28T18:01:02Z",
+            "status": 1
+        },
+        "mpg_championship_player_509285": {
+            "id": "mpg_championship_player_509285",
+            "price": 1,
+            "bidDate": "2021-07-28T18:01:02Z",
+            "status": 1
+        },
+        "mpg_championship_player_489486": {
+            "id": "mpg_championship_player_489486",
+            "price": 9,
+            "bidDate": "2021-07-28T18:01:02Z",
+            "status": 1
+        },
+        "mpg_championship_player_454964": {
+            "id": "mpg_championship_player_454964",
+            "price": 6,
+            "bidDate": "2021-07-28T18:01:02Z",
+            "status": 1
+        },
+        "mpg_championship_player_437503": {
+            "id": "mpg_championship_player_437503",
+            "price": 11,
+            "bidDate": "2021-07-28T18:01:02Z",
+            "status": 1
+        },
+        "mpg_championship_player_228313": {
+            "id": "mpg_championship_player_228313",
+            "price": 57,
+            "bidDate": "2021-07-28T18:01:02Z",
+            "status": 1
+        },
+        "mpg_championship_player_220359": {
+            "id": "mpg_championship_player_220359",
+            "price": 32,
+            "bidDate": "2021-07-28T18:01:02Z",
+            "status": 1
+        },
+        "mpg_championship_player_209171": {
+            "id": "mpg_championship_player_209171",
+            "price": 29,
+            "bidDate": "2021-07-28T18:01:02Z",
+            "status": 1
+        },
+        "mpg_championship_player_204405": {
+            "id": "mpg_championship_player_204405",
+            "price": 43,
+            "bidDate": "2021-07-28T18:01:02Z",
+            "status": 1
+        },
+        "mpg_championship_player_167454": {
+            "id": "mpg_championship_player_167454",
+            "price": 50,
+            "bidDate": "2021-07-28T18:01:02Z",
+            "status": 1
+        },
+        "mpg_championship_player_149035": {
+            "id": "mpg_championship_player_149035",
+            "price": 11,
+            "bidDate": "2021-07-28T18:01:02Z",
+            "status": 1
+        },
+        "mpg_championship_player_235708": {
+            "id": "mpg_championship_player_235708",
+            "price": 21,
+            "bidDate": "2021-07-29T12:38:49Z",
+            "status": 1
+        },
+        "mpg_championship_player_177449": {
+            "id": "mpg_championship_player_177449",
+            "price": 33,
+            "bidDate": "2021-07-29T12:38:49Z",
+            "status": 1
+        },
+        "mpg_championship_player_102724": {
+            "id": "mpg_championship_player_102724",
+            "price": 8,
+            "bidDate": "2021-07-29T12:38:49Z",
+            "status": 1
+        },
+        "mpg_championship_player_533003": {
+            "id": "mpg_championship_player_533003",
+            "price": 11,
+            "bidDate": "2021-07-29T12:56:46Z",
+            "status": 1
+        },
+        "mpg_championship_player_423064": {
+            "id": "mpg_championship_player_423064",
+            "price": 26,
+            "bidDate": "2021-07-29T12:56:46Z",
+            "status": 1
+        },
+        "mpg_championship_player_245485": {
+            "id": "mpg_championship_player_245485",
+            "price": 24,
+            "bidDate": "2021-07-29T12:56:46Z",
+            "status": 1
+        },
+        "mpg_championship_player_173242": {
+            "id": "mpg_championship_player_173242",
+            "price": 18,
+            "bidDate": "2021-07-29T12:56:46Z",
+            "status": 1
+        }
+    },
+    "bids": [
+        {
+            "id": "mpg_championship_player_489889",
+            "price": 1,
+            "bidDate": "2021-08-11T17:04:37Z"
+        }
+    ],
+    "bonuses": {
+        "removeGoal": 1,
+        "boostOnePlayer": 3,
+        "nerfGoalkeeper": 2,
+        "boostAllPlayers": 1,
+        "mirror": 1,
+        "removeRandomPlayer": 1,
+        "blockTacticalSubs": 1
+    },
+    "initialValue": 313
+}

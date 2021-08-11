@@ -8,21 +8,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Player {
 
-    @JsonProperty("playerid")
     private String id;
-    @JsonProperty("firstname")
     private String firstName;
-    @JsonProperty("lastname")
     private String lastName;
     private Position position;
     private int quotation;
+    @JsonProperty("price")
     private int pricePaid;
-    @JsonProperty("teamid")
-    private int teamId;
-    @JsonProperty("club")
-    private String club;
-    private PlayerStatus status;
-
+    private String clubId;
+    private String clubName;
     private double efficiency;
 
     public String getId() {
@@ -49,8 +43,27 @@ public class Player {
         return quotation;
     }
 
-    public int getTeamId() {
-        return teamId;
+    public int getPricePaid() {
+        return pricePaid;
+    }
+
+    public void setPricePaid(int pricePaid) {
+        this.pricePaid = pricePaid;
+    }
+
+    public String getClubId() {
+        return clubId;
+    }
+
+    public String getClubName() {
+        if (StringUtils.isBlank(clubName)) {
+            throw new UnsupportedOperationException("Club Name has not be filled, problem");
+        }
+        return clubName;
+    }
+
+    public void setClubName(String clubName) {
+        this.clubName = clubName;
     }
 
     public double getEfficiency() {
@@ -61,19 +74,4 @@ public class Player {
         this.efficiency = efficiency;
     }
 
-    public String getClub() {
-        return club;
-    }
-
-    public void setClub(String club) {
-        this.club = club;
-    }
-
-    public PlayerStatus getStatus() {
-        return status;
-    }
-
-    public int getPricePaid() {
-        return pricePaid;
-    }
 }

@@ -1,0 +1,45 @@
+{
+    "composition": "343",
+    "playersOnPitch": {
+        "1": "mpg_championship_player_220359",
+        "2": "mpg_championship_player_509285",
+        "3": "mpg_championship_player_512711",
+        "4": "mpg_championship_player_454964",
+        "5": "mpg_championship_player_167454",
+        "6": "mpg_championship_player_92353",
+        "7": "mpg_championship_player_204405",
+        "8": "mpg_championship_player_177449",
+        "9": "mpg_championship_player_228313",
+        "10": "mpg_championship_player_511596",
+        "11": "mpg_championship_player_149035",
+        "12": "mpg_championship_player_209171",
+        "13": "mpg_championship_player_245485",
+        "14": "mpg_championship_player_437503",
+        "15": "mpg_championship_player_489486",
+        "16": "mpg_championship_player_533003",
+        "17": null,
+        "18": "mpg_championship_player_102724"
+    },
+    "tacticalSubs": [
+        {
+            "rating": 5,
+            "subId": "mpg_championship_player_209171",
+            "starterId": "mpg_championship_player_454964"
+        },
+        {
+            "rating": 5,
+            "subId": "mpg_championship_player_437503",
+            "starterId": "mpg_championship_player_177449"
+        },
+        {
+            "rating": 5,
+            "subId": "mpg_championship_player_489486",
+            "starterId": "mpg_championship_player_204405"
+        },
+        {
+            "rating": 6,
+            "subId": "mpg_championship_player_533003",
+            "starterId": "mpg_championship_player_149035"
+        }
+    ]
+}

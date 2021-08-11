@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * Wrapper for:<br/>
  * - https://www.sportsgambler.com/injuries/football<br/>
  * - (Before February 2021: https://www.sportsgambler.com/football/injuries-suspensions)<br/>
- * - https://maligue2.fr/2019/08/05/joueurs-blesses-et-suspendus/<br/>
+ * - https://maligue2.fr/2020/08/20/joueurs-blesses-et-suspendus/<br/>
  * - https://www.equipeactu.fr/blessures-et-suspensions/fodbold/<br/>
  */
 public class InjuredSuspendedWrapperClient {

@@ -3,53 +3,44 @@ package org.blondin.mpg.root.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CoachRequest {
+    @JsonProperty("composition")
+    private String composition;
 
     @JsonProperty("playersOnPitch")
     private PlayersOnPitch playersOnPitch = new PlayersOnPitch();
 
-    @JsonProperty("composition")
-    private int composition;
+    @JsonProperty("tacticalSubs")
+    private List<TacticalSubstitute> tacticalSubstitutes = new ArrayList<>();
 
-    @JsonProperty("tacticalsubstitutes")
-    private List<TacticalSubstitute> tacticalsubstitutes = new ArrayList<>();
+    @JsonProperty("selectedBonus")
+    @JsonInclude(Include.NON_NULL)
+    private SelectedBonus bonusSelected;
 
-    @JsonProperty("bonusSelected")
-    private BonusSelected bonusSelected = new BonusSelected();
-
-    @JsonProperty("matchId")
-    private String matchId;
-
-    @JsonProperty("realday")
-    private int realDay;
-
-    public CoachRequest(Coach coach) {
-        if (coach.getComposition() < 343 || coach.getComposition() > 541) {
-            throw new UnsupportedOperationException(String.format("Invalid composition: %s", coach.getComposition()));
+    public CoachRequest(int composition) {
+        if (composition < 343 || composition > 541) {
+            throw new UnsupportedOperationException(String.format("Invalid composition: %s", composition));
         }
-        if (coach.getRealDay() < 1) {
-            throw new UnsupportedOperationException(String.format("Invalid real day: %s", coach.getRealDay()));
-        }
-        this.composition = coach.getComposition();
-        this.matchId = coach.getMatchId();
-        this.realDay = coach.getRealDay();
+        this.composition = String.valueOf(composition);
     }
 
     public PlayersOnPitch getPlayersOnPitch() {
         return playersOnPitch;
     }
 
-    public List<TacticalSubstitute> getTacticalsubstitutes() {
-        return tacticalsubstitutes;
+    public List<TacticalSubstitute> getTacticalSubstitutes() {
+        return tacticalSubstitutes;
     }
 
-    public BonusSelected getBonusSelected() {
+    public SelectedBonus getBonusSelected() {
         return bonusSelected;
     }
 
-    public void setBonusSelected(BonusSelected bonusSelected) {
+    public void setBonusSelected(SelectedBonus bonusSelected) {
         this.bonusSelected = bonusSelected;
     }
 }

@@ -1,0 +1,58 @@
+{
+    "divisionMatch": {
+        "id": "mpg_division_match_MLEFEX6G_3_1_2_2_3_2",
+        "type": "mpg_division_match",
+        "divisionId": "mpg_division_MLEFEX6G_3_1",
+        "home": {
+            "teamId": "mpg_team_MLEFEX6G_3_1_3"
+        },
+        "away": {
+            "teamId": "mpg_team_MLEFEX6G_3_1_2"
+        }
+    },
+    "matchTeamFormation": {
+        "id": "mpg_match_team_formation_MLEFEX6G_3_1_2_2_2",
+        "type": "mpg_match_team_formation",
+        "composition": "343",
+        "playersOnPitch": {
+            "1": null,
+            "2": null,
+            "3": null,
+            "4": null,
+            "5": null,
+            "6": null,
+            "7": null,
+            "8": null,
+            "9": null,
+            "10": null,
+            "11": null,
+            "12": null,
+            "13": null,
+            "14": null,
+            "15": null,
+            "16": null,
+            "17": null,
+            "18": null
+        },
+        "tacticalSubs": [
+        ]
+    },
+    "nextGameWeek": {
+        "gameWeekNumber": 3,
+        "startDate": "2021-08-07T13:00:00Z",
+        "endDate": "2021-08-11T17:00:00Z",
+        "startIn": 231667,
+        "matchesIds": [
+            "mpg_championship_match_2216751",
+            "mpg_championship_match_2216748",
+            "mpg_championship_match_2216749",
+            "mpg_championship_match_2216752",
+            "mpg_championship_match_2216753",
+            "mpg_championship_match_2216754",
+            "mpg_championship_match_2216755",
+            "mpg_championship_match_2216756",
+            "mpg_championship_match_2216757",
+            "mpg_championship_match_2216750"
+        ]
+    }
+}

@@ -1,15 +1,40 @@
 package org.blondin.mpg.root.model;
 
+import java.util.List;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Team {
 
-    @JsonProperty("name")
     private String name;
+    private int budget;
+    private Map<String, Player> squad;
+    private List<Player> bids;
+    private Map<String, Integer> bonuses;
+
+    public Map<String, Integer> getBonuses() {
+        return bonuses;
+    }
+
+    public int getBonusesNumber() {
+        return bonuses.values().stream().reduce(0, Integer::sum);
+    }
 
     public String getName() {
-        return this.name;
+        return name;
+    }
+
+    public int getBudget() {
+        return budget;
+    }
+
+    public Map<String, Player> getSquad() {
+        return squad;
+    }
+
+    public List<Player> getBids() {
+        return bids;
     }
 }

@@ -1,39 +1,42 @@
 package org.blondin.mpg.root;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
-import org.blondin.mpg.root.exception.NoMoreGamesException;
+import org.blondin.mpg.root.model.AvailablePlayers;
 import org.blondin.mpg.root.model.ChampionshipType;
+import org.blondin.mpg.root.model.Clubs;
 import org.blondin.mpg.root.model.Coach;
 import org.blondin.mpg.root.model.CoachRequest;
 import org.blondin.mpg.root.model.Dashboard;
-import org.blondin.mpg.root.model.League;
-import org.blondin.mpg.root.model.Mercato;
-import org.blondin.mpg.root.model.MercatoChampionship;
-import org.blondin.mpg.root.model.MercatoLeague;
-import org.blondin.mpg.root.model.TransferBuy;
+import org.blondin.mpg.root.model.Division;
+import org.blondin.mpg.root.model.PoolPlayers;
+import org.blondin.mpg.root.model.Team;
 import org.blondin.mpg.root.model.UserSignIn;
-
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 /**
  * Client for https://www.mpgstats.fr/
  */
 public class MpgClient extends AbstractClient {
 
-    public static final String MPG_CLIENT_VERSION = "6.9.1";
+    private static final String PREFIX_PATH_DIVISION = "division/";
 
-    private static final String PATH_LEAGUE = "league/";
+    private static final String PREFIX_ID_DIVISION = "mpg_division_";
+
+    private static final String ERROR_MESSAGE_LEAGUE = "League id '%s' should start with '%s'";
 
     private final MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
+
+    private EnumMap<ChampionshipType, PoolPlayers> cachePlayers = new EnumMap<>(ChampionshipType.class);
+    private Clubs clubs;
+    private String userId;
 
     private MpgClient(Config config) {
         super(config);
@@ -45,58 +48,82 @@ public class MpgClient extends AbstractClient {
 
     public static MpgClient build(Config config, String urlOverride) {
         MpgClient client = new MpgClient(config);
-        client.setUrl(StringUtils.defaultString(urlOverride, "https://api.monpetitgazon.com"));
+        client.setUrl(StringUtils.defaultString(urlOverride, "https://api.mpg.football"));
         client.signIn(config.getLogin(), config.getPassword());
         return client;
     }
 
-    public Coach getCoach(String league) {
-        final String path = PATH_LEAGUE + league + "/coach";
-        try {
-            return get(path, headers, Coach.class, true);
-        } catch (ProcessingException e) {
-            if (e.getCause() instanceof JsonMappingException
-                    && e.getCause().getMessage().contains("Root name 'success' does not match expected ('data')")) {
-                String response = get(path, headers, String.class, true);
-                if (response.contains("noMoreGames")) {
-                    throw new NoMoreGamesException();
-                }
-                throw new UnsupportedOperationException(String.format("Coach response not supported: %s", response));
-            }
-            throw e;
+    public String getUserId() {
+        if (StringUtils.isBlank(userId)) {
+            throw new UnsupportedOperationException("Please sigin first");
         }
+        return userId;
     }
 
     public Dashboard getDashboard() {
-        return get("user/dashboard", headers, Dashboard.class, true);
+        return get("dashboard/leagues", headers, Dashboard.class);
     }
 
-    public Mercato getMercato(ChampionshipType championship) {
-        return get("mercato/" + championship.value(), headers, MercatoChampionship.class);
+    public Division getDivision(String leagueDivisionId) {
+        if (!StringUtils.startsWith(leagueDivisionId, PREFIX_ID_DIVISION)) {
+            throw new UnsupportedOperationException(String.format(ERROR_MESSAGE_LEAGUE, leagueDivisionId, PREFIX_ID_DIVISION));
+        }
+        return get(PREFIX_PATH_DIVISION + leagueDivisionId + "", headers, Division.class);
     }
 
-    public Mercato getMercato(String league) {
-        return get(PATH_LEAGUE + league + "/mercato", headers, MercatoLeague.class);
+    public Team getTeam(String leagueTeamId) {
+        if (!StringUtils.startsWith(leagueTeamId, "mpg_team_")) {
+            throw new UnsupportedOperationException(String.format(ERROR_MESSAGE_LEAGUE, leagueTeamId, "mpg_team_"));
+        }
+        return get("/team/" + leagueTeamId, headers, Team.class);
     }
 
-    public TransferBuy getTransferBuy(String league) {
-        return get(PATH_LEAGUE + league + "/transfer/buy", headers, TransferBuy.class);
+    public Coach getCoach(String leagueDivisionId) {
+        if (!StringUtils.startsWith(leagueDivisionId, PREFIX_ID_DIVISION)) {
+            throw new UnsupportedOperationException(String.format(ERROR_MESSAGE_LEAGUE, leagueDivisionId, PREFIX_ID_DIVISION));
+        }
+        return get(PREFIX_PATH_DIVISION + leagueDivisionId + "/coach", headers, Coach.class);
+    }
+
+    public AvailablePlayers getAvailablePlayers(String leagueDivisionId) {
+        if (!StringUtils.startsWith(leagueDivisionId, PREFIX_ID_DIVISION)) {
+            throw new UnsupportedOperationException(String.format(ERROR_MESSAGE_LEAGUE, leagueDivisionId, PREFIX_ID_DIVISION));
+        }
+        return get(PREFIX_PATH_DIVISION + leagueDivisionId + "/available-players", headers, AvailablePlayers.class);
+    }
+
+    public PoolPlayers getPoolPlayers(ChampionshipType championship) {
+        if (!cachePlayers.containsKey(championship)) {
+            PoolPlayers pool = get("championship-players-pool/" + championship.value(), headers, PoolPlayers.class);
+            cachePlayers.put(championship, pool);
+        }
+        return cachePlayers.get(championship);
+    }
+
+    public synchronized Clubs getClubs() {
+        if (clubs == null) {
+            clubs = get("championship-clubs", headers, Clubs.class);
+        }
+        return clubs;
     }
 
     private void signIn(String login, String password) {
         Map<String, String> entity = new HashMap<>();
-        entity.put("email", login);
+        entity.put("login", login);
         entity.put("password", password);
         entity.put("language", "fr-FR");
-        String token = post("user/signIn", entity, UserSignIn.class).getToken();
-        headers.add("authorization", token);
-        headers.add("client-version", MPG_CLIENT_VERSION);
+        UserSignIn usi = post("user/sign-in", entity, UserSignIn.class);
+        this.userId = usi.getUserId();
+        headers.add("authorization", usi.getToken());
     }
 
-    public void updateCoach(League league, CoachRequest coachRequest) {
-        String result = post(PATH_LEAGUE + league.getId() + "/coach", headers, coachRequest, String.class);
-        if (!"{\"success\":\"teamSaved\"}".equals(result)) {
-            throw new UnsupportedOperationException(String.format("The team has been updated, result message: %s", result));
+    public void updateCoach(String matchId, CoachRequest coachRequest) {
+        if (!StringUtils.startsWith(matchId, "mpg_match_team_formation_")) {
+            throw new UnsupportedOperationException(String.format("Coach match id '%s' should start with 'mpg_match_team_formation_'", matchId));
+        }
+        String result = put("/match-team-formation/" + matchId, headers, coachRequest, String.class);
+        if (!"{\"success\":true}".equals(result)) {
+            throw new UnsupportedOperationException(String.format("The team has not been updated, result message: %s", result));
         }
     }
 

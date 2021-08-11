@@ -84,43 +84,35 @@ public abstract class AbstractClient {
     }
 
     protected <T> T get(String path, Class<T> entityResponse) {
-        return get(path, null, entityResponse, false);
+        return get(path, null, entityResponse, -1);
     }
 
     protected <T> T get(String path, Class<T> entityResponse, long cacheTimeMilliSecond) {
-        return get(path, null, entityResponse, false, cacheTimeMilliSecond);
+        return get(path, null, entityResponse, cacheTimeMilliSecond);
     }
 
     protected <T> T get(String path, MultivaluedMap<String, Object> headers, Class<T> entityResponse) {
-        return get(path, headers, entityResponse, false, -1);
+        return get(path, headers, entityResponse, -1);
     }
 
     protected <T> T get(String path, MultivaluedMap<String, Object> headers, Class<T> entityResponse, long cacheTimeMilliSecond) {
-        return get(path, headers, entityResponse, false, cacheTimeMilliSecond);
-    }
-
-    protected <T> T get(String path, MultivaluedMap<String, Object> headers, Class<T> entityResponse, boolean wrapRoot) {
-        return call(path, headers, null, entityResponse, wrapRoot, -1);
-    }
-
-    protected <T> T get(String path, MultivaluedMap<String, Object> headers, Class<T> entityResponse, boolean wrapRoot, long cacheTimeMilliSecond) {
-        return call(path, headers, null, entityResponse, wrapRoot, cacheTimeMilliSecond);
+        return call(path, headers, null, entityResponse, cacheTimeMilliSecond, false);
     }
 
     protected <T> T post(String path, Object entityRequest, Class<T> entityResponse) {
-        return post(path, null, entityRequest, entityResponse, false);
+        return post(path, null, entityRequest, entityResponse);
     }
 
     protected <T> T post(String path, MultivaluedMap<String, Object> headers, Object entityRequest, Class<T> entityResponse) {
-        return post(path, headers, entityRequest, entityResponse, false);
+        return call(path, headers, entityRequest, entityResponse, -1, false);
     }
 
-    protected <T> T post(String path, MultivaluedMap<String, Object> headers, Object entityRequest, Class<T> entityResponse, boolean wrapRoot) {
-        return call(path, headers, entityRequest, entityResponse, wrapRoot, -1);
+    protected <T> T put(String path, MultivaluedMap<String, Object> headers, Object entityRequest, Class<T> entityResponse) {
+        return call(path, headers, entityRequest, entityResponse, -1, true);
     }
 
-    private <T> T call(String path, MultivaluedMap<String, Object> headers, Object entityRequest, Class<T> entityResponse, boolean wrapRoot,
-            long cacheTimeMilliSecond) {
+    private <T> T call(String path, MultivaluedMap<String, Object> headers, Object entityRequest, Class<T> entityResponse, long cacheTimeMilliSecond,
+            boolean entityRequestPut) {
         long start = System.currentTimeMillis();
         try {
             LOG.debug("Call URL: {}/{} (cache duration ms: {})", url, path, cacheTimeMilliSecond);
@@ -146,14 +138,11 @@ public abstract class AbstractClient {
             }
             Client client = clientBuilder.build();
 
-            if (wrapRoot) {
-                client = client.register(ObjectMapperContextResolver.class);
-            }
             WebTarget webTarget = client.target(url).path(path);
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON).headers(headers);
 
             waitBeforeNextRequest();
-            Response response = invokeWithRetry(invocationBuilder, entityRequest, url, path, 0);
+            Response response = invokeWithRetry(invocationBuilder, entityRequest, entityRequestPut, url, path, 0);
             if (Response.Status.FORBIDDEN.getStatusCode() == response.getStatus()) {
                 throw new UrlForbiddenException(String.format("Forbidden URL: %s", url));
             }
@@ -181,12 +170,14 @@ public abstract class AbstractClient {
         }
     }
 
-    private static Response invokeWithRetry(Invocation.Builder invocationBuilder, Object entityRequest, final String url, final String path,
-            int retryCount) {
+    private static Response invokeWithRetry(Invocation.Builder invocationBuilder, Object entityRequest, boolean entityRequestPut, final String url,
+            final String path, int retryCount) {
         Response response = null;
         try {
             if (entityRequest == null) {
                 response = invocationBuilder.get();
+            } else if (entityRequestPut) {
+                response = invocationBuilder.put(Entity.entity(entityRequest, MediaType.APPLICATION_JSON));
             } else {
                 response = invocationBuilder.post(Entity.entity(entityRequest, MediaType.APPLICATION_JSON));
             }
@@ -198,7 +189,7 @@ public abstract class AbstractClient {
                 } catch (InterruptedException e1) { // NOSONAR : Sleep wanted
                     throw new UnsupportedOperationException(e1);
                 }
-                return invokeWithRetry(invocationBuilder, entityRequest, url, path, ++retryCount);
+                return invokeWithRetry(invocationBuilder, entityRequest, entityRequestPut, url, path, ++retryCount);
             }
             throw e;
         }

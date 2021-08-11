@@ -19,6 +19,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class MpgStatsClientTest extends AbstractMockTestClient {
 
     @Test
+    public void testPlayersWithSameName() {
+        stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20210804.json")));
+        stubFor(get("/leagues/Ligue-2")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-2.20210804.json")));
+        MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
+        Assert.assertEquals(25, mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_2).getPlayer("Ba Pape Ibnou").getPrice());
+    }
+
+    @Test
     public void testEfficiencyRecentFocus() {
         stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.leagues.20190406.json")));
         stubFor(get("/leagues/Ligue-1")

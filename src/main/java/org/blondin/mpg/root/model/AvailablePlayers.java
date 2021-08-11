@@ -1,3 +1,4 @@
+
 package org.blondin.mpg.root.model;
 
 import java.util.List;
@@ -6,12 +7,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Dashboard {
+public class AvailablePlayers {
 
-    @JsonProperty("leaguesDivisionsItems")
-    private List<League> leagues;
+    @JsonProperty("availablePlayers")
+    private List<Player> list;
 
-    public List<League> getLeagues() {
-        return leagues;
+    public List<Player> getList() {
+        return list;
     }
+
 }

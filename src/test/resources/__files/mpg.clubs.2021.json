@@ -1,0 +1,3375 @@
+{
+    "championshipClubs": {
+        "mpg_championship_club_1": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/1.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/1.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/1.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/1.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/1.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/1.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/1.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/1.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_1",
+            "name": {
+                "fr-FR": "Man. United",
+                "en-GB": "Man. United",
+                "es-ES": "Man. United"
+            },
+            "shortName": "MUN",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/1.png"
+        },
+        "mpg_championship_club_1000": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/1000.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_1000",
+            "name": {
+                "fr-FR": "Midtjylland",
+                "en-GB": "Midtjylland",
+                "es-ES": "Midtjylland"
+            },
+            "shortName": "MCH",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/1000.png"
+        },
+        "mpg_championship_club_1025": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/1025.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_1025",
+            "name": {
+                "fr-FR": "Salernitana",
+                "en-GB": "Salernitana",
+                "es-ES": "Salernitana"
+            },
+            "shortName": "SAL",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/1025.png"
+        },
+        "mpg_championship_club_1028": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/1028.png",
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/1028.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/1028.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/1028.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/1028.png"
+                    }
+                },
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/1028.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/1028.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/1028.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_1028",
+            "name": {
+                "fr-FR": "Caen",
+                "en-GB": "Caen",
+                "es-ES": "Caen"
+            },
+            "shortName": "CAE",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/1028.png"
+        },
+        "mpg_championship_club_11": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/11.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/11.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/11.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/11.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/11.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/11.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/11.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_11",
+            "name": {
+                "fr-FR": "Everton",
+                "en-GB": "Everton",
+                "es-ES": "Everton"
+            },
+            "shortName": "EVE",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/11.png"
+        },
+        "mpg_championship_club_110": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/110.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/110.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/110.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_110",
+            "name": {
+                "fr-FR": "Stoke City",
+                "en-GB": "Stoke City",
+                "es-ES": "Stoke City"
+            },
+            "shortName": "STK",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/110.png"
+        },
+        "mpg_championship_club_1163": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/1163.png"
+                    }
+                },
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/1163.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/1163.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/1163.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_1163",
+            "name": {
+                "fr-FR": "Ajaccio",
+                "en-GB": "Ajaccio",
+                "es-ES": "Ajaccio"
+            },
+            "shortName": "ACA",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/1163.png"
+        },
+        "mpg_championship_club_120": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/120.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/120.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/120.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_120",
+            "name": {
+                "fr-FR": "Milan",
+                "en-GB": "Milan",
+                "es-ES": "Milan"
+            },
+            "shortName": "ACM",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/120.png"
+        },
+        "mpg_championship_club_121": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/121.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/121.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/121.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_121",
+            "name": {
+                "fr-FR": "Roma",
+                "en-GB": "Roma",
+                "es-ES": "Roma"
+            },
+            "shortName": "ROM",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/121.png"
+        },
+        "mpg_championship_club_123": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/123.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/123.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/123.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_123",
+            "name": {
+                "fr-FR": "Bologna",
+                "en-GB": "Bologna",
+                "es-ES": "Bologna"
+            },
+            "shortName": "BOL",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/123.png"
+        },
+        "mpg_championship_club_124": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/124.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/124.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/124.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_124",
+            "name": {
+                "fr-FR": "Cagliari",
+                "en-GB": "Cagliari",
+                "es-ES": "Cagliari"
+            },
+            "shortName": "CAG",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/124.png"
+        },
+        "mpg_championship_club_1245": {
+            "championships": {
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/1245.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/1245.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/1245.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_1245",
+            "name": {
+                "fr-FR": "Niort",
+                "en-GB": "Niort",
+                "es-ES": "Niort"
+            },
+            "shortName": "NIO",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/1245.png"
+        },
+        "mpg_championship_club_125": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/125.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/125.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/125.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_125",
+            "name": {
+                "fr-FR": "Fiorentina",
+                "en-GB": "Fiorentina",
+                "es-ES": "Fiorentina"
+            },
+            "shortName": "FIO",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/125.png"
+        },
+        "mpg_championship_club_126": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/126.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/126.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/126.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_126",
+            "name": {
+                "fr-FR": "Verona",
+                "en-GB": "Verona",
+                "es-ES": "Verona"
+            },
+            "shortName": "VER",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/126.png"
+        },
+        "mpg_championship_club_127": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/127.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/127.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/127.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/127.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/127.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_127",
+            "name": {
+                "fr-FR": "Inter",
+                "en-GB": "Inter",
+                "es-ES": "Inter"
+            },
+            "shortName": "INT",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/127.png"
+        },
+        "mpg_championship_club_1272": {
+            "championships": {
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/1272.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/1272.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/1272.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_1272",
+            "name": {
+                "fr-FR": "Grenoble",
+                "en-GB": "Grenoble",
+                "es-ES": "Grenoble"
+            },
+            "shortName": "GRN",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/1272.png"
+        },
+        "mpg_championship_club_128": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/128.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/128.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/128.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/128.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/128.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_128",
+            "name": {
+                "fr-FR": "Juventus",
+                "en-GB": "Juventus",
+                "es-ES": "Juventus"
+            },
+            "shortName": "JUV",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/128.png"
+        },
+        "mpg_championship_club_129": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/129.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/129.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/129.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/129.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_129",
+            "name": {
+                "fr-FR": "Lazio",
+                "en-GB": "Lazio",
+                "es-ES": "Lazio"
+            },
+            "shortName": "LAZ",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/129.png"
+        },
+        "mpg_championship_club_13": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/13.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/13.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/13.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/13.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/13.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/13.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/13.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_13",
+            "name": {
+                "fr-FR": "Leicester",
+                "en-GB": "Leicester",
+                "es-ES": "Leicester"
+            },
+            "shortName": "LEI",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/13.png"
+        },
+        "mpg_championship_club_130": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/130.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_130",
+            "name": {
+                "fr-FR": "Lecce",
+                "en-GB": "Lecce",
+                "es-ES": "Lecce"
+            },
+            "shortName": "LEC",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/130.png"
+        },
+        "mpg_championship_club_131": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/131.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/131.png"
+                    },
+                    "active": false
+                }
+            },
+            "id": "mpg_championship_club_131",
+            "name": {
+                "fr-FR": "Parma",
+                "en-GB": "Parma",
+                "es-ES": "Parma"
+            },
+            "shortName": "PMA",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/131.png"
+        },
+        "mpg_championship_club_1341": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/1341.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/1341.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_1341",
+            "name": {
+                "fr-FR": "Zenit",
+                "en-GB": "Zenit",
+                "es-ES": "Zenit"
+            },
+            "shortName": "ZNT",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/1341.png"
+        },
+        "mpg_championship_club_135": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/135.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/135.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/135.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_135",
+            "name": {
+                "fr-FR": "Torino",
+                "en-GB": "Torino",
+                "es-ES": "Torino"
+            },
+            "shortName": "TNO",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/135.png"
+        },
+        "mpg_championship_club_136": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/136.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/136.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/136.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_136",
+            "name": {
+                "fr-FR": "Udinese",
+                "en-GB": "Udinese",
+                "es-ES": "Udinese"
+            },
+            "shortName": "UDI",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/136.png"
+        },
+        "mpg_championship_club_137": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/137.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_137",
+            "name": {
+                "fr-FR": "Venezia",
+                "en-GB": "Venezia",
+                "es-ES": "Venezia"
+            },
+            "shortName": "VEN",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/137.png"
+        },
+        "mpg_championship_club_138": {
+            "championships": {
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/138.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/138.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/138.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_138",
+            "name": {
+                "fr-FR": "Auxerre",
+                "en-GB": "Auxerre",
+                "es-ES": "Auxerre"
+            },
+            "shortName": "AUX",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/138.png"
+        },
+        "mpg_championship_club_139": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/139.png",
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/139.png",
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/139.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/139.png"
+                    }
+                },
+                "4": {
+                    "jerseys": {
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/139.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_139",
+            "name": {
+                "fr-FR": "Bastia",
+                "en-GB": "Bastia",
+                "es-ES": "Bastia"
+            },
+            "shortName": "BAS",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/139.png"
+        },
+        "mpg_championship_club_1395": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/1395.png",
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/1395.png",
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/1395.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/1395.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/1395.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/1395.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/1395.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/1395.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/1395.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_1395",
+            "name": {
+                "fr-FR": "Nice",
+                "en-GB": "Nice",
+                "es-ES": "Nice"
+            },
+            "shortName": "NIC",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/1395.png"
+        },
+        "mpg_championship_club_14": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/14.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/14.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/14.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/14.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/14.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/14.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/14.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/14.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/14.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_14",
+            "name": {
+                "fr-FR": "Liverpool",
+                "en-GB": "Liverpool",
+                "es-ES": "Liverpool"
+            },
+            "shortName": "LIV",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/14.png"
+        },
+        "mpg_championship_club_140": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/140.png",
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/140.png",
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/140.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/140.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/140.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/140.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/140.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/140.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/140.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_140",
+            "name": {
+                "fr-FR": "Bordeaux",
+                "en-GB": "Bordeaux",
+                "es-ES": "Bordeaux"
+            },
+            "shortName": "BOR",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/140.png"
+        },
+        "mpg_championship_club_141": {
+            "championships": {
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/141.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/141.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/141.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_141",
+            "name": {
+                "fr-FR": "Le Havre",
+                "en-GB": "Le Havre",
+                "es-ES": "Le Havre"
+            },
+            "shortName": "LHV",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/141.png"
+        },
+        "mpg_championship_club_142": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/142.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/142.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/142.png"
+                    },
+                    "active": true
+                },
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/142.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_142",
+            "name": {
+                "fr-FR": "Lens",
+                "en-GB": "Lens",
+                "es-ES": "Lens"
+            },
+            "shortName": "LEN",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/142.png"
+        },
+        "mpg_championship_club_1423": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/1423.png",
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/1423.png",
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/1423.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/1423.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/1423.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/1423.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/1423.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_1423",
+            "name": {
+                "fr-FR": "Reims",
+                "en-GB": "Reims",
+                "es-ES": "Reims"
+            },
+            "shortName": "REI",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/1423.png"
+        },
+        "mpg_championship_club_143": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/143.png",
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/143.png",
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/143.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/143.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/143.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/143.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/143.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/143.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/143.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/143.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_143",
+            "name": {
+                "fr-FR": "Lyon",
+                "en-GB": "Lyon",
+                "es-ES": "Lyon"
+            },
+            "shortName": "LYN",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/143.png"
+        },
+        "mpg_championship_club_1430": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/1430.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/1430.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/1430.png"
+                    }
+                },
+                "4": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/1430.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/1430.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_1430",
+            "name": {
+                "fr-FR": "Amiens",
+                "en-GB": "Amiens",
+                "es-ES": "Amiens"
+            },
+            "shortName": "AMI",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/1430.png"
+        },
+        "mpg_championship_club_144": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/144.png",
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/144.png",
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/144.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/144.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/144.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/144.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/144.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/144.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/144.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/144.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_144",
+            "name": {
+                "fr-FR": "Marseille",
+                "en-GB": "Marseille",
+                "es-ES": "Marseille"
+            },
+            "shortName": "MAR",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/144.png"
+        },
+        "mpg_championship_club_145": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/145.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/145.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/145.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/145.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/145.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/145.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_145",
+            "name": {
+                "fr-FR": "Metz",
+                "en-GB": "Metz",
+                "es-ES": "Metz"
+            },
+            "shortName": "MET",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/145.png"
+        },
+        "mpg_championship_club_1450": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/1450.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/1450.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/1450.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/1450.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/1450.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_1450",
+            "name": {
+                "fr-FR": "Getafe",
+                "en-GB": "Getafe",
+                "es-ES": "Getafe"
+            },
+            "shortName": "GTF",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/1450.png"
+        },
+        "mpg_championship_club_1454": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/1454.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_1454",
+            "name": {
+                "fr-FR": "SPAL",
+                "en-GB": "SPAL",
+                "es-ES": "SPAL"
+            },
+            "shortName": "SPAL",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/1454.png"
+        },
+        "mpg_championship_club_146": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/146.png",
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/146.png",
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/146.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/146.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/146.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/146.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/146.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/146.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/146.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_146",
+            "name": {
+                "fr-FR": "Monaco",
+                "en-GB": "Monaco",
+                "es-ES": "Monaco"
+            },
+            "shortName": "MCO",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/146.png"
+        },
+        "mpg_championship_club_147": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/147.png",
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/147.png",
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/147.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/147.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/147.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/147.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/147.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/147.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/147.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_147",
+            "name": {
+                "fr-FR": "Montpellier",
+                "en-GB": "Montpellier",
+                "es-ES": "Montpellier"
+            },
+            "shortName": "MTP",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/147.png"
+        },
+        "mpg_championship_club_148": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/148.png"
+                    }
+                },
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/148.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/148.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/148.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_148",
+            "name": {
+                "fr-FR": "Nancy",
+                "en-GB": "Nancy",
+                "es-ES": "Nancy"
+            },
+            "shortName": "NAC",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/148.png"
+        },
+        "mpg_championship_club_149": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/149.png",
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/149.png",
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/149.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/149.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/149.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/149.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/149.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/149.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/149.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/149.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/149.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_149",
+            "name": {
+                "fr-FR": "Paris",
+                "en-GB": "Paris",
+                "es-ES": "Paris"
+            },
+            "shortName": "PSG",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/149.png"
+        },
+        "mpg_championship_club_150": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/150.png",
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/150.png",
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/150.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/150.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/150.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/150.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/150.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/150.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/150.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/150.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_150",
+            "name": {
+                "fr-FR": "Rennes",
+                "en-GB": "Rennes",
+                "es-ES": "Rennes"
+            },
+            "shortName": "REN",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/150.png"
+        },
+        "mpg_championship_club_152": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/152.png",
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/152.png",
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/152.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/152.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/152.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/152.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/152.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/152.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/152.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_152",
+            "name": {
+                "fr-FR": "St Etienne",
+                "en-GB": "St Etienne",
+                "es-ES": "St Etienne"
+            },
+            "shortName": "STE",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/152.png"
+        },
+        "mpg_championship_club_153": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/153.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/153.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/153.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/153.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/153.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_153",
+            "name": {
+                "fr-FR": "Strasbourg",
+                "en-GB": "Strasbourg",
+                "es-ES": "Strasbourg"
+            },
+            "shortName": "SBG",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/153.png"
+        },
+        "mpg_championship_club_154": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/154.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/154.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/154.png"
+                    },
+                    "active": true
+                },
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/154.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/154.png"
+                    },
+                    "active": false
+                }
+            },
+            "id": "mpg_championship_club_154",
+            "name": {
+                "fr-FR": "Troyes",
+                "en-GB": "Troyes",
+                "es-ES": "Troyes"
+            },
+            "shortName": "TRO",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/154.png"
+        },
+        "mpg_championship_club_156": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/156.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/156.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_156",
+            "name": {
+                "fr-FR": "Bayern",
+                "en-GB": "Bayern",
+                "es-ES": "Bayern"
+            },
+            "shortName": "FCB",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/156.png"
+        },
+        "mpg_championship_club_157": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/157.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/157.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_157",
+            "name": {
+                "fr-FR": "Dortmund",
+                "en-GB": "Dortmund",
+                "es-ES": "Dortmund"
+            },
+            "shortName": "BVB",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/157.png"
+        },
+        "mpg_championship_club_164": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/164.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_164",
+            "name": {
+                "fr-FR": "Bayer 04 Leverkusen",
+                "en-GB": "Bayer 04 Leverkusen",
+                "es-ES": "Bayer 04 Leverkusen"
+            },
+            "shortName": "B04",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/164.png"
+        },
+        "mpg_championship_club_173": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/173.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/173.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/173.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/173.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/173.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_173",
+            "name": {
+                "fr-FR": "Alavés",
+                "en-GB": "Alavés",
+                "es-ES": "Alavés"
+            },
+            "shortName": "ALV",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/173.png"
+        },
+        "mpg_championship_club_1737": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/1737.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/1737.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_1737",
+            "name": {
+                "fr-FR": "Cádiz",
+                "en-GB": "Cádiz",
+                "es-ES": "Cádiz"
+            },
+            "shortName": "CAD",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/1737.png"
+        },
+        "mpg_championship_club_174": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/174.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/174.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/174.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/174.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/174.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_174",
+            "name": {
+                "fr-FR": "Bilbao",
+                "en-GB": "Bilbao",
+                "es-ES": "Bilbao"
+            },
+            "shortName": "ATH",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/174.png"
+        },
+        "mpg_championship_club_175": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/175.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/175.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/175.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/175.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/175.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/175.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/175.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_175",
+            "name": {
+                "fr-FR": "Atlético",
+                "en-GB": "Atlético",
+                "es-ES": "Atlético"
+            },
+            "shortName": "ATM",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/175.png"
+        },
+        "mpg_championship_club_176": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/176.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/176.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/176.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/176.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/176.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_176",
+            "name": {
+                "fr-FR": "Celta",
+                "en-GB": "Celta",
+                "es-ES": "Celta"
+            },
+            "shortName": "CEL",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/176.png"
+        },
+        "mpg_championship_club_177": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/177.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/177.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/177.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/177.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_177",
+            "name": {
+                "fr-FR": "Espanyol",
+                "en-GB": "Espanyol",
+                "es-ES": "Espanyol"
+            },
+            "shortName": "ESP",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/177.png"
+        },
+        "mpg_championship_club_178": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/178.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/178.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/178.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/178.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/178.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/178.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/178.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_178",
+            "name": {
+                "fr-FR": "Barcelona",
+                "en-GB": "Barcelona",
+                "es-ES": "Barcelona"
+            },
+            "shortName": "BAR",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/178.png"
+        },
+        "mpg_championship_club_179": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/179.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/179.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/179.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/179.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/179.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/179.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_179",
+            "name": {
+                "fr-FR": "Sevilla",
+                "en-GB": "Sevilla",
+                "es-ES": "Sevilla"
+            },
+            "shortName": "SFC",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/179.png"
+        },
+        "mpg_championship_club_180": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/180.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_180",
+            "name": {
+                "fr-FR": "Deportivo de La Coruña",
+                "en-GB": "Deportivo de La Coruña",
+                "es-ES": "Deportivo de La Coruña"
+            },
+            "shortName": "DEP",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/180.png"
+        },
+        "mpg_championship_club_181": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/181.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/181_v2.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_181",
+            "name": {
+                "fr-FR": "Mallorca",
+                "en-GB": "Mallorca",
+                "es-ES": "Mallorca"
+            },
+            "shortName": "MLL",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/181_v2.png"
+        },
+        "mpg_championship_club_182": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/182.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_182",
+            "name": {
+                "fr-FR": "Málaga",
+                "en-GB": "Málaga",
+                "es-ES": "Málaga"
+            },
+            "shortName": "MAL",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/182.png"
+        },
+        "mpg_championship_club_184": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/184.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/184.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_184",
+            "name": {
+                "fr-FR": "Rayo Vallecano",
+                "en-GB": "Rayo Vallecano",
+                "es-ES": "Rayo Vallecano"
+            },
+            "shortName": "RVM",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/184.png"
+        },
+        "mpg_championship_club_185": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/185.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/185.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/185.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/185.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/185.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_185",
+            "name": {
+                "fr-FR": "Betis",
+                "en-GB": "Betis",
+                "es-ES": "Betis"
+            },
+            "shortName": "RBB",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/185.png"
+        },
+        "mpg_championship_club_186": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/186.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/186.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/186.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/186.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/186.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/186.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/186.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_186",
+            "name": {
+                "fr-FR": "Real Madrid",
+                "en-GB": "Real Madrid",
+                "es-ES": "Real Madrid"
+            },
+            "shortName": "RMA",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/186.png"
+        },
+        "mpg_championship_club_188": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/188.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/188.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/188.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/188.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/188.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_188",
+            "name": {
+                "fr-FR": "Real Sociedad",
+                "en-GB": "Real Sociedad",
+                "es-ES": "Real Sociedad"
+            },
+            "shortName": "RSO",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/188.png"
+        },
+        "mpg_championship_club_191": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/191.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/191.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/191.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/191.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/191.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/191.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_191",
+            "name": {
+                "fr-FR": "Valencia",
+                "en-GB": "Valencia",
+                "es-ES": "Valencia"
+            },
+            "shortName": "VCF",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/191.png"
+        },
+        "mpg_championship_club_192": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/192.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/192.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/192.png"
+                    },
+                    "active": false
+                }
+            },
+            "id": "mpg_championship_club_192",
+            "name": {
+                "fr-FR": "Valladolid",
+                "en-GB": "Valladolid",
+                "es-ES": "Valladolid"
+            },
+            "shortName": "VLL",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/192.png"
+        },
+        "mpg_championship_club_194": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/194.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_194",
+            "name": {
+                "fr-FR": "Kiev",
+                "en-GB": "Kiev",
+                "es-ES": "Kiev"
+            },
+            "shortName": "DYK",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/194.png"
+        },
+        "mpg_championship_club_1983": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/1983.png"
+                    },
+                    "active": true
+                },
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/1983.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/1983.png"
+                    },
+                    "active": false
+                }
+            },
+            "id": "mpg_championship_club_1983",
+            "name": {
+                "fr-FR": "Clermont",
+                "en-GB": "Clermont",
+                "es-ES": "Clermont"
+            },
+            "shortName": "CLM",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/1983.png"
+        },
+        "mpg_championship_club_1996": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/1996.png"
+                    }
+                },
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/1996.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/1996.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/1996.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_1996",
+            "name": {
+                "fr-FR": "Valenciennes",
+                "en-GB": "Valenciennes",
+                "es-ES": "Valenciennes"
+            },
+            "shortName": "VCN",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/1996.png"
+        },
+        "mpg_championship_club_2": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/2.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/2.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_2",
+            "name": {
+                "fr-FR": "Leeds",
+                "en-GB": "Leeds",
+                "es-ES": "Leeds"
+            },
+            "shortName": "LEE",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/2.png"
+        },
+        "mpg_championship_club_20": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/20.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/20.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/20.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/20.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/20.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/20.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/20.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_20",
+            "name": {
+                "fr-FR": "Southampton",
+                "en-GB": "Southampton",
+                "es-ES": "Southampton"
+            },
+            "shortName": "SOU",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/20.png"
+        },
+        "mpg_championship_club_2000": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/2000.png"
+                    },
+                    "active": false
+                }
+            },
+            "id": "mpg_championship_club_2000",
+            "name": {
+                "fr-FR": "Benevento",
+                "en-GB": "Benevento",
+                "es-ES": "Benevento"
+            },
+            "shortName": "BNV",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/2000.png"
+        },
+        "mpg_championship_club_201": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/201.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_201",
+            "name": {
+                "fr-FR": "Porto",
+                "en-GB": "Porto",
+                "es-ES": "Porto"
+            },
+            "shortName": "PTO",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/201.png"
+        },
+        "mpg_championship_club_202": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/202.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/202.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_202",
+            "name": {
+                "fr-FR": "Olympiakos",
+                "en-GB": "Olympiakos",
+                "es-ES": "Olympiakos"
+            },
+            "shortName": "OLY",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/202.png"
+        },
+        "mpg_championship_club_2036": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/2036.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/2036.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_2036",
+            "name": {
+                "fr-FR": "Spezia",
+                "en-GB": "Spezia",
+                "es-ES": "Spezia"
+            },
+            "shortName": "SPZ",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/2036.png"
+        },
+        "mpg_championship_club_208": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/208.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_208",
+            "name": {
+                "fr-FR": "Galatasaray",
+                "en-GB": "Galatasaray",
+                "es-ES": "Galatasaray"
+            },
+            "shortName": "GAL",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/208.png"
+        },
+        "mpg_championship_club_21": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/21.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/21.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/21.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/21.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/21.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/21.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/21.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_21",
+            "name": {
+                "fr-FR": "West Ham",
+                "en-GB": "West Ham",
+                "es-ES": "West Ham"
+            },
+            "shortName": "WHU",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/21.png"
+        },
+        "mpg_championship_club_2128": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/2128.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/2128.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/2128.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/2128.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/2128.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/2128.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/2128.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_2128",
+            "name": {
+                "fr-FR": "Angers",
+                "en-GB": "Angers",
+                "es-ES": "Angers"
+            },
+            "shortName": "ANR",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/2128.png"
+        },
+        "mpg_championship_club_2130": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/2130.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/2130.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/2130.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/2130.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/2130.png"
+                    },
+                    "active": false
+                },
+                "4": {
+                    "jerseys": {
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/2130.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_2130",
+            "name": {
+                "fr-FR": "Dijon",
+                "en-GB": "Dijon",
+                "es-ES": "Dijon"
+            },
+            "shortName": "DIJ",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/2130.png"
+        },
+        "mpg_championship_club_2133": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/2133.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_2133",
+            "name": {
+                "fr-FR": "Basaksehir",
+                "en-GB": "Basaksehir",
+                "es-ES": "Basaksehir"
+            },
+            "shortName": "IBB",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/2133.png"
+        },
+        "mpg_championship_club_214": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/214.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_214",
+            "name": {
+                "fr-FR": "Crvena Zvezda",
+                "en-GB": "Crvena Zvezda",
+                "es-ES": "Crvena Zvezda"
+            },
+            "shortName": "CRV",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/214.png"
+        },
+        "mpg_championship_club_215": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/215.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/215.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_215",
+            "name": {
+                "fr-FR": "Ajax",
+                "en-GB": "Ajax",
+                "es-ES": "Ajax"
+            },
+            "shortName": "AJA",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/215.png"
+        },
+        "mpg_championship_club_2182": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/2182.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/2182.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/2182.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_2182",
+            "name": {
+                "fr-FR": "Sassuolo",
+                "en-GB": "Sassuolo",
+                "es-ES": "Sassuolo"
+            },
+            "shortName": "SASS",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/2182.png"
+        },
+        "mpg_championship_club_227": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/227.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_227",
+            "name": {
+                "fr-FR": "Ferencvárosi",
+                "en-GB": "Ferencvárosi",
+                "es-ES": "Ferencvárosi"
+            },
+            "shortName": "FCS",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/227.png"
+        },
+        "mpg_championship_club_2336": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/2336.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/2336.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/2336.png"
+                    },
+                    "active": false
+                },
+                "4": {
+                    "jerseys": {
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/2336.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_2336",
+            "name": {
+                "fr-FR": "Nîmes",
+                "en-GB": "Nîmes",
+                "es-ES": "Nîmes"
+            },
+            "shortName": "NMS",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/2336.png"
+        },
+        "mpg_championship_club_2338": {
+            "championships": {
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/2338.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/2338.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/2338.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_2338",
+            "name": {
+                "fr-FR": "Paris FC",
+                "en-GB": "Paris FC",
+                "es-ES": "Paris FC"
+            },
+            "shortName": "PFC",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/2338.png"
+        },
+        "mpg_championship_club_25": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/25.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_25",
+            "name": {
+                "fr-FR": "Middlesbrough",
+                "en-GB": "Middlesbrough",
+                "es-ES": "Middlesbrough"
+            },
+            "shortName": "MID",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/25.png"
+        },
+        "mpg_championship_club_251": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/251.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_251",
+            "name": {
+                "fr-FR": "Benfica",
+                "en-GB": "Benfica",
+                "es-ES": "Benfica"
+            },
+            "shortName": "BEN",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/251.png"
+        },
+        "mpg_championship_club_2541": {
+            "championships": {
+                "4": {
+                    "jerseys": {
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/2541.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_2541",
+            "name": {
+                "fr-FR": "Quevilly Rouen",
+                "en-GB": "Quevilly Rouen",
+                "es-ES": "Quevilly Rouen"
+            },
+            "shortName": "QLY",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/2541.png"
+        },
+        "mpg_championship_club_2544": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/2544.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_2544",
+            "name": {
+                "fr-FR": "GFC Ajaccio",
+                "en-GB": "GFC Ajaccio",
+                "es-ES": "GFC Ajaccio"
+            },
+            "shortName": "GFCA",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/2544.png"
+        },
+        "mpg_championship_club_271": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/271.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/271.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_271",
+            "name": {
+                "fr-FR": "Lokomotiv",
+                "en-GB": "Lokomotiv",
+                "es-ES": "Lokomotiv"
+            },
+            "shortName": "LKM",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/271.png"
+        },
+        "mpg_championship_club_273": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/273.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_273",
+            "name": {
+                "fr-FR": "Slavia Prague",
+                "en-GB": "Slavia Prague",
+                "es-ES": "Slavia Prague"
+            },
+            "shortName": "SLP",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/273.png"
+        },
+        "mpg_championship_club_2893": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/2893.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/2893.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_2893",
+            "name": {
+                "fr-FR": "Girona",
+                "en-GB": "Girona",
+                "es-ES": "Girona"
+            },
+            "shortName": "GIR",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/2893.png"
+        },
+        "mpg_championship_club_2894": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/2894.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/2894.png"
+                    },
+                    "active": false
+                }
+            },
+            "id": "mpg_championship_club_2894",
+            "name": {
+                "fr-FR": "Huesca",
+                "en-GB": "Huesca",
+                "es-ES": "Huesca"
+            },
+            "shortName": "HUE",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/2894.png"
+        },
+        "mpg_championship_club_3": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/3.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/3.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/3.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/3.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/3.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/3.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/3.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_3",
+            "name": {
+                "fr-FR": "Arsenal",
+                "en-GB": "Arsenal",
+                "es-ES": "Arsenal"
+            },
+            "shortName": "ARS",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/3.png"
+        },
+        "mpg_championship_club_31": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/31.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/31.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/31.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/31.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/31.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/31.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/31.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_31",
+            "name": {
+                "fr-FR": "Crystal Palace",
+                "en-GB": "Crystal Palace",
+                "es-ES": "Crystal Palace"
+            },
+            "shortName": "CRY",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/31.png"
+        },
+        "mpg_championship_club_3288": {
+            "championships": {
+                "4": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/3288.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/3288.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_3288",
+            "name": {
+                "fr-FR": "Dunkerque",
+                "en-GB": "Dunkerque",
+                "es-ES": "Dunkerque"
+            },
+            "shortName": "DKE",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/3288.png"
+        },
+        "mpg_championship_club_3308": {
+            "championships": {
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/3308.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/3308.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/3308.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_3308",
+            "name": {
+                "fr-FR": "Rodez",
+                "en-GB": "Rodez",
+                "es-ES": "Rodez"
+            },
+            "shortName": "ROD",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/3308.png"
+        },
+        "mpg_championship_club_35": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/35.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/35.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/35.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/35.png"
+                    },
+                    "active": false
+                }
+            },
+            "id": "mpg_championship_club_35",
+            "name": {
+                "fr-FR": "West Bromwich",
+                "en-GB": "West Bromwich",
+                "es-ES": "West Bromwich"
+            },
+            "shortName": "WBA",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/35.png"
+        },
+        "mpg_championship_club_36": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/36.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/36.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/36.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/36.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/36.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_36",
+            "name": {
+                "fr-FR": "Brighton",
+                "en-GB": "Brighton",
+                "es-ES": "Brighton"
+            },
+            "shortName": "BHA",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/36.png"
+        },
+        "mpg_championship_club_38": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/38.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/38.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_38",
+            "name": {
+                "fr-FR": "Huddersfield Town",
+                "en-GB": "Huddersfield Town",
+                "es-ES": "Huddersfield Town"
+            },
+            "shortName": "HUD",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/38.png"
+        },
+        "mpg_championship_club_39": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/39.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/39.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/39.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/39.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_39",
+            "name": {
+                "fr-FR": "Wolverhampton",
+                "en-GB": "Wolverhampton",
+                "es-ES": "Wolverhampton"
+            },
+            "shortName": "WOL",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/39.png"
+        },
+        "mpg_championship_club_394": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/394.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_394",
+            "name": {
+                "fr-FR": "Dinamo Zagreb",
+                "en-GB": "Dinamo Zagreb",
+                "es-ES": "Dinamo Zagreb"
+            },
+            "shortName": "DZG",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/394.png"
+        },
+        "mpg_championship_club_4": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/4.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/4.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/4.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/4.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/4.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/4.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_4",
+            "name": {
+                "fr-FR": "Newcastle",
+                "en-GB": "Newcastle",
+                "es-ES": "Newcastle"
+            },
+            "shortName": "NEW",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/4.png"
+        },
+        "mpg_championship_club_407": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/407.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_407",
+            "name": {
+                "fr-FR": "Las Palmas",
+                "en-GB": "Las Palmas",
+                "es-ES": "Las Palmas"
+            },
+            "shortName": "LPA",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/407.png"
+        },
+        "mpg_championship_club_413": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/413.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/413.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_413",
+            "name": {
+                "fr-FR": "Bruges",
+                "en-GB": "Bruges",
+                "es-ES": "Bruges"
+            },
+            "shortName": "BRU",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/413.png"
+        },
+        "mpg_championship_club_414": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/414.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_414",
+            "name": {
+                "fr-FR": "KRC Genk",
+                "en-GB": "KRC Genk",
+                "es-ES": "KRC Genk"
+            },
+            "shortName": "GNK",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/414.png"
+        },
+        "mpg_championship_club_4169": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/4169.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_4169",
+            "name": {
+                "fr-FR": "Krasnodar",
+                "en-GB": "Krasnodar",
+                "es-ES": "Krasnodar"
+            },
+            "shortName": "KRA",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/4169.png"
+        },
+        "mpg_championship_club_427": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/427.png",
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/427.png",
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/427.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/427.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/427.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/427.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/427.png"
+                    }
+                },
+                "4": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/427.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/427.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_427",
+            "name": {
+                "fr-FR": "Toulouse",
+                "en-GB": "Toulouse",
+                "es-ES": "Toulouse"
+            },
+            "shortName": "TOU",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/427.png"
+        },
+        "mpg_championship_club_428": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/428.png",
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/428.png",
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/428.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/428.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/428.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/428.png"
+                    }
+                },
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/428.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/428.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/428.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_428",
+            "name": {
+                "fr-FR": "Guingamp",
+                "en-GB": "Guingamp",
+                "es-ES": "Guingamp"
+            },
+            "shortName": "GUI",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/428.png"
+        },
+        "mpg_championship_club_429": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/429.png",
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/429.png",
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/429.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/429.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/429.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/429.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/429.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/429.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/429.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/429.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_429",
+            "name": {
+                "fr-FR": "Lille",
+                "en-GB": "Lille",
+                "es-ES": "Lille"
+            },
+            "shortName": "LIL",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/429.png"
+        },
+        "mpg_championship_club_43": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/43.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/43.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/43.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/43.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/43.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/43.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/43.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/43.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/43.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_43",
+            "name": {
+                "fr-FR": "Man. City",
+                "en-GB": "Man. City",
+                "es-ES": "Man. City"
+            },
+            "shortName": "MCI",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/43.png"
+        },
+        "mpg_championship_club_430": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/430.png",
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/430.png",
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/430.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/430.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/1/430.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/1/430.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/430.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/430.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/430.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_430",
+            "name": {
+                "fr-FR": "Nantes",
+                "en-GB": "Nantes",
+                "es-ES": "Nantes"
+            },
+            "shortName": "NAN",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/430.png"
+        },
+        "mpg_championship_club_449": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/449.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/449.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/449.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/449.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/449.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_449",
+            "name": {
+                "fr-FR": "Villarreal",
+                "en-GB": "Villarreal",
+                "es-ES": "Villarreal"
+            },
+            "shortName": "VIL",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/449.png"
+        },
+        "mpg_championship_club_45": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/45.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/45.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/45.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_45",
+            "name": {
+                "fr-FR": "Norwich City",
+                "en-GB": "Norwich City",
+                "es-ES": "Norwich City"
+            },
+            "shortName": "NOR",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/45.png"
+        },
+        "mpg_championship_club_450": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/450.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/450.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/450.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_450",
+            "name": {
+                "fr-FR": "Osasuna",
+                "en-GB": "Osasuna",
+                "es-ES": "Osasuna"
+            },
+            "shortName": "OSA",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/450.png"
+        },
+        "mpg_championship_club_455": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/455.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/455.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_455",
+            "name": {
+                "fr-FR": "Shakhtar",
+                "en-GB": "Shakhtar",
+                "es-ES": "Shakhtar"
+            },
+            "shortName": "SDK",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/455.png"
+        },
+        "mpg_championship_club_456": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/456.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/456.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/456.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/456.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/456.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_456",
+            "name": {
+                "fr-FR": "Atalanta",
+                "en-GB": "Atalanta",
+                "es-ES": "Atalanta"
+            },
+            "shortName": "ATA",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/456.png"
+        },
+        "mpg_championship_club_458": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/458.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_458",
+            "name": {
+                "fr-FR": "Brescia",
+                "en-GB": "Brescia",
+                "es-ES": "Brescia"
+            },
+            "shortName": "BSC",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/458.png"
+        },
+        "mpg_championship_club_459": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/459.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/459.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/459.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/459.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_459",
+            "name": {
+                "fr-FR": "Napoli",
+                "en-GB": "Napoli",
+                "es-ES": "Napoli"
+            },
+            "shortName": "NAP",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/459.png"
+        },
+        "mpg_championship_club_49": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/49.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/49.png"
+                    },
+                    "active": false
+                }
+            },
+            "id": "mpg_championship_club_49",
+            "name": {
+                "fr-FR": "Sheffield",
+                "en-GB": "Sheffield",
+                "es-ES": "Sheffield"
+            },
+            "shortName": "SHU",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/49.png"
+        },
+        "mpg_championship_club_54": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/54.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/54.png"
+                    },
+                    "active": false
+                }
+            },
+            "id": "mpg_championship_club_54",
+            "name": {
+                "fr-FR": "Fulham",
+                "en-GB": "Fulham",
+                "es-ES": "Fulham"
+            },
+            "shortName": "FUL",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/54.png"
+        },
+        "mpg_championship_club_5420": {
+            "championships": {
+                "4": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/5420.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/5420.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_5420",
+            "name": {
+                "fr-FR": "Pau",
+                "en-GB": "Pau",
+                "es-ES": "Pau"
+            },
+            "shortName": "PAU",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/5420.png"
+        },
+        "mpg_championship_club_5447": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/5447.png",
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/5447.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_5447",
+            "name": {
+                "fr-FR": "Evian Thonon Gaillard",
+                "en-GB": "Evian Thonon Gaillard",
+                "es-ES": "Evian Thonon Gaillard"
+            },
+            "shortName": "ETG",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/5447.png"
+        },
+        "mpg_championship_club_56": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/56.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/56.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_56",
+            "name": {
+                "fr-FR": "Sunderland",
+                "en-GB": "Sunderland",
+                "es-ES": "Sunderland"
+            },
+            "shortName": "SUN",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/56.png"
+        },
+        "mpg_championship_club_5683": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/5683.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/5683.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/5683.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_5683",
+            "name": {
+                "fr-FR": "Granada",
+                "en-GB": "Granada",
+                "es-ES": "Granada"
+            },
+            "shortName": "GRA",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/5683.png"
+        },
+        "mpg_championship_club_57": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/57.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/57.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/57.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/57.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/57.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/57.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_57",
+            "name": {
+                "fr-FR": "Watford",
+                "en-GB": "Watford",
+                "es-ES": "Watford"
+            },
+            "shortName": "WAT",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/57.png"
+        },
+        "mpg_championship_club_6": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/6.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/6.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/6.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/6.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/6.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/6.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/6.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/6.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_6",
+            "name": {
+                "fr-FR": "Tottenham",
+                "en-GB": "Tottenham",
+                "es-ES": "Tottenham"
+            },
+            "shortName": "TOT",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/6.png"
+        },
+        "mpg_championship_club_603": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/603.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/603.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/603.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_603",
+            "name": {
+                "fr-FR": "Sampdoria",
+                "en-GB": "Sampdoria",
+                "es-ES": "Sampdoria"
+            },
+            "shortName": "SAM",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/603.png"
+        },
+        "mpg_championship_club_6339": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/6339.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/6339.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_6339",
+            "name": {
+                "fr-FR": "Leipzig",
+                "en-GB": "Leipzig",
+                "es-ES": "Leipzig"
+            },
+            "shortName": "RBL",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/6339.png"
+        },
+        "mpg_championship_club_6783": {
+            "championships": {
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/6783.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/6783.png"
+                    },
+                    "active": false
+                }
+            },
+            "id": "mpg_championship_club_6783",
+            "name": {
+                "fr-FR": "Chambly",
+                "en-GB": "Chambly",
+                "es-ES": "Chambly"
+            },
+            "shortName": "CHA",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/6783.png"
+        },
+        "mpg_championship_club_6785": {
+            "championships": {
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/6785.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_6785",
+            "name": {
+                "fr-FR": "Orléans",
+                "en-GB": "Orléans",
+                "es-ES": "Orléans"
+            },
+            "shortName": "ORL",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/6785.png"
+        },
+        "mpg_championship_club_683": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/683.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_683",
+            "name": {
+                "fr-FR": "Mönchengladbach",
+                "en-GB": "Mönchengladbach",
+                "es-ES": "Mönchengladbach"
+            },
+            "shortName": "BMG",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/683.png"
+        },
+        "mpg_championship_club_693": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/693.png"
+                    }
+                },
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/693.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/693.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/4/693.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_693",
+            "name": {
+                "fr-FR": "Sochaux",
+                "en-GB": "Sochaux",
+                "es-ES": "Sochaux"
+            },
+            "shortName": "SOC",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/693.png"
+        },
+        "mpg_championship_club_694": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2013": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2013/1/694.png",
+                        "2014": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2014/1/694.png",
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/1/694.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/1/694.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/694.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/694.png"
+                    },
+                    "active": true
+                },
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/694.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_694",
+            "name": {
+                "fr-FR": "Lorient",
+                "en-GB": "Lorient",
+                "es-ES": "Lorient"
+            },
+            "shortName": "LOR",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/694.png"
+        },
+        "mpg_championship_club_695": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/695.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_695",
+            "name": {
+                "fr-FR": "Empoli",
+                "en-GB": "Empoli",
+                "es-ES": "Empoli"
+            },
+            "shortName": "EMP",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/695.png"
+        },
+        "mpg_championship_club_7": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/7.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/7.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/7.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/7.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_7",
+            "name": {
+                "fr-FR": "Aston Villa",
+                "en-GB": "Aston Villa",
+                "es-ES": "Aston Villa"
+            },
+            "shortName": "AVL",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/7.png"
+        },
+        "mpg_championship_club_744": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/744.png"
+                    },
+                    "active": false
+                }
+            },
+            "id": "mpg_championship_club_744",
+            "name": {
+                "fr-FR": "Crotone",
+                "en-GB": "Crotone",
+                "es-ES": "Crotone"
+            },
+            "shortName": "CRT",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/744.png"
+        },
+        "mpg_championship_club_8": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/8.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/8.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/8.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/8.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/8.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/8.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/8.png"
+                    },
+                    "active": true
+                },
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/8.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/8.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_8",
+            "name": {
+                "fr-FR": "Chelsea",
+                "en-GB": "Chelsea",
+                "es-ES": "Chelsea"
+            },
+            "shortName": "CHE",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/8.png"
+        },
+        "mpg_championship_club_80": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/80.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/80.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/80.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_80",
+            "name": {
+                "fr-FR": "Swansea City",
+                "en-GB": "Swansea City",
+                "es-ES": "Swansea City"
+            },
+            "shortName": "SWA",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/80.png"
+        },
+        "mpg_championship_club_855": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/855.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/855.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/855.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/855.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/855.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_855",
+            "name": {
+                "fr-FR": "Levante",
+                "en-GB": "Levante",
+                "es-ES": "Levante"
+            },
+            "shortName": "LUD",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/855.png"
+        },
+        "mpg_championship_club_857": {
+            "championships": {
+                "6": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/6/857.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/857.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_857",
+            "name": {
+                "fr-FR": "Salzburg",
+                "en-GB": "Salzburg",
+                "es-ES": "Salzburg"
+            },
+            "shortName": "RBS",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/6/857.png"
+        },
+        "mpg_championship_club_862": {
+            "championships": {
+                "1": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/1/862.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/1/862.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/862.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_862",
+            "name": {
+                "fr-FR": "Brest",
+                "en-GB": "Brest",
+                "es-ES": "Brest"
+            },
+            "shortName": "BRS",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/1/862.png"
+        },
+        "mpg_championship_club_88": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/88.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_88",
+            "name": {
+                "fr-FR": "Hull City",
+                "en-GB": "Hull City",
+                "es-ES": "Hull City"
+            },
+            "shortName": "HUL",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/88.png"
+        },
+        "mpg_championship_club_90": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/90.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/90.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/90.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/90.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/2/90.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/90.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_90",
+            "name": {
+                "fr-FR": "Burnley",
+                "en-GB": "Burnley",
+                "es-ES": "Burnley"
+            },
+            "shortName": "BRN",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/90.png"
+        },
+        "mpg_championship_club_91": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2015": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2015/2/91.png",
+                        "2016": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2016/2/91.png",
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/2/91.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/91.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/91.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_91",
+            "name": {
+                "fr-FR": "Bournemouth",
+                "en-GB": "Bournemouth",
+                "es-ES": "Bournemouth"
+            },
+            "shortName": "BOU",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/2/91.png"
+        },
+        "mpg_championship_club_920": {
+            "championships": {
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/920.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_920",
+            "name": {
+                "fr-FR": "Le Mans",
+                "en-GB": "Le Mans",
+                "es-ES": "Le Mans"
+            },
+            "shortName": "LMS",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/920.png"
+        },
+        "mpg_championship_club_921": {
+            "championships": {
+                "4": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/4/921.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/921.png"
+                    },
+                    "active": false
+                }
+            },
+            "id": "mpg_championship_club_921",
+            "name": {
+                "fr-FR": "Châteauroux",
+                "en-GB": "Châteauroux",
+                "es-ES": "Châteauroux"
+            },
+            "shortName": "CHX",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/4/921.png"
+        },
+        "mpg_championship_club_94": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/94.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_94",
+            "name": {
+                "fr-FR": "Brentford",
+                "en-GB": "Brentford",
+                "es-ES": "Brentford"
+            },
+            "shortName": "BRE",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/2/94.png"
+        },
+        "mpg_championship_club_953": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/953.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/953.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/953.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/953.png"
+                    },
+                    "active": false
+                }
+            },
+            "id": "mpg_championship_club_953",
+            "name": {
+                "fr-FR": "Eibar",
+                "en-GB": "Eibar",
+                "es-ES": "Eibar"
+            },
+            "shortName": "EIB",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/953.png"
+        },
+        "mpg_championship_club_954": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/3/954.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/954.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_954",
+            "name": {
+                "fr-FR": "Elche",
+                "en-GB": "Elche",
+                "es-ES": "Elche"
+            },
+            "shortName": "ECF",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/3/954.png"
+        },
+        "mpg_championship_club_957": {
+            "championships": {
+                "3": {
+                    "jerseys": {
+                        "2017": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2017/3/957.png",
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/3/957.png",
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/957.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_957",
+            "name": {
+                "fr-FR": "Leganés",
+                "en-GB": "Leganés",
+                "es-ES": "Leganés"
+            },
+            "shortName": "LGN",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/3/957.png"
+        },
+        "mpg_championship_club_97": {
+            "championships": {
+                "2": {
+                    "jerseys": {
+                        "2018": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/97.png"
+                    }
+                }
+            },
+            "id": "mpg_championship_club_97",
+            "name": {
+                "fr-FR": "Cardiff City",
+                "en-GB": "Cardiff City",
+                "es-ES": "Cardiff City"
+            },
+            "shortName": "CAR",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2018/2/97.png"
+        },
+        "mpg_championship_club_990": {
+            "championships": {
+                "5": {
+                    "jerseys": {
+                        "2019": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2019/5/990.png",
+                        "2020": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2020/5/990.png",
+                        "2021": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/990.png"
+                    },
+                    "active": true
+                }
+            },
+            "id": "mpg_championship_club_990",
+            "name": {
+                "fr-FR": "Genoa",
+                "en-GB": "Genoa",
+                "es-ES": "Genoa"
+            },
+            "shortName": "GEN",
+            "defaultJerseyUrl": "https://s3-eu-west-1.amazonaws.com/image.mpg/jersey/2021/5/990.png"
+        }
+    }
+}
