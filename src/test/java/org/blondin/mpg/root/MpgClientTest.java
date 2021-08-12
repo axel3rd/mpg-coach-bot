@@ -133,7 +133,7 @@ public class MpgClientTest extends AbstractMockTestClient {
     }
 
     @Test
-    public void testMockCoach() throws Exception {
+    public void testMockCoachEmpty() throws Exception {
         stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
         stubFor(get("/division/mpg_division_MLEFEX6G_3_1/coach")
@@ -143,6 +143,20 @@ public class MpgClientTest extends AbstractMockTestClient {
         Assert.assertNotNull(coach);
         Assert.assertTrue(coach.getComposition() > 0);
         Assert.assertEquals("mpg_match_team_formation_MLEFEX6G_3_1_2_2_2", coach.getIdMatch());
+    }
+
+    @Test
+    public void testMockCoachNotEmpty() throws Exception {
+        stubFor(post("/user/sign-in")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLAX7HMK.20210812.withCaptain.json")));
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        Coach coach = mpgClient.getCoach("mpg_division_MLEFEX6G_3_1");
+        Assert.assertNotNull(coach);
+        Assert.assertTrue(coach.getComposition() > 0);
+        Assert.assertEquals("mpg_match_team_formation_MLAX7HMK_3_1_1_5_6", coach.getIdMatch());
+        Assert.assertEquals("mpg_championship_player_195883", coach.getCaptain());
     }
 
     @Test

@@ -7,6 +7,7 @@ public class MatchTeamFormation {
 
     private String id;
     private int composition;
+    private String captain;
 
     public String getId() {
         return id;
@@ -14,5 +15,9 @@ public class MatchTeamFormation {
 
     public int getComposition() {
         return composition;
+    }
+
+    public String getCaptain() {
+        return captain;
     }
 }

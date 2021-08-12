@@ -8,3 +8,6 @@
 /.apt_generated/
 /pom.xml.releaseBackup
 /release.properties
+/src/test/resources/mpg.properties
+/src/test/resources/mpg.properties.save
+/src/test/resources/mpg.properties.backup

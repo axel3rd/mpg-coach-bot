@@ -21,6 +21,10 @@ public class CoachRequest {
     @JsonInclude(Include.NON_NULL)
     private SelectedBonus bonusSelected;
 
+    @JsonProperty("captain")
+    @JsonInclude(Include.NON_NULL)
+    private String captain;
+
     public CoachRequest(int composition) {
         if (composition < 343 || composition > 541) {
             throw new UnsupportedOperationException(String.format("Invalid composition: %s", composition));
@@ -42,5 +46,13 @@ public class CoachRequest {
 
     public void setBonusSelected(SelectedBonus bonusSelected) {
         this.bonusSelected = bonusSelected;
+    }
+
+    public String getCaptain() {
+        return captain;
+    }
+
+    public void setCaptain(String captain) {
+        this.captain = captain;
     }
 }

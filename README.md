@@ -15,7 +15,7 @@ Automate and optimize your [MPG](http://mpg.football/) weekly league actions, us
 - Proposing some players to buy, better than the one you have (if option `transactions.proposal` is enabled and *MPG* expert mode is bought)
 - When league not started (aka: *mercato*), the best players to buy for your incoming team
 
-**NB:** Your tactical organization and selected bonus are not updated and let as configured.
+**NB:** Your tactical organization and selected bonus are not updated and let as configured (but selected if some will be lost or no captain).
 
 The efficiency algorithm used to calculate players efficiency score is:
 
@@ -140,7 +140,7 @@ To focus on recent efficiency, about team proposal and buy transaction (since v1
     efficiency.recent.focus = true
     efficiency.recent.days = 8
 
-To use bonus if not already selected and some would be lost (since v1.6):
+To use bonus if not already selected and some would be lost (since v1.6, captain selection since v1.8):
 
     # Use bonus
     use.bonus = true

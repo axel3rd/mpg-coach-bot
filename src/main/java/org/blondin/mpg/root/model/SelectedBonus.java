@@ -20,8 +20,10 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  */
 public class SelectedBonus {
 
+    public static final String BONUS_BOOT_ONE_PLAYER = "boostOnePlayer";
+
     private static final List<String> BONUS_PRIORITY = Stream
-            .of("removeGoal", "boostAllPlayers", "nerfGoalkeeper", "boostOnePlayer", "mirror", "blockTacticalSubs", "removeRandomPlayer")
+            .of("removeGoal", "boostAllPlayers", "nerfGoalkeeper", BONUS_BOOT_ONE_PLAYER, "mirror", "blockTacticalSubs", "removeRandomPlayer")
             .collect(Collectors.toList());
 
     @JsonInclude(Include.NON_NULL)

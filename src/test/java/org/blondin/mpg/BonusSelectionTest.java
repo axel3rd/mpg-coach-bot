@@ -44,6 +44,15 @@ public class BonusSelectionTest {
     }
 
     @Test
+    public void testBonusCaptain() {
+        Assert.assertEquals(null, Main.selectCapatain(null, "newCaptain", false));
+        Assert.assertEquals("previousCaptain", Main.selectCapatain("previousCaptain", "newCaptain", false));
+        Assert.assertEquals("previousCaptain", Main.selectCapatain("previousCaptain", "newCaptain", true));
+        Assert.assertEquals("newCaptain", Main.selectCapatain(null, "newCaptain", true));
+        Assert.assertEquals("newCaptain", Main.selectCapatain("", "newCaptain", true));
+    }
+
+    @Test
     public void testBonusSelection() {
         Assert.assertEquals("nerfGoalkeeper", Main.selectBonus(null, getBonus(0, 0, 1, 1, 0, 0, 0), 0, true, "fake").getName());
         Assert.assertEquals("boostOnePlayer", Main.selectBonus(null, getBonus(0, 0, 0, 1, 0, 0, 0), 0, true, "fake").getName());
