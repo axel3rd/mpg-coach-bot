@@ -450,8 +450,9 @@ public class Main {
 
     private static int getCurrentDay(MpgStatsClient stats, ChampionshipStatsType championship) {
         int daysPeriod = stats.getStats(championship).getInfos().getAnnualStats().getCurrentDay().getDay();
+        int lastDayReached = stats.getStats(championship).getInfos().getAnnualStats().getCurrentDay().getLastDayReached();
         // If league not started, we take the number of day of season, because average will be on this period
-        if (daysPeriod == 0 || stats.getStats(championship).getInfos().getAnnualStats().getCurrentDay().getPlayed() == 0) {
+        if (daysPeriod == 0 || (daysPeriod == 1 && lastDayReached == 0)) {
             // The previous season statistics could be null, in this case current annual max day is used
             daysPeriod = stats.getStats(championship).getInfos().getLastStats() == null
                     ? stats.getStats(championship).getInfos().getAnnualStats().getMaxDay()

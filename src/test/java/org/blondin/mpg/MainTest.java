@@ -120,6 +120,7 @@ public class MainTest extends AbstractMockTestClient {
         Config config = spy(getConfig());
         doReturn(true).when(config).isTeampUpdate();
         doReturn(false).when(config).isTacticalSubstitutes();
+        doReturn(true).when(config).isEfficiencyRecentFocus();
         executeMainProcess(config);
         Assert.assertTrue(getLogOut(), getLogOut().contains("Updating team ..."));
         Assert.assertTrue(getLogOut(), getLogOut().contains("  Captain: Blas Ludovic"));

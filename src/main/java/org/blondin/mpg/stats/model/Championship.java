@@ -35,7 +35,9 @@ public class Championship {
                 // If last season statistics does not exist (Dominos L2 in 2019 use case, first one in MPG), current annual max day is used
                 final int previousMaxSeasonDay = getInfos().getLastStats() == null ? getInfos().getAnnualStats().getMaxDay()
                         : getInfos().getLastStats().getMaxDay();
-                final int currentSeasonDay = getInfos().getAnnualStats().getCurrentDay().getDay();
+                final int currentSeasonDay = getInfos().getAnnualStats().getCurrentDay().getDay() <= 1
+                        && getInfos().getAnnualStats().getCurrentDay().getLastDayReached() == 0 ? 0
+                                : getInfos().getAnnualStats().getCurrentDay().getDay();
                 players.forEach(p -> p.getStats().setCurrentSeasonDay(currentSeasonDay));
                 players.forEach(p -> p.getStats().setPreviousMaxSeasonDay(previousMaxSeasonDay));
                 maxDaySetOnPlayer = true;
