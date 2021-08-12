@@ -28,6 +28,7 @@ import org.blondin.mpg.root.model.League;
 import org.blondin.mpg.root.model.LeagueStatus;
 import org.blondin.mpg.root.model.Mode;
 import org.blondin.mpg.root.model.Player;
+import org.blondin.mpg.root.model.PlayersOnPitch;
 import org.blondin.mpg.root.model.PoolPlayers;
 import org.blondin.mpg.root.model.Position;
 import org.blondin.mpg.root.model.SelectedBonus;
@@ -190,7 +191,7 @@ public class Main {
 
             // Auto-update team
             if (config.isTeampUpdate()) {
-                updateTeamWithRetry(apiClients.getMpg(), division, team, coach, players, config);
+                updateTeamWithRetry(apiClients.getMpg(), division, team, coach, players, pool, config);
             }
 
             if (config.isTransactionsProposal()) {
@@ -252,12 +253,24 @@ public class Main {
         }
     }
 
-    private static void updateTeamWithRetry(MpgClient mpgClient, Division division, Team team, Coach coach, List<Player> players, Config config) {
+    private static void updateTeamWithRetry(MpgClient mpgClient, Division division, Team team, Coach coach, List<Player> players, PoolPlayers pool,
+            Config config) {
         LOG.info("\nUpdating team ...");
+        CoachRequest request = getCoachRequest(team, coach, players, division.getGameRemaining(), config);
+        if (StringUtils.isNotBlank(request.getCaptain())) {
+            LOG.info("  Captain: {}", pool.getPlayer(request.getCaptain()).getName());
+        }
+        if (request.getBonusSelected() != null && StringUtils.isNotBlank(request.getBonusSelected().getName())) {
+            String playerPotential = "";
+            if (SelectedBonus.BONUS_BOOT_ONE_PLAYER.equals(request.getBonusSelected().getName())) {
+                playerPotential = "(" + pool.getPlayer(request.getBonusSelected().getPlayerId()).getName() + ")";
+            }
+            LOG.info("  Bonus  : {} {}", request.getBonusSelected().getName(), playerPotential);
+        }
         final long maxRetry = 10;
         for (int i = 1; i <= 10; i++) {
             try {
-                mpgClient.updateCoach(coach.getIdMatch(), getCoachRequest(team, coach, players, division.getGameRemaining(), config));
+                mpgClient.updateCoach(coach.getIdMatch(), request);
                 break;
             } catch (UnsupportedOperationException e) {
                 if (i == maxRetry || !"Unsupported status code: 400 Bad Request / Content: {\"error\":\"badRequest\"}".equals(e.getMessage())) {
@@ -467,8 +480,10 @@ public class Main {
         List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList());
         List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList());
 
-        String playerIdForBonus = midfielders.get(0).getId();
-        request.setBonusSelected(selectBonus(coach.getBonusSelected(), team.getBonuses(), gameRemaining, config.isUseBonus(), playerIdForBonus));
+        String playerIdForBonusOrCaptain = midfielders.get(0).getId();
+        request.setBonusSelected(
+                selectBonus(coach.getBonusSelected(), team.getBonuses(), gameRemaining, config.isUseBonus(), playerIdForBonusOrCaptain));
+        request.setCaptain(selectCapatain(coach.getCaptain(), playerIdForBonusOrCaptain, config.isUseBonus()));
 
         // Main lines
         setPlayersOnPitch(request, defenders, nbrDefenders, 1);
@@ -507,26 +522,42 @@ public class Main {
             }
         }
 
-        // If Bonus is player power up (type=4 / RedBull/ UberEats), verify that player is on pitch, override otherwise
-        verifyBonusPlayerOverrideOnPitch(request, playerIdForBonus);
+        // If Bonus is player power up (boostOnePlayer), verify that player is on pitch, override otherwise
+        verifyBonusPlayerOverrideOnPitch(request, playerIdForBonusOrCaptain);
 
         return request;
     }
 
     static void verifyBonusPlayerOverrideOnPitch(CoachRequest request, String playerIdEnfored) {
-        if (request.getBonusSelected() != null && "boostOnePlayer".equals(request.getBonusSelected().getName())) {
-            boolean onPitch = false;
-            String playerIdSelected = request.getBonusSelected().getPlayerId();
-            for (int i = 1; i <= 11; i++) {
-                if (playerIdSelected.equals(request.getPlayersOnPitch().getPlayer(i))) {
-                    onPitch = true;
-                    break;
-                }
-            }
-            if (!onPitch) {
-                request.getBonusSelected().setPlayerId(playerIdEnfored);
+        // Bonus
+        if (request.getBonusSelected() != null && SelectedBonus.BONUS_BOOT_ONE_PLAYER.equals(request.getBonusSelected().getName())
+                && !verifyPlayerOnPitch(request.getPlayersOnPitch(), request.getBonusSelected().getPlayerId())) {
+            request.getBonusSelected().setPlayerId(playerIdEnfored);
+        }
+
+        // Captain
+        if (StringUtils.isNotBlank(request.getCaptain()) && !verifyPlayerOnPitch(request.getPlayersOnPitch(), request.getCaptain())) {
+            request.setCaptain(playerIdEnfored);
+        }
+    }
+
+    static boolean verifyPlayerOnPitch(PlayersOnPitch playersOnPitch, String playerId) {
+        if (StringUtils.isBlank(playerId)) {
+            return false;
+        }
+        for (int i = 1; i <= 11; i++) {
+            if (playerId.equals(playersOnPitch.getPlayer(i))) {
+                return true;
             }
         }
+        return false;
+    }
+
+    static String selectCapatain(String previousCaptain, String captainIdIfNeeded, boolean useBonus) {
+        if (!useBonus || StringUtils.isNotBlank(previousCaptain)) {
+            return previousCaptain;
+        }
+        return captainIdIfNeeded;
     }
 
     static SelectedBonus selectBonus(SelectedBonus previousBonus, Map<String, Integer> bonuses, int matchsRemaining, boolean useBonus,
@@ -542,7 +573,7 @@ public class Main {
             String bonus = getBestBonus(bonuses, matchsRemaining);
             bonusSelected = new SelectedBonus();
             bonusSelected.setName(bonus);
-            if ("boostOnePlayer".equals(bonus)) {
+            if (SelectedBonus.BONUS_BOOT_ONE_PLAYER.equals(bonus)) {
                 bonusSelected.setPlayerId(playerIdIfNeeded);
             }
         }

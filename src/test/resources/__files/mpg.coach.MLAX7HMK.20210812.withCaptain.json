@@ -1,0 +1,79 @@
+{
+    "divisionMatch": {
+        "id": "mpg_division_match_MLAX7HMK_3_1_1_5_4_6",
+        "type": "mpg_division_match",
+        "divisionId": "mpg_division_MLAX7HMK_3_1",
+        "home": {
+            "teamId": "mpg_team_MLAX7HMK_3_1_4"
+        },
+        "away": {
+            "teamId": "mpg_team_MLAX7HMK_3_1_6"
+        }
+    },
+    "matchTeamFormation": {
+        "id": "mpg_match_team_formation_MLAX7HMK_3_1_1_5_6",
+        "type": "mpg_match_team_formation",
+        "composition": "343",
+        "playersOnPitch": {
+            "1": "mpg_championship_player_45123",
+            "2": "mpg_championship_player_220237",
+            "3": "mpg_championship_player_52573",
+            "4": "mpg_championship_player_38580",
+            "5": "mpg_championship_player_195883",
+            "6": "mpg_championship_player_441240",
+            "7": "mpg_championship_player_159967",
+            "8": "mpg_championship_player_213940",
+            "9": "mpg_championship_player_162275",
+            "10": "mpg_championship_player_167443",
+            "11": "mpg_championship_player_168539",
+            "12": "mpg_championship_player_155335",
+            "13": "mpg_championship_player_437753",
+            "14": "mpg_championship_player_61170",
+            "15": "mpg_championship_player_240146",
+            "16": "mpg_championship_player_193454",
+            "17": "mpg_championship_player_482549",
+            "18": "mpg_championship_player_104407"
+        },
+        "tacticalSubs": [
+            {
+                "rating": 5,
+                "subId": "mpg_championship_player_155335",
+                "starterId": "mpg_championship_player_38580"
+            },
+            {
+                "rating": 5,
+                "subId": "mpg_championship_player_61170",
+                "starterId": "mpg_championship_player_213940"
+            },
+            {
+                "rating": 5,
+                "subId": "mpg_championship_player_240146",
+                "starterId": "mpg_championship_player_159967"
+            },
+            {
+                "rating": 6,
+                "subId": "mpg_championship_player_193454",
+                "starterId": "mpg_championship_player_168539"
+            }
+        ],
+        "captain": "mpg_championship_player_195883"
+    },
+    "nextGameWeek": {
+        "gameWeekNumber": 2,
+        "startDate": "2021-08-13T19:00:00Z",
+        "endDate": "2021-08-15T18:45:00Z",
+        "startIn": 97699,
+        "matchesIds": [
+            "mpg_championship_match_2215511",
+            "mpg_championship_match_2215510",
+            "mpg_championship_match_2215514",
+            "mpg_championship_match_2215506",
+            "mpg_championship_match_2215507",
+            "mpg_championship_match_2215508",
+            "mpg_championship_match_2215513",
+            "mpg_championship_match_2215515",
+            "mpg_championship_match_2215509",
+            "mpg_championship_match_2215512"
+        ]
+    }
+}

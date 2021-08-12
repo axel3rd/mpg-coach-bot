@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Coach {
 
-    private String captain;
-
     @JsonProperty("matchTeamFormation")
     private MatchTeamFormation matchTeamFormation;
 
@@ -20,6 +18,10 @@ public class Coach {
 
     public int getComposition() {
         return matchTeamFormation.getComposition();
+    }
+
+    public String getCaptain() {
+        return matchTeamFormation.getCaptain();
     }
 
     public SelectedBonus getBonusSelected() {

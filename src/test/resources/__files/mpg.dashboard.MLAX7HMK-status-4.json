@@ -1,0 +1,48 @@
+{
+    "leaguesDivisionsItems": [
+        {
+            "leagueId": "mpg_league_MLAX7HMK",
+            "name": "Ici c'est Billiers !",
+            "adminId": "user_953561",
+            "status": 4,
+            "season": 3,
+            "mode": 2,
+            "createdAt": "2020-08-22T08:22:40Z",
+            "mercatoState": {
+                "divisionsLeft": 0,
+                "usersLeft": 0
+            },
+            "championshipId": 1,
+            "rating": "mpg",
+            "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/9db725b3-fe27-42b4-9575-55cfbeef30d2.png",
+            "totalDivisions": 1,
+            "totalUsers": 10,
+            "totalMissedPosts": 1,
+            "divisionNumber": 1,
+            "nextRealGameWeekDate": "2021-08-13T19:00:00Z",
+            "divisionStatus": 4,
+            "divisionId": "mpg_division_MLAX7HMK_3_1",
+            "divisionTotalUsers": 10,
+            "liveState": {
+                "currentGameWeek": 1,
+                "totalGameWeeks": 18,
+                "firstRealGameWeek": 2,
+                "liveAt": "2021-08-11T22:17:51Z",
+                "formationsStatuses": {
+                    "mpg_team_MLAX7HMK_3_1_3": 1,
+                    "mpg_team_MLAX7HMK_3_1_4": 2,
+                    "mpg_team_MLAX7HMK_3_1_9": 2,
+                    "mpg_team_MLAX7HMK_3_1_2": 2,
+                    "mpg_team_MLAX7HMK_3_1_7": 2,
+                    "mpg_team_MLAX7HMK_3_1_5": 2,
+                    "mpg_team_MLAX7HMK_3_1_8": 2,
+                    "mpg_team_MLAX7HMK_3_1_0": 2,
+                    "mpg_team_MLAX7HMK_3_1_6": 2,
+                    "mpg_team_MLAX7HMK_3_1_1": 2
+                }
+            },
+            "currentFormationStatus": 2
+        }
+    ],
+    "defaultOrder": false
+}

@@ -63,6 +63,69 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testCaptainNotOnMainPitch() throws Exception {
+        prepareMainFrenchLigue1Mocks("MLAX7HMK-status-4", "2021", "20210812", "20210812");
+        stubFor(get("/division/mpg_division_MLAX7HMK_3_1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.MLAX7HMK.20210812.json")));
+        stubFor(get("/team/mpg_team_MLAX7HMK_3_1_6")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.MLAX7HMK.20210812.manyBonus.json")));
+        stubFor(get("/division/mpg_division_MLAX7HMK_3_1/coach").willReturn(aResponse().withHeader("Content-Type", "application/json")
+                .withBodyFile("mpg.coach.MLAX7HMK.20210812.withNotOnMainPitchCaptain.json")));
+        stubFor(put("/match-team-formation/mpg_match_team_formation_MLAX7HMK_3_1_1_5_6")
+                .withRequestBody(equalToJson(getTestFileToString("mpg.coach.MLAX7HMK.20210812.withNotOnMainPitchCaptain-Request.json")))
+                .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode()).withHeader("Content-Type", "application/json")
+                        .withBody("{\"success\":true}")));
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut(), getLogOut().contains("  Captain: Blas Ludovic"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("  Bonus  : boostOnePlayer (Blas Ludovic)"));
+    }
+
+    @Test
+    public void testCaptainAlreadySelected() throws Exception {
+        prepareMainFrenchLigue1Mocks("MLAX7HMK-status-4", "2021", "20210812", "20210812");
+        stubFor(get("/division/mpg_division_MLAX7HMK_3_1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.MLAX7HMK.20210812.json")));
+        stubFor(get("/team/mpg_team_MLAX7HMK_3_1_6")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.MLAX7HMK.20210812.json")));
+        stubFor(get("/division/mpg_division_MLAX7HMK_3_1/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLAX7HMK.20210812.withCaptain.json")));
+        stubFor(put("/match-team-formation/mpg_match_team_formation_MLAX7HMK_3_1_1_5_6")
+                .withRequestBody(equalToJson(getTestFileToString("mpg.coach.MLAX7HMK.20210812.withCaptain-Request.json")))
+                .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode()).withHeader("Content-Type", "application/json")
+                        .withBody("{\"success\":true}")));
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Updating team ..."));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("  Captain: Bamba Jonathan"));
+    }
+
+    @Test
+    public void testCaptainAdd() throws Exception {
+        prepareMainFrenchLigue1Mocks("MLAX7HMK-status-4", "2021", "20210812", "20210812");
+        stubFor(get("/division/mpg_division_MLAX7HMK_3_1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.MLAX7HMK.20210812.json")));
+        stubFor(get("/team/mpg_team_MLAX7HMK_3_1_6")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.MLAX7HMK.20210812.json")));
+        stubFor(get("/division/mpg_division_MLAX7HMK_3_1/coach").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLAX7HMK.20210812.withNoCaptain.json")));
+        stubFor(put("/match-team-formation/mpg_match_team_formation_MLAX7HMK_3_1_1_5_6")
+                .withRequestBody(equalToJson(getTestFileToString("mpg.coach.MLAX7HMK.20210812.withNoCaptain-Request.json")))
+                .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode()).withHeader("Content-Type", "application/json")
+                        .withBody("{\"success\":true}")));
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Updating team ..."));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("  Captain: Blas Ludovic"));
+    }
+
+    @Test
     public void testMercatoEnd() throws Exception {
         stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
@@ -113,7 +176,7 @@ public class MainTest extends AbstractMockTestClient {
         prepareMainFrenchLigue2Mocks("MLEFEX6G-status-4", "2021", "20210804", "20210804");
         Config config = spy(getConfig());
         doReturn(true).when(config).isTeampUpdate();
-        doReturn(true).when(config).isUseBonus();
+        doReturn(false).when(config).isUseBonus();
         doReturn(true).when(config).isTransactionsProposal();
         doReturn(true).when(config).isDebug();
         stubFor(get("/division/mpg_division_MLEFEX6G_3_1")
@@ -128,7 +191,6 @@ public class MainTest extends AbstractMockTestClient {
                 .withRequestBody(equalToJson(getTestFileToString("mpg.coach.MLEFEX6G.20210804-Request.json")))
                 .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode()).withHeader("Content-Type", "application/json")
                         .withBody("{\"success\":true}")));
-        // TODO: Output should be checked with realcase
         executeMainProcess(config);
         Assert.assertTrue(getLogOut(), getLogOut().contains("Ligue 2 Fous"));
         Assert.assertTrue(getLogOut(), getLogOut().contains("Ba"));
