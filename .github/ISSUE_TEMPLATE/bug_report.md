@@ -15,7 +15,7 @@ A clear and concise description of what the bug is, with a copy/paste of Java ex
 
 Depending your championship, join data files set in attachment.
 
-1. The MPG Mobile App JSon *Response* of these *Request* on https://api.mpg.football (use the browser network monitor - F12, see wiki [Get MPG data for opening a bug](https://github.com/axel3rd/mpg-coach-bot/wiki/Get-MPG-data-for-opening-a-bug) for more details):
+1. The MPG Mobile App JSon *Response* of these *Request* on https://api.mpg.football (see wiki [Get MPG data for opening a bug](https://github.com/axel3rd/mpg-coach-bot/wiki/Get-MPG-data-for-opening-a-bug) for authentication and details):
 
 | Feature | URL | Reason |
 | --- | --- | --- | 
