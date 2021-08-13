@@ -12,12 +12,12 @@ public class CurrentDay {
     @JsonProperty("lD")
     private int lastDayReached;
 
-    public int getDay() {
-        return day;
+    public int getDayReached() {
+        return lastDayReached;
     }
 
-    public int getLastDayReached() {
-        return lastDayReached;
+    public boolean isStatsDayReached() {
+        return day == lastDayReached;
     }
 
 }

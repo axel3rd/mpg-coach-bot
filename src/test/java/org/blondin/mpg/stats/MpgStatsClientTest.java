@@ -25,6 +25,8 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-2.20210804.json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
         Assert.assertEquals(25, mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_2).getPlayer("Ba Pape Ibnou").getPrice());
+        Assert.assertEquals(1, mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_2).getInfos().getAnnualStats().getCurrentDay().getDayReached());
+        Assert.assertFalse(mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_2).getInfos().getAnnualStats().getCurrentDay().isStatsDayReached());
     }
 
     @Test
@@ -33,7 +35,8 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
         stubFor(get("/leagues/Ligue-1")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.ligue-1.20190406.json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
-
+        Assert.assertEquals(30, mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_1).getInfos().getAnnualStats().getCurrentDay().getDayReached());
+        Assert.assertTrue(mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_1).getInfos().getAnnualStats().getCurrentDay().isStatsDayReached());
         testEfficiencyRecentFocusNeymar(mpgStatsClient);
         testEfficiencyRecentFocusMBappe(mpgStatsClient);
         testEfficiencyRecentFocusTrapp(mpgStatsClient);
@@ -92,6 +95,17 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpgstats.liga.20181017.json")));
 
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
+
+        Assert.assertEquals(8, mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_1).getInfos().getAnnualStats().getCurrentDay().getDayReached());
+        Assert.assertTrue(mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_1).getInfos().getAnnualStats().getCurrentDay().isStatsDayReached());
+
+        Assert.assertEquals(8,
+                mpgStatsClient.getStats(ChampionshipStatsType.PREMIER_LEAGUE).getInfos().getAnnualStats().getCurrentDay().getDayReached());
+        Assert.assertTrue(
+                mpgStatsClient.getStats(ChampionshipStatsType.PREMIER_LEAGUE).getInfos().getAnnualStats().getCurrentDay().isStatsDayReached());
+
+        Assert.assertEquals(8, mpgStatsClient.getStats(ChampionshipStatsType.LIGA).getInfos().getAnnualStats().getCurrentDay().getDayReached());
+        Assert.assertTrue(mpgStatsClient.getStats(ChampionshipStatsType.LIGA).getInfos().getAnnualStats().getCurrentDay().isStatsDayReached());
 
         for (ChampionshipStatsType type : Arrays.asList(ChampionshipStatsType.LIGUE_1, ChampionshipStatsType.PREMIER_LEAGUE,
                 ChampionshipStatsType.LIGA)) {
