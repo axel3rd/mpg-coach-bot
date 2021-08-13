@@ -2,17 +2,17 @@
     "composition": "343",
     "playersOnPitch": {
         "1": "mpg_championship_player_104407",
-        "2": "mpg_championship_player_155335",
-        "3": "mpg_championship_player_38580",
-        "4": "mpg_championship_player_52573",
-        "5": "mpg_championship_player_213940",
-        "6": "mpg_championship_player_195883",
-        "7": "mpg_championship_player_441240",
-        "8": "mpg_championship_player_159967",
+        "2": "mpg_championship_player_220237",
+        "3": "mpg_championship_player_52573",
+        "4": "mpg_championship_player_38580",
+        "5": "mpg_championship_player_195883",
+        "6": "mpg_championship_player_441240",
+        "7": "mpg_championship_player_159967",
+        "8": "mpg_championship_player_213940",
         "9": "mpg_championship_player_167443",
-        "10": "mpg_championship_player_168539",
-        "11": "mpg_championship_player_193454",
-        "12": "mpg_championship_player_220237",
+        "10": "mpg_championship_player_193454",
+        "11": "mpg_championship_player_168539",
+        "12": "mpg_championship_player_155335",
         "13": "mpg_championship_player_437753",
         "14": "mpg_championship_player_61170",
         "15": "mpg_championship_player_240146",
@@ -22,5 +22,5 @@
     },
     "tacticalSubs": [
     ],
-    "captain": "mpg_championship_player_213940"
+    "captain": "mpg_championship_player_195883"
 }

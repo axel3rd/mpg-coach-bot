@@ -156,7 +156,7 @@ public class MpgClientTest extends AbstractMockTestClient {
         Assert.assertNotNull(coach);
         Assert.assertTrue(coach.getComposition() > 0);
         Assert.assertEquals("mpg_match_team_formation_MLAX7HMK_3_1_1_5_6", coach.getIdMatch());
-        Assert.assertEquals("mpg_championship_player_195883", coach.getCaptain());
+        Assert.assertEquals("mpg_championship_player_220237", coach.getCaptain());
     }
 
     @Test

@@ -32,12 +32,6 @@ The `XXX` should be replaced by a use case scenario (like date, some league, dat
 | `mlnstats.ligue-2.XXX.json` | https://api.mlnstats.com/leagues/Ligue-2 | MpgStats for **Ligue 2 (France)** |
 | `mlnstats.premier-league.XXX.json` | https://api.mlnstats.com/leagues/Premier-League | MpgStats for **Premiere League (England)** |
 | `mlnstats.serie-a.XXX.json` | https://api.mlnstats.com/leagues/Serie-A | MpgStats for **Seria A (Italia)** |
-| `mpgstats.leagues.XXX.json` | https://www.mpgstats.fr/json/leagues.json | Used prior end of 2019. See [#134](https://github.com/axel3rd/mpg-coach-bot/issues/134) |
-| `mpgstats.liga.XXX.json` | https://www.mpgstats.fr/json/customteam.json/Liga | Used prior end of 2019. See [#134](https://github.com/axel3rd/mpg-coach-bot/issues/134) |
-| `mpgstats.ligue-1.XXX.json` | https://www.mpgstats.fr/json/customteam.json/Ligue-1 | Used prior end of 2019. See [#134](https://github.com/axel3rd/mpg-coach-bot/issues/134) |
-| `mpgstats.ligue-2.XXX.json` | https://www.mpgstats.fr/json/customteam.json/Ligue-2 | Used prior end of 2019. See [#134](https://github.com/axel3rd/mpg-coach-bot/issues/134) |
-| `mpgstats.premier-league.XXX.json` | https://www.mpgstats.fr/json/customteam.json/Premier-League | Used prior end of 2019. See [#134](https://github.com/axel3rd/mpg-coach-bot/issues/134) |
-| `mpgstats.serie-a.XXX.json` | https://www.mpgstats.fr/json/customteam.json/Serie-A | Used prior end of 2019. See [#134](https://github.com/axel3rd/mpg-coach-bot/issues/134) |
 
 ### Players Injury / Suspended 
 
@@ -64,3 +58,13 @@ The `XXX` should be replaced by a use case scenario (like date, some league, dat
 | `mpg.mercato.XXX.json` | https://api.monpetitgazon.com/league/[leagueId]/mercato | MPG league **mercato** |
 | `mpg.transfer.buy.XXX.json` | https://api.monpetitgazon.com/league/[leagueId]/transfer/buy | MPG league **transfer** |
 | `mpg.user-signIn.XXX.json` | https://api.monpetitgazon.com/user/signIn | **Login** |
+
+### Players statistics (deprecated since 15 December 2019)
+
+| **File** | **URL** | **Description** |
+| `mpgstats.leagues.XXX.json` | https://www.mpgstats.fr/json/leagues.json | Used prior end of 2019. See [#134](https://github.com/axel3rd/mpg-coach-bot/issues/134) |
+| `mpgstats.liga.XXX.json` | https://www.mpgstats.fr/json/customteam.json/Liga | Used prior end of 2019. See [#134](https://github.com/axel3rd/mpg-coach-bot/issues/134) |
+| `mpgstats.ligue-1.XXX.json` | https://www.mpgstats.fr/json/customteam.json/Ligue-1 | Used prior end of 2019. See [#134](https://github.com/axel3rd/mpg-coach-bot/issues/134) |
+| `mpgstats.ligue-2.XXX.json` | https://www.mpgstats.fr/json/customteam.json/Ligue-2 | Used prior end of 2019. See [#134](https://github.com/axel3rd/mpg-coach-bot/issues/134) |
+| `mpgstats.premier-league.XXX.json` | https://www.mpgstats.fr/json/customteam.json/Premier-League | Used prior end of 2019. See [#134](https://github.com/axel3rd/mpg-coach-bot/issues/134) |
+| `mpgstats.serie-a.XXX.json` | https://www.mpgstats.fr/json/customteam.json/Serie-A | Used prior end of 2019. See [#134](https://github.com/axel3rd/mpg-coach-bot/issues/134) |

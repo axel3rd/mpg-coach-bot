@@ -79,8 +79,11 @@ public class MainTest extends AbstractMockTestClient {
         doReturn(true).when(config).isTeampUpdate();
         doReturn(false).when(config).isTacticalSubstitutes();
         executeMainProcess(config);
-        Assert.assertTrue(getLogOut(), getLogOut().contains("  Captain: Blas Ludovic"));
-        Assert.assertTrue(getLogOut(), getLogOut().contains("  Bonus  : boostOnePlayer (Blas Ludovic)"));
+        // Day 1 => efficiency with "Recent Focus" or global is the same
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Rajkovic Predrag    |  6.00 |"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| A | Laborde Gaëtan      | 15.40 |"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("  Captain: Bamba Jonathan"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("  Bonus  : boostOnePlayer (Bamba Jonathan)"));
     }
 
     @Test
@@ -100,8 +103,11 @@ public class MainTest extends AbstractMockTestClient {
         doReturn(true).when(config).isTeampUpdate();
         doReturn(false).when(config).isTacticalSubstitutes();
         executeMainProcess(config);
+        // Day 1 => efficiency with "Recent Focus" or global is the same
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Rajkovic Predrag    |  6.00 |"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| A | Laborde Gaëtan      | 15.40 |"));
         Assert.assertTrue(getLogOut(), getLogOut().contains("Updating team ..."));
-        Assert.assertTrue(getLogOut(), getLogOut().contains("  Captain: Bamba Jonathan"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("  Captain: Botman Sven"));
     }
 
     @Test
@@ -120,9 +126,13 @@ public class MainTest extends AbstractMockTestClient {
         Config config = spy(getConfig());
         doReturn(true).when(config).isTeampUpdate();
         doReturn(false).when(config).isTacticalSubstitutes();
+        doReturn(true).when(config).isEfficiencyRecentFocus();
         executeMainProcess(config);
+        // Day 1 => efficiency with "Recent Focus" or global is the same
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Rajkovic Predrag    |  6.00 |"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| A | Laborde Gaëtan      | 15.40 |"));
         Assert.assertTrue(getLogOut(), getLogOut().contains("Updating team ..."));
-        Assert.assertTrue(getLogOut(), getLogOut().contains("  Captain: Blas Ludovic"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("  Captain: Bamba Jonathan"));
     }
 
     @Test

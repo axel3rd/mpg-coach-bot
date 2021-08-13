@@ -202,7 +202,7 @@ public class Main {
                     LOG.info("\nTransactions proposal ...");
                     CurrentDay cd = apiClients.getStats().getStats(ChampionshipTypeWrapper.toStats(league.getChampionship())).getInfos()
                             .getAnnualStats().getCurrentDay();
-                    if (cd.getLastDayReached() < cd.getDay()) {
+                    if (!cd.isStatsDayReached()) {
                         LOG.info("\nWARNING: Last day stats have not fully reached! Please retry tomorrow");
                     }
                     List<Player> playersAvailable = apiClients.getMpg().getAvailablePlayers(league.getDivisionId()).getList();
@@ -449,9 +449,9 @@ public class Main {
     }
 
     private static int getCurrentDay(MpgStatsClient stats, ChampionshipStatsType championship) {
-        int daysPeriod = stats.getStats(championship).getInfos().getAnnualStats().getCurrentDay().getDay();
+        int daysPeriod = stats.getStats(championship).getInfos().getAnnualStats().getCurrentDay().getDayReached();
         // If league not started, we take the number of day of season, because average will be on this period
-        if (daysPeriod == 0 || stats.getStats(championship).getInfos().getAnnualStats().getCurrentDay().getPlayed() == 0) {
+        if (daysPeriod == 0) {
             // The previous season statistics could be null, in this case current annual max day is used
             daysPeriod = stats.getStats(championship).getInfos().getLastStats() == null
                     ? stats.getStats(championship).getInfos().getAnnualStats().getMaxDay()
