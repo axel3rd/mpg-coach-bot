@@ -62,8 +62,7 @@ public class ConfigTest {
 
         // Team update is disabling in test file (more simple)
         Assert.assertEquals(false, config.isTeampUpdate());
-        // Focus efficiency is disabling in test file (historical test implemented with this value)
-        Assert.assertEquals(false, config.isEfficiencyRecentFocus());
+        Assert.assertEquals(true, config.isEfficiencyRecentFocus());
         Assert.assertEquals(8, config.getEfficiencyRecentDays());
 
         // For unit tests, transactions proposal is not enable by default

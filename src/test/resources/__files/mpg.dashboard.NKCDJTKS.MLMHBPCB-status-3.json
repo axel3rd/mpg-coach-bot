@@ -1,0 +1,59 @@
+{
+  "leaguesDivisionsItems": [
+    {
+      "leagueId": "mpg_league_NKCDJTKS",
+      "name": "Chi el lini",
+      "adminId": "user_600737",
+      "status": 1,
+      "season": 1,
+      "mode": 1,
+      "createdAt": "2021-08-11T18:34:32Z",
+      "championshipId": 5,
+      "rating": "mpg",
+      "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/2bb4417a-f22b-4490-b33f-cbb6b8943076.jpg",
+      "totalDivisions": 1,
+      "totalUsers": 8,
+      "totalMissedPosts": 0,
+      "validDivisions": true
+    },
+    {
+      "leagueId": "mpg_league_MLMHBPCB",
+      "name": "Brit Knee B*tch",
+      "adminId": "user_35635",
+      "status": 3,
+      "season": 3,
+      "mode": 1,
+      "createdAt": "2020-08-26T08:50:30Z",
+      "mercatoState": {
+        "turn": 1,
+        "teamsStatuses": {
+          "mpg_team_MLMHBPCB_3_1_0": 1,
+          "mpg_team_MLMHBPCB_3_1_1": 1,
+          "mpg_team_MLMHBPCB_3_1_2": 1,
+          "mpg_team_MLMHBPCB_3_1_3": 1,
+          "mpg_team_MLMHBPCB_3_1_4": 1,
+          "mpg_team_MLMHBPCB_3_1_5": 1,
+          "mpg_team_MLMHBPCB_3_1_6": 1,
+          "mpg_team_MLMHBPCB_3_1_7": 1,
+          "mpg_team_MLMHBPCB_3_1_8": 1,
+          "mpg_team_MLMHBPCB_3_1_9": 1
+        },
+        "nextMercatoTurn": "2021-08-20T12:00:00Z"
+      },
+      "championshipId": 2,
+      "rating": "mpg",
+      "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/906387dc-2dbe-464d-a21e-a16f0cff5001.jpg",
+      "totalDivisions": 1,
+      "totalUsers": 10,
+      "totalMissedPosts": 0,
+      "mercatoStartDate": "2021-08-18T12:00:00Z",
+      "mercatoStartIn": 436864,
+      "divisionNumber": 1,
+      "divisionStatus": 3,
+      "divisionId": "mpg_division_MLMHBPCB_3_1",
+      "divisionTotalUsers": 10,
+      "currentTeamStatus": 0
+    }
+  ],
+  "defaultOrder": false
+}
