@@ -102,7 +102,7 @@ public class Stats {
             return oldMatchs;
         }
         if (days <= 0) {
-            return matchs;
+            return matchs > currentSeasonDay ? currentSeasonDay : matchs;
         }
         if (statsDay == null) {
             return 0;

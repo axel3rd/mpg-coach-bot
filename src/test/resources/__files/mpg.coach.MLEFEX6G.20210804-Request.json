@@ -10,8 +10,8 @@
         "7": "mpg_championship_player_204405",
         "8": "mpg_championship_player_177449",
         "9": "mpg_championship_player_228313",
-        "10": "mpg_championship_player_511596",
-        "11": "mpg_championship_player_149035",
+        "10": "mpg_championship_player_149035",
+        "11": "mpg_championship_player_511596",
         "12": "mpg_championship_player_209171",
         "13": "mpg_championship_player_245485",
         "14": "mpg_championship_player_437503",
@@ -39,7 +39,7 @@
         {
             "rating": 6,
             "subId": "mpg_championship_player_533003",
-            "starterId": "mpg_championship_player_149035"
+            "starterId": "mpg_championship_player_511596"
         }
     ]
 }

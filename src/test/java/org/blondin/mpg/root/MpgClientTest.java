@@ -180,7 +180,7 @@ public class MpgClientTest extends AbstractMockTestClient {
         stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
         stubFor(get("/championship-players-pool/4")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.poolPlayers.2.2021.json")));
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.poolPlayers.4.2021.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         PoolPlayers pool = mpgClient.getPoolPlayers(ChampionshipType.LIGUE_2);
         Assert.assertNotNull(pool);

@@ -415,7 +415,7 @@ public class Main {
             boolean failIfPlayerNotFound, boolean logWarnIfPlayerNotFound) {
         int daysPeriod = getCurrentDay(stats, championship);
         int days4efficiency = 0;
-        if (config.isEfficiencyRecentFocus()) {
+        if (config.isEfficiencyRecentFocus() && stats.getStats(championship).getInfos().getAnnualStats().getCurrentDay().getDayReached() > 0) {
             days4efficiency = config.getEfficiencyRecentDays();
             // If season start (=> daysPeriod < 8 when days4efficiency = 8 by default), the focus is on the started days
             if (daysPeriod < days4efficiency) {

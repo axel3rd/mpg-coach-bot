@@ -126,7 +126,6 @@ public class MainTest extends AbstractMockTestClient {
         Config config = spy(getConfig());
         doReturn(true).when(config).isTeampUpdate();
         doReturn(false).when(config).isTacticalSubstitutes();
-        doReturn(true).when(config).isEfficiencyRecentFocus();
         executeMainProcess(config);
         // Day 1 => efficiency with "Recent Focus" or global is the same
         Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Rajkovic Predrag    |  6.00 |"));
@@ -143,6 +142,7 @@ public class MainTest extends AbstractMockTestClient {
                 aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.MLAX7HMK-status-3-mercatoEnd.json")));
         Config config = spy(getConfig());
         executeMainProcess(config);
+        doReturn(false).when(config).isEfficiencyRecentFocus();
         Assert.assertTrue(getLogOut(), getLogOut().contains("Mercato will be ending, ready for your first match"));
     }
 
@@ -161,12 +161,42 @@ public class MainTest extends AbstractMockTestClient {
                 aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.MLAX7HMK-status-3-waitMercatoNextTurn.json")));
         Config config = spy(getConfig());
         doReturn(Arrays.asList("MLAX7HMK")).when(config).getLeaguesInclude();
+        doReturn(false).when(config).isEfficiencyRecentFocus();
         executeMainProcess(config);
         Assert.assertTrue(getLogOut(), getLogOut().contains("Mercato round is closed, come back soon for the next !"));
     }
 
     @Test
-    public void testPrepareMercatoTurn0Day0() throws Exception {
+    public void testPrepareMercatoTurn0Day0EnglishSerieARecentFocusEnabled() throws Exception {
+        stubFor(post("/user/sign-in")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/dashboard/leagues").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.NKCDJTKS.MLMHBPCB-status-3.json")));
+        stubFor(get("/championship-players-pool/2")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.poolPlayers.2.2021.json")));
+        stubFor(get("/championship-players-pool/5")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.poolPlayers.5.2021.json")));
+        stubFor(get("/championship-clubs")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.clubs.2021.json")));
+        stubFor(get("/division/mpg_division_MLMHBPCB_3_1/available-players").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.available.players.MLMHBPCB.20210813.json")));
+        stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20210813.json")));
+        stubFor(get("/leagues/Serie-A")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.serie-a.20210813.json")));
+        stubFor(get("/leagues/Premier-League")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.premier-league.20210813.json")));
+        stubFor(get("/injuries/football/italy-serie-a/")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.serie-a.20210224.html")));
+        stubFor(get("/injuries/football/england-premier-league/")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.premier-league.20210224.html")));
+        Config config = spy(getConfig());
+        executeMainProcess(config);
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| A | Cristiano Ronaldo       | 313.12 | 44 |"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| A | Kane Harry             | 214.87 | 47 |"));
+    }
+
+    @Test
+    public void testPrepareMercatoTurn0Day0Ligue1() throws Exception {
         prepareMainFrenchLigue1Mocks("MLAX7HMK-status-1", "2021", "20210805", "20210805");
         Config config = spy(getConfig());
         doReturn(Arrays.asList("MLAX7HMK")).when(config).getLeaguesInclude();
@@ -188,6 +218,7 @@ public class MainTest extends AbstractMockTestClient {
         doReturn(true).when(config).isTeampUpdate();
         doReturn(false).when(config).isUseBonus();
         doReturn(true).when(config).isTransactionsProposal();
+        doReturn(false).when(config).isEfficiencyRecentFocus();
         doReturn(true).when(config).isDebug();
         stubFor(get("/division/mpg_division_MLEFEX6G_3_1")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.MLEFEX6G.20210804.json")));
@@ -206,6 +237,7 @@ public class MainTest extends AbstractMockTestClient {
         Assert.assertTrue(getLogOut(), getLogOut().contains("Ba"));
         Assert.assertTrue(getLogOut(), getLogOut().contains("Updating team"));
         Assert.assertTrue(getLogOut(), getLogOut().contains("Transactions proposal"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Prevot Maxence (mpg_championship_player_220359)   |  4.00 |"));
     }
 
     private void executeMainProcess(Config config) {
@@ -272,7 +304,7 @@ public class MainTest extends AbstractMockTestClient {
                 dateYearFormat.parse(poolPlayerYear);
                 stubFor(get("/championship-players-pool/" + (frenchLigue == 1 ? 1 : 4))
                         .willReturn(aResponse().withHeader("Content-Type", "application/json")
-                                .withBodyFile("mpg.poolPlayers." + frenchLigue + "." + poolPlayerYear + ".json")));
+                                .withBodyFile("mpg.poolPlayers." + (frenchLigue == 1 ? 1 : 4) + "." + poolPlayerYear + ".json")));
                 stubFor(get("/championship-clubs").willReturn(
                         aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.clubs." + poolPlayerYear + ".json")));
             }
