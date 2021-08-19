@@ -132,6 +132,10 @@ public class MainTest extends AbstractMockTestClient {
         Assert.assertTrue(getLogOut(), getLogOut().contains("| A | Laborde Gaëtan      | 15.40 |"));
         Assert.assertTrue(getLogOut(), getLogOut().contains("Updating team ..."));
         Assert.assertTrue(getLogOut(), getLogOut().contains("  Captain: Bamba Jonathan"));
+
+        // UT player remove from pool
+        Assert.assertTrue(getLogOut(), getLogOut()
+                .contains("Some player in your team removed because doesn't exist in league pool players: mpg_championship_player_482549"));
     }
 
     @Test

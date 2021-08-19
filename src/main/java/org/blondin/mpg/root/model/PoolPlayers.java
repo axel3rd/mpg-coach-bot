@@ -2,6 +2,8 @@ package org.blondin.mpg.root.model;
 
 import java.util.List;
 
+import org.blondin.mpg.root.exception.PlayerNotFoundException;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PoolPlayers {
@@ -15,6 +17,6 @@ public class PoolPlayers {
 
     public Player getPlayer(String id) {
         return getPlayers().stream().filter(p -> p.getId().equals(id)).findFirst()
-                .orElseThrow(() -> new UnsupportedOperationException(String.format("Player with id '%s' cannot found", id)));
+                .orElseThrow(() -> new PlayerNotFoundException(String.format("Player with id '%s' cannot found", id)));
     }
 }

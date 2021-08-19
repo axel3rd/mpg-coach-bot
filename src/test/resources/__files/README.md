@@ -62,6 +62,7 @@ The `XXX` should be replaced by a use case scenario (like date, some league, dat
 ### Players statistics (deprecated since 15 December 2019)
 
 | **File** | **URL** | **Description** |
+| --- | --- | --- |
 | `mpgstats.leagues.XXX.json` | https://www.mpgstats.fr/json/leagues.json | Used prior end of 2019. See [#134](https://github.com/axel3rd/mpg-coach-bot/issues/134) |
 | `mpgstats.liga.XXX.json` | https://www.mpgstats.fr/json/customteam.json/Liga | Used prior end of 2019. See [#134](https://github.com/axel3rd/mpg-coach-bot/issues/134) |
 | `mpgstats.ligue-1.XXX.json` | https://www.mpgstats.fr/json/customteam.json/Ligue-1 | Used prior end of 2019. See [#134](https://github.com/axel3rd/mpg-coach-bot/issues/134) |
