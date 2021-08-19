@@ -246,10 +246,19 @@ public class Main {
      * @param pool players
      */
     static void completePlayersTeam(Map<String, Player> teamPlayers, PoolPlayers pool) {
+        List<String> players2Remove = new ArrayList<>();
         for (Entry<String, Player> entry : teamPlayers.entrySet()) {
-            Player player = pool.getPlayer(entry.getKey());
-            player.setPricePaid(teamPlayers.get(entry.getKey()).getPricePaid());
-            teamPlayers.put(entry.getKey(), player);
+            try {
+                Player player = pool.getPlayer(entry.getKey());
+                player.setPricePaid(teamPlayers.get(entry.getKey()).getPricePaid());
+                teamPlayers.put(entry.getKey(), player);
+            } catch (PlayerNotFoundException e) {
+                LOG.warn("Some player in your team removed because doesn't exist in league pool players: {}", entry.getKey());
+                players2Remove.add(entry.getKey());
+            }
+        }
+        for (String p2r : players2Remove) {
+            teamPlayers.remove(p2r);
         }
     }
 
