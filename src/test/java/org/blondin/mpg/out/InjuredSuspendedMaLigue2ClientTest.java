@@ -15,6 +15,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.blondin.mpg.AbstractMockTestClient;
 import org.blondin.mpg.config.Config;
+import org.blondin.mpg.out.model.OutType;
 import org.blondin.mpg.out.model.Player;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -46,6 +47,23 @@ public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
             }
             Assert.assertTrue(mpgTeam, contains);
         }
+    }
+
+    @Test
+    public void testReasons() throws Exception {
+        InjuredSuspendedMaLigue2Client client = spy(InjuredSuspendedMaLigue2Client.build(null));
+        doReturn(
+                FileUtils.readFileToString(new File(TESTFILES_BASE, "maligue2.joueurs-blesses-et-suspendus.20210804.html"), Charset.forName("UTF-8")))
+                        .when(client).getHtmlContent();
+
+        Assert.assertNotNull("Absent : Diallo (JO) / AC Ajaccio", client.getPlayer("Diallo", "Ajaccio"));
+        Assert.assertEquals("Absent : Diallo (JO) / AC Ajaccio", OutType.ASBENT, client.getPlayer("Diallo", "Ajaccio").getOutType());
+        Assert.assertNotNull("Absent : Gioacchini (Gold Cup) / SM Caen", client.getPlayer("Gioacchini", "Caen"));
+        Assert.assertEquals("Absent : Gioacchini (Gold Cup) / SM Caen", OutType.ASBENT, client.getPlayer("Gioacchini", "Caen").getOutType());
+        Assert.assertNotNull("Injuries : Vandermersch / SM Caen", client.getPlayer("Vandermersch", "Caen"));
+        Assert.assertEquals("Injuries : Vandermersch / SM Caen", OutType.INJURY_RED, client.getPlayer("Vandermersch", "Caen").getOutType());
+        Assert.assertNotNull("Suspended : Traoré (J3) / Dijon FCO", client.getPlayer("Traore", "Dijon"));
+        Assert.assertEquals("Suspended : Traoré (J3) / Dijon FCO", OutType.SUSPENDED, client.getPlayer("Traore", "Dijon").getOutType());
     }
 
     @Test
