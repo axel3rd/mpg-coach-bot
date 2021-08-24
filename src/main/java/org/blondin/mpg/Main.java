@@ -84,7 +84,7 @@ public class Main {
     }
 
     static void processLeague(League league, ApiClients apiClients, Config config) {
-        LOG.info("========== {} ==========", league.getName());
+        LOG.info("========== {} ({}) ==========", league.getName(), league.getId());
         if (league.getChampionship().equals(ChampionshipType.CHAMPIONS_LEAGUE)) {
             LOG.info("\nSorry, Champions League is currently not supported.\n");
             return;
