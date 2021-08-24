@@ -50,7 +50,7 @@ The main output is displaying:
 - Your team line by line, ordered by efficiency score (*Eff.*), with the players quotation/prices (*Q.*):
 
 ```
-========== Your league name ==========
+========== Your league name (leagueId) ==========
 Out: Aouar Houssem (M - 34.88) - INJURY_ORANGE - Inconnu (depuis 12/11) - Inconnu
 Out: Ambroise Oyongo (D - 11.85) - INJURY_ORANGE - Blessure au genou (depuis 04/11) - Inconnu
 
