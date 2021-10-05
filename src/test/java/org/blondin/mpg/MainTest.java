@@ -74,7 +74,7 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(put("/match-team-formation/mpg_match_team_formation_MLAX7HMK_3_1_1_5_6")
                 .withRequestBody(equalToJson(getTestFileToString("mpg.coach.MLAX7HMK.20210812.withNotOnMainPitchCaptain-Request.json")))
                 .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode()).withHeader("Content-Type", "application/json")
-                        .withBody("{\"success\":true}")));
+                        .withBody("Fake: mpg_match_team_formation_MLAX7HMK_3_1_1_5_6")));
         Config config = spy(getConfig());
         doReturn(true).when(config).isTeampUpdate();
         doReturn(false).when(config).isTacticalSubstitutes();
@@ -98,7 +98,7 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(put("/match-team-formation/mpg_match_team_formation_MLAX7HMK_3_1_1_5_6")
                 .withRequestBody(equalToJson(getTestFileToString("mpg.coach.MLAX7HMK.20210812.withCaptain-Request.json")))
                 .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode()).withHeader("Content-Type", "application/json")
-                        .withBody("{\"success\":true}")));
+                        .withBody("Fake: mpg_match_team_formation_MLAX7HMK_3_1_1_5_6")));
         Config config = spy(getConfig());
         doReturn(true).when(config).isTeampUpdate();
         doReturn(false).when(config).isTacticalSubstitutes();
@@ -122,7 +122,7 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(put("/match-team-formation/mpg_match_team_formation_MLAX7HMK_3_1_1_5_6")
                 .withRequestBody(equalToJson(getTestFileToString("mpg.coach.MLAX7HMK.20210812.withNoCaptain-Request.json")))
                 .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode()).withHeader("Content-Type", "application/json")
-                        .withBody("{\"success\":true}")));
+                        .withBody("Fake: mpg_match_team_formation_MLAX7HMK_3_1_1_5_6")));
         Config config = spy(getConfig());
         doReturn(true).when(config).isTeampUpdate();
         doReturn(false).when(config).isTacticalSubstitutes();
@@ -235,7 +235,7 @@ public class MainTest extends AbstractMockTestClient {
         stubFor(put("/match-team-formation/mpg_match_team_formation_MLEFEX6G_3_1_2_2_2")
                 .withRequestBody(equalToJson(getTestFileToString("mpg.coach.MLEFEX6G.20210804-Request.json")))
                 .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode()).withHeader("Content-Type", "application/json")
-                        .withBody("{\"success\":true}")));
+                        .withBody("Fake: mpg_match_team_formation_MLEFEX6G_3_1_2_2_2")));
         executeMainProcess(config);
         Assert.assertTrue(getLogOut(), getLogOut().contains("Ligue 2 Fous"));
         Assert.assertTrue(getLogOut(), getLogOut().contains("Ba"));

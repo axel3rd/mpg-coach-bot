@@ -75,7 +75,7 @@ public class MpgClient extends AbstractClient {
         if (!StringUtils.startsWith(leagueTeamId, "mpg_team_")) {
             throw new UnsupportedOperationException(String.format(ERROR_MESSAGE_LEAGUE, leagueTeamId, "mpg_team_"));
         }
-        return get("/team/" + leagueTeamId, headers, Team.class);
+        return get("team/" + leagueTeamId, headers, Team.class);
     }
 
     public Coach getCoach(String leagueDivisionId) {
@@ -121,8 +121,8 @@ public class MpgClient extends AbstractClient {
         if (!StringUtils.startsWith(matchId, "mpg_match_team_formation_")) {
             throw new UnsupportedOperationException(String.format("Coach match id '%s' should start with 'mpg_match_team_formation_'", matchId));
         }
-        String result = put("/match-team-formation/" + matchId, headers, coachRequest, String.class);
-        if (!"{\"success\":true}".equals(result)) {
+        String result = put("match-team-formation/" + matchId, headers, coachRequest, String.class);
+        if (StringUtils.isBlank(result) || !result.contains(matchId)) {
             throw new UnsupportedOperationException(String.format("The team has not been updated, result message: %s", result));
         }
     }
