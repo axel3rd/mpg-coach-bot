@@ -590,7 +590,10 @@ public class Main {
     }
 
     private static String getBestBonus(Map<String, Integer> bonuses, int matchsRemaining) {
-        int bonusTooMuch = bonuses.values().stream().reduce(0, Integer::sum) - matchsRemaining - 1;
+        if (matchsRemaining == 0) {
+            throw new UnsupportedOperationException("0 match remaining, using this method is not logic, bug in algorithm !");
+        }
+        int bonusTooMuch = bonuses.values().stream().reduce(0, Integer::sum) - matchsRemaining;
         List<String> bonusLowerPriority = SelectedBonus.getBonusPriority().stream().collect(Collectors.toList());
         Collections.reverse(bonusLowerPriority);
         for (String b : bonusLowerPriority) {
