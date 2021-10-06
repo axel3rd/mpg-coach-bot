@@ -31,15 +31,16 @@ public class BonusSelectionTest {
         return bs;
     }
 
-    private Map<String, Integer> getBonus(int b1, int b2, int b3, int b4, int b5, int b6, int b7) {
+    private Map<String, Integer> getBonus(int removeGoal, int boostAllPlayers, int nerfGoalkeeper, int boostOnePlayer, int mirror,
+            int blockTacticalSubs, int removeRandomPlayer) {
         Map<String, Integer> bonuses = new HashMap<>();
-        bonuses.put("removeGoal", b1);
-        bonuses.put("boostAllPlayers", b2);
-        bonuses.put("nerfGoalkeeper", b3);
-        bonuses.put("boostOnePlayer", b4);
-        bonuses.put("mirror", b5);
-        bonuses.put("blockTacticalSubs", b6);
-        bonuses.put("removeRandomPlayer", b7);
+        bonuses.put("removeGoal", removeGoal);
+        bonuses.put("boostAllPlayers", boostAllPlayers);
+        bonuses.put("nerfGoalkeeper", nerfGoalkeeper);
+        bonuses.put("boostOnePlayer", boostOnePlayer);
+        bonuses.put("mirror", mirror);
+        bonuses.put("blockTacticalSubs", blockTacticalSubs);
+        bonuses.put("removeRandomPlayer", removeRandomPlayer);
         return bonuses;
     }
 
@@ -54,13 +55,16 @@ public class BonusSelectionTest {
 
     @Test
     public void testBonusSelection() {
-        Assert.assertEquals("nerfGoalkeeper", Main.selectBonus(null, getBonus(0, 0, 1, 1, 0, 0, 0), 0, true, "fake").getName());
-        Assert.assertEquals("boostOnePlayer", Main.selectBonus(null, getBonus(0, 0, 0, 1, 0, 0, 0), 0, true, "fake").getName());
-        Assert.assertEquals("fake", Main.selectBonus(null, getBonus(0, 0, 0, 1, 0, 0, 0), 0, true, "fake").getPlayerId());
-        Assert.assertNull(Main.selectBonus(null, getBonus(0, 1, 0, 1, 1, 1, 1), 0, true, "fake").getPlayerId());
+        Assert.assertEquals("mirror", Main.selectBonus(null, getBonus(1, 1, 2, 3, 1, 0, 1), 8, true, "fake").getName());
+        Assert.assertEquals("removeRandomPlayer", Main.selectBonus(null, getBonus(1, 1, 2, 3, 1, 0, 1), 9, true, "fake").getName());
+        Assert.assertEquals("nerfGoalkeeper", Main.selectBonus(null, getBonus(0, 0, 1, 1, 0, 0, 0), 1, true, "fake").getName());
+        Assert.assertEquals("boostOnePlayer", Main.selectBonus(null, getBonus(0, 0, 0, 1, 0, 0, 0), 1, true, "fake").getName());
+        Assert.assertEquals("fake", Main.selectBonus(null, getBonus(0, 0, 0, 1, 0, 0, 0), 1, true, "fake").getPlayerId());
+        Assert.assertNull(Main.selectBonus(null, getBonus(0, 1, 0, 1, 1, 1, 1), 1, true, "fake").getPlayerId());
+        Assert.assertNull(Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), 10, true, "fake"));
         Assert.assertNull(Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), 15, true, "fake"));
-        Assert.assertEquals("boostAllPlayers", Main.selectBonus(null, getBonus(0, 1, 0, 1, 1, 1, 1), 0, true, "fake").getName());
-        Assert.assertEquals("removeGoal", Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), 0, true, "fake").getName());
+        Assert.assertEquals("boostAllPlayers", Main.selectBonus(null, getBonus(0, 1, 0, 1, 1, 1, 1), 1, true, "fake").getName());
+        Assert.assertEquals("removeGoal", Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), 1, true, "fake").getName());
         Assert.assertEquals("removeRandomPlayer", Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), 9, true, "fake").getName());
     }
 
@@ -91,6 +95,11 @@ public class BonusSelectionTest {
     @Test(expected = UnsupportedOperationException.class)
     public void testBonusSelectionBadInputBonus() {
         Main.selectBonus(null, null, -1, true, "fake");
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testBonusSelection0MatchRemaining() {
+        Main.selectBonus(null, getBonus(1, 1, 1, 3, 1, 1, 1), 0, true, "fake");
     }
 
 }
