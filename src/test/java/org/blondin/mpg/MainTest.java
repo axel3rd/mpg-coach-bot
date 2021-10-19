@@ -63,6 +63,29 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testCaptainAndBoostPlayerBonus() throws Exception {
+        prepareMainFrenchLigue2Mocks("MLEFEX6G-20211019", "2021", "20211019", "20211019");
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.MLEFEX6G.20211019.json")));
+        stubFor(get("/team/mpg_team_MLEFEX6G_3_1_2")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.MLEFEX6G.20211019.json")));
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLEFEX6G.20211019.json")));
+        stubFor(put("/match-team-formation/mpg_match_team_formation_MLEFEX6G_3_1_12_5_2")
+                .withRequestBody(equalToJson(getTestFileToString("mpg.coach.MLEFEX6G.20211019-Request.json")))
+                .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode()).withHeader("Content-Type", "application/json")
+                        .withBody("Fake: mpg_match_team_formation_MLEFEX6G_3_1_12_5_2")));
+
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        executeMainProcess(config);
+
+        Assert.assertTrue(getLogOut(), getLogOut().contains("  Captain: Boissier Remy"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("  Bonus  : boostOnePlayer (Picouleau Mathis)"));
+    }
+
+    @Test
     public void testCaptainNotOnMainPitch() throws Exception {
         prepareMainFrenchLigue1Mocks("MLAX7HMK-status-4", "2021", "20210812", "20210812");
         stubFor(get("/division/mpg_division_MLAX7HMK_3_1")
@@ -82,7 +105,7 @@ public class MainTest extends AbstractMockTestClient {
         // Day 1 => efficiency with "Recent Focus" or global is the same
         Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Rajkovic Predrag    |  6.00 |"));
         Assert.assertTrue(getLogOut(), getLogOut().contains("| A | Laborde Gaëtan      | 15.40 |"));
-        Assert.assertTrue(getLogOut(), getLogOut().contains("  Captain: Bamba Jonathan"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("  Captain: Faivre Romain"));
         Assert.assertTrue(getLogOut(), getLogOut().contains("  Bonus  : boostOnePlayer (Bamba Jonathan)"));
     }
 

@@ -1,0 +1,30 @@
+{
+    "composition": "343",
+    "playersOnPitch": {
+        "1": "mpg_championship_player_220359",
+        "2": "mpg_championship_player_454964",
+        "3": "mpg_championship_player_245726",
+        "4": "mpg_championship_player_245485",
+        "5": "mpg_championship_player_437503",
+        "6": "mpg_championship_player_177449",
+        "7": "mpg_championship_player_204405",
+        "8": "mpg_championship_player_487110",
+        "9": "mpg_championship_player_244135",
+        "10": "mpg_championship_player_423064",
+        "11": "mpg_championship_player_511596",
+        "12": "mpg_championship_player_523643",
+        "13": "mpg_championship_player_512711",
+        "14": "mpg_championship_player_209171",
+        "15": null,
+        "16": "mpg_championship_player_225904",
+        "17": "mpg_championship_player_228313",
+        "18": "mpg_championship_player_102724"
+    },
+    "tacticalSubs": [
+    ],
+    "selectedBonus": {
+        "name": "boostOnePlayer",
+        "playerId": "mpg_championship_player_437503"
+    },
+    "captain": "mpg_championship_player_177449"
+}
