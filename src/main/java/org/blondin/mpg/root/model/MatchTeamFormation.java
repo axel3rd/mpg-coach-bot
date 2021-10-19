@@ -8,6 +8,7 @@ public class MatchTeamFormation {
     private String id;
     private int composition;
     private String captain;
+    private SelectedBonus selectedBonus;
 
     public String getId() {
         return id;
@@ -19,5 +20,9 @@ public class MatchTeamFormation {
 
     public String getCaptain() {
         return captain;
+    }
+
+    public SelectedBonus getSelectedBonus() {
+        return selectedBonus;
     }
 }
