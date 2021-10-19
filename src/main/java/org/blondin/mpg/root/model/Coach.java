@@ -9,9 +9,6 @@ public class Coach {
     @JsonProperty("matchTeamFormation")
     private MatchTeamFormation matchTeamFormation;
 
-    @JsonProperty("selectedBonus")
-    private SelectedBonus bonusSelected;
-
     public String getIdMatch() {
         return matchTeamFormation.getId();
     }
@@ -25,7 +22,7 @@ public class Coach {
     }
 
     public SelectedBonus getBonusSelected() {
-        return bonusSelected;
+        return matchTeamFormation.getSelectedBonus();
     }
 
 }
