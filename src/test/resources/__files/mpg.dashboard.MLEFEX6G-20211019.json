@@ -1,0 +1,92 @@
+{
+  "leaguesDivisionsItems": [
+    {
+      "leagueId": "mpg_league_MLEFEX6G",
+      "name": "Ligue 2 Fous",
+      "adminId": "user_953561",
+      "status": 4,
+      "season": 3,
+      "mode": 2,
+      "createdAt": "2020-08-23T16:35:09Z",
+      "mercatoState": {
+        "divisionsLeft": 0,
+        "usersLeft": 0
+      },
+      "championshipId": 4,
+      "rating": "mpg",
+      "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/b7b4327b-7cfb-4df3-becc-2b16c9d5381b.jpg",
+      "totalDivisions": 1,
+      "totalUsers": 10,
+      "totalMissedPosts": 0,
+      "divisionNumber": 1,
+      "nextRealGameWeekDate": "2021-10-23T13:00:00Z",
+      "currentTeamRanking": 7,
+      "currentTeamVariation": 1,
+      "divisionStatus": 4,
+      "divisionId": "mpg_division_MLEFEX6G_3_1",
+      "divisionTotalUsers": 10,
+      "liveState": {
+        "currentGameWeek": 12,
+        "firstRealGameWeek": 2,
+        "formationsStatuses": {
+          "mpg_team_MLEFEX6G_3_1_0": 1,
+          "mpg_team_MLEFEX6G_3_1_1": 1,
+          "mpg_team_MLEFEX6G_3_1_2": 2,
+          "mpg_team_MLEFEX6G_3_1_3": 1,
+          "mpg_team_MLEFEX6G_3_1_4": 1,
+          "mpg_team_MLEFEX6G_3_1_5": 1,
+          "mpg_team_MLEFEX6G_3_1_6": 1,
+          "mpg_team_MLEFEX6G_3_1_7": 1,
+          "mpg_team_MLEFEX6G_3_1_8": 1,
+          "mpg_team_MLEFEX6G_3_1_9": 1
+        },
+        "liveAt": "2021-07-30T06:34:57Z",
+        "standings": {
+          "mpg_team_MLEFEX6G_3_1_8": {
+            "rank": 1,
+            "variation": 0
+          },
+          "mpg_team_MLEFEX6G_3_1_5": {
+            "rank": 2,
+            "variation": 1
+          },
+          "mpg_team_MLEFEX6G_3_1_6": {
+            "rank": 3,
+            "variation": -1
+          },
+          "mpg_team_MLEFEX6G_3_1_0": {
+            "rank": 4,
+            "variation": 1
+          },
+          "mpg_team_MLEFEX6G_3_1_4": {
+            "rank": 5,
+            "variation": -1
+          },
+          "mpg_team_MLEFEX6G_3_1_9": {
+            "rank": 6,
+            "variation": 0
+          },
+          "mpg_team_MLEFEX6G_3_1_2": {
+            "rank": 7,
+            "variation": 1
+          },
+          "mpg_team_MLEFEX6G_3_1_1": {
+            "rank": 8,
+            "variation": -1
+          },
+          "mpg_team_MLEFEX6G_3_1_7": {
+            "rank": 9,
+            "variation": -1
+          },
+          "mpg_team_MLEFEX6G_3_1_3": {
+            "rank": 10,
+            "variation": 0
+          }
+        },
+        "totalGameWeeks": 18
+      },
+      "currentFormationStatus": 2
+    }
+  ],
+  "defaultOrder": false
+}

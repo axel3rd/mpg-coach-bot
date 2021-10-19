@@ -489,10 +489,11 @@ public class Main {
         List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList());
         List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList());
 
-        String playerIdForBonusOrCaptain = midfielders.get(0).getId();
-        request.setBonusSelected(
-                selectBonus(coach.getBonusSelected(), team.getBonuses(), gameRemaining, config.isUseBonus(), playerIdForBonusOrCaptain));
-        request.setCaptain(selectCapatain(coach.getCaptain(), playerIdForBonusOrCaptain, config.isUseBonus()));
+        String playerIdForBonus = midfielders.get(0).getId();
+        request.setBonusSelected(selectBonus(coach.getBonusSelected(), team.getBonuses(), gameRemaining, config.isUseBonus(), playerIdForBonus));
+        String playerIdForCaptain = request.getBonusSelected() != null
+                && SelectedBonus.BONUS_BOOT_ONE_PLAYER.equals(request.getBonusSelected().getName()) ? midfielders.get(1).getId() : playerIdForBonus;
+        request.setCaptain(selectCapatain(coach.getCaptain(), playerIdForCaptain, config.isUseBonus()));
 
         // Main lines
         setPlayersOnPitch(request, defenders, nbrDefenders, 1);
@@ -532,21 +533,21 @@ public class Main {
         }
 
         // If Bonus is player power up (boostOnePlayer), verify that player is on pitch, override otherwise
-        verifyBonusPlayerOverrideOnPitch(request, playerIdForBonusOrCaptain);
+        verifyBonusPlayersOverrideOnPitch(request, playerIdForBonus, playerIdForCaptain);
 
         return request;
     }
 
-    static void verifyBonusPlayerOverrideOnPitch(CoachRequest request, String playerIdEnfored) {
+    static void verifyBonusPlayersOverrideOnPitch(CoachRequest request, String playerIdForBonusEnforced, String playerIdForCaptainEnforced) {
         // Bonus
         if (request.getBonusSelected() != null && SelectedBonus.BONUS_BOOT_ONE_PLAYER.equals(request.getBonusSelected().getName())
                 && !verifyPlayerOnPitch(request.getPlayersOnPitch(), request.getBonusSelected().getPlayerId())) {
-            request.getBonusSelected().setPlayerId(playerIdEnfored);
+            request.getBonusSelected().setPlayerId(playerIdForBonusEnforced);
         }
 
         // Captain
         if (StringUtils.isNotBlank(request.getCaptain()) && !verifyPlayerOnPitch(request.getPlayersOnPitch(), request.getCaptain())) {
-            request.setCaptain(playerIdEnfored);
+            request.setCaptain(playerIdForCaptainEnforced);
         }
     }
 
