@@ -1,0 +1,138 @@
+{
+  "abbreviation": "AFC",
+  "bids": [],
+  "bonuses": {
+    "blockTacticalSubs": 0,
+    "boostAllPlayers": 1,
+    "boostOnePlayer": 3,
+    "mirror": 0,
+    "nerfGoalkeeper": 2,
+    "removeGoal": 1,
+    "removeRandomPlayer": 0
+  },
+  "budget": 3,
+  "buyableRemoveGoal": 1,
+  "gear": {
+    "home": {
+      "jerseyId": "mpg_jersey_0_1631281964754"
+    }
+  },
+  "id": "mpg_team_MLMHBPCB_3_1_4",
+  "initialValue": 320,
+  "midSeasonBudgetCredited": true,
+  "name": "Axel Football Club",
+  "squad": {
+    "mpg_championship_player_101178": {
+      "bidDate": "2021-08-18T12:33:22Z",
+      "id": "mpg_championship_player_101178",
+      "price": 28,
+      "status": 1
+    },
+    "mpg_championship_player_107613": {
+      "bidDate": "2021-10-29T17:08:00Z",
+      "id": "mpg_championship_player_107613",
+      "price": 14,
+      "status": 1,
+      "teamId": "mpg_team_MLMHBPCB_3_1_4"
+    },
+    "mpg_championship_player_116216": {
+      "bidDate": "2021-10-29T17:08:00Z",
+      "id": "mpg_championship_player_116216",
+      "price": 17,
+      "status": 1,
+      "teamId": "mpg_team_MLMHBPCB_3_1_4"
+    },
+    "mpg_championship_player_122806": {
+      "bidDate": "2021-08-18T12:00:57Z",
+      "id": "mpg_championship_player_122806",
+      "price": 31,
+      "status": 1
+    },
+    "mpg_championship_player_141746": {
+      "bidDate": "2021-08-18T12:00:57Z",
+      "id": "mpg_championship_player_141746",
+      "price": 72,
+      "status": 1
+    },
+    "mpg_championship_player_171314": {
+      "bidDate": "2021-08-18T12:00:57Z",
+      "id": "mpg_championship_player_171314",
+      "price": 30,
+      "status": 1
+    },
+    "mpg_championship_player_220566": {
+      "bidDate": "2021-08-18T12:00:57Z",
+      "id": "mpg_championship_player_220566",
+      "price": 49,
+      "status": 1
+    },
+    "mpg_championship_player_40836": {
+      "bidDate": "2021-08-18T12:33:22Z",
+      "id": "mpg_championship_player_40836",
+      "price": 17,
+      "status": 1
+    },
+    "mpg_championship_player_57127": {
+      "bidDate": "2021-10-29T17:08:00Z",
+      "id": "mpg_championship_player_57127",
+      "price": 19,
+      "status": 1,
+      "teamId": "mpg_team_MLMHBPCB_3_1_4"
+    },
+    "mpg_championship_player_80954": {
+      "bidDate": "2021-10-29T17:08:00Z",
+      "id": "mpg_championship_player_80954",
+      "price": 11,
+      "status": 1,
+      "teamId": "mpg_team_MLMHBPCB_3_1_4"
+    },
+    "mpg_championship_player_83299": {
+      "bidDate": "2021-08-18T12:00:57Z",
+      "id": "mpg_championship_player_83299",
+      "price": 29,
+      "status": 1
+    },
+    "mpg_championship_player_85971": {
+      "bidDate": "2021-08-18T12:00:57Z",
+      "id": "mpg_championship_player_85971",
+      "price": 74,
+      "status": 1
+    },
+    "mpg_championship_player_98980": {
+      "bidDate": "2021-08-18T12:00:57Z",
+      "id": "mpg_championship_player_98980",
+      "price": 27,
+      "status": 1
+    },
+    "mpg_championship_player_96787": {
+      "id": "mpg_championship_player_96787",
+      "price": 15,
+      "bidDate": "2021-11-02T10:08:01Z",
+      "teamId": "mpg_team_MLMHBPCB_3_1_4",
+      "status": 1
+    },
+    "mpg_championship_player_209036": {
+      "id": "mpg_championship_player_209036",
+      "price": 17,
+      "bidDate": "2021-11-03T08:24:23Z",
+      "teamId": "mpg_team_MLMHBPCB_3_1_4",
+      "status": 1
+    },
+    "mpg_championship_player_81183": {
+      "id": "mpg_championship_player_81183",
+      "price": 14,
+      "bidDate": "2021-11-15T22:01:36Z",
+      "teamId": "mpg_team_MLMHBPCB_3_1_4",
+      "status": 1
+    },
+    "mpg_championship_player_218031": {
+      "id": "mpg_championship_player_218031",
+      "price": 14,
+      "bidDate": "2021-11-15T22:01:36Z",
+      "teamId": "mpg_team_MLMHBPCB_3_1_4",
+      "status": 1
+    }
+  },
+  "status": 3,
+  "type": "mpg_team"
+}

@@ -46,11 +46,14 @@ public class BonusSelectionTest {
 
     @Test
     public void testBonusCaptain() {
-        Assert.assertEquals(null, Main.selectCapatain(null, "newCaptain", false));
-        Assert.assertEquals("previousCaptain", Main.selectCapatain("previousCaptain", "newCaptain", false));
-        Assert.assertEquals("previousCaptain", Main.selectCapatain("previousCaptain", "newCaptain", true));
-        Assert.assertEquals("newCaptain", Main.selectCapatain(null, "newCaptain", true));
-        Assert.assertEquals("newCaptain", Main.selectCapatain("", "newCaptain", true));
+        Assert.assertEquals(null, Main.selectCapatain(null, "newCaptain", null, false));
+        Assert.assertEquals("previousCaptain", Main.selectCapatain("previousCaptain", "newCaptain", "somePlayer", false));
+        Assert.assertEquals("previousCaptain", Main.selectCapatain("previousCaptain", "newCaptain", "somePlayer", true));
+        Assert.assertEquals("previousCaptain", Main.selectCapatain("previousCaptain", "newCaptain", null, true));
+        Assert.assertEquals("previousCaptain", Main.selectCapatain("previousCaptain", "", null, true));
+        Assert.assertEquals("newCaptain", Main.selectCapatain("somePlayer", "newCaptain", "somePlayer", true));
+        Assert.assertEquals("newCaptain", Main.selectCapatain(null, "newCaptain", "somePlayer", true));
+        Assert.assertEquals("newCaptain", Main.selectCapatain("", "newCaptain", "somePlayer", true));
     }
 
     @Test

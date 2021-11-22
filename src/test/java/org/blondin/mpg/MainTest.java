@@ -63,6 +63,67 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testCaptainAndBoostPlayerBonus3() throws Exception {
+        prepareMainFrenchLigue1Mocks("MLAX7HMK-20211122", "2021", "20211122", "20211122");
+        stubFor(get("/division/mpg_division_MLAX7HMK_3_1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.MLAX7HMK.20211122.json")));
+        stubFor(get("/team/mpg_team_MLAX7HMK_3_1_6")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.MLAX7HMK.20211122.json")));
+        stubFor(get("/division/mpg_division_MLAX7HMK_3_1/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLAX7HMK.20211122.json")));
+        stubFor(put("/match-team-formation/mpg_match_team_formation_MLAX7HMK_3_1_14_5_6")
+                .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode()).withHeader("Content-Type", "application/json")
+                        .withBody("Fake: mpg_match_team_formation_MLAX7HMK_3_1_14_5_6")));
+
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTeampUpdate();
+        doReturn(true).when(config).isEfficiencyRecentFocus();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        executeMainProcess(config);
+
+        Assert.assertTrue(getLogOut(), getLogOut().contains("  Captain: Faivre Romain"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("  Bonus  : boostOnePlayer (Blas Ludovic)"));
+    }
+
+    @Test
+    public void testCaptainAndBoostPlayerBonus2() throws Exception {
+        stubFor(post("/user/sign-in")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/dashboard/leagues")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.MLMHBPCB-20211122.json")));
+        stubFor(get("/division/mpg_division_MLMHBPCB_3_1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.MLMHBPCB.20211122.json")));
+        stubFor(get("/team/mpg_team_MLMHBPCB_3_1_4")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.MLMHBPCB.20211122.json")));
+        stubFor(get("/division/mpg_division_MLMHBPCB_3_1/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLMHBPCB.20211122.json")));
+        stubFor(get("/championship-players-pool/2")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.poolPlayers.2.2021.json")));
+        stubFor(get("/championship-clubs")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.clubs.2021.json")));
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/available-players").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.available.players.MLMHBPCB.20211122.json")));
+        stubFor(put("/match-team-formation/mpg_match_team_formation_MLMHBPCB_3_1_12_5_4")
+                .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode()).withHeader("Content-Type", "application/json")
+                        .withBody("Fake: mpg_match_team_formation_MLMHBPCB_3_1_12_5_4")));
+
+        stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20211122.json")));
+        stubFor(get("/leagues/Premier-League")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.premier-league.20211122.json")));
+        stubFor(get("/injuries/football/england-premier-league/")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.premier-league.20211122.html")));
+
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTeampUpdate();
+        doReturn(true).when(config).isEfficiencyRecentFocus();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        executeMainProcess(config);
+
+        Assert.assertTrue(getLogOut(), getLogOut().contains("  Captain: Rodri"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("  Bonus  : boostOnePlayer (Trossard Leandro)"));
+    }
+
+    @Test
     public void testCaptainAndBoostPlayerBonus() throws Exception {
         prepareMainFrenchLigue2Mocks("MLEFEX6G-20211019", "2021", "20211019", "20211019");
         stubFor(get("/division/mpg_division_MLEFEX6G_3_1")

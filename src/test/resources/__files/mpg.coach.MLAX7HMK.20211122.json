@@ -1,0 +1,88 @@
+{
+  "divisionMatch": {
+    "id": "mpg_division_match_MLAX7HMK_3_1_14_5_6_5",
+    "type": "mpg_division_match",
+    "divisionId": "mpg_division_MLAX7HMK_3_1",
+    "home": {
+      "teamId": "mpg_team_MLAX7HMK_3_1_6"
+    },
+    "away": {
+      "teamId": "mpg_team_MLAX7HMK_3_1_5"
+    }
+  },
+  "matchTeamFormation": {
+    "id": "mpg_match_team_formation_MLAX7HMK_3_1_14_5_6",
+    "type": "mpg_match_team_formation",
+    "composition": "343",
+    "playersOnPitch": {
+      "1": "mpg_championship_player_85633",
+      "2": "mpg_championship_player_170409",
+      "3": "mpg_championship_player_205552",
+      "4": "mpg_championship_player_38580",
+      "5": "mpg_championship_player_213940",
+      "6": "mpg_championship_player_441240",
+      "7": "mpg_championship_player_174254",
+      "8": "mpg_championship_player_437504",
+      "9": "mpg_championship_player_167443",
+      "10": "mpg_championship_player_193454",
+      "11": "mpg_championship_player_73879",
+      "12": "mpg_championship_player_437753",
+      "13": "mpg_championship_player_158494",
+      "14": "mpg_championship_player_55948",
+      "15": "mpg_championship_player_159967",
+      "16": null,
+      "17": null,
+      "18": "mpg_championship_player_104407"
+    },
+    "tacticalSubs": [
+      {
+        "rating": 5,
+        "subId": "mpg_championship_player_437753",
+        "starterId": "mpg_championship_player_38580"
+      },
+      {
+        "rating": 5,
+        "subId": "mpg_championship_player_55948",
+        "starterId": "mpg_championship_player_437504"
+      },
+      {
+        "rating": 5,
+        "subId": "mpg_championship_player_159967",
+        "starterId": "mpg_championship_player_174254"
+      }
+    ],
+    "selectedBonus": {
+      "name": "boostOnePlayer",
+      "playerId": "mpg_championship_player_213940"
+    },
+    "captain": "mpg_championship_player_441240",
+    "buyableRemoveGoal": 1,
+    "availableBonuses": {
+      "blockTacticalSubs": 0,
+      "boostAllPlayers": 1,
+      "boostOnePlayer": 2,
+      "mirror": 0,
+      "nerfGoalkeeper": 2,
+      "removeGoal": 1,
+      "removeRandomPlayer": 0
+    }
+  },
+  "nextGameWeek": {
+    "gameWeekNumber": 15,
+    "startDate": "2021-11-26T20:00:00Z",
+    "endDate": "2021-11-28T19:45:00Z",
+    "startIn": 347468,
+    "matchesIds": [
+      "mpg_championship_match_2215637",
+      "mpg_championship_match_2215638",
+      "mpg_championship_match_2215643",
+      "mpg_championship_match_2215645",
+      "mpg_championship_match_2215636",
+      "mpg_championship_match_2215639",
+      "mpg_championship_match_2215641",
+      "mpg_championship_match_2215644",
+      "mpg_championship_match_2215642",
+      "mpg_championship_match_2215640"
+    ]
+  }
+}

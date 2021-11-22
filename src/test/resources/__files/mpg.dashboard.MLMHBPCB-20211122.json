@@ -1,0 +1,93 @@
+{
+  "leaguesDivisionsItems": [
+    {
+      "leagueId": "mpg_league_MLMHBPCB",
+      "name": "Brit Knee B*tch",
+      "adminId": "user_35635",
+      "status": 4,
+      "season": 3,
+      "mode": 2,
+      "createdAt": "2020-08-26T08:50:30Z",
+      "mercatoState": {
+        "divisionsLeft": 0,
+        "usersLeft": 0
+      },
+      "championshipId": 2,
+      "rating": "mpg",
+      "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/906387dc-2dbe-464d-a21e-a16f0cff5001.jpg",
+      "totalDivisions": 1,
+      "totalUsers": 10,
+      "totalMissedPosts": 6,
+      "teamId": "mpg_team_MLMHBPCB_3_1_4",
+      "divisionNumber": 1,
+      "nextRealGameWeekDate": "2021-11-27T12:30:00Z",
+      "currentTeamRanking": 7,
+      "currentTeamVariation": 1,
+      "divisionStatus": 4,
+      "divisionId": "mpg_division_MLMHBPCB_3_1",
+      "divisionTotalUsers": 10,
+      "liveState": {
+        "currentGameWeek": 12,
+        "firstRealGameWeek": 2,
+        "formationsStatuses": {
+          "mpg_team_MLMHBPCB_3_1_0": 1,
+          "mpg_team_MLMHBPCB_3_1_1": 1,
+          "mpg_team_MLMHBPCB_3_1_2": 1,
+          "mpg_team_MLMHBPCB_3_1_3": 1,
+          "mpg_team_MLMHBPCB_3_1_4": 2,
+          "mpg_team_MLMHBPCB_3_1_5": 1,
+          "mpg_team_MLMHBPCB_3_1_6": 1,
+          "mpg_team_MLMHBPCB_3_1_7": 1,
+          "mpg_team_MLMHBPCB_3_1_8": 1,
+          "mpg_team_MLMHBPCB_3_1_9": 1
+        },
+        "liveAt": "2021-08-18T16:39:16Z",
+        "standings": {
+          "mpg_team_MLMHBPCB_3_1_5": {
+            "rank": 1,
+            "variation": 0
+          },
+          "mpg_team_MLMHBPCB_3_1_2": {
+            "rank": 2,
+            "variation": 0
+          },
+          "mpg_team_MLMHBPCB_3_1_9": {
+            "rank": 3,
+            "variation": 0
+          },
+          "mpg_team_MLMHBPCB_3_1_7": {
+            "rank": 4,
+            "variation": 0
+          },
+          "mpg_team_MLMHBPCB_3_1_6": {
+            "rank": 5,
+            "variation": 1
+          },
+          "mpg_team_MLMHBPCB_3_1_3": {
+            "rank": 6,
+            "variation": -1
+          },
+          "mpg_team_MLMHBPCB_3_1_4": {
+            "rank": 7,
+            "variation": 1
+          },
+          "mpg_team_MLMHBPCB_3_1_1": {
+            "rank": 8,
+            "variation": -1
+          },
+          "mpg_team_MLMHBPCB_3_1_8": {
+            "rank": 9,
+            "variation": 0
+          },
+          "mpg_team_MLMHBPCB_3_1_0": {
+            "rank": 10,
+            "variation": 0
+          }
+        },
+        "totalGameWeeks": 18
+      },
+      "currentFormationStatus": 2
+    }
+  ],
+  "defaultOrder": false
+}

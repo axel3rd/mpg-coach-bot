@@ -1,0 +1,138 @@
+{
+  "createdAt": "2021-08-11T16:09:48Z",
+  "gameSettings": {
+    "autoCloseMercato": true,
+    "blackMarketBonuses": false,
+    "blackMarketLoans": true,
+    "blackMarketTransfers": true,
+    "budget": 500,
+    "captainAvailable": true,
+    "championshipId": 2,
+    "considerPostponedMatches": true,
+    "excludedClubsIds": [],
+    "excludedPlayersIds": [],
+    "liveBlackMarketType": 1,
+    "liveMercatoType": 1,
+    "liveSubstitutesAvailable": false,
+    "maxBuyableRemoveGoal": 1,
+    "mercatoStartDate": "2021-08-18T12:00:00Z",
+    "mercatoType": 1,
+    "midSeasonBudget": 50,
+    "mode": 2,
+    "playersByClub": -1,
+    "playersStatusesAvailable": true,
+    "quotationMax": -1,
+    "quotationMin": -1,
+    "rating": "mpg",
+    "usersIds": [
+      "user_35635",
+      "user_1520001",
+      "user_1567579",
+      "user_953561",
+      "user_955966",
+      "user_963519",
+      "user_600737",
+      "user_1662232",
+      "user_28952",
+      "user_1570437"
+    ]
+  },
+  "id": "mpg_division_MLMHBPCB_3_1",
+  "leagueId": "mpg_league_MLMHBPCB",
+  "liveState": {
+    "currentGameWeek": 12,
+    "firstRealGameWeek": 2,
+    "formationsStatuses": {
+      "mpg_team_MLMHBPCB_3_1_0": 1,
+      "mpg_team_MLMHBPCB_3_1_1": 1,
+      "mpg_team_MLMHBPCB_3_1_2": 1,
+      "mpg_team_MLMHBPCB_3_1_3": 1,
+      "mpg_team_MLMHBPCB_3_1_4": 2,
+      "mpg_team_MLMHBPCB_3_1_5": 1,
+      "mpg_team_MLMHBPCB_3_1_6": 1,
+      "mpg_team_MLMHBPCB_3_1_7": 1,
+      "mpg_team_MLMHBPCB_3_1_8": 1,
+      "mpg_team_MLMHBPCB_3_1_9": 1
+    },
+    "liveAt": "2021-08-18T16:39:16Z",
+    "standings": {
+      "mpg_team_MLMHBPCB_3_1_5": {
+        "rank": 1,
+        "variation": 0
+      },
+      "mpg_team_MLMHBPCB_3_1_2": {
+        "rank": 2,
+        "variation": 0
+      },
+      "mpg_team_MLMHBPCB_3_1_9": {
+        "rank": 3,
+        "variation": 0
+      },
+      "mpg_team_MLMHBPCB_3_1_7": {
+        "rank": 4,
+        "variation": 0
+      },
+      "mpg_team_MLMHBPCB_3_1_6": {
+        "rank": 5,
+        "variation": 1
+      },
+      "mpg_team_MLMHBPCB_3_1_3": {
+        "rank": 6,
+        "variation": -1
+      },
+      "mpg_team_MLMHBPCB_3_1_4": {
+        "rank": 7,
+        "variation": 1
+      },
+      "mpg_team_MLMHBPCB_3_1_1": {
+        "rank": 8,
+        "variation": -1
+      },
+      "mpg_team_MLMHBPCB_3_1_8": {
+        "rank": 9,
+        "variation": 0
+      },
+      "mpg_team_MLMHBPCB_3_1_0": {
+        "rank": 10,
+        "variation": 0
+      }
+    },
+    "totalGameWeeks": 18
+  },
+  "mercatoState": {
+    "mercatoClosed": true,
+    "mercatoTurnDate": "2021-08-18T16:27:05Z",
+    "nextMercatoTurn": "2021-08-24T12:00:00Z",
+    "reviveUsersSentAt": "2021-08-18T16:27:05Z",
+    "teamsStatuses": {
+      "mpg_team_MLMHBPCB_3_1_0": 3,
+      "mpg_team_MLMHBPCB_3_1_1": 3,
+      "mpg_team_MLMHBPCB_3_1_2": 3,
+      "mpg_team_MLMHBPCB_3_1_3": 3,
+      "mpg_team_MLMHBPCB_3_1_4": 3,
+      "mpg_team_MLMHBPCB_3_1_5": 3,
+      "mpg_team_MLMHBPCB_3_1_6": 3,
+      "mpg_team_MLMHBPCB_3_1_7": 3,
+      "mpg_team_MLMHBPCB_3_1_8": 3,
+      "mpg_team_MLMHBPCB_3_1_9": 3
+    },
+    "turn": 5
+  },
+  "status": 4,
+  "totalDivisions": 1,
+  "type": "mpg_division",
+  "updatedAt": "2021-08-18T17:12:14Z",
+  "usersTeams": {
+    "user_1520001": "mpg_team_MLMHBPCB_3_1_1",
+    "user_1567579": "mpg_team_MLMHBPCB_3_1_2",
+    "user_1570437": "mpg_team_MLMHBPCB_3_1_9",
+    "user_1662232": "mpg_team_MLMHBPCB_3_1_7",
+    "user_28952": "mpg_team_MLMHBPCB_3_1_8",
+    "user_35635": "mpg_team_MLMHBPCB_3_1_0",
+    "user_600737": "mpg_team_MLMHBPCB_3_1_6",
+    "user_953561": "mpg_team_MLMHBPCB_3_1_3",
+    "user_955966": "mpg_team_MLMHBPCB_3_1_4",
+    "user_963519": "mpg_team_MLMHBPCB_3_1_5"
+  },
+  "totalMissedPosts": 0
+}

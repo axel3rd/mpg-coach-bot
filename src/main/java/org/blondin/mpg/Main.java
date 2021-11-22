@@ -492,8 +492,9 @@ public class Main {
         String playerIdForBonus = midfielders.get(0).getId();
         request.setBonusSelected(selectBonus(coach.getBonusSelected(), team.getBonuses(), gameRemaining, config.isUseBonus(), playerIdForBonus));
         String playerIdForCaptain = request.getBonusSelected() != null
-                && SelectedBonus.BONUS_BOOT_ONE_PLAYER.equals(request.getBonusSelected().getName()) ? midfielders.get(1).getId() : playerIdForBonus;
-        request.setCaptain(selectCapatain(coach.getCaptain(), playerIdForCaptain, config.isUseBonus()));
+                && SelectedBonus.BONUS_BOOT_ONE_PLAYER.equals(request.getBonusSelected().getName())
+                && !midfielders.get(1).getId().equals(request.getBonusSelected().getPlayerId()) ? midfielders.get(1).getId() : playerIdForBonus;
+        request.setCaptain(selectCapatain(coach.getCaptain(), playerIdForCaptain, playerIdForBonus, config.isUseBonus()));
 
         // Main lines
         setPlayersOnPitch(request, defenders, nbrDefenders, 1);
@@ -563,8 +564,8 @@ public class Main {
         return false;
     }
 
-    static String selectCapatain(String previousCaptain, String captainIdIfNeeded, boolean useBonus) {
-        if (!useBonus || StringUtils.isNotBlank(previousCaptain)) {
+    static String selectCapatain(String previousCaptain, String captainIdIfNeeded, String currentPlayerBonus, boolean useBonus) {
+        if (!useBonus || (StringUtils.isNotBlank(previousCaptain) && !previousCaptain.equals(currentPlayerBonus))) {
             return previousCaptain;
         }
         return captainIdIfNeeded;
