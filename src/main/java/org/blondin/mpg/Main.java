@@ -111,6 +111,10 @@ public class Main {
             processMercatoLeague(league, apiClients, config);
             break;
         case GAMES:
+            if (league.isLive() && StringUtils.isBlank(league.getNextRealGameWeekDate())) {
+                LOG.info("\nThis is the last live day, no next week.\n");
+                return;
+            }
             processGames(league, apiClients, config);
             break;
         }

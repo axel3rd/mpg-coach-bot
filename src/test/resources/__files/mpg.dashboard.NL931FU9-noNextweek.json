@@ -1,0 +1,84 @@
+{
+  "leaguesDivisionsItems": [
+    {
+      "leagueId": "mpg_league_NL931FU9",
+      "name": "¿Donde esta el Messi?",
+      "adminId": "user_35635",
+      "status": 4,
+      "season": 1,
+      "mode": 2,
+      "createdAt": "2021-08-22T15:32:30Z",
+      "mercatoState": {
+        "divisionsLeft": 0,
+        "usersLeft": 0
+      },
+      "championshipId": 3,
+      "rating": "mpg",
+      "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/0d4b437e-d239-447f-9b93-6fb676fd4db5.jpg",
+      "totalDivisions": 1,
+      "totalUsers": 8,
+      "totalMissedPosts": 0,
+      "teamId": "mpg_team_NL931FU9_1_1_4",
+      "divisionNumber": 1,
+      "isLive": true,
+      "nextRealGameWeekDateNotExistWhenLeagueFinished": "2021-12-17T17:30:00Z",
+      "currentTeamRanking": 5,
+      "currentTeamVariation": 0,
+      "divisionStatus": 4,
+      "divisionId": "mpg_division_NL931FU9_1_1",
+      "divisionTotalUsers": 8,
+      "liveState": {
+        "currentGameWeek": 14,
+        "firstRealGameWeek": 4,
+        "formationsStatuses": {
+          "mpg_team_NL931FU9_1_1_0": 2,
+          "mpg_team_NL931FU9_1_1_1": 2,
+          "mpg_team_NL931FU9_1_1_2": 2,
+          "mpg_team_NL931FU9_1_1_3": 2,
+          "mpg_team_NL931FU9_1_1_4": 2,
+          "mpg_team_NL931FU9_1_1_5": 2,
+          "mpg_team_NL931FU9_1_1_6": 1,
+          "mpg_team_NL931FU9_1_1_7": 1
+        },
+        "liveAt": "2021-08-31T13:51:10Z",
+        "standings": {
+          "mpg_team_NL931FU9_1_1_3": {
+            "rank": 1,
+            "variation": 0
+          },
+          "mpg_team_NL931FU9_1_1_5": {
+            "rank": 2,
+            "variation": 0
+          },
+          "mpg_team_NL931FU9_1_1_0": {
+            "rank": 3,
+            "variation": 1
+          },
+          "mpg_team_NL931FU9_1_1_2": {
+            "rank": 4,
+            "variation": -1
+          },
+          "mpg_team_NL931FU9_1_1_4": {
+            "rank": 5,
+            "variation": 0
+          },
+          "mpg_team_NL931FU9_1_1_1": {
+            "rank": 6,
+            "variation": 0
+          },
+          "mpg_team_NL931FU9_1_1_6": {
+            "rank": 7,
+            "variation": 0
+          },
+          "mpg_team_NL931FU9_1_1_7": {
+            "rank": 8,
+            "variation": 0
+          }
+        },
+        "totalGameWeeks": 14
+      },
+      "currentFormationStatus": 2
+    }
+  ],
+  "defaultOrder": false
+}

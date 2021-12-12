@@ -63,6 +63,18 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testLastLiveDay() throws Exception {
+        stubFor(post("/user/sign-in")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/dashboard/leagues")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.NL931FU9-noNextweek.json")));
+        Config config = spy(getConfig());
+        executeMainProcess(config);
+
+        Assert.assertTrue(getLogOut(), getLogOut().contains("This is the last live day, no next week"));
+    }
+
+    @Test
     public void testCaptainAndBoostPlayerBonus3() throws Exception {
         prepareMainFrenchLigue1Mocks("MLAX7HMK-20211122", "2021", "20211122", "20211122");
         stubFor(get("/division/mpg_division_MLAX7HMK_3_1")

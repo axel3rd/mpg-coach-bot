@@ -18,6 +18,9 @@ public class League {
     private LeagueStatus status;
     private Mode mode;
     private int currentTeamStatus;
+    @JsonProperty("isLive")
+    private boolean live;
+    private String nextRealGameWeekDate;
 
     public String getId() {
         return StringUtils.removeStart(leagueId, "mpg_league_");
@@ -49,6 +52,14 @@ public class League {
 
     public int getCurrentTeamStatus() {
         return currentTeamStatus;
+    }
+
+    public boolean isLive() {
+        return live;
+    }
+
+    public String getNextRealGameWeekDate() {
+        return nextRealGameWeekDate;
     }
 
 }
