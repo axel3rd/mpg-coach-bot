@@ -1,42 +1,57 @@
 name: Development Build
 on:
-  push:
-    branches:
-    - master
+   push:
+      branches:
+      - master
 jobs:
-  Build-Analyse-Publish:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - name: Set up JDK
-      uses: actions/setup-java@v1
-      with:
-        java-version: 11
-    - name: Cache SonarCloud packages
-      uses: actions/cache@v2
-      with:
-        path: ~/.sonar/cache
-        key: ${{ runner.os }}-sonar
-        restore-keys: ${{ runner.os }}-sonar
-    - name: Cache Maven packages
-      uses: actions/cache@v2
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
-    - name: Build (with code coverage)
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent package org.jacoco:jacoco-maven-plugin:report
-    - name: Quality analyze
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.organization=axel3rd-github -Dsonar.host.url=https://sonarcloud.io
-    - name: Deploy Snapshot (without test, already executed)
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: mvn -B deploy -DskipTests -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/axel3rd/mpg-coach-bot
+   Build-Analyse-Publish:
+      runs-on: ubuntu-latest
+      steps:
+      -  name: Checkout
+         uses: actions/checkout@v2
+         with:
+            fetch-depth: 0
+      -  name: SetUp Node/NPM
+         uses: actions/setup-node@v2
+      -  name: NPM install
+         run: npm install
+      -  name: Format toc
+         run: npm run format-toc
+      -  name: Format main
+         run: npm run format-main
+      -  name: Format bug
+         run: npm run format-bug
+      -  name: Format tests
+         run: npm run format-tests
+      -  name: Commit changes
+         uses: EndBug/add-and-commit@v7
+      -  name: Set up JDK
+         uses: actions/setup-java@v1
+         with:
+            java-version: 11
+      -  name: Cache SonarCloud packages
+         uses: actions/cache@v2
+         with:
+            path: ~/.sonar/cache
+            key: ${{ runner.os }}-sonar
+            restore-keys: ${{ runner.os }}-sonar
+      -  name: Cache Maven packages
+         uses: actions/cache@v2
+         with:
+            path: ~/.m2
+            key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+            restore-keys: ${{ runner.os }}-m2
+      -  name: Build (with code coverage)
+         env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+         run: mvn -B org.jacoco:jacoco-maven-plugin:prepare-agent package org.jacoco:jacoco-maven-plugin:report
+      -  name: Quality analyze
+         env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+         run: mvn -B org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.organization=axel3rd-github -Dsonar.host.url=https://sonarcloud.io
+      -  name: Deploy Snapshot (without test, already executed)
+         env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         run: mvn -B deploy -DskipTests -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/axel3rd/mpg-coach-bot
