@@ -1,0 +1,13 @@
+{
+    "scripts": {
+        "format-toc": "markdown-toc -i README.md",
+        "format-main": "markdown-format --use-configuration markdown-formatter-config.json --replace --file README.md",
+        "format-bug": "markdown-format --use-configuration markdown-formatter-config.json --replace --file .github/ISSUE_TEMPLATE/bug_report.md",
+        "format-tests": "markdown-format --use-configuration markdown-formatter-config.json --replace --file src/test/resources/__files/README.md",
+        "format-all": "npm run format-toc & npm run format-main & npm run format-bug & npm run format-tests"
+    },
+    "devDependencies": {
+        "@quilicicf/markdown-formatter": "*",
+        "markdown-toc": "*"
+    }
+}
