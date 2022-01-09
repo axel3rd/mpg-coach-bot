@@ -45,7 +45,7 @@ Automate and optimize your [MPG](http://mpg.football/) weekly league actions, us
 * Displaying your teams, line by line, ordered by players efficiency (with injured players)
 * Updating your team
 * Proposing some players to buy, better than the one you have (if option `transactions.proposal` is enabled and *MPG* expert mode is bought)
-* When league not started (aka: *mercato*), the best players to buy for your incoming team
+* When league not started (aka: *mercato*), the best players to buy with good turn 1 auction (since v1.9) for your incoming team
 
 **NB:** Your tactical organization and selected bonus are not updated and let as configured (but selected if some will be lost or no captain).
 

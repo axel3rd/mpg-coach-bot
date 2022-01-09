@@ -18,6 +18,7 @@ public class Player {
     private String clubId;
     private String clubName;
     private double efficiency;
+    private int auction;
 
     public String getId() {
         return id;
@@ -45,6 +46,14 @@ public class Player {
 
     public int getPricePaid() {
         return pricePaid;
+    }
+
+    public int getAuction() {
+        return auction;
+    }
+
+    public void setAuction(int auction) {
+        this.auction = auction;
     }
 
     public void setPricePaid(int pricePaid) {

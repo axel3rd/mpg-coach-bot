@@ -27,6 +27,8 @@ public class Player {
     private Stats stats;
     @JsonProperty("r")
     private int price;
+    @JsonProperty("a")
+    private Auction auction;
 
     private double efficiency;
 
@@ -48,6 +50,10 @@ public class Player {
 
     public int getPrice() {
         return price;
+    }
+
+    public Auction getAuction() {
+        return auction;
     }
 
     public Stats getStats() {

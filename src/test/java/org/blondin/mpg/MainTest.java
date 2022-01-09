@@ -305,10 +305,10 @@ public class MainTest extends AbstractMockTestClient {
         Assert.assertTrue(getLogOut(), getLogOut().contains("Proposal for your coming soon mercato"));
 
         // When championship not started (incoming day 1 in statistics), the previous year should be taken
-        Assert.assertTrue(getLogOut(), getLogOut().contains("| A | Mbappé Kylian        | 166.21 | 40 |                                    |"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| A | Mbappé Kylian        | 166.21 | 40 |   0 |                                    |"));
 
         // Test some injuries
-        Assert.assertTrue(getLogOut(), getLogOut().contains("| D | Maripán Guillermo    |  24.19 | 18 | INJURY_RED - Leg injury - Mid July |"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| D | Maripán Guillermo    |  24.19 | 18 |   0 | INJURY_RED - Leg injury - Mid July |"));
     }
 
     @Test
