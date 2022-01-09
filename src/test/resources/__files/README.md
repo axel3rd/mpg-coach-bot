@@ -48,6 +48,23 @@ The `XXX` should be replaced by a use case scenario (like date, some league, dat
 | `equipeactu.serie-a.XXX.html`                    | <https://www.equipeactu.fr/blessures-et-suspensions/fodbold/italie/serie-a>            | **Deprecated since October 20, 2020** ([#169](https://github.com/axel3rd/mpg-coach-bot/issues/169)). Injury / Suspended players for **Seria A (Italia)**          |
 | `equipeactu.ligue-2.XXX.html`                    |                                                                                        | **Not used**, see below and [#99](https://github.com/axel3rd/mpg-coach-bot/issues/99), EquipeActu Website doesn't contain Ligue 2 (France)                        |
 
+### Mpg Mobile App (complement, if needed)
+
+Mercato history:
+
+* GET <https://api.mpg.football/division/mpg_division_MLEXXXXX_4_1/history>
+* GET <https://api.mpg.football/division/mpg_division_MLEXXXXX_2_1/history>
+
+User leagues:
+
+* GET <https://api.mpg.football/user> ; use info, see `hiddenLeaguesIds` field in addition
+* GET <https://api.mpg.football/user/leagues> ; Leagues details
+
+Enable/disable one league:
+
+* PATCH <https://api.mpg.football/league/mpg_league_MLEXXXXX/un-hide>
+* PATCH <https://api.mpg.football/league/mpg_league_MLEXXXXX/hide>
+
 ### Mpg WebSite (deprecated since 19 July 2021)
 
 | **File**                         | **URL**                                                        | **Description**                       |

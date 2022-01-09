@@ -124,7 +124,8 @@ public class Main {
         LOG.info("\nProposal for your mercato:\n");
         List<Player> players = apiClients.getMpg().getAvailablePlayers(league.getDivisionId()).getList();
         completePlayersClub(players, apiClients.getMpg().getClubs());
-        calculateEfficiency(players, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
+        completeAuctionAndcalculateEfficiency(players, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config,
+                false, true);
         processMercato(players, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()));
     }
 
@@ -132,7 +133,8 @@ public class Main {
         LOG.info("\nProposal for your coming soon mercato:\n");
         List<Player> players = apiClients.getMpg().getPoolPlayers(league.getChampionship()).getPlayers();
         completePlayersClub(players, apiClients.getMpg().getClubs());
-        calculateEfficiency(players, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
+        completeAuctionAndcalculateEfficiency(players, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config,
+                false, true);
         processMercato(players, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()));
     }
 
@@ -144,7 +146,7 @@ public class Main {
         List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList()).subList(0, 10);
         List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList()).subList(0, 10);
 
-        AsciiTable at = getTable(TABLE_POSITION, TABLE_PLAYER_NAME, TABLE_EFFICIENCY, TABLE_QUOTE, "Out info");
+        AsciiTable at = getTable(TABLE_POSITION, TABLE_PLAYER_NAME, TABLE_EFFICIENCY, TABLE_QUOTE, "Auct.", "Out info");
         for (List<Player> line : Arrays.asList(goals, defenders, midfielders, attackers)) {
             for (Player player : line) {
                 org.blondin.mpg.out.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
@@ -154,10 +156,11 @@ public class Main {
                     outInfos = String.format("%s - %s - %s", outPlayer.getOutType(), outPlayer.getDescription(), outPlayer.getLength());
                 }
                 AT_Row row = at.addRow(player.getPosition(), player.getName(), FORMAT_DECIMAL_DOUBLE.format(player.getEfficiency()),
-                        player.getQuotation(), outInfos);
+                        player.getQuotation(), player.getAuction(), outInfos);
                 setTableFormatRowPaddingSpace(row);
                 row.getCells().get(2).getContext().setTextAlignment(TextAlignment.RIGHT);
                 row.getCells().get(3).getContext().setTextAlignment(TextAlignment.RIGHT);
+                row.getCells().get(4).getContext().setTextAlignment(TextAlignment.RIGHT);
             }
             at.addRule();
         }
@@ -179,8 +182,9 @@ public class Main {
             completePlayersTeam(team.getSquad(), pool);
             List<Player> players = team.getSquad().values().stream().collect(Collectors.toList());
 
-            // Calculate efficiency (notes should be in injured players display), and save for transactions proposal
-            calculateEfficiency(players, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
+            // Complete auction and calculate efficiency (notes should be in injured players display), and save for transactions proposal
+            completeAuctionAndcalculateEfficiency(players, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config,
+                    false, true);
             List<Player> playersTeam = players.stream().collect(Collectors.toList());
 
             // Remove out players (and write them)
@@ -212,8 +216,8 @@ public class Main {
                     List<Player> playersAvailable = apiClients.getMpg().getAvailablePlayers(league.getDivisionId()).getList();
                     completePlayersClub(playersAvailable, apiClients.getMpg().getClubs());
                     removeOutPlayers(playersAvailable, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()), false);
-                    calculateEfficiency(playersAvailable, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config,
-                            false, false);
+                    completeAuctionAndcalculateEfficiency(playersAvailable, apiClients.getStats(),
+                            ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, false);
 
                     Integer currentPlayersBuy = team.getBids().stream().map(Player::getPricePaid).collect(Collectors.summingInt(Integer::intValue));
                     writeTransactionsProposal(playersTeam, playersAvailable, team.getBudget() - currentPlayersBuy, apiClients.getOutPlayers(),
@@ -424,8 +428,35 @@ public class Main {
         LOG.info(render);
     }
 
-    private static List<Player> calculateEfficiency(List<Player> players, MpgStatsClient stats, ChampionshipStatsType championship, Config config,
-            boolean failIfPlayerNotFound, boolean logWarnIfPlayerNotFound) {
+    private static List<Player> completeAuctionAndcalculateEfficiency(List<Player> players, MpgStatsClient stats, ChampionshipStatsType championship,
+            Config config, boolean failIfPlayerNotFound, boolean logWarnIfPlayerNotFound) {
+
+        // Pre-process efficiencies
+        calculateEfficiencies(stats, championship, config);
+
+        // Fill MPG model
+        for (Player player : players) {
+            try {
+                org.blondin.mpg.stats.model.Player p = stats.getStats(championship).getPlayer(player.getName());
+                if (p.getAuction() != null) {
+                    // Feature in API only since 2021-11
+                    player.setAuction(p.getAuction().getAverage());
+                }
+                player.setEfficiency(p.getEfficiency());
+            } catch (PlayerNotFoundException e) {
+                if (failIfPlayerNotFound) {
+                    throw e;
+                }
+                if (logWarnIfPlayerNotFound) {
+                    LOG.warn("WARN: Player can't be found in statistics: {}", player.getName());
+                }
+                player.setEfficiency(0);
+            }
+        }
+        return players;
+    }
+
+    private static void calculateEfficiencies(MpgStatsClient stats, ChampionshipStatsType championship, Config config) {
         int daysPeriod = getCurrentDay(stats, championship);
         int days4efficiency = 0;
         if (config.isEfficiencyRecentFocus() && stats.getStats(championship).getInfos().getAnnualStats().getCurrentDay().getDayReached() > 0) {
@@ -443,22 +474,6 @@ public class Main {
             // round efficiency to 2 decimals
             p.setEfficiency(efficiency);
         }
-
-        // Fill MPG model
-        for (Player player : players) {
-            try {
-                player.setEfficiency(stats.getStats(championship).getPlayer(player.getName()).getEfficiency());
-            } catch (PlayerNotFoundException e) {
-                if (failIfPlayerNotFound) {
-                    throw e;
-                }
-                if (logWarnIfPlayerNotFound) {
-                    LOG.warn("WARN: Player can't be found in statistics: {}", player.getName());
-                }
-                player.setEfficiency(0);
-            }
-        }
-        return players;
     }
 
     private static int getCurrentDay(MpgStatsClient stats, ChampionshipStatsType championship) {
