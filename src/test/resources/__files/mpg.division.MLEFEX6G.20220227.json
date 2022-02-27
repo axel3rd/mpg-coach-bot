@@ -1,0 +1,138 @@
+{
+  "createdAt": "2022-01-07T22:25:48Z",
+  "gameSettings": {
+    "autoCloseMercato": true,
+    "blackMarketBonuses": false,
+    "blackMarketLoans": true,
+    "blackMarketTransfers": true,
+    "budget": 500,
+    "captainAvailable": true,
+    "championshipId": 4,
+    "considerPostponedMatches": true,
+    "excludedClubsIds": [],
+    "excludedPlayersIds": [],
+    "liveBlackMarketType": 1,
+    "liveMercatoType": 1,
+    "liveSubstitutesAvailable": false,
+    "maxBuyableRemoveGoal": 1,
+    "mercatoStartDate": "2022-01-08T19:00:00Z",
+    "mercatoType": 1,
+    "midSeasonBudget": 50,
+    "mode": 2,
+    "playersByClub": -1,
+    "playersStatusesAvailable": true,
+    "quotationMax": -1,
+    "quotationMin": -1,
+    "rating": "mpg",
+    "usersIds": [
+      "user_953561",
+      "user_1520001",
+      "user_955966",
+      "user_1662232",
+      "user_600737",
+      "user_35635",
+      "user_963519",
+      "user_1781770",
+      "user_1567579",
+      "user_1781796"
+    ]
+  },
+  "id": "mpg_division_MLEFEX6G_4_1",
+  "leagueId": "mpg_league_MLEFEX6G",
+  "liveState": {
+    "currentGameWeek": 6,
+    "firstRealGameWeek": 21,
+    "formationsStatuses": {
+      "mpg_team_MLEFEX6G_4_1_0": 2,
+      "mpg_team_MLEFEX6G_4_1_1": 1,
+      "mpg_team_MLEFEX6G_4_1_2": 2,
+      "mpg_team_MLEFEX6G_4_1_3": 1,
+      "mpg_team_MLEFEX6G_4_1_4": 1,
+      "mpg_team_MLEFEX6G_4_1_5": 1,
+      "mpg_team_MLEFEX6G_4_1_6": 1,
+      "mpg_team_MLEFEX6G_4_1_7": 1,
+      "mpg_team_MLEFEX6G_4_1_8": 1,
+      "mpg_team_MLEFEX6G_4_1_9": 1
+    },
+    "liveAt": "2022-01-10T16:52:14Z",
+    "standings": {
+      "mpg_team_MLEFEX6G_4_1_0": {
+        "rank": 3,
+        "variation": 1
+      },
+      "mpg_team_MLEFEX6G_4_1_1": {
+        "rank": 2,
+        "variation": 1
+      },
+      "mpg_team_MLEFEX6G_4_1_2": {
+        "rank": 7,
+        "variation": 0
+      },
+      "mpg_team_MLEFEX6G_4_1_3": {
+        "rank": 1,
+        "variation": 0
+      },
+      "mpg_team_MLEFEX6G_4_1_4": {
+        "rank": 5,
+        "variation": 1
+      },
+      "mpg_team_MLEFEX6G_4_1_5": {
+        "rank": 8,
+        "variation": 0
+      },
+      "mpg_team_MLEFEX6G_4_1_6": {
+        "rank": 6,
+        "variation": -1
+      },
+      "mpg_team_MLEFEX6G_4_1_7": {
+        "rank": 9,
+        "variation": 0
+      },
+      "mpg_team_MLEFEX6G_4_1_8": {
+        "rank": 4,
+        "variation": -1
+      },
+      "mpg_team_MLEFEX6G_4_1_9": {
+        "rank": 10,
+        "variation": 0
+      }
+    },
+    "totalGameWeeks": 18
+  },
+  "mercatoState": {
+    "mercatoClosed": true,
+    "mercatoTurnDate": "2022-01-10T16:51:02Z",
+    "nextMercatoTurn": "2022-01-14T19:00:00Z",
+    "reviveUsersSentAt": "2022-01-10T16:51:02Z",
+    "teamsStatuses": {
+      "mpg_team_MLEFEX6G_4_1_0": 3,
+      "mpg_team_MLEFEX6G_4_1_1": 3,
+      "mpg_team_MLEFEX6G_4_1_2": 3,
+      "mpg_team_MLEFEX6G_4_1_3": 3,
+      "mpg_team_MLEFEX6G_4_1_4": 3,
+      "mpg_team_MLEFEX6G_4_1_5": 3,
+      "mpg_team_MLEFEX6G_4_1_6": 3,
+      "mpg_team_MLEFEX6G_4_1_7": 3,
+      "mpg_team_MLEFEX6G_4_1_8": 3,
+      "mpg_team_MLEFEX6G_4_1_9": 3
+    },
+    "turn": 6
+  },
+  "status": 4,
+  "totalDivisions": 1,
+  "type": "mpg_division",
+  "updatedAt": "2022-01-10T22:34:58Z",
+  "usersTeams": {
+    "user_1520001": "mpg_team_MLEFEX6G_4_1_1",
+    "user_1567579": "mpg_team_MLEFEX6G_4_1_8",
+    "user_1662232": "mpg_team_MLEFEX6G_4_1_3",
+    "user_1781770": "mpg_team_MLEFEX6G_4_1_7",
+    "user_1781796": "mpg_team_MLEFEX6G_4_1_9",
+    "user_35635": "mpg_team_MLEFEX6G_4_1_5",
+    "user_600737": "mpg_team_MLEFEX6G_4_1_4",
+    "user_953561": "mpg_team_MLEFEX6G_4_1_0",
+    "user_955966": "mpg_team_MLEFEX6G_4_1_2",
+    "user_963519": "mpg_team_MLEFEX6G_4_1_6"
+  },
+  "totalMissedPosts": 0
+}

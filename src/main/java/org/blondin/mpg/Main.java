@@ -402,6 +402,14 @@ public class Main {
             }
         }
         players.removeAll(outPlayers);
+
+        // Check if some goalkeeper(s) always on pitch
+        List<Player> goals = players.stream().filter(p -> Position.G.equals(p.getPosition())).collect(Collectors.toList());
+        if (goals.isEmpty()) {
+            LOG.warn("\nWARNING: All goalkeeper(s) are injured/absent, so maintained on the pitch!");
+            players.addAll(outPlayers.stream().filter(p -> Position.G.equals(p.getPosition())).collect(Collectors.toList()));
+        }
+
         return players;
     }
 

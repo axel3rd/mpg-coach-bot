@@ -63,6 +63,29 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testKeepAtLeastOneGoalkeeperEvenIfAbsent() throws Exception {
+        prepareMainFrenchLigue2Mocks("MLEFEX6G-20220227", "2022", "20220227", "20220227");
+        // Override Mansuy user
+        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", "application/json")
+                .withBody("{ \"token\": \"token.fake\", \"userId\": \"user_953561\", \"language\": \"fr-FR\" }")));
+        stubFor(get("/division/mpg_division_MLEFEX6G_4_1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.MLEFEX6G.20220227.json")));
+        stubFor(get("/team/mpg_team_MLEFEX6G_4_1_0")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.MLEFEX6G.20220227.json")));
+        stubFor(get("/division/mpg_division_MLEFEX6G_4_1/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLEFEX6G.20220227.json")));
+
+        Config config = spy(getConfig());
+        doReturn(false).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        executeMainProcess(config);
+
+        Assert.assertTrue(getLogOut(), getLogOut().contains("All goalkeeper(s) are injured/absent, so maintained on the pitch"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Braat Quentin            |  4.81 | 21 |"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Maronne Yanis            |  0.00 | 7  |"));
+    }
+
+    @Test
     public void testLastLiveDay() throws Exception {
         stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
