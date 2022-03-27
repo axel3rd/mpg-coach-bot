@@ -24,14 +24,14 @@ The `XXX` should be replaced by a use case scenario (like date, some league, dat
 
 ### Players statistics
 
-| **File**                           | **URL**                                           | **Description**                            |
-| ---------------------------------- | ------------------------------------------------- | ------------------------------------------ |
-| `mlnstats.builds.XXX.json`         | <https://api.mlnstats.com/builds>                 | MpgStats leagues **time update**           |
-| `mlnstats.liga.XXX.json`           | <https://api.mlnstats.com/leagues/Liga>           | MpgStats for **Liga (Spain)**              |
-| `mlnstats.ligue-1.XXX.json`        | <https://api.mlnstats.com/leagues/Ligue-1>        | MpgStats for **Ligue 1 (France)**          |
-| `mlnstats.ligue-2.XXX.json`        | <https://api.mlnstats.com/leagues/Ligue-2>        | MpgStats for **Ligue 2 (France)**          |
-| `mlnstats.premier-league.XXX.json` | <https://api.mlnstats.com/leagues/Premier-League> | MpgStats for **Premiere League (England)** |
-| `mlnstats.serie-a.XXX.json`        | <https://api.mlnstats.com/leagues/Serie-A>        | MpgStats for **Seria A (Italia)**          |
+| **File**                           | **URL**                                                   | **Description**                            |
+| ---------------------------------- | --------------------------------------------------------- | ------------------------------------------ |
+| `mlnstats.builds.XXX.json`         | <https://api.mlnstats.com/builds.json>                    | MpgStats leagues **time update**           |
+| `mlnstats.liga.XXX.json`           | <https://api.mlnstats.com/leagues/Liga_v2.json>           | MpgStats for **Liga (Spain)**              |
+| `mlnstats.ligue-1.XXX.json`        | <https://api.mlnstats.com/leagues/Ligue-1_v2.json>        | MpgStats for **Ligue 1 (France)**          |
+| `mlnstats.ligue-2.XXX.json`        | <https://api.mlnstats.com/leagues/Ligue-2_v2.json>        | MpgStats for **Ligue 2 (France)**          |
+| `mlnstats.premier-league.XXX.json` | <https://api.mlnstats.com/leagues/Premier-League_v2.json> | MpgStats for **Premiere League (England)** |
+| `mlnstats.serie-a.XXX.json`        | <https://api.mlnstats.com/leagues/Serie-A_v2.json>        | MpgStats for **Seria A (Italia)**          |
 
 ### Players Injury / Suspended
 

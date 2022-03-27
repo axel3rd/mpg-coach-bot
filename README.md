@@ -346,5 +346,5 @@ This project is using [NPM](https://docs.npmjs.com/) as complementary tool for d
 For format documentation, use (see [package.json](./package.json) for details):
 
 ```
-npm run format all
+npm run format-all
 ```

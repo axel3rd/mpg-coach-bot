@@ -1,0 +1,465 @@
+{
+    "leaguesDivisionsItems": [
+        {
+            "leagueId": "mpg_league_PYUJXJM",
+            "name": "Los Asselinos vs el mundo",
+            "adminId": "user_35635",
+            "status": 4,
+            "season": 1,
+            "mode": 2,
+            "createdAt": "2022-01-12T16:37:17Z",
+            "mercatoState": {
+                "divisionsLeft": 0,
+                "usersLeft": 0
+            },
+            "championshipId": 3,
+            "rating": "mpg",
+            "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/710c719e-b839-48e4-a0d2-3559554e7f61.jpg",
+            "totalDivisions": 1,
+            "totalUsers": 10,
+            "totalMissedPosts": 2,
+            "teamId": "mpg_team_PYUJXJM_1_1_3",
+            "divisionNumber": 1,
+            "nextRealGameWeekDate": "2022-04-02T12:00:00Z",
+            "currentTeamRanking": 9,
+            "currentTeamVariation": -1,
+            "divisionStatus": 4,
+            "divisionId": "mpg_division_PYUJXJM_1_1",
+            "divisionTotalUsers": 10,
+            "liveState": {
+                "currentGameWeek": 10,
+                "firstRealGameWeek": 21,
+                "formationsStatuses": {
+                    "mpg_team_PYUJXJM_1_1_0": 1,
+                    "mpg_team_PYUJXJM_1_1_1": 1,
+                    "mpg_team_PYUJXJM_1_1_2": 1,
+                    "mpg_team_PYUJXJM_1_1_3": 2,
+                    "mpg_team_PYUJXJM_1_1_4": 1,
+                    "mpg_team_PYUJXJM_1_1_5": 1,
+                    "mpg_team_PYUJXJM_1_1_6": 1,
+                    "mpg_team_PYUJXJM_1_1_7": 1,
+                    "mpg_team_PYUJXJM_1_1_8": 1,
+                    "mpg_team_PYUJXJM_1_1_9": 2
+                },
+                "liveAt": "2022-01-14T06:00:55Z",
+                "standings": {
+                    "mpg_team_PYUJXJM_1_1_5": {
+                        "rank": 1,
+                        "variation": 0
+                    },
+                    "mpg_team_PYUJXJM_1_1_1": {
+                        "rank": 2,
+                        "variation": 1
+                    },
+                    "mpg_team_PYUJXJM_1_1_6": {
+                        "rank": 3,
+                        "variation": -1
+                    },
+                    "mpg_team_PYUJXJM_1_1_2": {
+                        "rank": 4,
+                        "variation": 1
+                    },
+                    "mpg_team_PYUJXJM_1_1_0": {
+                        "rank": 5,
+                        "variation": 0
+                    },
+                    "mpg_team_PYUJXJM_1_1_4": {
+                        "rank": 6,
+                        "variation": -1
+                    },
+                    "mpg_team_PYUJXJM_1_1_7": {
+                        "rank": 7,
+                        "variation": 1
+                    },
+                    "mpg_team_PYUJXJM_1_1_8": {
+                        "rank": 8,
+                        "variation": -1
+                    },
+                    "mpg_team_PYUJXJM_1_1_3": {
+                        "rank": 9,
+                        "variation": -1
+                    },
+                    "mpg_team_PYUJXJM_1_1_9": {
+                        "rank": 10,
+                        "variation": 0
+                    }
+                },
+                "totalGameWeeks": 18
+            },
+            "currentFormationStatus": 2
+        },
+        {
+            "leagueId": "mpg_league_NKCDJTKS",
+            "name": "La regina",
+            "adminId": "user_600737",
+            "status": 4,
+            "season": 2,
+            "mode": 2,
+            "createdAt": "2021-08-11T18:34:32Z",
+            "mercatoState": {
+                "divisionsLeft": 0,
+                "usersLeft": 0
+            },
+            "championshipId": 5,
+            "rating": "mpg",
+            "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/c2039a5d-dfb7-4bef-b018-ab7d7555a365.jpg",
+            "totalDivisions": 1,
+            "totalUsers": 10,
+            "totalMissedPosts": 4,
+            "teamId": "mpg_team_NKCDJTKS_2_1_1",
+            "divisionNumber": 1,
+            "nextRealGameWeekDate": "2022-04-02T13:00:00Z",
+            "currentTeamRanking": 3,
+            "currentTeamVariation": 0,
+            "divisionStatus": 4,
+            "divisionId": "mpg_division_NKCDJTKS_2_1",
+            "divisionTotalUsers": 10,
+            "liveState": {
+                "currentGameWeek": 11,
+                "firstRealGameWeek": 21,
+                "formationsStatuses": {
+                    "mpg_team_NKCDJTKS_2_1_0": 1,
+                    "mpg_team_NKCDJTKS_2_1_1": 2,
+                    "mpg_team_NKCDJTKS_2_1_2": 1,
+                    "mpg_team_NKCDJTKS_2_1_3": 1,
+                    "mpg_team_NKCDJTKS_2_1_4": 1,
+                    "mpg_team_NKCDJTKS_2_1_5": 1,
+                    "mpg_team_NKCDJTKS_2_1_6": 1,
+                    "mpg_team_NKCDJTKS_2_1_7": 1,
+                    "mpg_team_NKCDJTKS_2_1_8": 1,
+                    "mpg_team_NKCDJTKS_2_1_9": 1
+                },
+                "liveAt": "2022-01-08T11:32:20Z",
+                "standings": {
+                    "mpg_team_NKCDJTKS_2_1_0": {
+                        "rank": 1,
+                        "variation": 1
+                    },
+                    "mpg_team_NKCDJTKS_2_1_4": {
+                        "rank": 2,
+                        "variation": -1
+                    },
+                    "mpg_team_NKCDJTKS_2_1_1": {
+                        "rank": 3,
+                        "variation": 0
+                    },
+                    "mpg_team_NKCDJTKS_2_1_6": {
+                        "rank": 4,
+                        "variation": 0
+                    },
+                    "mpg_team_NKCDJTKS_2_1_2": {
+                        "rank": 5,
+                        "variation": 1
+                    },
+                    "mpg_team_NKCDJTKS_2_1_7": {
+                        "rank": 6,
+                        "variation": -1
+                    },
+                    "mpg_team_NKCDJTKS_2_1_8": {
+                        "rank": 7,
+                        "variation": 1
+                    },
+                    "mpg_team_NKCDJTKS_2_1_9": {
+                        "rank": 8,
+                        "variation": 1
+                    },
+                    "mpg_team_NKCDJTKS_2_1_3": {
+                        "rank": 9,
+                        "variation": -1
+                    },
+                    "mpg_team_NKCDJTKS_2_1_5": {
+                        "rank": 10,
+                        "variation": 0
+                    }
+                },
+                "totalGameWeeks": 18
+            },
+            "currentFormationStatus": 2
+        },
+        {
+            "leagueId": "mpg_league_P4P3NPAJ",
+            "name": "À la fin il n'en restera qu'un.",
+            "adminId": "user_35635",
+            "status": 4,
+            "season": 1,
+            "mode": 1,
+            "defaultDivisionId": "mpg_division_P4P3NPAJ_1_1",
+            "createdAt": "2022-02-14T18:49:26Z",
+            "mercatoState": {
+                "divisionsLeft": 0,
+                "usersLeft": 0
+            },
+            "championshipId": 6,
+            "rating": "mpg",
+            "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/bf171101-4669-43fa-a906-a2be4e90ce09.jpg",
+            "totalDivisions": 1,
+            "totalUsers": 4,
+            "isFollowed": true
+        },
+        {
+            "leagueId": "mpg_league_MLMHBPCB",
+            "name": "UK and dance",
+            "adminId": "user_35635",
+            "status": 4,
+            "season": 4,
+            "mode": 2,
+            "createdAt": "2020-08-26T08:50:30Z",
+            "mercatoState": {
+                "divisionsLeft": 0,
+                "usersLeft": 0
+            },
+            "championshipId": 2,
+            "rating": "mpg",
+            "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/23856f3c-1355-4bfd-a958-0f08b8a1f061.jpg",
+            "totalDivisions": 1,
+            "totalUsers": 10,
+            "totalMissedPosts": 3,
+            "teamId": "mpg_team_MLMHBPCB_4_1_4",
+            "divisionNumber": 1,
+            "nextRealGameWeekDate": "2022-04-02T11:30:00Z",
+            "currentTeamRanking": 8,
+            "currentTeamVariation": 0,
+            "divisionStatus": 4,
+            "divisionId": "mpg_division_MLMHBPCB_4_1",
+            "divisionTotalUsers": 10,
+            "liveState": {
+                "currentGameWeek": 11,
+                "firstRealGameWeek": 21,
+                "formationsStatuses": {
+                    "mpg_team_MLMHBPCB_4_1_0": 1,
+                    "mpg_team_MLMHBPCB_4_1_1": 1,
+                    "mpg_team_MLMHBPCB_4_1_2": 1,
+                    "mpg_team_MLMHBPCB_4_1_3": 2,
+                    "mpg_team_MLMHBPCB_4_1_4": 2,
+                    "mpg_team_MLMHBPCB_4_1_5": 1,
+                    "mpg_team_MLMHBPCB_4_1_6": 1,
+                    "mpg_team_MLMHBPCB_4_1_7": 1,
+                    "mpg_team_MLMHBPCB_4_1_8": 1,
+                    "mpg_team_MLMHBPCB_4_1_9": 1
+                },
+                "liveAt": "2021-12-30T21:03:12Z",
+                "standings": {
+                    "mpg_team_MLMHBPCB_4_1_1": {
+                        "rank": 1,
+                        "variation": 0
+                    },
+                    "mpg_team_MLMHBPCB_4_1_2": {
+                        "rank": 2,
+                        "variation": 0
+                    },
+                    "mpg_team_MLMHBPCB_4_1_3": {
+                        "rank": 3,
+                        "variation": 0
+                    },
+                    "mpg_team_MLMHBPCB_4_1_6": {
+                        "rank": 4,
+                        "variation": 1
+                    },
+                    "mpg_team_MLMHBPCB_4_1_9": {
+                        "rank": 5,
+                        "variation": -1
+                    },
+                    "mpg_team_MLMHBPCB_4_1_5": {
+                        "rank": 6,
+                        "variation": 1
+                    },
+                    "mpg_team_MLMHBPCB_4_1_8": {
+                        "rank": 7,
+                        "variation": -1
+                    },
+                    "mpg_team_MLMHBPCB_4_1_4": {
+                        "rank": 8,
+                        "variation": 0
+                    },
+                    "mpg_team_MLMHBPCB_4_1_0": {
+                        "rank": 9,
+                        "variation": 0
+                    },
+                    "mpg_team_MLMHBPCB_4_1_7": {
+                        "rank": 10,
+                        "variation": 0
+                    }
+                },
+                "totalGameWeeks": 18
+            },
+            "currentFormationStatus": 2
+        },
+        {
+            "leagueId": "mpg_league_MLEFEX6G",
+            "name": "Ligue 2 B'éclatée",
+            "adminId": "user_953561",
+            "status": 4,
+            "season": 4,
+            "mode": 2,
+            "createdAt": "2020-08-23T16:35:09Z",
+            "mercatoState": {
+                "divisionsLeft": 0,
+                "usersLeft": 0
+            },
+            "championshipId": 4,
+            "rating": "mpg",
+            "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/b7b4327b-7cfb-4df3-becc-2b16c9d5381b.jpg",
+            "totalDivisions": 1,
+            "totalUsers": 10,
+            "totalMissedPosts": 0,
+            "teamId": "mpg_team_MLEFEX6G_4_1_2",
+            "divisionNumber": 1,
+            "nextRealGameWeekDate": "2022-04-02T13:00:00Z",
+            "currentTeamRanking": 10,
+            "currentTeamVariation": 0,
+            "divisionStatus": 4,
+            "divisionId": "mpg_division_MLEFEX6G_4_1",
+            "divisionTotalUsers": 10,
+            "liveState": {
+                "currentGameWeek": 11,
+                "firstRealGameWeek": 21,
+                "formationsStatuses": {
+                    "mpg_team_MLEFEX6G_4_1_0": 2,
+                    "mpg_team_MLEFEX6G_4_1_1": 1,
+                    "mpg_team_MLEFEX6G_4_1_2": 2,
+                    "mpg_team_MLEFEX6G_4_1_3": 1,
+                    "mpg_team_MLEFEX6G_4_1_4": 1,
+                    "mpg_team_MLEFEX6G_4_1_5": 1,
+                    "mpg_team_MLEFEX6G_4_1_6": 1,
+                    "mpg_team_MLEFEX6G_4_1_7": 1,
+                    "mpg_team_MLEFEX6G_4_1_8": 1,
+                    "mpg_team_MLEFEX6G_4_1_9": 1
+                },
+                "liveAt": "2022-01-10T16:52:14Z",
+                "standings": {
+                    "mpg_team_MLEFEX6G_4_1_8": {
+                        "rank": 1,
+                        "variation": 0
+                    },
+                    "mpg_team_MLEFEX6G_4_1_6": {
+                        "rank": 2,
+                        "variation": 1
+                    },
+                    "mpg_team_MLEFEX6G_4_1_3": {
+                        "rank": 3,
+                        "variation": -1
+                    },
+                    "mpg_team_MLEFEX6G_4_1_0": {
+                        "rank": 4,
+                        "variation": 1
+                    },
+                    "mpg_team_MLEFEX6G_4_1_4": {
+                        "rank": 5,
+                        "variation": -1
+                    },
+                    "mpg_team_MLEFEX6G_4_1_1": {
+                        "rank": 6,
+                        "variation": 0
+                    },
+                    "mpg_team_MLEFEX6G_4_1_9": {
+                        "rank": 7,
+                        "variation": 1
+                    },
+                    "mpg_team_MLEFEX6G_4_1_7": {
+                        "rank": 8,
+                        "variation": -1
+                    },
+                    "mpg_team_MLEFEX6G_4_1_5": {
+                        "rank": 9,
+                        "variation": -1
+                    },
+                    "mpg_team_MLEFEX6G_4_1_2": {
+                        "rank": 10,
+                        "variation": 0
+                    }
+                },
+                "totalGameWeeks": 18
+            },
+            "currentFormationStatus": 2
+        },
+        {
+            "leagueId": "mpg_league_MLAX7HMK",
+            "name": "Majer League Soccer",
+            "adminId": "user_953561",
+            "status": 4,
+            "season": 4,
+            "mode": 2,
+            "createdAt": "2020-08-22T08:22:40Z",
+            "mercatoState": {
+                "divisionsLeft": 0,
+                "usersLeft": 0
+            },
+            "championshipId": 1,
+            "rating": "mpg",
+            "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/9db725b3-fe27-42b4-9575-55cfbeef30d2.png",
+            "totalDivisions": 1,
+            "totalUsers": 10,
+            "totalMissedPosts": 0,
+            "teamId": "mpg_team_MLAX7HMK_4_1_6",
+            "divisionNumber": 1,
+            "nextRealGameWeekDate": "2022-04-02T15:00:00Z",
+            "currentTeamRanking": 8,
+            "currentTeamVariation": -1,
+            "divisionStatus": 4,
+            "divisionId": "mpg_division_MLAX7HMK_4_1",
+            "divisionTotalUsers": 10,
+            "liveState": {
+                "currentGameWeek": 10,
+                "firstRealGameWeek": 21,
+                "formationsStatuses": {
+                    "mpg_team_MLAX7HMK_4_1_0": 2,
+                    "mpg_team_MLAX7HMK_4_1_1": 1,
+                    "mpg_team_MLAX7HMK_4_1_2": 1,
+                    "mpg_team_MLAX7HMK_4_1_3": 1,
+                    "mpg_team_MLAX7HMK_4_1_4": 1,
+                    "mpg_team_MLAX7HMK_4_1_5": 1,
+                    "mpg_team_MLAX7HMK_4_1_6": 2,
+                    "mpg_team_MLAX7HMK_4_1_7": 1,
+                    "mpg_team_MLAX7HMK_4_1_8": 1,
+                    "mpg_team_MLAX7HMK_4_1_9": 1
+                },
+                "liveAt": "2022-01-12T09:48:36Z",
+                "standings": {
+                    "mpg_team_MLAX7HMK_4_1_8": {
+                        "rank": 1,
+                        "variation": 0
+                    },
+                    "mpg_team_MLAX7HMK_4_1_2": {
+                        "rank": 2,
+                        "variation": 1
+                    },
+                    "mpg_team_MLAX7HMK_4_1_7": {
+                        "rank": 3,
+                        "variation": -1
+                    },
+                    "mpg_team_MLAX7HMK_4_1_5": {
+                        "rank": 4,
+                        "variation": -1
+                    },
+                    "mpg_team_MLAX7HMK_4_1_3": {
+                        "rank": 5,
+                        "variation": -1
+                    },
+                    "mpg_team_MLAX7HMK_4_1_4": {
+                        "rank": 6,
+                        "variation": 1
+                    },
+                    "mpg_team_MLAX7HMK_4_1_1": {
+                        "rank": 7,
+                        "variation": 1
+                    },
+                    "mpg_team_MLAX7HMK_4_1_6": {
+                        "rank": 8,
+                        "variation": -1
+                    },
+                    "mpg_team_MLAX7HMK_4_1_0": {
+                        "rank": 9,
+                        "variation": 1
+                    },
+                    "mpg_team_MLAX7HMK_4_1_9": {
+                        "rank": 10,
+                        "variation": -1
+                    }
+                },
+                "totalGameWeeks": 18
+            },
+            "currentFormationStatus": 2
+        }
+    ],
+    "defaultOrder": false
+}
