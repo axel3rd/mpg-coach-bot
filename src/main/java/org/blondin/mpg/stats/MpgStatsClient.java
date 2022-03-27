@@ -34,7 +34,7 @@ public class MpgStatsClient extends AbstractClient {
         if (!cache.containsKey(type)) {
             // FR : "Ligue-1" / EN : "Premier-League" / ES : "Liga"
             // Call with infinite cache and verify timestamp after
-            Championship championship = get("leagues/" + type.getValue(), Championship.class, 0);
+            Championship championship = get("leagues/" + type.getValue() + "_v2.json", Championship.class, 0);
             Date leagueDateRefresh = getLeaguesRefresh().getDate(championship.getInfos().getId());
             if (leagueDateRefresh == null || championship.getDate().before(leagueDateRefresh)) {
                 // Force refresh by using a mini cache time
@@ -46,6 +46,6 @@ public class MpgStatsClient extends AbstractClient {
     }
 
     protected synchronized LeaguesRefresh getLeaguesRefresh() {
-        return get("builds", LeaguesRefresh.class, TIME_HOUR_IN_MILLI_SECOND);
+        return get("builds.json", LeaguesRefresh.class, TIME_HOUR_IN_MILLI_SECOND);
     }
 }

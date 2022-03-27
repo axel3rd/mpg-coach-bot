@@ -63,6 +63,73 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testMpgStatsApiV2() throws Exception {
+        prepareMainFrenchLigue1Mocks("20220327", "2022", "20220327", "20220327");
+        stubFor(get("/division/mpg_division_MLAX7HMK_4_1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.MLAX7HMK.20220327.json")));
+        stubFor(get("/division/mpg_division_MLAX7HMK_4_1/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLAX7HMK.20220327.json")));
+        stubFor(get("/team/mpg_team_MLAX7HMK_4_1_6")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.MLAX7HMK.20220327.json")));
+
+        prepareMainFrenchLigue2Mocks("20220327", "2022", "20220327", "20220327");
+        stubFor(get("/division/mpg_division_MLEFEX6G_4_1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.MLEFEX6G.20220327.json")));
+        stubFor(get("/division/mpg_division_MLEFEX6G_4_1/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLEFEX6G.20220327.json")));
+        stubFor(get("/team/mpg_team_MLEFEX6G_4_1_2")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.MLEFEX6G.20220327.json")));
+
+        // Liga
+        stubFor(get("/division/mpg_division_PYUJXJM_1_1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.PYUJXJM.20220327.json")));
+        stubFor(get("/team/mpg_team_PYUJXJM_1_1_3")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.PYUJXJM.20220327.json")));
+        stubFor(get("/championship-players-pool/3")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.poolPlayers.3.2022.json")));
+        stubFor(get("/division/mpg_division_PYUJXJM_1_1/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.PYUJXJM.20220327.json")));
+        stubFor(get("/leagues/Liga_v2.json")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.liga.20220327.json")));
+        stubFor(get("/injuries/football/spain-la-liga/")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.liga.20220327.html")));
+
+        // SerieA
+        stubFor(get("/division/mpg_division_NKCDJTKS_2_1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.NKCDJTKS.20220327.json")));
+        stubFor(get("/team/mpg_team_NKCDJTKS_2_1_1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.NKCDJTKS.20220327.json")));
+        stubFor(get("/championship-players-pool/5")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.poolPlayers.5.2022.json")));
+        stubFor(get("/division/mpg_division_NKCDJTKS_2_1/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.NKCDJTKS.20220327.json")));
+        stubFor(get("/leagues/Serie-A_v2.json")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.serie-a.20220327.json")));
+        stubFor(get("/injuries/football/italy-serie-a/")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.serie-a.20220327.html")));
+
+        // PL
+        stubFor(get("/division/mpg_division_MLMHBPCB_4_1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.MLMHBPCB.20220327.json")));
+        stubFor(get("/team/mpg_team_MLMHBPCB_4_1_4")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.MLMHBPCB.20220327.json")));
+        stubFor(get("/division/mpg_division_MLMHBPCB_4_1/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLMHBPCB.20220327.json")));
+        stubFor(get("/championship-players-pool/2")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.poolPlayers.2.2022.json")));
+        stubFor(get("/leagues/Premier-League_v2.json")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.premier-league.20220327.json")));
+        stubFor(get("/injuries/football/england-premier-league/")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.premier-league.20211122.html")));
+
+        Config config = spy(getConfig());
+        doReturn(false).when(config).isTeampUpdate();
+        executeMainProcess(config);
+
+        Assert.assertTrue(getLogOut(), getLogOut().contains("==="));
+    }
+
+    @Test
     public void testKeepAtLeastOneGoalkeeperEvenIfAbsent() throws Exception {
         prepareMainFrenchLigue2Mocks("MLEFEX6G-20220227", "2022", "20220227", "20220227");
         // Override Mansuy user
@@ -81,8 +148,8 @@ public class MainTest extends AbstractMockTestClient {
         executeMainProcess(config);
 
         Assert.assertTrue(getLogOut(), getLogOut().contains("All goalkeeper(s) are injured/absent, so maintained on the pitch"));
-        Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Braat Quentin            |  4.81 | 21 |"));
-        Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Maronne Yanis            |  0.00 | 7  |"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Braat Quentin            |  4.81 | 19 |"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Maronne Yanis            |  0.00 | 3  |"));
     }
 
     @Test
@@ -142,8 +209,9 @@ public class MainTest extends AbstractMockTestClient {
                 .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode()).withHeader("Content-Type", "application/json")
                         .withBody("Fake: mpg_match_team_formation_MLMHBPCB_3_1_12_5_4")));
 
-        stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20211122.json")));
-        stubFor(get("/leagues/Premier-League")
+        stubFor(get("/builds.json")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20211122.json")));
+        stubFor(get("/leagues/Premier-League_v2.json")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.premier-league.20211122.json")));
         stubFor(get("/injuries/football/england-premier-league/")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.premier-league.20211122.html")));
@@ -303,10 +371,11 @@ public class MainTest extends AbstractMockTestClient {
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.clubs.2021.json")));
         stubFor(get("/division/mpg_division_MLMHBPCB_3_1/available-players").willReturn(
                 aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.available.players.MLMHBPCB.20210813.json")));
-        stubFor(get("/builds").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20210813.json")));
-        stubFor(get("/leagues/Serie-A")
+        stubFor(get("/builds.json")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20210813.json")));
+        stubFor(get("/leagues/Serie-A_v2.json")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.serie-a.20210813.json")));
-        stubFor(get("/leagues/Premier-League")
+        stubFor(get("/leagues/Premier-League_v2.json")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.premier-league.20210813.json")));
         stubFor(get("/injuries/football/italy-serie-a/")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.serie-a.20210224.html")));
@@ -433,9 +502,9 @@ public class MainTest extends AbstractMockTestClient {
             }
             if (StringUtils.isNotBlank(statsLeaguesDate)) {
                 dateDayFormat.parse(statsLeaguesDate);
-                stubFor(get("/builds").willReturn(
+                stubFor(get("/builds.json").willReturn(
                         aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds." + statsLeaguesDate + ".json")));
-                stubFor(get("/leagues/Ligue-" + frenchLigue).willReturn(aResponse().withHeader("Content-Type", "application/json")
+                stubFor(get("/leagues/Ligue-" + frenchLigue + "_v2.json").willReturn(aResponse().withHeader("Content-Type", "application/json")
                         .withBodyFile("mlnstats.ligue-" + frenchLigue + "." + statsLeaguesDate + ".json")));
             }
             if (StringUtils.isNotBlank(sportsGamblerDate)) {
