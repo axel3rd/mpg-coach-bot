@@ -17,9 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.core.Response;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +29,9 @@ import org.junit.Test;
 
 import com.github.tomakehurst.wiremock.http.Fault;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
+
+import jakarta.ws.rs.ProcessingException;
+import jakarta.ws.rs.core.Response;
 
 public class MainTest extends AbstractMockTestClient {
 

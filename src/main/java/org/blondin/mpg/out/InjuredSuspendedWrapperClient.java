@@ -1,7 +1,5 @@
 package org.blondin.mpg.out;
 
-import javax.ws.rs.ServiceUnavailableException;
-
 import org.apache.commons.lang3.ObjectUtils;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.model.OutType;
@@ -11,6 +9,8 @@ import org.blondin.mpg.root.exception.TeamsNotFoundException;
 import org.blondin.mpg.root.exception.UrlForbiddenException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jakarta.ws.rs.ServiceUnavailableException;
 
 /**
  * Wrapper for:<br/>

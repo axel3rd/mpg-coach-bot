@@ -8,14 +8,15 @@
     <version>1.9-SNAPSHOT</version>
     <name>MPG Coach Bot</name>
     <properties>
-        <goals>package</goals>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.class>org.blondin.mpg.Main</main.class>
         <jdk.version>1.8</jdk.version>
-        <jersey.version>2.35</jersey.version>
-        <jackson.version>2.13.1</jackson.version>
-        <slf4j.version>1.7.32</slf4j.version>
-        <log4j.version>2.17.1</log4j.version>
+        <jersey.version>3.0.4</jersey.version>
+        <jackson.version>2.13.2</jackson.version>
+        <slf4j.version>1.7.36</slf4j.version>
+        <log4j.version>2.17.2</log4j.version>
+        <!-- Goals for release plugin-->
+        <goals>package</goals>
     </properties>
     <scm>
         <connection>scm:git:https://github.com/axel3rd/mpg-coach-bot</connection>
@@ -26,7 +27,7 @@
             <plugins>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.1</version>
+                    <version>3.10.1</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
@@ -34,7 +35,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.2.1</version>
+                    <version>3.2.2</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-shade-plugin</artifactId>
@@ -204,7 +205,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>4.2.0</version>
+            <version>4.4.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
