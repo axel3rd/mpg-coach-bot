@@ -4,9 +4,6 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
-
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
@@ -20,6 +17,9 @@ import org.blondin.mpg.root.model.Division;
 import org.blondin.mpg.root.model.PoolPlayers;
 import org.blondin.mpg.root.model.Team;
 import org.blondin.mpg.root.model.UserSignIn;
+
+import jakarta.ws.rs.core.MultivaluedHashMap;
+import jakarta.ws.rs.core.MultivaluedMap;
 
 /**
  * Client for https://www.mpgstats.fr/

@@ -8,14 +8,14 @@ import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
-import javax.ws.rs.ProcessingException;
-
 import org.blondin.mpg.config.Config;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+
+import jakarta.ws.rs.ProcessingException;
 
 public class SslCertificateTest {
 
