@@ -25,6 +25,7 @@ public class InjuredSuspendedMaLigue2Client extends AbstractClient {
          * Team name "maligue2 -> MPG" wrapper
          */
         TEAM_NAME_WRAPPER.put("QRM", "Quevilly Rouen");
+        TEAM_NAME_WRAPPER.put("AS Saint-Etienne", "St Etienne");
     }
 
     private List<Player> cache = null;
@@ -60,12 +61,14 @@ public class InjuredSuspendedMaLigue2Client extends AbstractClient {
     public Player getPlayer(String playerName, String teamName) {
         // For composed lastName (highest priority than firstName composed), we replace space by '-'
         String lastName = playerName;
-        int spaceIndex = lastName.lastIndexOf(' ');
-        if (spaceIndex > 0) {
-            lastName = lastName.substring(0, spaceIndex);
+        if (!playerName.startsWith("De ")) {
+            int spaceIndex = lastName.lastIndexOf(' ');
+            if (spaceIndex > 0) {
+                lastName = lastName.substring(0, spaceIndex);
+            }
+            lastName = lastName.replace(' ', '-');
+            lastName = lastName.replace("Saint-", "St-");
         }
-        lastName = lastName.replace(' ', '-');
-        lastName = lastName.replace("Saint-", "St-");
         for (Player player : getPlayers()) {
             if (lastName.equalsIgnoreCase(player.getFullNameWithPosition())) {
                 if (StringUtils.isNotBlank(teamName) && !player.getTeam().contains(teamName)) {

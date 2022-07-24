@@ -446,9 +446,13 @@ public class Main {
         for (Player player : players) {
             try {
                 org.blondin.mpg.stats.model.Player p = stats.getStats(championship).getPlayer(player.getName());
-                if (p.getAuction() != null) {
+                if (p.getAuction() != null && p.getAuction().getNumber() > 5) {
                     // Feature in API only since 2021-11
                     player.setAuction(p.getAuction().getAverage());
+                }
+                if (player.getAuction() == 0 && p.getAuctionLong() != null) {
+                    // Feature in API only since 2022-07
+                    player.setAuction(p.getAuctionLong().getAverage());
                 }
                 player.setEfficiency(p.getEfficiency());
             } catch (PlayerNotFoundException e) {

@@ -1,0 +1,241 @@
+{
+  "leaguesDivisionsItems": [
+    {
+      "leagueId": "mpg_league_PHKWNA3B",
+      "name": "La Tête à l'An Vert",
+      "adminId": "user_963519",
+      "status": 1,
+      "season": 1,
+      "mode": 1,
+      "createdAt": "2022-07-21T08:19:53.219Z",
+      "championshipId": 4,
+      "rating": "mpg",
+      "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/7774d9b2-f575-4226-9d6e-01e83f5300c5.jpg",
+      "totalDivisions": 1,
+      "totalUsers": 10,
+      "totalMissedPosts": 2,
+      "validDivisions": true
+    },
+    {
+      "leagueId": "mpg_league_MLAX7HMK",
+      "name": "Majer League Soccer",
+      "adminId": "user_953561",
+      "status": 5,
+      "season": 4,
+      "mode": 2,
+      "createdAt": "2020-08-22T08:22:40Z",
+      "mercatoState": {
+        "divisionsLeft": 0,
+        "usersLeft": 0
+      },
+      "championshipId": 1,
+      "rating": "mpg",
+      "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/9db725b3-fe27-42b4-9575-55cfbeef30d2.png",
+      "totalDivisions": 1,
+      "totalUsers": 10,
+      "totalMissedPosts": 9,
+      "finishedState": {
+        "winner": {
+          "firstName": "Maxime",
+          "team": {
+            "abbreviation": "RFC",
+            "gear": {
+              "home": {
+                "jerseyId": "mpg_jersey_0_1639663792493"
+              }
+            },
+            "id": "mpg_team_MLAX7HMK_4_1_7",
+            "name": "Roazhon FC"
+          },
+          "userId": "user_2237823",
+          "username": "RoazhonFC",
+          "jerseyUrl": "https://s3.eu-west-3.amazonaws.com/jersey.mpg.football/prod/9ac7d196-8c3e-4965-a32d-bce4576c191c.png"
+        }
+      },
+      "teamId": "mpg_team_MLAX7HMK_4_1_6",
+      "divisionNumber": 1,
+      "currentTeamRanking": 9,
+      "currentTeamVariation": -1,
+      "divisionStatus": 5,
+      "divisionId": "mpg_division_MLAX7HMK_4_1",
+      "divisionTotalUsers": 10
+    },
+    {
+      "leagueId": "mpg_league_MLEFEX6G",
+      "name": "Ligue 2 B'éclatée",
+      "adminId": "user_953561",
+      "status": 5,
+      "season": 4,
+      "mode": 2,
+      "createdAt": "2020-08-23T16:35:09Z",
+      "mercatoState": {
+        "divisionsLeft": 0,
+        "usersLeft": 0
+      },
+      "championshipId": 4,
+      "rating": "mpg",
+      "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/b7b4327b-7cfb-4df3-becc-2b16c9d5381b.jpg",
+      "totalDivisions": 1,
+      "totalUsers": 10,
+      "totalMissedPosts": 2,
+      "finishedState": {
+        "winner": {
+          "firstName": "David",
+          "team": {
+            "abbreviation": "DS2",
+            "gear": {
+              "home": {
+                "jerseyId": "mpg_jersey_0_1630675967251"
+              }
+            },
+            "id": "mpg_team_MLEFEX6G_4_1_6",
+            "name": "DS2"
+          },
+          "userId": "user_963519",
+          "username": "David#XDXZ",
+          "jerseyUrl": "https://s3.eu-west-3.amazonaws.com/jersey.mpg.football/prod/e1f5e1c2-4134-4b6c-97cd-9a3b4be66663.png"
+        }
+      },
+      "teamId": "mpg_team_MLEFEX6G_4_1_2",
+      "divisionNumber": 1,
+      "currentTeamRanking": 8,
+      "currentTeamVariation": 1,
+      "divisionStatus": 5,
+      "divisionId": "mpg_division_MLEFEX6G_4_1",
+      "divisionTotalUsers": 10
+    },
+    {
+      "leagueId": "mpg_league_MLMHBPCB",
+      "name": "UK and dance",
+      "adminId": "user_35635",
+      "status": 5,
+      "season": 4,
+      "mode": 2,
+      "createdAt": "2020-08-26T08:50:30Z",
+      "mercatoState": {
+        "divisionsLeft": 0,
+        "usersLeft": 0
+      },
+      "championshipId": 2,
+      "rating": "mpg",
+      "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/23856f3c-1355-4bfd-a958-0f08b8a1f061.jpg",
+      "totalDivisions": 1,
+      "totalUsers": 10,
+      "totalMissedPosts": 3,
+      "finishedState": {
+        "winner": {
+          "firstName": "Typhaine",
+          "team": {
+            "abbreviation": "RAG",
+            "gear": {
+              "home": {
+                "jerseyId": "mpg_jersey_0_1602597954776"
+              }
+            },
+            "id": "mpg_team_MLMHBPCB_4_1_1",
+            "name": "Raging Goat 🐐"
+          },
+          "userId": "user_1520001",
+          "username": "Licornasse",
+          "jerseyUrl": "https://s3-eu-west-3.amazonaws.com/jersey.mpg.football/back/jersey_0_1602597954776_temp.png"
+        }
+      },
+      "teamId": "mpg_team_MLMHBPCB_4_1_4",
+      "divisionNumber": 1,
+      "currentTeamRanking": 8,
+      "currentTeamVariation": 0,
+      "divisionStatus": 5,
+      "divisionId": "mpg_division_MLMHBPCB_4_1",
+      "divisionTotalUsers": 10
+    },
+    {
+      "leagueId": "mpg_league_PYUJXJM",
+      "name": "Los Asselinos vs el mundo",
+      "adminId": "user_35635",
+      "status": 5,
+      "season": 1,
+      "mode": 2,
+      "createdAt": "2022-01-12T16:37:17Z",
+      "mercatoState": {
+        "divisionsLeft": 0,
+        "usersLeft": 0
+      },
+      "championshipId": 3,
+      "rating": "mpg",
+      "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/710c719e-b839-48e4-a0d2-3559554e7f61.jpg",
+      "totalDivisions": 1,
+      "totalUsers": 10,
+      "totalMissedPosts": 1,
+      "finishedState": {
+        "winner": {
+          "firstName": "Mat",
+          "team": {
+            "abbreviation": "PEC",
+            "gear": {
+              "home": {
+                "jerseyId": "mpg_jersey_0_1640337167878"
+              }
+            },
+            "id": "mpg_team_PYUJXJM_1_1_6",
+            "name": "Papaëlla El Campeon"
+          },
+          "userId": "user_1567579",
+          "username": "Master",
+          "jerseyUrl": "https://s3.eu-west-3.amazonaws.com/jersey.mpg.football/prod/76767a29-3fda-4c27-b617-82203605eb3d.png"
+        }
+      },
+      "teamId": "mpg_team_PYUJXJM_1_1_3",
+      "divisionNumber": 1,
+      "currentTeamRanking": 7,
+      "currentTeamVariation": 0,
+      "divisionStatus": 5,
+      "divisionId": "mpg_division_PYUJXJM_1_1",
+      "divisionTotalUsers": 10
+    },
+    {
+      "leagueId": "mpg_league_NKCDJTKS",
+      "name": "La regina",
+      "adminId": "user_600737",
+      "status": 5,
+      "season": 2,
+      "mode": 2,
+      "createdAt": "2021-08-11T18:34:32Z",
+      "mercatoState": {
+        "divisionsLeft": 0,
+        "usersLeft": 0
+      },
+      "championshipId": 5,
+      "rating": "mpg",
+      "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/c2039a5d-dfb7-4bef-b018-ab7d7555a365.jpg",
+      "totalDivisions": 1,
+      "totalUsers": 10,
+      "totalMissedPosts": 10,
+      "finishedState": {
+        "winner": {
+          "firstName": "Stella",
+          "team": {
+            "abbreviation": "CFC",
+            "gear": {
+              "home": {
+                "jerseyId": "mpg_jersey_0_1561645596440"
+              }
+            },
+            "id": "mpg_team_NKCDJTKS_2_1_9",
+            "name": "Crazy FC"
+          },
+          "userId": "user_3273203",
+          "username": "CrazyStacy",
+          "jerseyUrl": "https://s3-eu-west-3.amazonaws.com/jersey.mpg.football/back/jersey_0_1561645596440_temp.png"
+        }
+      },
+      "teamId": "mpg_team_NKCDJTKS_2_1_1",
+      "divisionNumber": 1,
+      "currentTeamRanking": 3,
+      "currentTeamVariation": 0,
+      "divisionStatus": 5,
+      "divisionId": "mpg_division_NKCDJTKS_2_1",
+      "divisionTotalUsers": 10
+    }
+  ],
+  "defaultOrder": false
+}

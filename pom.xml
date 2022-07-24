@@ -4,7 +4,7 @@
     <groupId>org.blondin</groupId>
     <artifactId>mpg-coach-bot</artifactId>
     <packaging>jar</packaging>
-    <version>1.9.1-SNAPSHOT</version>
+    <version>1.10-SNAPSHOT</version>
     <name>MPG Coach Bot</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

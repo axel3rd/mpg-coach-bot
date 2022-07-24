@@ -26,6 +26,61 @@ import org.junit.Test;
 public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
 
     @Test
+    public void testCheckTeams2022L2() throws Exception {
+        List<String> mpgTeams = Arrays.asList("Amiens", "Annecy", "Bastia", "Bordeaux", "Caen", "Dijon", "Grenoble", "Guingamp", "Laval", "Le Havre",
+                "Metz", "Nîmes", "Niort", "Paris FC", "Pau", "Quevilly Rouen", "Rodez", "St Etienne", "Sochaux", "Valenciennes");
+        Document doc = Jsoup.parse(FileUtils.readFileToString(new File(TESTFILES_BASE, "maligue2.joueurs-blesses-et-suspendus.20220724.html"),
+                Charset.forName("UTF-8")));
+        List<String> maLigue2Teams = new ArrayList<>();
+        for (Element item : doc.select("tr")) {
+            if (item.selectFirst("th.column-1") != null && "Club".equals(item.selectFirst("th.column-1").text())) {
+                continue;
+            }
+            maLigue2Teams.add(InjuredSuspendedMaLigue2Client.getMpgTeamName(item.selectFirst("td.column-1").text()));
+        }
+        for (String mpgTeam : mpgTeams) {
+            boolean contains = false;
+            for (String maLigue2Team : maLigue2Teams) {
+                if (maLigue2Team.contains(mpgTeam)) {
+                    contains = true;
+                }
+            }
+            Assert.assertTrue(mpgTeam, contains);
+        }
+    }
+
+    @Test
+    public void testReasons2022() throws Exception {
+        InjuredSuspendedMaLigue2Client client = spy(InjuredSuspendedMaLigue2Client.build(null));
+        doReturn(
+                FileUtils.readFileToString(new File(TESTFILES_BASE, "maligue2.joueurs-blesses-et-suspendus.20220724.html"), Charset.forName("UTF-8")))
+                        .when(client).getHtmlContent();
+
+        Assert.assertNotNull("Annecy Spano Blesse", client.getPlayer("Spano", "Annecy"));
+        Assert.assertEquals("Annecy Spano Blesse", OutType.INJURY_RED, client.getPlayer("Spano", "Annecy").getOutType());
+        Assert.assertNotNull("Caen Abdi Suspendu", client.getPlayer("Abdi", "Caen"));
+        Assert.assertEquals("Caen Abdi Suspendu", OutType.SUSPENDED, client.getPlayer("Abdi", "Caen").getOutType());
+        Assert.assertNotNull("Caen Ntim Suspendu", client.getPlayer("Ntim", "Caen"));
+        Assert.assertEquals("Caen Ntim Suspendu", OutType.SUSPENDED, client.getPlayer("Ntim", "Caen").getOutType());
+        Assert.assertNotNull("Grenoble Monfray Suspendu", client.getPlayer("Monfray", "Grenoble"));
+        Assert.assertEquals("Grenoble Monfray Suspendu", OutType.SUSPENDED, client.getPlayer("Monfray", "Grenoble").getOutType());
+        Assert.assertNotNull("Grenoble DeIriondo Suspendu", client.getPlayer("De Iriondo", "Grenoble"));
+        Assert.assertEquals("Grenoble DeIriondo Suspendu", OutType.SUSPENDED, client.getPlayer("De Iriondo", "Grenoble").getOutType());
+        Assert.assertNotNull("Guingamp Quemper Suspendu", client.getPlayer("Quemper", "Guingamp"));
+        Assert.assertEquals("Guingamp Quemper Suspendu", OutType.SUSPENDED, client.getPlayer("Quemper", "Guingamp").getOutType());
+        Assert.assertNotNull("Havre Wahib Blesse", client.getPlayer("Wahib", "Havre"));
+        Assert.assertEquals("Havre Wahib Blesse", OutType.INJURY_RED, client.getPlayer("Wahib", "Havre").getOutType());
+        Assert.assertNotNull("Paris Name Suspendu", client.getPlayer("Name", "Paris FC"));
+        Assert.assertEquals("Paris Name Suspendu", OutType.SUSPENDED, client.getPlayer("Name", "Paris FC").getOutType());
+        Assert.assertNotNull("Paris Camara Suspendu", client.getPlayer("Camara", "Paris FC"));
+        Assert.assertEquals("Paris Camara Suspendu", OutType.SUSPENDED, client.getPlayer("Camara", "Paris FC").getOutType());
+        Assert.assertNotNull("Saint-Etienne Chambost Blesse", client.getPlayer("Chambost", "St Etienne"));
+        Assert.assertEquals("Saint-Etienne Chambost Blesse", OutType.INJURY_RED, client.getPlayer("Chambost", "St Etienne").getOutType());
+        Assert.assertNotNull("Sochaux Lopy Blesse", client.getPlayer("Lopy", "Sochaux"));
+        Assert.assertEquals("Sochaux Lopy Blesse", OutType.INJURY_RED, client.getPlayer("Lopy", "Sochaux").getOutType());
+    }
+
+    @Test
     public void testCheckTeams2021L2() throws Exception {
         List<String> mpgTeams = Arrays.asList("Ajaccio", "Amiens", "Auxerre", "Bastia", "Caen", "Dijon", "Dunkerque", "Grenoble", "Guingamp",
                 "Le Havre", "Nancy", "Nîmes", "Niort", "Paris FC", "Pau", "Quevilly Rouen", "Rodez", "Sochaux", "Toulouse", "Valenciennes");
@@ -50,7 +105,7 @@ public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
     }
 
     @Test
-    public void testReasons() throws Exception {
+    public void testReasons2021() throws Exception {
         InjuredSuspendedMaLigue2Client client = spy(InjuredSuspendedMaLigue2Client.build(null));
         doReturn(
                 FileUtils.readFileToString(new File(TESTFILES_BASE, "maligue2.joueurs-blesses-et-suspendus.20210804.html"), Charset.forName("UTF-8")))
