@@ -63,6 +63,17 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testMpgStatsLongAuctions() throws Exception {
+        prepareMainFrenchLigue2Mocks("20220724", "2022", "20220724", "20220724");
+
+        Config config = spy(getConfig());
+        executeMainProcess(config);
+
+        Assert.assertFalse(getLogOut(), getLogOut().contains("| M | Weissbeck Gaétan              | 38.01 | 29 |   0 |                   |"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| M | Weissbeck Gaétan              | 38.01 | 29 |  41 |                   |"));
+    }
+
+    @Test
     public void testMpgStatsApiV2() throws Exception {
         prepareMainFrenchLigue1Mocks("20220327", "2022", "20220327", "20220327");
         stubFor(get("/division/mpg_division_MLAX7HMK_4_1")
@@ -148,8 +159,7 @@ public class MainTest extends AbstractMockTestClient {
         executeMainProcess(config);
 
         Assert.assertTrue(getLogOut(), getLogOut().contains("All goalkeeper(s) are injured/absent, so maintained on the pitch"));
-        Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Braat Quentin            |  4.81 | 19 |"));
-        Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Maronne Yanis            |  0.00 | 3  |"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Maronne Yanis      |  0.00 | 3  |"));
     }
 
     @Test
