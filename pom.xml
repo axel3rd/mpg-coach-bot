@@ -10,10 +10,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.class>org.blondin.mpg.Main</main.class>
         <jdk.version>1.8</jdk.version>
-        <jersey.version>3.0.4</jersey.version>
-        <jackson.version>2.13.2</jackson.version>
+        <jersey.version>3.0.5</jersey.version>
+        <jackson.version>2.13.3</jackson.version>
         <slf4j.version>1.7.36</slf4j.version>
-        <log4j.version>2.17.2</log4j.version>
+        <log4j.version>2.18.0</log4j.version>
         <!-- Goals for release plugin-->
         <goals>package</goals>
     </properties>
@@ -38,19 +38,19 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>3.2.4</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0-M5</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-assembly-plugin</artifactId>
                     <version>3.3.0</version>
                 </plugin>
                 <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M7</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.4.2</version>
+                </plugin>
+                <plugin>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>3.0.0-M5</version>
+                    <version>3.0.0-M6</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -173,7 +173,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.14.3</version>
+            <version>1.15.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -204,7 +204,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>4.4.0</version>
+            <version>4.6.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
