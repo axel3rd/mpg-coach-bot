@@ -2,8 +2,10 @@ package org.blondin.mpg.stats.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LeaguesRefresh {
 
     @JsonProperty("1")
