@@ -220,8 +220,8 @@ public class Main {
                             ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, false);
 
                     Integer currentPlayersBuy = team.getBids().stream().map(Player::getPricePaid).collect(Collectors.summingInt(Integer::intValue));
-                    writeTransactionsProposal(playersTeam, playersAvailable, team.getBudget() - currentPlayersBuy, apiClients.getOutPlayers(),
-                            ChampionshipTypeWrapper.toOut(league.getChampionship()), config);
+                    writeTransactionsProposal(cd.getDay(), playersTeam, playersAvailable, team.getBudget() - currentPlayersBuy,
+                            apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()), config);
                 }
             }
         } catch (NoMoreGamesException e) {
@@ -303,7 +303,7 @@ public class Main {
         }
     }
 
-    private static void writeTransactionsProposal(List<Player> playersTeam, List<Player> playersAvailable, int budget,
+    private static void writeTransactionsProposal(int currentDay, List<Player> playersTeam, List<Player> playersAvailable, int budget,
             InjuredSuspendedWrapperClient outPlayersClient, ChampionshipOutType championship, Config config) {
 
         // Players with bad efficiency
@@ -319,7 +319,7 @@ public class Main {
         }
 
         int cash = budget;
-        if (!config.isEfficiencyRecentFocus() && !players2Sell.isEmpty()) {
+        if (currentDay > 2 && !players2Sell.isEmpty()) {
             LOG.info("Players to sell (initial cash: {}):", budget);
             AsciiTable at = getTable(TABLE_POSITION, TABLE_PLAYER_NAME, TABLE_EFFICIENCY, TABLE_QUOTE);
             for (Player player : players2Sell) {

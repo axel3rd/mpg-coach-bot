@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.InjuredSuspendedWrapperClient;
 import org.blondin.mpg.root.MpgClient;
+import org.blondin.mpg.root.model.Position;
 import org.blondin.mpg.stats.MpgStatsClient;
 import org.junit.Assert;
 import org.junit.Test;
@@ -260,6 +261,39 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testTransactionProposalSelling() throws Exception {
+        prepareMainFrenchLigue2Mocks("MLEFEX6G-20211019", "2021", "20211019", "20211019");
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.MLEFEX6G.20211019.json")));
+        stubFor(get("/team/mpg_team_MLEFEX6G_3_1_2")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.MLEFEX6G.20211019.json")));
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLEFEX6G.20211019.json")));
+        // Not the same date, UT added after
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/available-players").willReturn(
+                aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.available.players.MLMHBPCB.20211122.json")));
+        stubFor(put("/match-team-formation/mpg_match_team_formation_MLEFEX6G_3_1_12_5_2")
+                .withRequestBody(equalToJson(getTestFileToString("mpg.coach.MLEFEX6G.20211019-Request.json")))
+                .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode()).withHeader("Content-Type", "application/json")
+                        .withBody("Fake: mpg_match_team_formation_MLEFEX6G_3_1_12_5_2")));
+
+        Config config = spy(getConfig());
+        doReturn(true).when(config).isTeampUpdate();
+        doReturn(false).when(config).isTacticalSubstitutes();
+        doReturn(true).when(config).isTransactionsProposal();
+        doReturn(4f).when(config).getEfficiencySell(Position.D);
+        executeMainProcess(config);
+
+        Assert.assertTrue(getLogOut(), getLogOut().contains("  Captain: Boissier Remy"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("  Bonus  : boostOnePlayer (Picouleau Mathis)"));
+
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Players to sell (initial cash: "));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("| D | Arcus Carlens | 3.44 | 22 |"));
+        // GoalKeeper second from same team => should not be sold
+        Assert.assertFalse(getLogOut(), getLogOut().contains("| G | Jeannin Mehdi | 0.00 | 7  |"));
+    }
+
+    @Test
     public void testCaptainNotOnMainPitch() throws Exception {
         prepareMainFrenchLigue1Mocks("MLAX7HMK-status-4", "2021", "20210812", "20210812");
         stubFor(get("/division/mpg_division_MLAX7HMK_3_1")
@@ -438,8 +472,10 @@ public class MainTest extends AbstractMockTestClient {
         Assert.assertTrue(getLogOut(), getLogOut().contains("Ligue 2 Fous"));
         Assert.assertTrue(getLogOut(), getLogOut().contains("Ba"));
         Assert.assertTrue(getLogOut(), getLogOut().contains("Updating team"));
-        Assert.assertTrue(getLogOut(), getLogOut().contains("Transactions proposal"));
         Assert.assertTrue(getLogOut(), getLogOut().contains("| G | Prevot Maxence (mpg_championship_player_220359)   |  4.00 |"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Transactions proposal"));
+        // currentGameWeek is 2 => selling players should not be displayed
+        Assert.assertFalse(getLogOut(), getLogOut().contains("Players to sell (initial cash"));
     }
 
     private void executeMainProcess(Config config) {
