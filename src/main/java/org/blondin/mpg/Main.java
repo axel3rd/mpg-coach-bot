@@ -89,6 +89,10 @@ public class Main {
             LOG.info("\nSorry, Champions League is currently not supported.\n");
             return;
         }
+        if (league.getChampionship().equals(ChampionshipType.LIGUE_SUPER)) {
+            LOG.info("\nSorry, Ligue Super is currently not supported.\n");
+            return;
+        }
         switch (league.getStatus()) {
         case TERMINATED:
             // Already managed previously
