@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum ChampionshipType {
 
-    LIGUE_1(1), PREMIER_LEAGUE(2), LIGA(3), LIGUE_2(4), SERIE_A(5), CHAMPIONS_LEAGUE(6);
+    LIGUE_1(1), PREMIER_LEAGUE(2), LIGA(3), LIGUE_2(4), SERIE_A(5), CHAMPIONS_LEAGUE(6), LIGUE_SUPER(7);
 
     private final int value;
 
