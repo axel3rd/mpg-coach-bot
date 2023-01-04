@@ -64,6 +64,28 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testBonusSelectionFailWhenLastMatchAndDecatBonus() throws Exception {
+        // Old and not linked injured, not important on this use case
+        prepareMainFrenchLigue1Mocks("20230104", "2023", "20230104", "20220327");
+        stubFor(get("/division/mpg_division_PJHY1S98_1_1")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.PJHY1S98.20230104.json")));
+        stubFor(get("/division/mpg_division_PJHY1S98_1_1/coach")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.PJHY1S98.20230104.json")));
+        stubFor(get("/team/mpg_team_PJHY1S98_1_1_2")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.PJHY1S98.20230104.json")));
+        stubFor(put("/match-team-formation/mpg_match_team_formation_PJHY1S98_1_1_18_3_2")
+                .willReturn(aResponse().withStatus(Response.Status.OK.getStatusCode()).withHeader("Content-Type", "application/json")
+                        .withBody("Fake: mpg_match_team_formation_PJHY1S98_1_1_18_3_2")));
+
+        Config config = spy(getConfig());
+        doReturn(Arrays.asList("PJHY1S98")).when(config).getLeaguesInclude();
+        doReturn(true).when(config).isTeampUpdate();
+        executeMainProcess(config);
+
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Updating team ..."));
+    }
+
+    @Test
     public void testMpgStatsLongAuctions() throws Exception {
         prepareMainFrenchLigue2Mocks("20220724", "2022", "20220724", "20220724");
 
