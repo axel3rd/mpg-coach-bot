@@ -614,6 +614,10 @@ public class Main {
         if (bonuses == null) {
             throw new UnsupportedOperationException("Bonus is null, technical problem");
         }
+
+        // Remove decat bonus, not supported (https://github.com/axel3rd/mpg-coach-bot/issues/234)
+        bonuses.remove("fourStrikers");
+
         SelectedBonus bonusSelected = null;
         if (bonuses.values().stream().reduce(0, Integer::sum) >= matchsRemaining) {
             String bonus = getBestBonus(bonuses, matchsRemaining);
