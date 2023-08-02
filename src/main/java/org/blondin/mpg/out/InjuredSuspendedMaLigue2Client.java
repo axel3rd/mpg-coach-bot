@@ -24,8 +24,10 @@ public class InjuredSuspendedMaLigue2Client extends AbstractClient {
         /*
          * Team name "maligue2 -> MPG" wrapper
          */
-        TEAM_NAME_WRAPPER.put("QRM", "Quevilly Rouen");
-        TEAM_NAME_WRAPPER.put("AS Saint-Etienne", "St Etienne");
+        TEAM_NAME_WRAPPER.put("AS Saint-Etienne", "AS Saint-Étienne");
+        TEAM_NAME_WRAPPER.put("FC Sochaux-Montbéliard", "FCSM");
+        TEAM_NAME_WRAPPER.put("Stade Lavallois", "Laval MFC");
+        TEAM_NAME_WRAPPER.put("Valenciennes FC", "VAFC");
     }
 
     private List<Player> cache = null;
@@ -61,7 +63,7 @@ public class InjuredSuspendedMaLigue2Client extends AbstractClient {
     public Player getPlayer(String playerName, String teamName) {
         // For composed lastName (highest priority than firstName composed), we replace space by '-'
         String lastName = playerName;
-        if (!playerName.startsWith("De ")) {
+        if (!playerName.matches("(De |Ben |D').*")) {
             int spaceIndex = lastName.lastIndexOf(' ');
             if (spaceIndex > 0) {
                 lastName = lastName.substring(0, spaceIndex);
@@ -88,7 +90,7 @@ public class InjuredSuspendedMaLigue2Client extends AbstractClient {
         List<Player> players = new ArrayList<>();
         Document doc = Jsoup.parse(content);
         for (Element item : doc.select("tr")) {
-            if (item.selectFirst("th.column-1") != null && "Club".equals(item.selectFirst("th.column-1").text())) {
+            if ((item.selectFirst("th.column-1") != null && "Club".equals(item.selectFirst("th.column-1").text())) || item.selectFirst("td.column-1") == null) {
                 continue;
             }
             String team = item.selectFirst("td.column-1").text();
