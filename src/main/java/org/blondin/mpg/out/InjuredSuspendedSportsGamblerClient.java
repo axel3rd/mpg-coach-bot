@@ -27,17 +27,32 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractInjuredSuspende
          */
 
         // Ligue 1
+        TEAM_NAME_WRAPPER.put("Le Havre", "Havre AC");
+        TEAM_NAME_WRAPPER.put("Lens", "RC Lens");
+        TEAM_NAME_WRAPPER.put("Lille", "LOSC");
+        TEAM_NAME_WRAPPER.put("Lorient", "FC Lorient");
+        TEAM_NAME_WRAPPER.put("Lyon", "OL");
+        TEAM_NAME_WRAPPER.put("Marseille", "OM");
+        TEAM_NAME_WRAPPER.put("Metz", "FC Metz");
+        TEAM_NAME_WRAPPER.put("Monaco", "AS Monaco");
+        TEAM_NAME_WRAPPER.put("Nantes", "FC Nantes");
+        TEAM_NAME_WRAPPER.put("Nice", "OGC Nice");
+        TEAM_NAME_WRAPPER.put("Nimes", "Nîmes");
         TEAM_NAME_WRAPPER.put("Paris Saint Germain", "Paris");
-        TEAM_NAME_WRAPPER.put("PSG", "Paris");
+        TEAM_NAME_WRAPPER.put("PSG", "Paris SG");
         TEAM_NAME_WRAPPER.put("Saint Etienne", "Saint-Étienne");
         TEAM_NAME_WRAPPER.put("Saint-Etienne", "Saint-Étienne");
-        TEAM_NAME_WRAPPER.put("Nimes", "Nîmes");
+        TEAM_NAME_WRAPPER.put("Toulouse", "Toulouse FC");
 
         // Premiere League
+        TEAM_NAME_WRAPPER.put("Luton", "Luton Town");
         TEAM_NAME_WRAPPER.put("Manchester City", "Man. City");
+        TEAM_NAME_WRAPPER.put("Man City", "Man. City");
+        TEAM_NAME_WRAPPER.put("Man United", "Man. United");
         TEAM_NAME_WRAPPER.put("Manchester United", "Man. United");
         TEAM_NAME_WRAPPER.put("Newcastle United", "Newcastle");
-        TEAM_NAME_WRAPPER.put("Sheffield United", "Sheffield");
+        TEAM_NAME_WRAPPER.put("Nott’m Forest", "Nottigham Forest");
+        TEAM_NAME_WRAPPER.put("Sheffield Utd", "Sheffield");
         TEAM_NAME_WRAPPER.put("West Bromwich Albion", "West Bromwich");
         TEAM_NAME_WRAPPER.put("Wolverhampton Wanderers", "Wolverhampton");
         TEAM_NAME_WRAPPER.put("West Brom", "West Bromwich");
@@ -51,9 +66,8 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractInjuredSuspende
         // Ligua
         TEAM_NAME_WRAPPER.put("Alaves", "Alavés");
         TEAM_NAME_WRAPPER.put("Celta Vigo", "Celta");
-        TEAM_NAME_WRAPPER.put("Athletic Bilbao", "Bilbao");
+        TEAM_NAME_WRAPPER.put("Athletic Bilbao", "Athletic");
         TEAM_NAME_WRAPPER.put("Atlético Madrid", "Atlético");
-        TEAM_NAME_WRAPPER.put("Atletico Madrid", "Atlético");
         TEAM_NAME_WRAPPER.put("Cadiz", "Cadix");
         TEAM_NAME_WRAPPER.put("Real Betis", "Betis");
     }
@@ -139,8 +153,7 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractInjuredSuspende
             if (line.select("td").size() == 1) {
                 // No players injured or suspended for this team
                 if (!line.selectFirst("td").text().contains("No players are currently injured or suspended")) {
-                    throw new UnsupportedOperationException(String.format(
-                            "Only one line, but not with correct message for no injured/suspended players: %s", line.selectFirst("td").ownText()));
+                    throw new UnsupportedOperationException(String.format("Only one line, but not with correct message for no injured/suspended players: %s", line.selectFirst("td").ownText()));
                 }
                 break;
             }
