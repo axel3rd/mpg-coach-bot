@@ -17,26 +17,22 @@ import jakarta.ws.rs.ServiceUnavailableException;
  * - https://www.sportsgambler.com/injuries/football<br/>
  * - (Before February 2021: https://www.sportsgambler.com/football/injuries-suspensions)<br/>
  * - https://maligue2.fr/2020/08/20/joueurs-blesses-et-suspendus/<br/>
- * - https://www.equipeactu.fr/blessures-et-suspensions/fodbold/<br/>
  */
 public class InjuredSuspendedWrapperClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(InjuredSuspendedWrapperClient.class);
     private static InjuredSuspendedSportsGamblerClient sportsGamblerClient = null;
-    private static InjuredSuspendedEquipeActuClient equipeActuClient = null;
     private static InjuredSuspendedMaLigue2Client maLigue2Client = null;
     private boolean sportsGamblerReachable = true;
     private boolean maLigue2Reachable = true;
 
     public static InjuredSuspendedWrapperClient build(Config config) {
-        return build(config, null, null, null);
+        return build(config, null, null);
     }
 
-    public static InjuredSuspendedWrapperClient build(Config config, String urlOverrideSportsGambler, String urlOverrideEquipeActu,
-            String urlOverrideMaLigue2) {
+    public static InjuredSuspendedWrapperClient build(Config config, String urlOverrideSportsGambler, String urlOverrideMaLigue2) {
         InjuredSuspendedWrapperClient client = new InjuredSuspendedWrapperClient();
         sportsGamblerClient = InjuredSuspendedSportsGamblerClient.build(config, urlOverrideSportsGambler);
-        equipeActuClient = InjuredSuspendedEquipeActuClient.build(config, urlOverrideEquipeActu);
         maLigue2Client = InjuredSuspendedMaLigue2Client.build(config, urlOverrideMaLigue2);
         return client;
     }
@@ -45,10 +41,10 @@ public class InjuredSuspendedWrapperClient {
      * Return injured or suspended player
      * 
      * @param championship Championship of player
-     * @param name Player Name
-     * @param position Position (used to improve "out player" matching if not null)
-     * @param teamName Team Name
-     * @param excludes {@link OutType} to exclude
+     * @param name         Player Name
+     * @param position     Position (used to improve "out player" matching if not null)
+     * @param teamName     Team Name
+     * @param excludes     {@link OutType} to exclude
      * @return Player or null if not found
      */
     public Player getPlayer(ChampionshipOutType championship, String playerName, Position position, String teamName, OutType... excludes) {
@@ -71,19 +67,11 @@ public class InjuredSuspendedWrapperClient {
             if (sportsGamblerReachable) {
                 return useDirectlyOnlyForTestGetSportsGamblerClient().getPlayer(championship, playerName, teamName);
             }
-        } catch (UrlForbiddenException | ServiceUnavailableException e) {
-            LOG.error("WARN: SportsGambler is not reacheable, fallback to EquipeActu...");
-            sportsGamblerReachable = false;
-        } catch (TeamsNotFoundException e) {
-            LOG.error("WARN: No teams found on SportsGambler, fallback to EquipeActu...");
+        } catch (UrlForbiddenException | ServiceUnavailableException | TeamsNotFoundException e) {
+            LOG.error("WARN: SportsGambler is unavailable, injured/suspended players not taken into account :-(");
             LOG.error("(Your IP is perhaps temporary ban, try to increase 'request.wait.time' parameter)");
         }
-        // Fallback on EquipeActu if SportsGambler not reachable
-        return useDirectlyOnlyForTestGetEquipeActuClient().getPlayer(championship, playerName, position, teamName, excludes);
-    }
-
-    public InjuredSuspendedEquipeActuClient useDirectlyOnlyForTestGetEquipeActuClient() {
-        return equipeActuClient;
+        return null;
     }
 
     public InjuredSuspendedSportsGamblerClient useDirectlyOnlyForTestGetSportsGamblerClient() {
