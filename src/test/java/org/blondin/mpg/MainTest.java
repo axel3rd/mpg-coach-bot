@@ -15,7 +15,6 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -422,36 +421,24 @@ public class MainTest extends AbstractMockTestClient {
         InjuredSuspendedWrapperClient injuredSuspendedClientLocal = injuredSuspendedClient;
         if (injuredSuspendedClientLocal == null) {
             injuredSuspendedClientLocal = InjuredSuspendedWrapperClient.build(c, "http://localhost:" + getServer().port() + "/injuries/football/",
-                    "http://localhost:" + getServer().port() + "/blessures-et-suspensions/fodbold/", "http://localhost:" + getServer().port() + "/2020/08/20/joueurs-blesses-et-suspendus/");
+                    "http://localhost:" + getServer().port() + "/2020/08/20/joueurs-blesses-et-suspendus/");
         }
         Main.process(ApiClients.build(mpgClientLocal, mpgStatsClientLocal, injuredSuspendedClientLocal), c);
     }
 
-    private static void prepareMainFrenchLigue1Mocks(String dashboard, String poolPlayerYear, String statsLeaguesDate, String sportsGamblerDateOrEquipeActu) {
-        try {
-            if (StringUtils.isBlank(sportsGamblerDateOrEquipeActu)) {
-                prepareMainFrenchLigueMocks(dashboard, 1, null, statsLeaguesDate, null, null, null);
-                return;
-            }
-            final SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdddd");
-            Date sportsGamblerSwitch = dateParser.parse("20201010");
-            Date dataFileDate = dateParser.parse(sportsGamblerDateOrEquipeActu);
-            if (dataFileDate.after(sportsGamblerSwitch)) {
-                prepareMainFrenchLigueMocks(dashboard, 1, poolPlayerYear, statsLeaguesDate, sportsGamblerDateOrEquipeActu, null, null);
-            } else {
-                prepareMainFrenchLigueMocks(dashboard, 1, poolPlayerYear, statsLeaguesDate, null, sportsGamblerDateOrEquipeActu, null);
-            }
-        } catch (ParseException e) {
-            throw new UnsupportedOperationException(e);
+    private static void prepareMainFrenchLigue1Mocks(String dashboard, String poolPlayerYear, String statsLeaguesDate, String sportsGamblerDate) {
+        if (StringUtils.isBlank(sportsGamblerDate)) {
+            prepareMainFrenchLigueMocks(dashboard, 1, null, statsLeaguesDate, null, null);
+            return;
         }
+        prepareMainFrenchLigueMocks(dashboard, 1, poolPlayerYear, statsLeaguesDate, sportsGamblerDate, null);
     }
 
     private static void prepareMainFrenchLigue2Mocks(String dashboard, String poolPlayerYear, String statsLeaguesDate, String maLigue2Date) {
-        prepareMainFrenchLigueMocks(dashboard, 2, poolPlayerYear, statsLeaguesDate, null, null, maLigue2Date);
+        prepareMainFrenchLigueMocks(dashboard, 2, poolPlayerYear, statsLeaguesDate, null, maLigue2Date);
     }
 
-    private static void prepareMainFrenchLigueMocks(String dashboard, int frenchLigue, String poolPlayerYear, String statsLeaguesDate, String sportsGamblerDate, String equipeActuDate,
-            String maLigue2Date) {
+    private static void prepareMainFrenchLigueMocks(String dashboard, int frenchLigue, String poolPlayerYear, String statsLeaguesDate, String sportsGamblerDate, String maLigue2Date) {
         try {
             SimpleDateFormat dateDayFormat = new SimpleDateFormat("yyyyMMdd");
             SimpleDateFormat dateYearFormat = new SimpleDateFormat("yyyy");
@@ -475,14 +462,6 @@ public class MainTest extends AbstractMockTestClient {
                 dateDayFormat.parse(sportsGamblerDate);
                 stubFor(get("/injuries/football/france-ligue-" + frenchLigue + "/")
                         .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.ligue-" + frenchLigue + "." + sportsGamblerDate + ".html")));
-            }
-            if (StringUtils.isNotBlank(equipeActuDate)) {
-                dateDayFormat.parse(equipeActuDate);
-                stubFor(get("/blessures-et-suspensions/fodbold/france/ligue-" + frenchLigue)
-                        .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("equipeactu.ligue-" + frenchLigue + "." + equipeActuDate + ".html")));
-
-                // 403 on SportsGambler, to force FallBack on EquipeActu
-                stubFor(get("/injuries/football/france-ligue-" + frenchLigue + "/").willReturn(aResponse().withStatus(Response.Status.FORBIDDEN.getStatusCode())));
             }
             if (StringUtils.isNotBlank(maLigue2Date)) {
                 stubFor(get("/2020/08/20/joueurs-blesses-et-suspendus/")
