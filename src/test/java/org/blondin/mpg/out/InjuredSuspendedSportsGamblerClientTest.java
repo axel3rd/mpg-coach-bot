@@ -48,8 +48,7 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
         }
 
         InjuredSuspendedSportsGamblerClient client = spy(InjuredSuspendedSportsGamblerClient.build(null));
-        doReturn(FileUtils.readFileToString(new File(TESTFILES_BASE, "sportsgambler." + name + "." + date + ".html"), Charset.forName("UTF-8")))
-                .when(client).getHtmlContent(type);
+        doReturn(FileUtils.readFileToString(new File(TESTFILES_BASE, "sportsgambler." + name + "." + date + ".html"), Charset.forName("UTF-8"))).when(client).getHtmlContent(type);
         return client;
     }
 
@@ -83,20 +82,104 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
     }
 
     @Test
-    public void testCheckTeams20210224PL() throws Exception {
-        InjuredSuspendedSportsGamblerClient client = getClientFromFile(ChampionshipOutType.PREMIER_LEAGUE, "20210224");
-        Assert.assertEquals(79, client.getPlayers(ChampionshipOutType.PREMIER_LEAGUE).size());
+    public void testCheckTeams20230807SerieA() throws Exception {
+        InjuredSuspendedSportsGamblerClient client = getClientFromFile(ChampionshipOutType.SERIE_A, "20230807");
+        Assert.assertEquals(19, client.getPlayers(ChampionshipOutType.SERIE_A).size());
 
-        Assert.assertNotNull(client.getPlayer(ChampionshipOutType.PREMIER_LEAGUE, "Paul Pogba", "Man. United"));
-        Assert.assertNotNull(client.getPlayer(ChampionshipOutType.PREMIER_LEAGUE, "Paul Pogba", Position.M, "Man. United"));
-        Assert.assertNull(client.getPlayer(ChampionshipOutType.PREMIER_LEAGUE, "Paul Pogba", Position.A, "Man. United"));
-        Assert.assertNull(client.getPlayer(ChampionshipOutType.PREMIER_LEAGUE, "Paul Pogba", "Chelsea"));
+        List<String> mpgTeams = Arrays.asList("Atalanta", "Bologna", "Cagliari", "Empoli", "Fiorentina", "Frosinone", "Genoa", "Inter", "Juventus", "Lazio", "Lecce", "Milan", "Monza", "Napoli",
+                "Roma", "Salernitana", "Sassuolo", "Torino", "Udinese", "Verona");
 
-        List<String> mpgTeams = Arrays.asList("Arsenal", "Aston Villa", "Brighton", "Burnley", "Chelsea", "Crystal Palace", "Everton", "Fulham",
-                "Leeds", "Leicester", "Liverpool", "Man. City", "Man. United", "Newcastle", "Sheffield", "Southampton", "Tottenham", "West Bromwich",
-                "West Ham", "Wolverhampton");
+        // Some teams has no injured at this date
+        List<String> mpgTeamsWithoutNoInjured = new ArrayList<String>(mpgTeams);
+        mpgTeamsWithoutNoInjured.remove("Cagliari");
+        mpgTeamsWithoutNoInjured.remove("Fiorentina");
+        mpgTeamsWithoutNoInjured.remove("Lazio");
+        mpgTeamsWithoutNoInjured.remove("Lecce");
+        mpgTeamsWithoutNoInjured.remove("Monza");
+        mpgTeamsWithoutNoInjured.remove("Salernitana");
+        mpgTeamsWithoutNoInjured.remove("Torino");
 
-        testMappingTeams(mpgTeams, ChampionshipOutType.PREMIER_LEAGUE, "20210224");
+        testMappingTeams(mpgTeamsWithoutNoInjured, ChampionshipOutType.SERIE_A, "20230807");
+    }
+
+    @Test
+    public void testCheckTeams20230807LigA() throws Exception {
+        InjuredSuspendedSportsGamblerClient client = getClientFromFile(ChampionshipOutType.LIGA, "20230807");
+        Assert.assertEquals(20, client.getPlayers(ChampionshipOutType.LIGA).size());
+
+        List<String> mpgTeams = Arrays.asList("Alavés", "Almería", "Athletic", "Atlético", "Barcelona", "Betis", "Celta", "Cádiz", "Getafe", "Girona", "Granada", "Las Palmas", "Mallorca", "Osasuna",
+                "Rayo Vallecano", "Real Madrid", "Real Sociedad", "Sevilla", "Valencia", "Villarreal");
+
+        // Some teams has no injured at this date
+        List<String> mpgTeamsWithoutNoInjured = new ArrayList<String>(mpgTeams);
+        mpgTeamsWithoutNoInjured.remove("Athletic");
+        mpgTeamsWithoutNoInjured.remove("Celta");
+        mpgTeamsWithoutNoInjured.remove("Alavés");
+        mpgTeamsWithoutNoInjured.remove("Granada");
+        mpgTeamsWithoutNoInjured.remove("Mallorca");
+        mpgTeamsWithoutNoInjured.remove("Rayo Vallecano");
+        mpgTeamsWithoutNoInjured.remove("Real Madrid");
+        mpgTeamsWithoutNoInjured.remove("Sevilla");
+
+        testMappingTeams(mpgTeamsWithoutNoInjured, ChampionshipOutType.LIGA, "20230807");
+    }
+
+    @Test
+    public void testCheckTeams20230807PL() throws Exception {
+        InjuredSuspendedSportsGamblerClient client = getClientFromFile(ChampionshipOutType.PREMIER_LEAGUE, "20230807");
+        Assert.assertEquals(29, client.getPlayers(ChampionshipOutType.PREMIER_LEAGUE).size());
+
+        Assert.assertNotNull(client.getPlayer(ChampionshipOutType.PREMIER_LEAGUE, "Tyrell Malacia", "Man. United"));
+        Assert.assertNotNull(client.getPlayer(ChampionshipOutType.PREMIER_LEAGUE, "Tyrell Malacia", Position.D, "Man. United"));
+        Assert.assertNotNull(client.getPlayer(ChampionshipOutType.PREMIER_LEAGUE, " Nathan Aké", Position.D, "Man. City"));
+
+        List<String> mpgTeams = Arrays.asList("Arsenal", "Aston Villa", "Bournemouth", "Brentford", "Brighton", "Burnley", "Chelsea", "Crystal Palace", "Everton", "Fulham", "Liverpool", "Luton Town",
+                "Man. City", "Man. United", "Newcastle", "Nottigham Forest", "Sheffield", "Tottenham", "West Ham", "Wolverhampton");
+
+        // Some teams has no injured at this date
+        List<String> mpgTeamsWithoutNoInjured = new ArrayList<String>(mpgTeams);
+        mpgTeamsWithoutNoInjured.remove("Aston Villa");
+        mpgTeamsWithoutNoInjured.remove("Brighton");
+        mpgTeamsWithoutNoInjured.remove("Luton Town");
+        mpgTeamsWithoutNoInjured.remove("Sheffield");
+        mpgTeamsWithoutNoInjured.remove("West Ham");
+        mpgTeamsWithoutNoInjured.remove("Wolverhampton");
+
+        testMappingTeams(mpgTeamsWithoutNoInjured, ChampionshipOutType.PREMIER_LEAGUE, "20230807");
+    }
+
+    @Test
+    public void testCheckTeamsAndParsing20230807L1() throws Exception {
+        InjuredSuspendedSportsGamblerClient client = getClientFromFile(ChampionshipOutType.LIGUE_1, "20230807");
+        Assert.assertEquals(6, client.getPlayers(ChampionshipOutType.LIGUE_1).size());
+
+        Assert.assertNotNull(client.getPlayer(ChampionshipOutType.LIGUE_1, "Leonardo Balerdi", Position.D, "OM", OutType.ASBENT, OutType.INJURY_GREEN, OutType.INJURY_ORANGE, OutType.INJURY_RED));
+        Assert.assertNotNull(client.getPlayer(ChampionshipOutType.LIGUE_1, "Breel Embolo", Position.A, "AS Monaco"));
+        Assert.assertNotNull(client.getPlayer(ChampionshipOutType.LIGUE_1, "Sergio Rico", Position.G, "Paris SG"));
+        Assert.assertNotNull(client.getPlayer(ChampionshipOutType.LIGUE_1, "Emmanuel Agbadou", Position.D, "Reims"));
+        Assert.assertNotNull(client.getPlayer(ChampionshipOutType.LIGUE_1, "Ludovic Blas", Position.M, "Rennes"));
+
+        List<String> mpgTeams = Arrays.asList("AS Monaco", "OM", "Paris SG", "Reims", "Rennes", "Strasbourg");
+        testMappingTeams(mpgTeams, ChampionshipOutType.LIGUE_1, "20230807");
+
+        Assert.assertEquals("Brest", client.getMpgTeamName("Brest"));
+        Assert.assertEquals("Clermont", client.getMpgTeamName("Clermont"));
+        Assert.assertEquals("Havre AC", client.getMpgTeamName("Le Havre"));
+        Assert.assertEquals("RC Lens", client.getMpgTeamName("Lens"));
+        Assert.assertEquals("LOSC", client.getMpgTeamName("Lille"));
+        Assert.assertEquals("FC Lorient", client.getMpgTeamName("Lorient"));
+        Assert.assertEquals("OL", client.getMpgTeamName("Lyon"));
+        Assert.assertEquals("OM", client.getMpgTeamName("Marseille"));
+        Assert.assertEquals("FC Metz", client.getMpgTeamName("Metz"));
+        Assert.assertEquals("AS Monaco", client.getMpgTeamName("Monaco"));
+        Assert.assertEquals("Montpellier", client.getMpgTeamName("Montpellier"));
+        Assert.assertEquals("FC Nantes", client.getMpgTeamName("Nantes"));
+        Assert.assertEquals("OGC Nice", client.getMpgTeamName("Nice"));
+        Assert.assertEquals("Paris SG", client.getMpgTeamName("PSG"));
+        Assert.assertEquals("Reims", client.getMpgTeamName("Reims"));
+        Assert.assertEquals("Rennes", client.getMpgTeamName("Rennes"));
+        Assert.assertEquals("Strasbourg", client.getMpgTeamName("Strasbourg"));
+        Assert.assertEquals("Toulouse FC", client.getMpgTeamName("Toulouse"));
     }
 
     @Test
@@ -104,63 +187,15 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
         InjuredSuspendedSportsGamblerClient client = getClientFromFile(ChampionshipOutType.SERIE_A, "20210224");
         Assert.assertEquals(69, client.getPlayers(ChampionshipOutType.SERIE_A).size());
 
-        List<String> mpgTeams = Arrays.asList("Atalanta", "Benevento", "Bologna", "Cagliari", "Crotone", "Fiorentina", "Genoa", "Inter", "Juventus",
-                "Lazio", "Milan", "Napoli", "Parma", "Roma", "Sampdoria", "Sassuolo", "Spezia", "Torino", "Udinese", "Verona");
+        List<String> mpgTeams = Arrays.asList("Atalanta", "Benevento", "Bologna", "Cagliari", "Crotone", "Fiorentina", "Genoa", "Inter", "Juventus", "Lazio", "Milan", "Napoli", "Parma", "Roma",
+                "Sampdoria", "Sassuolo", "Spezia", "Torino", "Udinese", "Verona");
         testMappingTeams(mpgTeams, ChampionshipOutType.SERIE_A, "20210224");
     }
 
     @Test
-    public void testCheckTeams20210224LigA() throws Exception {
-        InjuredSuspendedSportsGamblerClient client = getClientFromFile(ChampionshipOutType.LIGA, "20210224");
-        Assert.assertEquals(87, client.getPlayers(ChampionshipOutType.LIGA).size());
-
-        List<String> mpgTeams = Arrays.asList("Alavés", "Atlético", "Barcelona", "Betis", "Bilbao", "Cadix", "Celta", "Eibar", "Elche", "Getafe",
-                "Granada", "Huesca", "Levante", "Osasuna", "Real Madrid", "Real Sociedad", "Sevilla", "Valencia", "Valladolid", "Villarreal");
-
-        // Some teams has no injured at this date
-        List<String> mpgTeamsWithoutNoInjured = new ArrayList<String>(mpgTeams);
-        mpgTeamsWithoutNoInjured.remove("Getafe");
-
-        testMappingTeams(mpgTeamsWithoutNoInjured, ChampionshipOutType.LIGA, "20210224");
-    }
-
-    @Test
-    public void testCheckTeamsAndParsing20210224L1() throws Exception {
-        InjuredSuspendedSportsGamblerClient client = getClientFromFile(ChampionshipOutType.LIGUE_1, "20210224");
-        Assert.assertEquals(70, client.getPlayers(ChampionshipOutType.LIGUE_1).size());
-
-        Player p = client.getPlayer(ChampionshipOutType.LIGUE_1, "Angel Di Maria", "Paris");
-        Assert.assertNotNull(p);
-
-        List<String> mpgTeams = Arrays.asList("Angers", "Bordeaux", "Brest", "Dijon", "Lens", "Lille", "Lorient", "Lyon", "Marseille", "Metz",
-                "Monaco", "Montpellier", "Nantes", "Nice", "Nîmes", "Paris", "Reims", "Rennes", "Saint-Étienne", "Strasbourg");
-        testMappingTeams(mpgTeams, ChampionshipOutType.LIGUE_1, "20210224");
-    }
-
-    @Test
-    public void testCheckTeams20201020L1() throws Exception {
-        List<String> mpgTeams = Arrays.asList("Angers", "Bordeaux", "Brest", "Dijon", "Lens", "Lille", "Lorient", "Lyon", "Marseille", "Metz",
-                "Monaco", "Montpellier", "Nantes", "Nice", "Nîmes", "Paris", "Reims", "Rennes", "Saint-Étienne", "Strasbourg");
-
-        // Some teams has no injured at this date
-        List<String> mpgTeamsWithoutNoInjured = new ArrayList<String>(mpgTeams);
-        mpgTeamsWithoutNoInjured.remove("Lille");
-        testMappingTeams(mpgTeamsWithoutNoInjured, ChampionshipOutType.LIGUE_1, "20201020");
-    }
-
-    @Test
-    public void testCheckTeams20201020PL() throws Exception {
-        List<String> mpgTeams = Arrays.asList("Arsenal", "Aston Villa", "Brighton", "Burnley", "Chelsea", "Crystal Palace", "Everton", "Fulham",
-                "Leeds", "Leicester", "Liverpool", "Man. City", "Man. United", "Newcastle", "Sheffield", "Southampton", "Tottenham", "West Bromwich",
-                "West Ham", "Wolverhampton");
-
-        testMappingTeams(mpgTeams, ChampionshipOutType.PREMIER_LEAGUE, "20201020");
-    }
-
-    @Test
     public void testCheckTeams20201020SerieA() throws Exception {
-        List<String> mpgTeams = Arrays.asList("Atalanta", "Benevento", "Bologna", "Cagliari", "Crotone", "Fiorentina", "Genoa", "Inter", "Juventus",
-                "Lazio", "Milan", "Napoli", "Parma", "Roma", "Sampdoria", "Sassuolo", "Spezia", "Torino", "Udinese", "Verona");
+        List<String> mpgTeams = Arrays.asList("Atalanta", "Benevento", "Bologna", "Cagliari", "Crotone", "Fiorentina", "Genoa", "Inter", "Juventus", "Lazio", "Milan", "Napoli", "Parma", "Roma",
+                "Sampdoria", "Sassuolo", "Spezia", "Torino", "Udinese", "Verona");
 
         // Some teams has no injured at this date
         List<String> mpgTeamsWithoutNoInjured = new ArrayList<String>(mpgTeams);
@@ -170,21 +205,8 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
     }
 
     @Test
-    public void testCheckTeams20201020LigA() throws Exception {
-        List<String> mpgTeams = Arrays.asList("Alavés", "Atlético", "Barcelona", "Betis", "Bilbao", "Cadix", "Celta", "Eibar", "Elche", "Getafe",
-                "Granada", "Huesca", "Levante", "Osasuna", "Real Madrid", "Real Sociedad", "Sevilla", "Valencia", "Valladolid", "Villarreal");
-
-        // Some teams has no injured at this date
-        List<String> mpgTeamsWithoutNoInjured = new ArrayList<String>(mpgTeams);
-        mpgTeamsWithoutNoInjured.remove("Alavés");
-
-        testMappingTeams(mpgTeamsWithoutNoInjured, ChampionshipOutType.LIGA, "20201020");
-    }
-
-    @Test
     public void testLocalMapping() throws Exception {
-        for (ChampionshipOutType c : Arrays.asList(ChampionshipOutType.LIGUE_1, ChampionshipOutType.PREMIER_LEAGUE, ChampionshipOutType.LIGA,
-                ChampionshipOutType.SERIE_A)) {
+        for (ChampionshipOutType c : Arrays.asList(ChampionshipOutType.LIGUE_1, ChampionshipOutType.PREMIER_LEAGUE, ChampionshipOutType.LIGA, ChampionshipOutType.SERIE_A)) {
             List<Player> players = getClientFromFile(c, "20201020").getPlayers(c);
             Assert.assertNotNull(players);
             Assert.assertTrue(players.size() > 10);
@@ -210,14 +232,7 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
         Assert.assertNotNull(client.getPlayer(c, "zinEdine ferHat", "Nîmes"));
         Assert.assertNotNull(client.getPlayer(c, "Ferhat Zinedine", "Nîmes"));
 
-        Player p = client.getPlayer(c, "Kasper Dolberg", "Nice");
-        Assert.assertNotNull(p);
-        Assert.assertEquals("Kasper Dolberg", p.getFullNameWithPosition());
-        Assert.assertEquals(OutType.INJURY_RED, p.getOutType());
-        Assert.assertEquals("Sprained ankle", p.getDescription());
-        Assert.assertEquals("Early November", p.getLength());
-
-        p = client.getPlayer(c, "Angel Di Maria", "Paris");
+        Player p = client.getPlayer(c, "Angel Di Maria", "Paris");
         Assert.assertNotNull(p);
         Assert.assertEquals("Angel Di Maria", p.getFullNameWithPosition());
         Assert.assertEquals(OutType.SUSPENDED, p.getOutType());
@@ -289,26 +304,19 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
 
     @Test
     public void testMock() throws Exception {
-        stubFor(get("/injuries/football/france-ligue-1/")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.ligue-1.20201020.html")));
-        stubFor(get("/injuries/football/england-premier-league/")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.premier-league.20201020.html")));
-        stubFor(get("/injuries/football/spain-la-liga/")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.liga.20201020.html")));
-        stubFor(get("/injuries/football/italy-serie-a/")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.serie-a.20201020.html")));
+        stubFor(get("/injuries/football/france-ligue-1/").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.ligue-1.20201020.html")));
+        stubFor(get("/injuries/football/england-premier-league/").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.premier-league.20201020.html")));
+        stubFor(get("/injuries/football/spain-la-liga/").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.liga.20201020.html")));
+        stubFor(get("/injuries/football/italy-serie-a/").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.serie-a.20201020.html")));
 
-        InjuredSuspendedSportsGamblerClient injuredSuspendedClient = InjuredSuspendedSportsGamblerClient.build(getConfig(),
-                "http://localhost:" + getServer().port() + "/injuries/football/");
+        InjuredSuspendedSportsGamblerClient injuredSuspendedClient = InjuredSuspendedSportsGamblerClient.build(getConfig(), "http://localhost:" + getServer().port() + "/injuries/football/");
 
         // Remove cache
-        File tmpFile = InjuredSuspendedSportsGamblerClient.getCacheFile("http://localhost:" + getServer().port() + "/injuries/football/",
-                "france-ligue-1/");
+        File tmpFile = InjuredSuspendedSportsGamblerClient.getCacheFile("http://localhost:" + getServer().port() + "/injuries/football/", "france-ligue-1/");
         tmpFile.delete();
         Assert.assertFalse(tmpFile.exists());
 
-        for (ChampionshipOutType type : Arrays.asList(ChampionshipOutType.LIGUE_1, ChampionshipOutType.PREMIER_LEAGUE, ChampionshipOutType.LIGA,
-                ChampionshipOutType.SERIE_A)) {
+        for (ChampionshipOutType type : Arrays.asList(ChampionshipOutType.LIGUE_1, ChampionshipOutType.PREMIER_LEAGUE, ChampionshipOutType.LIGA, ChampionshipOutType.SERIE_A)) {
             List<Player> players = injuredSuspendedClient.getPlayers(type);
             Assert.assertNotNull(players);
             Assert.assertTrue(String.valueOf(players.size()), players.size() > 10);
@@ -317,8 +325,7 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
         // Verify cache file has been created, recall and verify date file doesn't change
         Assert.assertTrue(tmpFile.exists());
         long cacheDate = tmpFile.lastModified();
-        injuredSuspendedClient = InjuredSuspendedSportsGamblerClient.build(getConfig(),
-                "http://localhost:" + getServer().port() + "/injuries/football/");
+        injuredSuspendedClient = InjuredSuspendedSportsGamblerClient.build(getConfig(), "http://localhost:" + getServer().port() + "/injuries/football/");
         injuredSuspendedClient.getPlayers(ChampionshipOutType.LIGUE_1);
         Assert.assertEquals(cacheDate, tmpFile.lastModified());
     }
