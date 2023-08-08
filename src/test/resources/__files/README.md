@@ -35,13 +35,13 @@ The `XXX` should be replaced by a use case scenario (like date, some league, dat
 
 ### Players Injury / Suspended
 
-| **File**                                         | **URL**                                                                                | **Description**                                                                                                                                                   |
-| ------------------------------------------------ | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `maligue2.joueurs-blesses-et-suspendus.XXX.html` | <https://maligue2.fr/2020/08/20/joueurs-blesses-et-suspendus/>                         | Injury / Suspended players for **Ligue 2 (France)**                                                                                                               |
-| `sportsgambler.liga.XXX.html`                    | <https://www.sportsgambler.com/injuries/football/spain-la-liga/>                       | Injury / Suspended players for **Liga (Spain)**                                                                                                                   |
-| `sportsgambler.ligue-1.XXX.html`                 | <https://www.sportsgambler.com/injuries/football/france-ligue-1/>                      | Injury / Suspended players for **Ligue 1 (France)**                                                                                                               |
-| `sportsgambler.premier-league.XXX.html`          | <https://www.sportsgambler.com/injuries/football/england-premier-league/>              | Injury / Suspended players for **Premiere League (England)**                                                                                                      |
-| `sportsgambler.serie-a.XXX.html`                 | <https://www.sportsgambler.com/injuries/football/italy-serie-a/>                       | Injury / Suspended players for **Seria A (Italia)**                                                                                                               |
+| **File**                                         | **URL**                                                                   | **Description**                                              |
+| ------------------------------------------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| `maligue2.joueurs-blesses-et-suspendus.XXX.html` | <https://maligue2.fr/2020/08/20/joueurs-blesses-et-suspendus/>            | Injury / Suspended players for **Ligue 2 (France)**          |
+| `sportsgambler.liga.XXX.html`                    | <https://www.sportsgambler.com/injuries/football/spain-la-liga/>          | Injury / Suspended players for **Liga (Spain)**              |
+| `sportsgambler.ligue-1.XXX.html`                 | <https://www.sportsgambler.com/injuries/football/france-ligue-1/>         | Injury / Suspended players for **Ligue 1 (France)**          |
+| `sportsgambler.premier-league.XXX.html`          | <https://www.sportsgambler.com/injuries/football/england-premier-league/> | Injury / Suspended players for **Premiere League (England)** |
+| `sportsgambler.serie-a.XXX.html`                 | <https://www.sportsgambler.com/injuries/football/italy-serie-a/>          | Injury / Suspended players for **Seria A (Italia)**          |
 
 ### Mpg Mobile App (complement, if needed)
 
