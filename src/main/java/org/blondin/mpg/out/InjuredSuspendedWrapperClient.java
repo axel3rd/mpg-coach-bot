@@ -5,8 +5,6 @@ import org.blondin.mpg.config.Config;
 import org.blondin.mpg.out.model.OutType;
 import org.blondin.mpg.out.model.Player;
 import org.blondin.mpg.out.model.Position;
-import org.blondin.mpg.root.exception.TeamsNotFoundException;
-import org.blondin.mpg.root.exception.UrlForbiddenException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,10 +39,10 @@ public class InjuredSuspendedWrapperClient {
      * Return injured or suspended player
      * 
      * @param championship Championship of player
-     * @param name         Player Name
-     * @param position     Position (used to improve "out player" matching if not null)
-     * @param teamName     Team Name
-     * @param excludes     {@link OutType} to exclude
+     * @param name Player Name
+     * @param position Position (used to improve "out player" matching if not null)
+     * @param teamName Team Name
+     * @param excludes {@link OutType} to exclude
      * @return Player or null if not found
      */
     public Player getPlayer(ChampionshipOutType championship, String playerName, Position position, String teamName, OutType... excludes) {
@@ -52,30 +50,27 @@ public class InjuredSuspendedWrapperClient {
             throw new UnsupportedOperationException("Main parameters (championship, playerName, position, teamName) can not be null");
         }
         if (ChampionshipOutType.LIGUE_2.equals(championship)) {
-            if (!maLigue2Reachable) {
-                return null;
-            }
             try {
-                return maLigue2Client.getPlayer(playerName, teamName);
-            } catch (ServiceUnavailableException e) {
-                LOG.error("WARN: Maligue2.fr is unavailable, L2 injured/suspended players not taken into account :-(");
+                if (maLigue2Reachable) {
+                    return maLigue2Client.getPlayer(playerName, teamName);
+                }
+            } catch (UnsupportedOperationException | ServiceUnavailableException e) {
+                LOG.warn("WARN: Maligue2.fr is unavailable, L2 injured/suspended players not taken into account :-(");
                 maLigue2Reachable = false;
-                return null;
+
             }
-        }
-        try {
-            if (sportsGamblerReachable) {
-                return useDirectlyOnlyForTestGetSportsGamblerClient().getPlayer(championship, playerName, teamName);
+        } else {
+            try {
+                if (sportsGamblerReachable) {
+                    return sportsGamblerClient.getPlayer(championship, playerName, teamName);
+                }
+            } catch (UnsupportedOperationException | ServiceUnavailableException e) {
+                LOG.warn("WARN: SportsGambler is unavailable, injured/suspended players not taken into account :-(");
+                LOG.warn("(Your IP is perhaps temporary ban, try to increase 'request.wait.time' parameter)");
+                sportsGamblerReachable = false;
             }
-        } catch (UrlForbiddenException | ServiceUnavailableException | TeamsNotFoundException e) {
-            LOG.error("WARN: SportsGambler is unavailable, injured/suspended players not taken into account :-(");
-            LOG.error("(Your IP is perhaps temporary ban, try to increase 'request.wait.time' parameter)");
         }
         return null;
-    }
-
-    public InjuredSuspendedSportsGamblerClient useDirectlyOnlyForTestGetSportsGamblerClient() {
-        return sportsGamblerClient;
     }
 
 }
