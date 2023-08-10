@@ -20,6 +20,8 @@ public class League {
     private int currentTeamStatus;
     @JsonProperty("isLive")
     private boolean live;
+    @JsonProperty("isFollowed")
+    private boolean followed;
     private String nextRealGameWeekDate;
 
     public String getId() {
@@ -56,6 +58,10 @@ public class League {
 
     public boolean isLive() {
         return live;
+    }
+
+    public boolean isFollowed() {
+        return followed;
     }
 
     public String getNextRealGameWeekDate() {
