@@ -73,7 +73,7 @@ public class Main {
 
     static void process(ApiClients apiClients, Config config) {
         for (League league : apiClients.getMpg().getDashboard().getLeagues()) {
-            if (LeagueStatus.TERMINATED.equals(league.getStatus())
+            if (league.isFollowed() || LeagueStatus.TERMINATED.equals(league.getStatus())
                     || (!config.getLeaguesInclude().isEmpty() && !config.getLeaguesInclude().contains(league.getId()))
                     || (!config.getLeaguesExclude().isEmpty() && config.getLeaguesExclude().contains(league.getId()))) {
                 // Don't display any logs

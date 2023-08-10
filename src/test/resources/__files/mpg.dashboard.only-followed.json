@@ -1,0 +1,45 @@
+{
+    "leaguesDivisionsItems": [
+        {
+            "leagueId": "mpg_league_RJH6ZHRM",
+            "name": "L'Al Lighdeh",
+            "adminId": "user_963519",
+            "status": 4,
+            "season": 1,
+            "mode": 1,
+            "defaultDivisionId": "mpg_division_RJH6ZHRM_1_1",
+            "createdAt": "2023-08-01T10:56:48.082Z",
+            "mercatoState": {
+                "divisionsLeft": 0,
+                "usersLeft": 0
+            },
+            "championshipId": 4,
+            "rating": "mpg",
+            "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/ef7dd623-5fe8-4e1a-a924-932777afe21f.jpg",
+            "totalDivisions": 1,
+            "totalUsers": 10,
+            "isFollowed": true
+        }, 
+        {
+            "leagueId": "mpg_league_PJHY1S98",
+            "name": "LeDouaron de Roast'chill",
+            "adminId": "user_1520001",
+            "status": 4,
+            "season": 3,
+            "mode": 1,
+            "defaultDivisionId": "mpg_division_PJHY1S98_3_1",
+            "createdAt": "2022-08-01T17:47:04.196Z",
+            "mercatoState": {
+                "divisionsLeft": 0,
+                "usersLeft": 0
+            },
+            "championshipId": 1,
+            "rating": "mpg",
+            "imageUrl": "https://s3.eu-west-1.amazonaws.com/image.mpg/befdd6ab-2a86-46e8-915a-561a6fc73b3d.png",
+            "totalDivisions": 1,
+            "totalUsers": 10,
+            "isFollowed": true
+        } 
+    ],
+    "defaultOrder": false
+}
