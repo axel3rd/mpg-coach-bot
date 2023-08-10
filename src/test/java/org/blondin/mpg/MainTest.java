@@ -58,7 +58,9 @@ public class MainTest extends AbstractMockTestClient {
             Assert.assertTrue("Bad credentials", e.getMessage().contains("Forbidden URL"));
         } catch (ProcessingException e) {
             // Proxy not configured or real URL not accessible
-            Assert.assertEquals("No network", "java.net.UnknownHostException: api.mpg.football", e.getMessage());
+            Assert.assertTrue("No network: " + e.getMessage(),
+                    Arrays.asList("java.net.UnknownHostException: api.mpg.football", "javax.net.ssl.SSLException: Read timed out")
+                            .contains(e.getMessage()));
         }
     }
 
