@@ -4,7 +4,7 @@
     <groupId>org.blondin</groupId>
     <artifactId>mpg-coach-bot</artifactId>
     <packaging>jar</packaging>
-    <version>1.11</version>
+    <version>1.12-SNAPSHOT</version>
     <name>MPG Coach Bot</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,7 +21,7 @@
     </properties>
     <scm>
         <connection>scm:git:https://github.com/axel3rd/mpg-coach-bot</connection>
-        <tag>mpg-coach-bot-1.11</tag>
+        <tag>HEAD</tag>
     </scm>
     <build>
         <pluginManagement>
