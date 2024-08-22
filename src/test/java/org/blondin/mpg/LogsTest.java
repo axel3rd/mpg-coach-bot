@@ -30,7 +30,7 @@ public class LogsTest extends AbstractMockTestClient {
     }
 
     @Test
-    public void testLevelInfo() throws Exception {
+    public void testLevelInfo() {
         final String content = "{ \"msg\": \"foobar\"}";
         final String path = "/api/test";
         stubFor(get(path).willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(content)));

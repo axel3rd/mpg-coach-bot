@@ -35,7 +35,7 @@ public class ClientMiscTest {
     }
 
     @Test
-    public void testErrorContentMock() throws Exception {
+    public void testErrorContentMock() {
         final String content = "{ \"msg\": \"foobar\"}";
         final String path = "/api/test";
         stubFor(get(path).willReturn(aResponse().withStatus(400).withHeader("Content-Type", "application/json").withBody(content)));
@@ -54,7 +54,7 @@ public class ClientMiscTest {
     }
 
     @Test
-    public void testErrorNoContentMock() throws Exception {
+    public void testErrorNoContentMock() {
         final String path = "/api/test";
         stubFor(get(path).willReturn(aResponse().withStatus(400)));
         AbstractClient client = new AbstractClient(null) {
@@ -139,7 +139,7 @@ public class ClientMiscTest {
     }
 
     @Test
-    public void testWaitBeforeSuccessiveRequestsMock() throws Exception {
+    public void testWaitBeforeSuccessiveRequestsMock() {
         final String content = "Hello";
         final String path = "/api/test";
 

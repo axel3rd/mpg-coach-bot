@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
@@ -42,7 +43,7 @@ public class InjuredSuspendedMaLigue2Client extends AbstractClient {
 
     public static InjuredSuspendedMaLigue2Client build(Config config, String urlOverride) {
         InjuredSuspendedMaLigue2Client client = new InjuredSuspendedMaLigue2Client(config);
-        client.setUrl(StringUtils.defaultString(urlOverride, "https://maligue2.fr/2020/08/20/joueurs-blesses-et-suspendus/"));
+        client.setUrl(Objects.toString(urlOverride, "https://maligue2.fr/2020/08/20/joueurs-blesses-et-suspendus/"));
         return client;
     }
 

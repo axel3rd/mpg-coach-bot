@@ -251,7 +251,7 @@ public class InjuredSuspendedMaLigue2ClientTest extends AbstractMockTestClient {
     }
 
     @Test
-    public void testMock() throws Exception {
+    public void testMock() {
         stubFor(get("/2020/08/20/joueurs-blesses-et-suspendus/")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("maligue2.joueurs-blesses-et-suspendus.20190818.html")));
 

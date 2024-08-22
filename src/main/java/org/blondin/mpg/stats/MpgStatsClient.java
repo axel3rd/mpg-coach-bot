@@ -2,8 +2,8 @@ package org.blondin.mpg.stats;
 
 import java.util.Date;
 import java.util.EnumMap;
+import java.util.Objects;
 
-import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.stats.model.Championship;
@@ -26,7 +26,7 @@ public class MpgStatsClient extends AbstractClient {
 
     public static MpgStatsClient build(Config config, String urlOverride) {
         MpgStatsClient client = new MpgStatsClient(config);
-        client.setUrl(StringUtils.defaultString(urlOverride, "https://api.mlnstats.com"));
+        client.setUrl(Objects.toString(urlOverride, "https://api.mlnstats.com"));
         return client;
     }
 

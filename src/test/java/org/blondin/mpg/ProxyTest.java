@@ -42,7 +42,7 @@ public class ProxyTest {
     public WireMockRule server = new WireMockRule(options().dynamicPort().portNumber());
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
+    public static void setUpClass() {
         // Note: proxy should be transparent, otherwise Proxy-Authenticate header is stripped
         proxy = DefaultHttpProxyServer.bootstrap().withPort(0).withTransparent(true).withFiltersSource(new HttpFiltersSourceAdapter() {
             public HttpFilters filterRequest(HttpRequest originalRequest, ChannelHandlerContext ctx) {
@@ -56,10 +56,8 @@ public class ProxyTest {
                             // If not return 407 with header 'Proxy-Authenticate: Basic realm="mock"'
                             // Otherwise test login/password
                             String proxyAuth = request.headers().get("Proxy-Authorization");
-                            if (StringUtils.isBlank(proxyAuth)
-                                    || !proxyAuth.equals("Basic " + Base64.getEncoder().encodeToString("foo:bar".getBytes()))) {
-                                DefaultHttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1,
-                                        HttpResponseStatus.PROXY_AUTHENTICATION_REQUIRED);
+                            if (StringUtils.isBlank(proxyAuth) || !proxyAuth.equals("Basic " + Base64.getEncoder().encodeToString("foo:bar".getBytes()))) {
+                                DefaultHttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.PROXY_AUTHENTICATION_REQUIRED);
                                 response.headers().add("Proxy-Authenticate", "Basic realm=\"mock\"");
                                 response.headers().add("Proxy-Connection", "close");
                                 response.headers().add("Connection", "close");
@@ -75,7 +73,7 @@ public class ProxyTest {
     }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
+    public static void tearDownClass() {
         proxy.abort();
     }
 

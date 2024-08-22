@@ -14,7 +14,7 @@ import com.github.tomakehurst.wiremock.http.Fault;
 public class InjuredSuspendedWrapperClientTest extends AbstractMockTestClient {
 
     @Test
-    public void testType() throws Exception {
+    public void testType() {
         stubFor(get("/injuries/football/france-ligue-1/").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.ligue-1.20230807.html")));
         stubFor(get("/2020/08/20/joueurs-blesses-et-suspendus/")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("maligue2.joueurs-blesses-et-suspendus.20230802.html")));
@@ -27,7 +27,7 @@ public class InjuredSuspendedWrapperClientTest extends AbstractMockTestClient {
     }
 
     @Test
-    public void testFailSportsgambler() throws Exception {
+    public void testFailSportsgambler() {
         stubFor(get("/injuries/football/france-ligue-1/").willReturn(aResponse().withFault(Fault.RANDOM_DATA_THEN_CLOSE)));
         InjuredSuspendedWrapperClient client = InjuredSuspendedWrapperClient.build(getConfig(), "http://localhost:" + getServer().port() + "/injuries/football/", null);
         Assert.assertNull(client.getPlayer(ChampionshipOutType.LIGUE_1, "Sergio Rico", Position.G, "Paris SG"));
@@ -35,7 +35,7 @@ public class InjuredSuspendedWrapperClientTest extends AbstractMockTestClient {
     }
 
     @Test
-    public void testFailMaligue2() throws Exception {
+    public void testFailMaligue2() {
         stubFor(get("/2020/08/20/joueurs-blesses-et-suspendus/").willReturn(aResponse().withFault(Fault.RANDOM_DATA_THEN_CLOSE)));
         InjuredSuspendedWrapperClient client = InjuredSuspendedWrapperClient.build(getConfig(), null, "http://localhost:" + getServer().port() + "/2020/08/20/joueurs-blesses-et-suspendus/");
         Assert.assertNull(client.getPlayer(ChampionshipOutType.LIGUE_2, "Guidi", Position.D, "Bastia"));
