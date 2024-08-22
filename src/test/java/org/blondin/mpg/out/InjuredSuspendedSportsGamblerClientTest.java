@@ -303,7 +303,7 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
     }
 
     @Test
-    public void testMock() throws Exception {
+    public void testMock() {
         stubFor(get("/injuries/football/france-ligue-1/").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.ligue-1.20201020.html")));
         stubFor(get("/injuries/football/england-premier-league/").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.premier-league.20201020.html")));
         stubFor(get("/injuries/football/spain-la-liga/").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("sportsgambler.liga.20201020.html")));

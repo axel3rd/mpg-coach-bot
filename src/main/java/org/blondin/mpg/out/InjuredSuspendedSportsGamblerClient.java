@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.config.Config;
@@ -82,7 +83,7 @@ public class InjuredSuspendedSportsGamblerClient extends AbstractInjuredSuspende
 
     public static InjuredSuspendedSportsGamblerClient build(Config config, String urlOverride) {
         InjuredSuspendedSportsGamblerClient client = new InjuredSuspendedSportsGamblerClient(config);
-        client.setUrl(StringUtils.defaultString(urlOverride, "https://www.sportsgambler.com/injuries/football"));
+        client.setUrl(Objects.toString(urlOverride, "https://www.sportsgambler.com/injuries/football"));
         return client;
     }
 

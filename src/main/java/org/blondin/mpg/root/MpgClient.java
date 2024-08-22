@@ -3,6 +3,7 @@ package org.blondin.mpg.root;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
@@ -48,7 +49,7 @@ public class MpgClient extends AbstractClient {
 
     public static MpgClient build(Config config, String urlOverride) {
         MpgClient client = new MpgClient(config);
-        client.setUrl(StringUtils.defaultString(urlOverride, "https://api.mpg.football"));
+        client.setUrl(Objects.toString(urlOverride, "https://api.mpg.football"));
         client.signIn(config.getLogin(), config.getPassword());
         return client;
     }
