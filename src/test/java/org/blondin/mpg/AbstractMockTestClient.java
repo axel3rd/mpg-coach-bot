@@ -35,7 +35,7 @@ public abstract class AbstractMockTestClient {
         ConsoleTestAppender.logTestReset();
     }
 
-    protected final static Config getConfig() {
+    protected static final Config getConfig() {
         return config;
     }
 
