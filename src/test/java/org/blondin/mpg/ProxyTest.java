@@ -45,6 +45,8 @@ public class ProxyTest {
     public static void setUpClass() {
         // Note: proxy should be transparent, otherwise Proxy-Authenticate header is stripped
         proxy = DefaultHttpProxyServer.bootstrap().withPort(0).withTransparent(true).withFiltersSource(new HttpFiltersSourceAdapter() {
+
+            @Override
             public HttpFilters filterRequest(HttpRequest originalRequest, ChannelHandlerContext ctx) {
                 return new HttpFiltersAdapter(originalRequest) {
 
