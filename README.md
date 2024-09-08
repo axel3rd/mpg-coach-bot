@@ -83,6 +83,7 @@ To fully automate update your weekly actions on your *MPG* leagues, you can use 
 The main output is displaying:
 
 * Injured players, to remove of your team
+* Your team composition as remind
 * Your team line by line, ordered by efficiency score (*Eff.*), with the players quotation/prices (*Q.*):
 
 ```
@@ -90,7 +91,7 @@ The main output is displaying:
 Out: Aouar Houssem (M - 34.88) - INJURY_ORANGE - Inconnu (depuis 12/11) - Inconnu
 Out: Ambroise Oyongo (D - 11.85) - INJURY_ORANGE - Blessure au genou (depuis 04/11) - Inconnu
 
-Optimized team:
+Optimized team (Compo: 343):
 +---+--------------------+-------+----+
 | P |    Player name     | Eff.  | Q. |
 +---+--------------------+-------+----+
