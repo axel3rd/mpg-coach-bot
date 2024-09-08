@@ -65,7 +65,7 @@ public class Games extends AbstractMpgProcess {
                     Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed());
 
             // Write optimized team
-            writeTeamOptimized(players, config.isDebug());
+            writeTeamOptimized(players, coach.getComposition(), config.isDebug());
 
             // Auto-update team
             if (config.isTeampUpdate()) {
@@ -104,7 +104,7 @@ public class Games extends AbstractMpgProcess {
      * Teams players is only id and price paid => replace by real player
      * 
      * @param teamPlayers teams
-     * @param pool players
+     * @param pool        players
      */
     static void completePlayersTeam(Map<String, Player> teamPlayers, PoolPlayers pool) {
         List<String> players2Remove = new ArrayList<>();
@@ -266,8 +266,8 @@ public class Games extends AbstractMpgProcess {
         return players;
     }
 
-    private static void writeTeamOptimized(List<Player> players, boolean isDebug) {
-        LOG.info("\nOptimized team:");
+    private static void writeTeamOptimized(List<Player> players, int composition, boolean isDebug) {
+        LOG.info("\nOptimized team (Compo: {}):", composition);
         AsciiTable at = getTable(TABLE_POSITION, TABLE_PLAYER_NAME, TABLE_EFFICIENCY, TABLE_QUOTE);
         Position lp = Position.G;
         for (Player player : players) {
