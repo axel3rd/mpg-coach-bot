@@ -26,7 +26,7 @@ public class MpgStatsClient extends AbstractClient {
 
     public static MpgStatsClient build(Config config, String urlOverride) {
         MpgStatsClient client = new MpgStatsClient(config);
-        client.setUrl(Objects.toString(urlOverride, "https://api.mlnstats.com"));
+        client.setUrl(Objects.toString(urlOverride, "https://backend.mpgstats.fr"));
         return client;
     }
 
