@@ -38,7 +38,7 @@ public class MpgStatsClient extends AbstractClient {
             Date leagueDateRefresh = getLeaguesRefresh().getDate(championship.getInfos().getId());
             if (leagueDateRefresh == null || championship.getDate().before(leagueDateRefresh)) {
                 // Force refresh by using a mini cache time
-                championship = get("leagues/" + type.getValue(), Championship.class, 1);
+                championship = get("leagues/" + type.getValue() + "_v2.json", Championship.class, 1);
             }
             cache.put(type, championship);
         }
