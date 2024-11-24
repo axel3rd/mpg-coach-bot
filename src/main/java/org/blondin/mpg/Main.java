@@ -21,9 +21,9 @@ public class Main {
             configFile = args[0];
         }
         Config config = Config.build(configFile);
-        MpgClient mpgClient = MpgClient.build(config);
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(config);
         InjuredSuspendedWrapperClient outPlayersClient = InjuredSuspendedWrapperClient.build(config);
+        MpgClient mpgClient = MpgClient.build(config);
         ApiClients apiClients = ApiClients.build(mpgClient, mpgStatsClient, outPlayersClient);
         process(apiClients, config);
     }
