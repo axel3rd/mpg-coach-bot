@@ -123,7 +123,7 @@ public class Config {
         config.password = parseString(properties, "password");
         if (StringUtils.isBlank(config.login) || StringUtils.isBlank(config.password)) {
             throw new UnsupportedOperationException(
-                    String.format("Login and/or password can't be retrieved from file '%s' of environement variables", fileConfig.getName()));
+                    String.format("Login and/or password cannot be retrieved from file '%s' or environement variables", fileConfig.getName()));
         }
         config.teampUpdate = parseBoolean(properties, "team.update", config.teampUpdate);
         config.efficiencyRecentFocus = parseBoolean(properties, "efficiency.recent.focus", config.efficiencyRecentFocus);

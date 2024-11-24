@@ -65,6 +65,33 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testLeaguesNotSupported() {
+        stubFor(post("/user/sign-in")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/dashboard/leagues")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.unsupported.json")));
+
+        Config config = spy(getConfig());
+        executeMainProcess(config);
+
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Sorry, Champions League is currently not supported"));
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Sorry, Ligue Super is currently not supported"));
+    }
+
+    @Test
+    public void testLeagueWaitMercatoEnd() {
+        stubFor(post("/user/sign-in")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/dashboard/leagues")
+                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.wait-mercato-end.json")));
+
+        Config config = spy(getConfig());
+        executeMainProcess(config);
+
+        Assert.assertTrue(getLogOut(), getLogOut().contains("Some users should select players to kept before Mercato can start, come back soon !"));
+    }
+
+    @Test
     public void testFollowed() {
         stubFor(post("/user/sign-in")
                 .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
@@ -513,6 +540,22 @@ public class MainTest extends AbstractMockTestClient {
         Assert.assertTrue(getLogOut(), getLogOut().contains("Transactions proposal"));
         // currentGameWeek is 2 => selling players should not be displayed
         Assert.assertFalse(getLogOut(), getLogOut().contains("Players to sell (initial cash"));
+    }
+
+    @Test
+    public void testNoConfig() {
+        try {
+            Main.main(null);
+            Assert.fail("No Credentials");
+        } catch (UnsupportedOperationException e) {
+            Assert.assertTrue(e.getMessage().contains("Login and/or password cannot be retrieved"));
+        }
+        try {
+            Main.main(new String[] {});
+            Assert.fail("No Credentials");
+        } catch (UnsupportedOperationException e) {
+            Assert.assertTrue(e.getMessage().contains("Login and/or password cannot be retrieved"));
+        }
     }
 
     private void executeMainProcess(Config config) {
