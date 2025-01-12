@@ -49,7 +49,7 @@ public abstract class AbstractMockTestClient {
      * @return String
      */
     protected String getLogOut() {
-        return ConsoleTestAppender.getLogOut().toString();
+        return ConsoleTestAppender.getLogOut();
     }
 
 }
