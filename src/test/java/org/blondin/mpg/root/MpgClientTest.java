@@ -49,6 +49,26 @@ public class MpgClientTest extends AbstractMockTestClient {
     }
 
     @Test
+    public void testMockTeamPL() {
+        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/team/mpg_team_MLMHBPCB_10_1_3").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.MLMHBPCB.20250112.json")));
+        MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
+        Team team = mpgClient.getTeam("mpg_team_MLMHBPCB_10_1_3");
+        Assert.assertNotNull(team);
+        Assert.assertEquals("Axel Football Club", team.getName());
+        Assert.assertEquals(0, team.getBudget());
+        Assert.assertNotNull(team.getSquad());
+        Assert.assertEquals(19, team.getSquad().size());
+        Player p = team.getSquad().get("mpg_championship_player_223094");
+        Assert.assertNotNull(p);
+        Assert.assertEquals(104, p.getPricePaid());
+        Assert.assertNotNull(team.getBids());
+        Assert.assertEquals(0, team.getBids().size());
+        Assert.assertNotNull(team.getBonuses());
+        Assert.assertEquals(11, team.getBonusesNumber());
+    }
+
+    @Test
     public void testMockDashboardGame() {
         stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
         stubFor(get("/dashboard/leagues").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.MLEFEX6G-status-4.json")));
