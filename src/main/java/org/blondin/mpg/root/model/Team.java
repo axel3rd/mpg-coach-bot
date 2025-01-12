@@ -1,9 +1,8 @@
 package org.blondin.mpg.root.model;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -44,13 +43,7 @@ public class Team {
      * @return Map of Bonuses
      */
     public Map<String, Integer> getBonuses() {
-        Map<String, Integer> b = new HashMap<>();
-        for (Entry<String, Object> e : bonuses.entrySet()) {
-            if (e.getValue() instanceof Integer) {
-                b.put(e.getKey(), (Integer) e.getValue());
-            }
-        }
-        return b;
+        return bonuses.entrySet().stream().filter(entry -> entry.getValue() instanceof Integer).collect(Collectors.toMap(Map.Entry::getKey, entry -> (Integer) entry.getValue()));
     }
 
     public int getBonusesNumber() {
