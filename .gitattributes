@@ -1,1 +1,5 @@
+# Shell script Linux EoF
 *.sh text eol=lf
+
+# Exclude unit test data file from language stats
+src/test/resources/__files/* linguist-vendored
