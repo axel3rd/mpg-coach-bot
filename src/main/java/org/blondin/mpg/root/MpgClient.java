@@ -28,6 +28,8 @@ import jakarta.ws.rs.core.MultivaluedMap;
  */
 public class MpgClient extends AbstractClient {
 
+    private static final String HEADER_AUTHORIZATION = "authorization";
+
     private static final String PREFIX_PATH_DIVISION = "division/";
 
     private static final String PREFIX_ID_DIVISION = "mpg_division_";
@@ -51,17 +53,19 @@ public class MpgClient extends AbstractClient {
     public static MpgClient build(Config config, String urlOverride) {
         MpgClient client = new MpgClient(config);
         client.setUrl(Objects.toString(urlOverride, "https://api.mpg.football"));
-        client.signIn(config.getLogin(), config.getPassword(), config.getAuthentications(), urlOverride);
+
+        OidcLigue1Authenticator authenticator = OidcLigue1Authenticator.build(config, urlOverride);
+        client.signIn(config.getLogin(), config.getPassword(), config.getAuthentications(), authenticator);
         return client;
     }
 
-    void signIn(String login, String password, String authentications, String urlOverride) {
+    void signIn(String login, String password, String authentications, OidcLigue1Authenticator authenticator) {
         String[] auths = authentications.split(",");
         if (auths.length == 0) {
             throw new UnsupportedOperationException("Authentications types should be defined");
         }
         for (String authentication : auths) {
-            if (headers.containsKey("authorization")) {
+            if (headers.containsKey(HEADER_AUTHORIZATION)) {
                 // Authorization set by a previous authentication
                 return;
             }
@@ -77,13 +81,13 @@ public class MpgClient extends AbstractClient {
                 }
                 break;
             case "oidc":
-                signInOidc(login, password, urlOverride);
+                signInOidc(login, password, authenticator);
                 break;
             default:
                 throw new UnsupportedOperationException(String.format("Authentication not supported: '%s'", authentication));
             }
         }
-        if (!headers.containsKey("authorization")) {
+        if (!headers.containsKey(HEADER_AUTHORIZATION)) {
             throw new UnsupportedOperationException(String.format("Authentication cannot be succeed with one of type:: '%s'", authentications));
         }
     }
@@ -95,11 +99,12 @@ public class MpgClient extends AbstractClient {
         entity.put("language", "fr-FR");
         UserSignIn usi = post("user/sign-in", entity, UserSignIn.class);
         this.userId = usi.getUserId();
-        headers.add("authorization", usi.getToken());
+        headers.add(HEADER_AUTHORIZATION, usi.getToken());
     }
 
-    private void signInOidc(String login, String password, String urlOverride) {
-        throw new UnsupportedOperationException("NYI");
+    private void signInOidc(String login, String password, OidcLigue1Authenticator authenticator) {
+        String token = authenticator.authenticate(login, password);
+        headers.add(HEADER_AUTHORIZATION, token);
     }
 
     public String getUserId() {
