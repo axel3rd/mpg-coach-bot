@@ -112,8 +112,7 @@ public abstract class AbstractClient {
         return call(path, headers, entityRequest, entityResponse, -1, true);
     }
 
-    private <T> T call(String path, MultivaluedMap<String, Object> headers, Object entityRequest, Class<T> entityResponse, long cacheTimeMilliSecond,
-            boolean entityRequestPut) {
+    private <T> T call(String path, MultivaluedMap<String, Object> headers, Object entityRequest, Class<T> entityResponse, long cacheTimeMilliSecond, boolean entityRequestPut) {
         long start = System.currentTimeMillis();
         try {
             LOG.debug("Call URL: {}/{} (cache duration ms: {})", url, path, cacheTimeMilliSecond);
@@ -123,8 +122,7 @@ public abstract class AbstractClient {
             File cacheFile = null;
             if (cacheTimeMilliSecond >= 0) {
                 cacheFile = getCacheFile(url, path);
-                if (cacheFile.exists()
-                        && (cacheTimeMilliSecond == 0 || cacheFile.lastModified() > System.currentTimeMillis() - cacheTimeMilliSecond)) {
+                if (cacheFile.exists() && (cacheTimeMilliSecond == 0 || cacheFile.lastModified() > System.currentTimeMillis() - cacheTimeMilliSecond)) {
                     LOG.debug("Read cache file: {}", cacheFile.getAbsolutePath());
                     return readEntityFromFile(cacheFile, entityResponse);
                 }
@@ -155,8 +153,7 @@ public abstract class AbstractClient {
                 if (StringUtils.isNoneBlank(content)) {
                     content = " / Content: " + content;
                 }
-                throw new UnsupportedOperationException(
-                        String.format("Unsupported status code: %s %s%s", response.getStatus(), response.getStatusInfo().getReasonPhrase(), content));
+                throw new UnsupportedOperationException(String.format("Unsupported status code: %s %s%s", response.getStatus(), response.getStatusInfo().getReasonPhrase(), content));
             }
             if (cacheFile != null) {
                 LOG.debug("Write cache file: {}", cacheFile.getAbsolutePath());
@@ -171,8 +168,7 @@ public abstract class AbstractClient {
         }
     }
 
-    private static Response invokeWithRetry(Invocation.Builder invocationBuilder, Object entityRequest, boolean entityRequestPut, final String url,
-            final String path, int retryCount) {
+    private Response invokeWithRetry(Invocation.Builder invocationBuilder, Object entityRequest, boolean entityRequestPut, final String url, final String path, int retryCount) {
         Response response = null;
         try {
             if (entityRequest == null) {
