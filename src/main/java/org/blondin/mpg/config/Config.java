@@ -21,6 +21,7 @@ public class Config {
 
     private String login;
     private String password;
+    private String authentications = "simple,oidc";
     private boolean teampUpdate = true;
     private boolean efficiencyRecentFocus = true;
     private int efficiencyRecentDays = 8;
@@ -81,6 +82,14 @@ public class Config {
         return StringUtils.defaultIfBlank(properties.getProperty(key), System.getenv("MPG_" + key.toUpperCase().replaceAll("\\.", "_"))); // NOSONAR
     }
 
+    private static String parseString(Properties properties, String key, String valueIfNotDefined) {
+        String value = parseString(properties, key);
+        if (StringUtils.isNotBlank(value)) {
+            return value;
+        }
+        return valueIfNotDefined;
+    }
+
     private static float parseFloat(Properties properties, String key, float valueIfNotDefined) {
         String value = parseString(properties, key);
         if (StringUtils.isNotBlank(value)) {
@@ -102,8 +111,7 @@ public class Config {
         if (StringUtils.isNotBlank(value)) {
             int valueInt = Integer.parseInt(value);
             if (valueInt < min || valueInt > max) {
-                throw new UnsupportedOperationException(
-                        String.format("The property '%s' can't be '%s', should between '%s' and '%s'", key, valueInt, min, max));
+                throw new UnsupportedOperationException(String.format("The property '%s' can't be '%s', should between '%s' and '%s'", key, valueInt, min, max));
             }
             return valueInt;
         }
@@ -122,9 +130,9 @@ public class Config {
         config.login = parseString(properties, "email");
         config.password = parseString(properties, "password");
         if (StringUtils.isBlank(config.login) || StringUtils.isBlank(config.password)) {
-            throw new UnsupportedOperationException(
-                    String.format("Login and/or password cannot be retrieved from file '%s' or environement variables", fileConfig.getName()));
+            throw new UnsupportedOperationException(String.format("Login and/or password cannot be retrieved from file '%s' or environement variables", fileConfig.getName()));
         }
+        config.authentications = parseString(properties, "authentications", config.authentications);
         config.teampUpdate = parseBoolean(properties, "team.update", config.teampUpdate);
         config.efficiencyRecentFocus = parseBoolean(properties, "efficiency.recent.focus", config.efficiencyRecentFocus);
         config.efficiencyRecentDays = parseInt(properties, "efficiency.recent.days", config.efficiencyRecentDays, 1, config.efficiencyRecentDays);
@@ -184,6 +192,10 @@ public class Config {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getAuthentications() {
+        return authentications;
     }
 
     public boolean isTeampUpdate() {

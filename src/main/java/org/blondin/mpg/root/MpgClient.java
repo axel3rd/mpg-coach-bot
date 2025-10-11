@@ -8,6 +8,7 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
+import org.blondin.mpg.root.exception.UrlForbiddenException;
 import org.blondin.mpg.root.model.AvailablePlayers;
 import org.blondin.mpg.root.model.ChampionshipType;
 import org.blondin.mpg.root.model.Clubs;
@@ -50,8 +51,48 @@ public class MpgClient extends AbstractClient {
     public static MpgClient build(Config config, String urlOverride) {
         MpgClient client = new MpgClient(config);
         client.setUrl(Objects.toString(urlOverride, "https://api.mpg.football"));
-        client.signIn(config.getLogin(), config.getPassword());
+        client.signIn(config.getLogin(), config.getPassword(), config.getAuthentications(), urlOverride);
         return client;
+    }
+
+    private void signIn(String login, String password, String authentications, String urlOverride) {
+        if (StringUtils.isBlank(authentications)) {
+            throw new UnsupportedOperationException("Authentications types cannot be blank");
+        }
+        for (String authentication : authentications.split(",")) {
+            if (headers.containsKey("authorization")) {
+                // Authorization set by a previous authentication
+                return;
+            }
+            switch (authentication) {
+            case "simple":
+                try {
+                    signInSimple(login, password);
+                } catch (UrlForbiddenException e) {
+                    // Fallback to next if authentication problem
+                }
+                break;
+            case "oidc":
+                signInOidc(login, password, urlOverride);
+                break;
+            default:
+                throw new UnsupportedOperationException("Authentication should be defined");
+            }
+        }
+    }
+
+    private void signInSimple(String login, String password) {
+        Map<String, String> entity = new HashMap<>();
+        entity.put("login", login);
+        entity.put("password", password);
+        entity.put("language", "fr-FR");
+        UserSignIn usi = post("user/sign-in", entity, UserSignIn.class);
+        this.userId = usi.getUserId();
+        headers.add("authorization", usi.getToken());
+    }
+
+    private void signInOidc(String login, String password, String urlOverride) {
+        throw new UnsupportedOperationException("NYI");
     }
 
     public String getUserId() {
@@ -106,16 +147,6 @@ public class MpgClient extends AbstractClient {
             clubs = get("championship-clubs", headers, Clubs.class);
         }
         return clubs;
-    }
-
-    private void signIn(String login, String password) {
-        Map<String, String> entity = new HashMap<>();
-        entity.put("login", login);
-        entity.put("password", password);
-        entity.put("language", "fr-FR");
-        UserSignIn usi = post("user/sign-in", entity, UserSignIn.class);
-        this.userId = usi.getUserId();
-        headers.add("authorization", usi.getToken());
     }
 
     public void updateCoach(String matchId, CoachRequest coachRequest) {
