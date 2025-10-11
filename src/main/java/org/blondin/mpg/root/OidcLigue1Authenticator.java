@@ -22,4 +22,15 @@ public class OidcLigue1Authenticator extends AbstractClient {
         return authenticator;
     }
 
+    /**
+     * OIDC authentication
+     * 
+     * @param login    Login
+     * @param password Password
+     * @return Token
+     */
+    public String authenticate(String login, String password) {
+        return "NYI";
+    }
+
 }
