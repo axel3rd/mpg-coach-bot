@@ -55,11 +55,12 @@ public class MpgClient extends AbstractClient {
         return client;
     }
 
-    private void signIn(String login, String password, String authentications, String urlOverride) {
-        if (StringUtils.isBlank(authentications)) {
-            throw new UnsupportedOperationException("Authentications types cannot be blank");
+    void signIn(String login, String password, String authentications, String urlOverride) {
+        String[] auths = authentications.split(",");
+        if (auths.length == 0) {
+            throw new UnsupportedOperationException("Authentications types should be defined");
         }
-        for (String authentication : authentications.split(",")) {
+        for (String authentication : auths) {
             if (headers.containsKey("authorization")) {
                 // Authorization set by a previous authentication
                 return;
@@ -69,15 +70,21 @@ public class MpgClient extends AbstractClient {
                 try {
                     signInSimple(login, password);
                 } catch (UrlForbiddenException e) {
-                    // Fallback to next if authentication problem
+                    // Fallback to next (is exist) when authentication problem
+                    if (auths.length == 1) {
+                        throw e;
+                    }
                 }
                 break;
             case "oidc":
                 signInOidc(login, password, urlOverride);
                 break;
             default:
-                throw new UnsupportedOperationException("Authentication should be defined");
+                throw new UnsupportedOperationException(String.format("Authentication not supported: '%s'", authentication));
             }
+        }
+        if (!headers.containsKey("authorization")) {
+            throw new UnsupportedOperationException(String.format("Authentication cannot be succeed with one of type:: '%s'", authentications));
         }
     }
 

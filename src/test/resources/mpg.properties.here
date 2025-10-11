@@ -49,7 +49,8 @@ transactions.proposal = false
 #request.wait.time=1
 
 # Authentications (simple = direct API signIn / oidc = Ligue1 website mechanism required for account created after February 2025)
-#authentications = simple,oidc
+# (Real default is 'simple,oidc' but to many historical impact if not set as it for unit test)
+authentications = simple
 
 # Enable debug logs
 #logs.debug = true
