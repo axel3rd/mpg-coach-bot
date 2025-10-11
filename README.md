@@ -24,6 +24,7 @@ MPG (Mon Petit Gazon) coach bot, to automate and optimize weekly league actions
     * [Efficiency coefficient](#efficiency-coefficient)
     * [SSL check](#ssl-check)
     * [Requests successive wait time](#requests-successive-wait-time)
+    * [Authentications](#authentications)
     * [Logs debug](#logs-debug)
   * [Execution](#execution)
 * [Roadmap](#roadmap)
@@ -268,6 +269,15 @@ To avoid any temporary ban on some third-party websites, wait a little before be
 # Wait time (in seconds) for successive requests on URLs (list separated by comma)
 request.wait.urls=https://www.sportsgambler.com
 request.wait.time=1
+```
+
+#### Authentications
+
+To customize authentications type (since v1.13):
+
+```
+# Authentications (simple = direct API signIn / oidc = Ligue1 website mechanism required for account created after February 2025)
+authentications = simple,oidc
 ```
 
 #### Logs debug

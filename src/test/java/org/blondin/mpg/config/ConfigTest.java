@@ -32,6 +32,9 @@ public class ConfigTest {
         Assert.assertEquals("firstName.lastName@gmail.com", config.getLogin());
         Assert.assertEquals("foobar", config.getPassword());
 
+        // Real default is 'simple,oidc' but tests mort complicated if not defined as it
+        Assert.assertEquals("simple", config.getAuthentications());
+
         Assert.assertEquals(true, config.isSslCertificatesCheck());
 
         Assert.assertEquals(true, config.isUseBonus());
@@ -84,6 +87,7 @@ public class ConfigTest {
         List<String> lines = new ArrayList<>();
         lines.add("email = firstName.lastName@gmail.com");
         lines.add("password = foobar");
+        lines.add("authentications = simple");
         lines.add("team.update=false");
         lines.add("efficiency.recent.focus=false");
         lines.add("efficiency.recent.days=5");
@@ -116,6 +120,7 @@ public class ConfigTest {
         Config config = Config.build(configFile.getPath());
         // No login/password, could be overridden by system properties in real Travis tests
 
+        Assert.assertEquals("simple", config.getAuthentications());
         Assert.assertEquals(false, config.isTeampUpdate());
         Assert.assertEquals(false, config.isEfficiencyRecentFocus());
         Assert.assertEquals(5, config.getEfficiencyRecentDays());

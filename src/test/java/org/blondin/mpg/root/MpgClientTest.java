@@ -5,7 +5,14 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static org.junit.Assert.assertEquals;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
 import org.blondin.mpg.AbstractMockTestClient;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.root.model.AvailablePlayers;
@@ -23,35 +30,92 @@ import org.blondin.mpg.root.model.PoolPlayers;
 import org.blondin.mpg.root.model.Position;
 import org.blondin.mpg.root.model.Team;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
+import jakarta.ws.rs.core.MediaType;
 
 public class MpgClientTest extends AbstractMockTestClient {
 
+    @Rule
+    public TemporaryFolder testFolder = new TemporaryFolder();
+
     @Test
-    public void testMockSignInKo() {
-        stubFor(post("/user/sign-in").willReturn(aResponse().withStatus(401).withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.bad.json")));
+    public void testMockSignInSimpleKo() {
+        stubFor(post("/user/sign-in").willReturn(aResponse().withStatus(403).withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.user-signIn.bad.json")));
         Config config = getConfig();
+
         String url = "http://localhost:" + server.port();
         try {
             MpgClient.build(config, url);
             Assert.fail("Invalid password is invalid");
         } catch (UnsupportedOperationException e) {
-            Assert.assertEquals("Bad credentials", "Unsupported status code: 401 Unauthorized / Content: {\"success\":false,\"error\":\"incorrectPasswordUser\"}", e.getMessage());
+            Assert.assertEquals("Bad credentials", "Forbidden URL: " + url, e.getMessage());
         }
     }
 
     @Test
-    public void testMockSignInOk() {
+    public void testMockSignInSimpleOk() {
         stubFor(post("/user/sign-in").withRequestBody(equalToJson("{\"login\":\"firstName.lastName@gmail.com\",\"password\":\"foobar\",\"language\":\"fr-FR\"}"))
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+                .willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.user-signIn.fake.json")));
         MpgClient.build(getConfig(), "http://localhost:" + server.port());
         Assert.assertTrue(true);
     }
 
     @Test
+    public void testMockSignInOidcOk() throws IOException {
+        String url = "http://localhost:" + server.port();
+        stubFor(post("/user/sign-in").withRequestBody(equalToJson("{\"login\":\"firstName.lastName@gmail.com\",\"password\":\"foobar\",\"language\":\"fr-FR\"}"))
+                .willReturn(aResponse().withStatus(403)));
+        MpgWebClientTest.stubStep1(getConfig(), url);
+        MpgWebClientTest.stubStep2();
+        MpgWebClientTest.stubStep3(getConfig());
+        MpgWebClientTest.stubStep4();
+        MpgWebClientTest.stubStep5();
+        MpgWebClientTest.stubStep6();
+        stubFor(get("/user").willReturn(aResponse().withStatus(200).withHeader("Content-Type", MediaType.APPLICATION_JSON)
+                .withBody("{\"id\":\"user_955966\",\"type\":\"user\",\"email\":\"firstName.lastName@gmail.com\",\"firstName\":\"FirstName\",\"username\":\"pseudo\" }")));
+
+        // Config with oidc auth
+        List<String> lines = new ArrayList<>();
+        lines.add("email = firstName.lastName@gmail.com");
+        lines.add("password = foobar");
+        lines.add("authentications = simple,oidc");
+        File configFile = new File(testFolder.getRoot(), "mpg.properties.test");
+        FileUtils.writeLines(configFile, lines);
+        Config config = Config.build(configFile.getPath());
+
+        MpgClient.build(config, url);
+        Assert.assertTrue(true);
+    }
+
+    @Test
+    public void testMockSignInUnsupported() throws IOException {
+        String url = "http://localhost:" + server.port();
+
+        // Config with unsupported auth
+        List<String> lines = new ArrayList<>();
+        lines.add("email = firstName.lastName@gmail.com");
+        lines.add("password = foobar");
+        lines.add("authentications = unsupported");
+        File configFile = new File(testFolder.getRoot(), "mpg.properties.test");
+        FileUtils.writeLines(configFile, lines);
+        Config config = Config.build(configFile.getPath());
+
+        try {
+            MpgClient.build(config, url);
+            Assert.fail("Unsupported auth type");
+        } catch (UnsupportedOperationException e) {
+            assertEquals("Authentication not supported: 'unsupported'", e.getMessage());
+        }
+
+    }
+
+    @Test
     public void testMockTeamPL() {
-        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/team/mpg_team_MLMHBPCB_10_1_3").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.MLMHBPCB.20250112.json")));
+        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/team/mpg_team_MLMHBPCB_10_1_3").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.team.MLMHBPCB.20250112.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         Team team = mpgClient.getTeam("mpg_team_MLMHBPCB_10_1_3");
         Assert.assertNotNull(team);
@@ -70,8 +134,8 @@ public class MpgClientTest extends AbstractMockTestClient {
 
     @Test
     public void testMockDashboardGame() {
-        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/dashboard/leagues").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.MLEFEX6G-status-4.json")));
+        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/dashboard/leagues").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.dashboard.MLEFEX6G-status-4.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         Dashboard dashboard = mpgClient.getDashboard();
         Assert.assertNotNull(dashboard);
@@ -88,8 +152,8 @@ public class MpgClientTest extends AbstractMockTestClient {
 
     @Test
     public void testMockDashboardMercatoWaitNextTurn() {
-        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/dashboard/leagues").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.dashboard.MLAX7HMK-status-3-waitMercatoNextTurn.json")));
+        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/dashboard/leagues").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.dashboard.MLAX7HMK-status-3-waitMercatoNextTurn.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         Dashboard dashboard = mpgClient.getDashboard();
         Assert.assertNotNull(dashboard);
@@ -108,8 +172,8 @@ public class MpgClientTest extends AbstractMockTestClient {
 
     @Test
     public void testMockDivision() {
-        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/division/mpg_division_MLEFEX6G_3_1").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.MLEFEX6G.20210804.json")));
+        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.division.MLEFEX6G.20210804.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         Division division = mpgClient.getDivision("mpg_division_MLEFEX6G_3_1");
         Assert.assertNotNull(division);
@@ -123,8 +187,8 @@ public class MpgClientTest extends AbstractMockTestClient {
 
     @Test
     public void testMockTeam() {
-        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/team/mpg_team_MLEFEX6G_3_1_2").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.team.MLEFEX6G.20210804.json")));
+        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/team/mpg_team_MLEFEX6G_3_1_2").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.team.MLEFEX6G.20210804.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         Team team = mpgClient.getTeam("mpg_team_MLEFEX6G_3_1_2");
         Assert.assertNotNull(team);
@@ -143,8 +207,8 @@ public class MpgClientTest extends AbstractMockTestClient {
 
     @Test
     public void testMockCoachEmpty() {
-        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/coach").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLEFEX6G.20210804.empty.json")));
+        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/coach").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.coach.MLEFEX6G.20210804.empty.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         Coach coach = mpgClient.getCoach("mpg_division_MLEFEX6G_3_1");
         Assert.assertNotNull(coach);
@@ -154,8 +218,9 @@ public class MpgClientTest extends AbstractMockTestClient {
 
     @Test
     public void testMockCoachNotEmpty() {
-        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/coach").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLAX7HMK.20210812.withCaptain.json")));
+        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/coach")
+                .willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.coach.MLAX7HMK.20210812.withCaptain.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         Coach coach = mpgClient.getCoach("mpg_division_MLEFEX6G_3_1");
         Assert.assertNotNull(coach);
@@ -166,8 +231,8 @@ public class MpgClientTest extends AbstractMockTestClient {
 
     @Test
     public void testMockCoachBonus() {
-        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/coach").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.coach.MLEFEX6G.20211019.json")));
+        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/division/mpg_division_MLEFEX6G_3_1/coach").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.coach.MLEFEX6G.20211019.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         Coach coach = mpgClient.getCoach("mpg_division_MLEFEX6G_3_1");
         Assert.assertNotNull(coach);
@@ -181,8 +246,8 @@ public class MpgClientTest extends AbstractMockTestClient {
 
     @Test
     public void testMockClubs() {
-        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/championship-clubs").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.clubs.2021.json")));
+        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/championship-clubs").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.clubs.2021.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         Clubs clubs = mpgClient.getClubs();
         Assert.assertNotNull(clubs);
@@ -195,8 +260,8 @@ public class MpgClientTest extends AbstractMockTestClient {
 
     @Test
     public void testMockPoolPlayers() {
-        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
-        stubFor(get("/championship-players-pool/4").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.poolPlayers.4.2021.json")));
+        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(get("/championship-players-pool/4").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.poolPlayers.4.2021.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         PoolPlayers pool = mpgClient.getPoolPlayers(ChampionshipType.LIGUE_2);
         Assert.assertNotNull(pool);
@@ -215,9 +280,9 @@ public class MpgClientTest extends AbstractMockTestClient {
 
     @Test
     public void testMockAvailablePlayers() {
-        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.fake.json")));
+        stubFor(post("/user/sign-in").willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.user-signIn.fake.json")));
         stubFor(get("/division/mpg_division_MLEFEX6G_3_1/available-players")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mpg.division.available.players.MLEFEX6G.20210804.json")));
+                .willReturn(aResponse().withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.division.available.players.MLEFEX6G.20210804.json")));
         MpgClient mpgClient = MpgClient.build(getConfig(), "http://localhost:" + server.port());
         AvailablePlayers tb = mpgClient.getAvailablePlayers("mpg_division_MLEFEX6G_3_1");
         Assert.assertTrue(tb.getList().size() > 10);

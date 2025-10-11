@@ -8,6 +8,7 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
+import org.blondin.mpg.root.exception.UrlForbiddenException;
 import org.blondin.mpg.root.model.AvailablePlayers;
 import org.blondin.mpg.root.model.ChampionshipType;
 import org.blondin.mpg.root.model.Clubs;
@@ -17,7 +18,10 @@ import org.blondin.mpg.root.model.Dashboard;
 import org.blondin.mpg.root.model.Division;
 import org.blondin.mpg.root.model.PoolPlayers;
 import org.blondin.mpg.root.model.Team;
+import org.blondin.mpg.root.model.User;
 import org.blondin.mpg.root.model.UserSignIn;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import jakarta.ws.rs.core.MultivaluedHashMap;
 import jakarta.ws.rs.core.MultivaluedMap;
@@ -26,6 +30,10 @@ import jakarta.ws.rs.core.MultivaluedMap;
  * Client for https://www.mpgstats.fr/
  */
 public class MpgClient extends AbstractClient {
+
+    private static final Logger LOG = LoggerFactory.getLogger(MpgClient.class);
+
+    private static final String HEADER_AUTHORIZATION = "authorization";
 
     private static final String PREFIX_PATH_DIVISION = "division/";
 
@@ -50,8 +58,60 @@ public class MpgClient extends AbstractClient {
     public static MpgClient build(Config config, String urlOverride) {
         MpgClient client = new MpgClient(config);
         client.setUrl(Objects.toString(urlOverride, "https://api.mpg.football"));
-        client.signIn(config.getLogin(), config.getPassword());
+
+        AuthentMpgWebClient mpgWebClient = AuthentMpgWebClient.build(config, urlOverride);
+        client.signIn(config.getLogin(), config.getPassword(), config.getAuthentications(), mpgWebClient);
         return client;
+    }
+
+    void signIn(String login, String password, String authentications, AuthentMpgWebClient mpgWebClient) {
+        String[] auths = authentications.split(",");
+        if (auths.length == 0) {
+            throw new UnsupportedOperationException("Authentications types should be defined");
+        }
+        for (String authentication : auths) {
+            if (headers.containsKey(HEADER_AUTHORIZATION)) {
+                // Authorization set by a previous authentication
+                return;
+            }
+            switch (authentication) {
+            case "simple":
+                try {
+                    LOG.debug("Authenticate with 'simple' type");
+                    signInSimple(login, password);
+                } catch (UrlForbiddenException e) {
+                    // Fallback to next (is exist) when authentication problem
+                    LOG.debug("Authenticate with 'simple' type if forbidden, will continue with another is exist");
+                    if (auths.length == 1) {
+                        throw e;
+                    }
+                }
+                break;
+            case "oidc":
+                LOG.debug("Authenticate with 'oidc' type");
+                UserSignIn usi = mpgWebClient.authenticate(login, password);
+                headers.add(HEADER_AUTHORIZATION, usi.getToken());
+                User user = get("user", headers, User.class);
+                this.userId = user.getId();
+                break;
+            default:
+                throw new UnsupportedOperationException(String.format("Authentication not supported: '%s'", authentication));
+            }
+        }
+        if (!headers.containsKey(HEADER_AUTHORIZATION)) {
+            throw new UnsupportedOperationException(String.format("Authentication cannot be succeed with one of type: '%s'", authentications));
+        }
+
+    }
+
+    private void signInSimple(String login, String password) {
+        Map<String, String> entity = new HashMap<>();
+        entity.put("login", login);
+        entity.put("password", password);
+        entity.put("language", "fr-FR");
+        UserSignIn usi = post("user/sign-in", entity, UserSignIn.class);
+        this.userId = usi.getUserId();
+        headers.add(HEADER_AUTHORIZATION, usi.getToken());
     }
 
     public String getUserId() {
@@ -106,16 +166,6 @@ public class MpgClient extends AbstractClient {
             clubs = get("championship-clubs", headers, Clubs.class);
         }
         return clubs;
-    }
-
-    private void signIn(String login, String password) {
-        Map<String, String> entity = new HashMap<>();
-        entity.put("login", login);
-        entity.put("password", password);
-        entity.put("language", "fr-FR");
-        UserSignIn usi = post("user/sign-in", entity, UserSignIn.class);
-        this.userId = usi.getUserId();
-        headers.add("authorization", usi.getToken());
     }
 
     public void updateCoach(String matchId, CoachRequest coachRequest) {
