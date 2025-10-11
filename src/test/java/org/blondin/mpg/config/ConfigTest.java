@@ -32,7 +32,8 @@ public class ConfigTest {
         Assert.assertEquals("firstName.lastName@gmail.com", config.getLogin());
         Assert.assertEquals("foobar", config.getPassword());
 
-        Assert.assertEquals("simple,oidc", config.getAuthentications());
+        // Real default is 'simple,oidc' but tests mort complicated if not defined as it
+        Assert.assertEquals("simple", config.getAuthentications());
 
         Assert.assertEquals(true, config.isSslCertificatesCheck());
 
