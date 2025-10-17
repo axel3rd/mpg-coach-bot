@@ -10,7 +10,10 @@ import java.nio.file.StandardCopyOption;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -55,7 +58,9 @@ public abstract class AbstractClient {
     private final long requestWaitTimeMilliSecond;
     private final List<String> requestWaitUrls;
     private boolean requestHasToWaitTime = false;
-    private long requestLastCall = 0;
+    private long requestLastCall;
+
+    private MultivaluedMap<String, String> headersLast;
 
     protected AbstractClient(Config config) {
         super();
@@ -84,6 +89,18 @@ public abstract class AbstractClient {
         }
     }
 
+    /**
+     * Return last headers
+     * 
+     * @return Headers
+     */
+    protected MultivaluedMap<String, String> getHeaders() {
+        if (this.headersLast == null) {
+            throw new UnsupportedOperationException("Headers empty, call get/post/put before");
+        }
+        return headersLast;
+    }
+
     protected <T> T get(String path, Class<T> entityResponse) {
         return get(path, null, entityResponse, -1);
     }
@@ -97,22 +114,24 @@ public abstract class AbstractClient {
     }
 
     protected <T> T get(String path, MultivaluedMap<String, Object> headers, Class<T> entityResponse, long cacheTimeMilliSecond) {
-        return call(path, headers, null, entityResponse, cacheTimeMilliSecond, false);
+        return call(path, null, headers, null, null, entityResponse, cacheTimeMilliSecond, false);
     }
 
     protected <T> T post(String path, Object entityRequest, Class<T> entityResponse) {
-        return post(path, null, entityRequest, entityResponse);
+        return post(path, null, entityRequest, MediaType.APPLICATION_JSON_TYPE, entityResponse);
     }
 
-    protected <T> T post(String path, MultivaluedMap<String, Object> headers, Object entityRequest, Class<T> entityResponse) {
-        return call(path, headers, entityRequest, entityResponse, -1, false);
+    protected <T> T post(String path, Map<String, Object> params, Object entityRequest, MediaType entityType, Class<T> entityResponse) {
+        return call(path, params, null, entityRequest, entityType, entityResponse, -1, false);
     }
 
     protected <T> T put(String path, MultivaluedMap<String, Object> headers, Object entityRequest, Class<T> entityResponse) {
-        return call(path, headers, entityRequest, entityResponse, -1, true);
+        return call(path, null, headers, entityRequest, MediaType.APPLICATION_JSON_TYPE, entityResponse, -1, true);
     }
 
-    private <T> T call(String path, MultivaluedMap<String, Object> headers, Object entityRequest, Class<T> entityResponse, long cacheTimeMilliSecond, boolean entityRequestPut) {
+    private <T> T call(String path, Map<String, Object> params, MultivaluedMap<String, Object> headers, Object entityRequest, MediaType entityType, Class<T> entityResponse, long cacheTimeMilliSecond,
+            boolean entityRequestPut) {
+        this.headersLast = null;
         long start = System.currentTimeMillis();
         try {
             LOG.debug("Call URL: {}/{} (cache duration ms: {})", url, path, cacheTimeMilliSecond);
@@ -138,17 +157,23 @@ public abstract class AbstractClient {
             Client client = clientBuilder.build();
 
             WebTarget webTarget = client.target(url).path(path);
-            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON).headers(headers);
+            if (params != null) {
+                for (Entry<String, Object> param : params.entrySet()) {
+                    webTarget = webTarget.queryParam(param.getKey(), param.getValue());
+                }
+            }
+
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE, MediaType.APPLICATION_FORM_URLENCODED_TYPE).headers(headers);
 
             waitBeforeNextRequest();
-            Response response = invokeWithRetry(invocationBuilder, entityRequest, entityRequestPut, url, path, 0);
+            Response response = invokeWithRetry(invocationBuilder, entityRequest, entityType, entityRequestPut, url, path, 0);
             if (Response.Status.FORBIDDEN.getStatusCode() == response.getStatus()) {
                 throw new UrlForbiddenException(String.format("Forbidden URL: %s", url));
             }
             if (Response.Status.SERVICE_UNAVAILABLE.getStatusCode() == response.getStatus()) {
                 throw new ServiceUnavailableException(String.format("Service Unavailable URL: %s", url));
             }
-            if (Response.Status.OK.getStatusCode() != response.getStatus()) {
+            if (!Arrays.asList(Response.Status.OK.getStatusCode(), Response.Status.NO_CONTENT.getStatusCode()).contains(response.getStatus())) {
                 String content = IOUtils.toString((InputStream) response.getEntity(), StandardCharsets.UTF_8);
                 if (StringUtils.isNoneBlank(content)) {
                     content = " / Content: " + content;
@@ -160,6 +185,7 @@ public abstract class AbstractClient {
                 Files.copy((InputStream) response.getEntity(), cacheFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 return readEntityFromFile(cacheFile, entityResponse);
             }
+            this.headersLast = response.getStringHeaders();
             return response.readEntity(entityResponse);
         } catch (IOException | KeyManagementException | NoSuchAlgorithmException e) {
             throw new UnsupportedOperationException(e);
@@ -168,15 +194,15 @@ public abstract class AbstractClient {
         }
     }
 
-    private Response invokeWithRetry(Invocation.Builder invocationBuilder, Object entityRequest, boolean entityRequestPut, final String url, final String path, int retryCount) {
+    private Response invokeWithRetry(Invocation.Builder invocationBuilder, Object entityRequest, MediaType entityType, boolean entityRequestPut, final String url, final String path, int retryCount) {
         Response response = null;
         try {
             if (entityRequest == null) {
                 response = invocationBuilder.get();
             } else if (entityRequestPut) {
-                response = invocationBuilder.put(Entity.entity(entityRequest, MediaType.APPLICATION_JSON));
+                response = invocationBuilder.put(Entity.entity(entityRequest, entityType));
             } else {
-                response = invocationBuilder.post(Entity.entity(entityRequest, MediaType.APPLICATION_JSON));
+                response = invocationBuilder.post(Entity.entity(entityRequest, entityType));
             }
         } catch (ProcessingException e) {
             if (e.getCause() instanceof SocketException && retryCount < 10) {
@@ -186,7 +212,7 @@ public abstract class AbstractClient {
                 } catch (InterruptedException e1) { // NOSONAR : Sleep wanted
                     throw new UnsupportedOperationException(e1);
                 }
-                return invokeWithRetry(invocationBuilder, entityRequest, entityRequestPut, url, path, ++retryCount);
+                return invokeWithRetry(invocationBuilder, entityRequest, entityType, entityRequestPut, url, path, ++retryCount);
             }
             throw e;
         }
