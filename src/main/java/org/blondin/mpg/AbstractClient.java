@@ -61,6 +61,7 @@ public abstract class AbstractClient {
     private long requestLastCall;
 
     private MultivaluedMap<String, String> headersLast;
+    private int statusCodeLast;
 
     protected AbstractClient(Config config) {
         super();
@@ -101,6 +102,17 @@ public abstract class AbstractClient {
         return headersLast;
     }
 
+    public int getStatusCode() {
+        if (this.statusCodeLast == 0) {
+            throw new UnsupportedOperationException("StatusCode empty, call get/post/put before");
+        }
+        return statusCodeLast;
+    }
+
+    protected <T> T get(String path, Map<String, Object> params, boolean followRedirects, Class<T> entityResponse) {
+        return call(path, null, entityResponse, new RequestOptions().params(params).followRedirects(followRedirects));
+    }
+
     protected <T> T get(String path, Class<T> entityResponse) {
         return get(path, null, entityResponse, -1);
     }
@@ -114,66 +126,104 @@ public abstract class AbstractClient {
     }
 
     protected <T> T get(String path, MultivaluedMap<String, Object> headers, Class<T> entityResponse, long cacheTimeMilliSecond) {
-        return call(path, null, headers, null, null, entityResponse, cacheTimeMilliSecond, false);
+        return get(path, null, headers, entityResponse, cacheTimeMilliSecond);
+    }
+
+    protected <T> T get(String path, Map<String, Object> params, MultivaluedMap<String, Object> headers, Class<T> entityResponse, long cacheTimeMilliSecond) {
+        return call(path, null, entityResponse, new RequestOptions().params(params).headers(headers).cacheTimeMilliSecond(cacheTimeMilliSecond));
     }
 
     protected <T> T post(String path, Object entityRequest, Class<T> entityResponse) {
         return post(path, null, entityRequest, MediaType.APPLICATION_JSON_TYPE, entityResponse);
     }
 
-    protected <T> T post(String path, Map<String, Object> params, Object entityRequest, MediaType entityType, Class<T> entityResponse) {
-        return call(path, params, null, entityRequest, entityType, entityResponse, -1, false);
+    protected <T> T post(String path, Map<String, Object> params, Object entityRequest, MediaType entityMediaType, Class<T> entityResponse) {
+        return call(path, entityRequest, entityResponse, new RequestOptions().params(params).entityMediaType(entityMediaType));
+    }
+
+    protected <T> T post(String path, Map<String, Object> params, MultivaluedMap<String, Object> headers, Object entityRequest, MediaType entityMediaType, boolean followRedirects,
+            Class<T> entityResponse) {
+        return call(path, entityRequest, entityResponse, new RequestOptions().params(params).headers(headers).entityMediaType(entityMediaType).followRedirects(followRedirects));
     }
 
     protected <T> T put(String path, MultivaluedMap<String, Object> headers, Object entityRequest, Class<T> entityResponse) {
-        return call(path, null, headers, entityRequest, MediaType.APPLICATION_JSON_TYPE, entityResponse, -1, true);
+        return call(path, entityRequest, entityResponse, new RequestOptions().headers(headers).requestPut(true));
     }
 
-    private <T> T call(String path, Map<String, Object> params, MultivaluedMap<String, Object> headers, Object entityRequest, MediaType entityType, Class<T> entityResponse, long cacheTimeMilliSecond,
-            boolean entityRequestPut) {
+    private class RequestOptions {
+        private Map<String, Object> params = null;
+        private MultivaluedMap<String, Object> headers = null;
+        private MediaType entityMediaType = MediaType.APPLICATION_JSON_TYPE;
+        private long cacheTimeMilliSecond = -1;
+        private boolean requestPut = false;
+        private boolean followRedirects = true;
+
+        private RequestOptions params(Map<String, Object> params) {
+            this.params = params;
+            return this;
+        }
+
+        private RequestOptions headers(MultivaluedMap<String, Object> headers) {
+            this.headers = headers;
+            return this;
+        }
+
+        private RequestOptions entityMediaType(MediaType entityMediaType) {
+            this.entityMediaType = entityMediaType;
+            return this;
+        }
+
+        private RequestOptions cacheTimeMilliSecond(long cacheTimeMilliSecond) {
+            this.cacheTimeMilliSecond = cacheTimeMilliSecond;
+            return this;
+        }
+
+        private RequestOptions requestPut(boolean requestPut) {
+            this.requestPut = requestPut;
+            return this;
+        }
+
+        private RequestOptions followRedirects(boolean followRedirects) {
+            this.followRedirects = followRedirects;
+            return this;
+        }
+    }
+
+    private <T> T call(String path, Object entityRequest, Class<T> entityResponse, RequestOptions requestOptions) {
         this.headersLast = null;
+        this.statusCodeLast = 0;
         long start = System.currentTimeMillis();
         try {
-            LOG.debug("Call URL: {}/{} (cache duration ms: {})", url, path, cacheTimeMilliSecond);
+            LOG.debug("Call URL: {}/{} (cache duration ms: {})", url, path, requestOptions.cacheTimeMilliSecond);
             if (StringUtils.isBlank(url)) {
                 throw new UnsupportedOperationException("Please use 'setUrl(...)' before using this client");
             }
             File cacheFile = null;
-            if (cacheTimeMilliSecond >= 0) {
+            if (requestOptions.cacheTimeMilliSecond >= 0) {
                 cacheFile = getCacheFile(url, path);
-                if (cacheFile.exists() && (cacheTimeMilliSecond == 0 || cacheFile.lastModified() > System.currentTimeMillis() - cacheTimeMilliSecond)) {
+                if (cacheFile.exists() && (requestOptions.cacheTimeMilliSecond == 0 || cacheFile.lastModified() > System.currentTimeMillis() - requestOptions.cacheTimeMilliSecond)) {
                     LOG.debug("Read cache file: {}", cacheFile.getAbsolutePath());
                     return readEntityFromFile(cacheFile, entityResponse);
                 }
             }
 
             ClientBuilder clientBuilder = ClientBuilder.newBuilder().withConfig(createConfigWithPotentialProxy());
-            if (!this.sslCertificatesCheck) {
-                final TrustManager[] trustManagerArray = { new NullX509TrustManager() };
-                SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
-                sslContext.init(null, trustManagerArray, new java.security.SecureRandom());
-                clientBuilder.sslContext(sslContext).hostnameVerifier(new NullHostnameVerifier());
-            }
+            clientBuilder = configureSsl(clientBuilder);
             Client client = clientBuilder.build();
 
-            WebTarget webTarget = client.target(url).path(path);
-            if (params != null) {
-                for (Entry<String, Object> param : params.entrySet()) {
-                    webTarget = webTarget.queryParam(param.getKey(), param.getValue());
-                }
-            }
-
-            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE, MediaType.APPLICATION_FORM_URLENCODED_TYPE).headers(headers);
+            WebTarget webTarget = createWebTargetWithOptions(client, url, path, requestOptions.params, requestOptions.followRedirects);
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE, MediaType.APPLICATION_FORM_URLENCODED_TYPE).headers(requestOptions.headers);
 
             waitBeforeNextRequest();
-            Response response = invokeWithRetry(invocationBuilder, entityRequest, entityType, entityRequestPut, url, path, 0);
+            Response response = invokeWithRetry(invocationBuilder, entityRequest, requestOptions.entityMediaType, requestOptions.requestPut, url, path, 0);
             if (Response.Status.FORBIDDEN.getStatusCode() == response.getStatus()) {
                 throw new UrlForbiddenException(String.format("Forbidden URL: %s", url));
             }
             if (Response.Status.SERVICE_UNAVAILABLE.getStatusCode() == response.getStatus()) {
                 throw new ServiceUnavailableException(String.format("Service Unavailable URL: %s", url));
             }
-            if (!Arrays.asList(Response.Status.OK.getStatusCode(), Response.Status.NO_CONTENT.getStatusCode()).contains(response.getStatus())) {
+            if (!Arrays.asList(Response.Status.OK.getStatusCode(), Response.Status.NO_CONTENT.getStatusCode()).contains(response.getStatus())
+                    && (!requestOptions.followRedirects && !Arrays.asList(Response.Status.FOUND.getStatusCode()).contains(response.getStatus()))) {
                 String content = IOUtils.toString((InputStream) response.getEntity(), StandardCharsets.UTF_8);
                 if (StringUtils.isNoneBlank(content)) {
                     content = " / Content: " + content;
@@ -185,6 +235,7 @@ public abstract class AbstractClient {
                 Files.copy((InputStream) response.getEntity(), cacheFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 return readEntityFromFile(cacheFile, entityResponse);
             }
+            this.statusCodeLast = response.getStatus();
             this.headersLast = response.getStringHeaders();
             return response.readEntity(entityResponse);
         } catch (IOException | KeyManagementException | NoSuchAlgorithmException e) {
@@ -192,6 +243,26 @@ public abstract class AbstractClient {
         } finally {
             LOG.debug("Call URL time elaps ms: {}", System.currentTimeMillis() - start);
         }
+    }
+
+    private ClientBuilder configureSsl(ClientBuilder clientBuilder) throws NoSuchAlgorithmException, KeyManagementException {
+        if (!this.sslCertificatesCheck) {
+            final TrustManager[] trustManagerArray = { new NullX509TrustManager() };
+            SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
+            sslContext.init(null, trustManagerArray, new java.security.SecureRandom());
+            clientBuilder.sslContext(sslContext).hostnameVerifier(new NullHostnameVerifier());
+        }
+        return clientBuilder;
+    }
+
+    private WebTarget createWebTargetWithOptions(Client client, String url, String path, Map<String, Object> params, boolean followRedirects) {
+        WebTarget webTarget = client.target(url).path(path).property(ClientProperties.FOLLOW_REDIRECTS, followRedirects);
+        if (params != null) {
+            for (Entry<String, Object> param : params.entrySet()) {
+                webTarget = webTarget.queryParam(param.getKey(), param.getValue());
+            }
+        }
+        return webTarget;
     }
 
     private Response invokeWithRetry(Invocation.Builder invocationBuilder, Object entityRequest, MediaType entityType, boolean entityRequestPut, final String url, final String path, int retryCount) {

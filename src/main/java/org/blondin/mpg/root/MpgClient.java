@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
@@ -19,6 +20,8 @@ import org.blondin.mpg.root.model.Division;
 import org.blondin.mpg.root.model.PoolPlayers;
 import org.blondin.mpg.root.model.Team;
 import org.blondin.mpg.root.model.UserSignIn;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import jakarta.ws.rs.core.MultivaluedHashMap;
 import jakarta.ws.rs.core.MultivaluedMap;
@@ -27,6 +30,8 @@ import jakarta.ws.rs.core.MultivaluedMap;
  * Client for https://www.mpgstats.fr/
  */
 public class MpgClient extends AbstractClient {
+
+    private static final Logger LOG = LoggerFactory.getLogger(MpgClient.class);
 
     private static final String HEADER_AUTHORIZATION = "authorization";
 
@@ -54,17 +59,17 @@ public class MpgClient extends AbstractClient {
         MpgClient client = new MpgClient(config);
         client.setUrl(Objects.toString(urlOverride, "https://api.mpg.football"));
 
-        MpgWebClient mpgWebClient = MpgWebClient.build(config, urlOverride);
+        AuthentMpgWebClient mpgWebClient = AuthentMpgWebClient.build(config, urlOverride);
         client.signIn(config.getLogin(), config.getPassword(), config.getAuthentications(), mpgWebClient);
         return client;
     }
 
-    void signIn(String login, String password, String authentications, MpgWebClient mpgWebClient) {
+    void signIn(String login, String password, String authentications, AuthentMpgWebClient mpgWebClient) {
         String[] auths = authentications.split(",");
         if (auths.length == 0) {
             throw new UnsupportedOperationException("Authentications types should be defined");
         }
-        String token = null;
+        UserSignIn usi = null;
         for (String authentication : auths) {
             if (headers.containsKey(HEADER_AUTHORIZATION)) {
                 // Authorization set by a previous authentication
@@ -73,35 +78,38 @@ public class MpgClient extends AbstractClient {
             switch (authentication) {
             case "simple":
                 try {
-                    token = signInSimple(login, password);
+                    LOG.debug("Authenticate with 'simple' type");
+                    usi = signInSimple(login, password);
                 } catch (UrlForbiddenException e) {
                     // Fallback to next (is exist) when authentication problem
+                    LOG.debug("Authenticate with 'simple' type if forbidden, will continue with another is exist");
                     if (auths.length == 1) {
                         throw e;
                     }
                 }
                 break;
             case "oidc":
-                token = mpgWebClient.authenticate(login, password);
+                LOG.debug("Authenticate with 'oidc' type");
+                usi = mpgWebClient.authenticate(login, password, UUID.randomUUID().toString());
+                // TODO userId is null here => find a way to fill it
                 break;
             default:
                 throw new UnsupportedOperationException(String.format("Authentication not supported: '%s'", authentication));
             }
         }
-        if (!headers.containsKey(HEADER_AUTHORIZATION)) {
+        if (usi == null) {
             throw new UnsupportedOperationException(String.format("Authentication cannot be succeed with one of type:: '%s'", authentications));
         }
-        headers.add(HEADER_AUTHORIZATION, token);
+        headers.add(HEADER_AUTHORIZATION, usi.getToken());
+        this.userId = usi.getUserId();
     }
 
-    private String signInSimple(String login, String password) {
+    private UserSignIn signInSimple(String login, String password) {
         Map<String, String> entity = new HashMap<>();
         entity.put("login", login);
         entity.put("password", password);
         entity.put("language", "fr-FR");
-        UserSignIn usi = post("user/sign-in", entity, UserSignIn.class);
-        this.userId = usi.getUserId();
-        return usi.getToken();
+        return post("user/sign-in", entity, UserSignIn.class);
     }
 
     public String getUserId() {

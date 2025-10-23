@@ -18,6 +18,8 @@
 		<log4j.version>2.19.0</log4j.version>
 		<!-- Goals for release plugin -->
 		<goals>package</goals>
+		<!-- Eclipse m2e disable warning -->
+		<maven.project.sourceRoots.warningsDisabled>true</maven.project.sourceRoots.warningsDisabled>
 	</properties>
 	<scm>
 		<connection>scm:git:https://github.com/axel3rd/mpg-coach-bot</connection>
@@ -210,13 +212,13 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.github.tomakehurst</groupId>
+			<groupId>org.wiremock</groupId>
 			<artifactId>wiremock</artifactId>
 			<version>3.0.1</version>
 			<scope>test</scope>
 			<exclusions>
-				<!-- Keep guava 20.0 due to littleproxy -->
-				<!-- Required: com.google.common.net.HostAndPort.getHostText() -->
+                <!-- Keep guava 20.0 due to littleproxy -->
+                <!-- Required: com.google.common.net.HostAndPort.getHostText() -->
 				<exclusion>
 					<groupId>com.google.guava</groupId>
 					<artifactId>guava</artifactId>
