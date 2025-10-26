@@ -223,7 +223,7 @@ public abstract class AbstractClient {
                 throw new ServiceUnavailableException(String.format("Service Unavailable URL: %s", url));
             }
             List<Integer> acceptedStatusCode = List.of(Response.Status.OK.getStatusCode(), Response.Status.NO_CONTENT.getStatusCode());
-            if (requestOptions.followRedirects) {
+            if (!requestOptions.followRedirects) {
                 acceptedStatusCode = new ArrayList<>(acceptedStatusCode);
                 acceptedStatusCode.add(Response.Status.FOUND.getStatusCode());
             }
