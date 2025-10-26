@@ -10,7 +10,7 @@ import java.nio.file.StandardCopyOption;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -222,8 +222,12 @@ public abstract class AbstractClient {
             if (Response.Status.SERVICE_UNAVAILABLE.getStatusCode() == response.getStatus()) {
                 throw new ServiceUnavailableException(String.format("Service Unavailable URL: %s", url));
             }
-            if (!Arrays.asList(Response.Status.OK.getStatusCode(), Response.Status.NO_CONTENT.getStatusCode()).contains(response.getStatus())
-                    && (!requestOptions.followRedirects && !Arrays.asList(Response.Status.FOUND.getStatusCode()).contains(response.getStatus()))) {
+            List<Integer> acceptedStatusCode = List.of(Response.Status.OK.getStatusCode(), Response.Status.NO_CONTENT.getStatusCode());
+            if (requestOptions.followRedirects) {
+                acceptedStatusCode = new ArrayList<>(acceptedStatusCode);
+                acceptedStatusCode.add(Response.Status.FOUND.getStatusCode());
+            }
+            if (!acceptedStatusCode.contains(response.getStatus())) {
                 String content = IOUtils.toString((InputStream) response.getEntity(), StandardCharsets.UTF_8);
                 if (StringUtils.isNoneBlank(content)) {
                     content = " / Content: " + content;
