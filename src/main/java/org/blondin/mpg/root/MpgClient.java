@@ -4,7 +4,6 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
@@ -90,7 +89,7 @@ public class MpgClient extends AbstractClient {
                 break;
             case "oidc":
                 LOG.debug("Authenticate with 'oidc' type");
-                UserSignIn usi = mpgWebClient.authenticate(login, password, UUID.randomUUID().toString());
+                UserSignIn usi = mpgWebClient.authenticate(login, password);
                 headers.add(HEADER_AUTHORIZATION, usi.getToken());
                 User user = get("user", headers, User.class);
                 this.userId = user.getId();
