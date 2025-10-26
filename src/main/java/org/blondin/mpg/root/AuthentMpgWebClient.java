@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
@@ -39,12 +40,13 @@ public class AuthentMpgWebClient extends AbstractClient {
     /**
      * OIDC authentication
      * 
-     * @param login      Login
-     * @param password   Password
-     * @param randomUUID Random UUID
+     * @param login    Login
+     * @param password Password
      * @return Token
      */
-    public UserSignIn authenticate(String login, String password, String randomUUID) {
+    public UserSignIn authenticate(String login, String password) {
+        String randomUUID = UUID.randomUUID().toString();
+
         // --- Step 1: Initiate auth with MPG (POST form) ---
         post("auth", Map.of("_data", "routes/__home/__auth/auth", "ext-amplitudeId", randomUUID), new Form().param("email", login).param("password", password),
                 MediaType.APPLICATION_FORM_URLENCODED_TYPE, String.class);
