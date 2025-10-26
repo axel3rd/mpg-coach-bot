@@ -5,6 +5,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
@@ -87,6 +88,28 @@ public class MpgClientTest extends AbstractMockTestClient {
 
         MpgClient.build(config, url);
         Assert.assertTrue(true);
+    }
+
+    @Test
+    public void testMockSignInUnsupported() throws IOException {
+        String url = "http://localhost:" + server.port();
+
+        // Config with unsupported auth
+        List<String> lines = new ArrayList<>();
+        lines.add("email = firstName.lastName@gmail.com");
+        lines.add("password = foobar");
+        lines.add("authentications = unsupported");
+        File configFile = new File(testFolder.getRoot(), "mpg.properties.test");
+        FileUtils.writeLines(configFile, lines);
+        Config config = Config.build(configFile.getPath());
+
+        try {
+            MpgClient.build(config, url);
+            Assert.fail("Unsupported auth type");
+        } catch (UnsupportedOperationException e) {
+            assertEquals("Authentication not supported: 'unsupported'", e.getMessage());
+        }
+
     }
 
     @Test

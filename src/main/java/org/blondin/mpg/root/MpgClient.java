@@ -99,7 +99,7 @@ public class MpgClient extends AbstractClient {
             }
         }
         if (!headers.containsKey(HEADER_AUTHORIZATION)) {
-            throw new UnsupportedOperationException(String.format("Authentication cannot be succeed with one of type:: '%s'", authentications));
+            throw new UnsupportedOperationException(String.format("Authentication cannot be succeed with one of type: '%s'", authentications));
         }
 
     }
