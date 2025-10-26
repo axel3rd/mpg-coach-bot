@@ -29,14 +29,14 @@ public class MpgClientTest extends AbstractMockTestClient {
 
     @Test
     public void testMockSignInKo() {
-        stubFor(post("/user/sign-in").willReturn(aResponse().withStatus(401).withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.bad.json")));
+        stubFor(post("/user/sign-in").willReturn(aResponse().withStatus(403).withHeader("Content-Type", "application/json").withBodyFile("mpg.user-signIn.bad.json")));
         Config config = getConfig();
         String url = "http://localhost:" + server.port();
         try {
             MpgClient.build(config, url);
             Assert.fail("Invalid password is invalid");
         } catch (UnsupportedOperationException e) {
-            Assert.assertEquals("Bad credentials", "Unsupported status code: 401 Unauthorized / Content: {\"success\":false,\"error\":\"incorrectPasswordUser\"}", e.getMessage());
+            Assert.assertEquals("Bad credentials", "Forbidden URL: " + url, e.getMessage());
         }
     }
 

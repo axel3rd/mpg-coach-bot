@@ -19,6 +19,7 @@ import org.blondin.mpg.root.model.Dashboard;
 import org.blondin.mpg.root.model.Division;
 import org.blondin.mpg.root.model.PoolPlayers;
 import org.blondin.mpg.root.model.Team;
+import org.blondin.mpg.root.model.User;
 import org.blondin.mpg.root.model.UserSignIn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,6 @@ public class MpgClient extends AbstractClient {
         if (auths.length == 0) {
             throw new UnsupportedOperationException("Authentications types should be defined");
         }
-        UserSignIn usi = null;
         for (String authentication : auths) {
             if (headers.containsKey(HEADER_AUTHORIZATION)) {
                 // Authorization set by a previous authentication
@@ -79,7 +79,7 @@ public class MpgClient extends AbstractClient {
             case "simple":
                 try {
                     LOG.debug("Authenticate with 'simple' type");
-                    usi = signInSimple(login, password);
+                    signInSimple(login, password);
                 } catch (UrlForbiddenException e) {
                     // Fallback to next (is exist) when authentication problem
                     LOG.debug("Authenticate with 'simple' type if forbidden, will continue with another is exist");
@@ -90,26 +90,29 @@ public class MpgClient extends AbstractClient {
                 break;
             case "oidc":
                 LOG.debug("Authenticate with 'oidc' type");
-                usi = mpgWebClient.authenticate(login, password, UUID.randomUUID().toString());
-                // TODO userId is null here => find a way to fill it
+                UserSignIn usi = mpgWebClient.authenticate(login, password, UUID.randomUUID().toString());
+                headers.add(HEADER_AUTHORIZATION, usi.getToken());
+                User user = get("user", headers, User.class);
+                this.userId = user.getId();
                 break;
             default:
                 throw new UnsupportedOperationException(String.format("Authentication not supported: '%s'", authentication));
             }
         }
-        if (usi == null) {
+        if (!headers.containsKey(HEADER_AUTHORIZATION)) {
             throw new UnsupportedOperationException(String.format("Authentication cannot be succeed with one of type:: '%s'", authentications));
         }
-        headers.add(HEADER_AUTHORIZATION, usi.getToken());
-        this.userId = usi.getUserId();
+
     }
 
-    private UserSignIn signInSimple(String login, String password) {
+    private void signInSimple(String login, String password) {
         Map<String, String> entity = new HashMap<>();
         entity.put("login", login);
         entity.put("password", password);
         entity.put("language", "fr-FR");
-        return post("user/sign-in", entity, UserSignIn.class);
+        UserSignIn usi = post("user/sign-in", entity, UserSignIn.class);
+        this.userId = usi.getUserId();
+        headers.add(HEADER_AUTHORIZATION, usi.getToken());
     }
 
     public String getUserId() {
