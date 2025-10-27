@@ -1,7 +1,6 @@
 package org.blondin.mpg.root.model;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -11,20 +10,20 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  * On mobile App:<br>
  * - Wallet: removeGoal<br>
  * - Zahia: boostAllPlayers<br>
+ * - Cheat Code 18-26: nerfAllPlayers (since July 2025)<br>
  * - Suarez: nerfGoalkeeper<br>
  * - UberEats: boostOnePlayer ('playerId' required)<br>
  * - Mirror: mirror<br>
  * - Pat: blockTacticalSubs<br>
- * - Chapron: removeRandomPlayer<br>
+ * - Chapron: removeRandomPlayer (removed in July 2025, replaced by nerfAllPlayers)<br>
  * -
  */
 public class SelectedBonus {
 
-    public static final String BONUS_BOOT_ONE_PLAYER = "boostOnePlayer";
+    public static final String BONUS_BOOST_ONE_PLAYER = "boostOnePlayer";
 
     private static final List<String> BONUS_PRIORITY = Stream
-            .of("removeGoal", "boostAllPlayers", "nerfGoalkeeper", BONUS_BOOT_ONE_PLAYER, "mirror", "blockTacticalSubs", "removeRandomPlayer")
-            .collect(Collectors.toList());
+            .of("removeGoal", "boostAllPlayers", "nerfAllPlayers", "nerfGoalkeeper", BONUS_BOOST_ONE_PLAYER, "mirror", "blockTacticalSubs", "removeRandomPlayer").toList();
 
     @JsonInclude(Include.NON_NULL)
     private String name;
