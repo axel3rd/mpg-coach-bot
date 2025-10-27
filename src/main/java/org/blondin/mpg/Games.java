@@ -54,7 +54,7 @@ public class Games extends AbstractMpgProcess {
 
             // Complete auction and calculate efficiency (notes should be in injured players display), and save for transactions proposal
             completeAuctionAndcalculateEfficiency(players, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
-            List<Player> playersTeam = players.stream().collect(Collectors.toList());
+            List<Player> playersTeam = players.stream().toList();
 
             // Remove out players (and write them)
             removeOutPlayers(players, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()), true);
@@ -157,7 +157,7 @@ public class Games extends AbstractMpgProcess {
         List<Player> players2Sell = playersTeam.stream().filter(p -> p.getEfficiency() <= config.getEfficiencySell(p.getPosition())).collect(Collectors.toList());
 
         // Remove goalkeeper(s) (if exist) and same team as the first
-        List<Player> goalkeepers = playersTeam.stream().filter(p -> p.getPosition().equals(Position.G)).sorted(Comparator.comparing(Player::getEfficiency).reversed()).collect(Collectors.toList());
+        List<Player> goalkeepers = playersTeam.stream().filter(p -> p.getPosition().equals(Position.G)).sorted(Comparator.comparing(Player::getEfficiency).reversed()).toList();
         final Player goalFirst = goalkeepers.isEmpty() ? new Player() : goalkeepers.get(0);
         if (!goalkeepers.isEmpty()) {
             players2Sell.removeIf(p -> p.getPosition().equals(Position.G) && p.getClubId().equals(goalkeepers.get(0).getClubId()));
@@ -179,12 +179,12 @@ public class Games extends AbstractMpgProcess {
         }
         LOG.info("Budget: {}", cash);
 
-        Player defenderLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.D)).sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation))
-                .collect(Collectors.toList()).get(0);
-        Player midfielderLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.M)).sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation))
-                .collect(Collectors.toList()).get(0);
-        Player attackerLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.A)).sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation))
-                .collect(Collectors.toList()).get(0);
+        Player defenderLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.D)).sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation)).toList()
+                .get(0);
+        Player midfielderLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.M)).sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation)).toList()
+                .get(0);
+        Player attackerLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.A)).sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation)).toList()
+                .get(0);
         cash += defenderLast.getQuotation() + midfielderLast.getQuotation() + attackerLast.getQuotation();
         LOG.info("Budget if last field players by line sold: {}", cash);
 
@@ -192,16 +192,16 @@ public class Games extends AbstractMpgProcess {
         List<Player> players2buy = new ArrayList<>();
         players2buy.addAll(playersAvailable.stream().filter(p -> p.getPosition().equals(Position.G)).filter(p -> p.getQuotation() <= budgetPotential)
                 .filter(p -> p.getEfficiency() > goalFirst.getEfficiency()).filter(p -> p.getEfficiency() > config.getEfficiencySell(Position.G))
-                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3).collect(Collectors.toList()));
+                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3).toList());
         players2buy.addAll(playersAvailable.stream().filter(p -> p.getPosition().equals(Position.D)).filter(p -> p.getQuotation() <= budgetPotential)
                 .filter(p -> p.getEfficiency() > defenderLast.getEfficiency()).filter(p -> p.getEfficiency() > config.getEfficiencySell(Position.D))
-                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3).collect(Collectors.toList()));
+                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3).toList());
         players2buy.addAll(playersAvailable.stream().filter(p -> p.getPosition().equals(Position.M)).filter(p -> p.getQuotation() <= budgetPotential)
                 .filter(p -> p.getEfficiency() > midfielderLast.getEfficiency()).filter(p -> p.getEfficiency() > config.getEfficiencySell(Position.M))
-                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3).collect(Collectors.toList()));
+                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3).toList());
         players2buy.addAll(playersAvailable.stream().filter(p -> p.getPosition().equals(Position.A)).filter(p -> p.getQuotation() <= budgetPotential)
                 .filter(p -> p.getEfficiency() > attackerLast.getEfficiency()).filter(p -> p.getEfficiency() > config.getEfficiencySell(Position.A))
-                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3).collect(Collectors.toList()));
+                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3).toList());
 
         if (!players2buy.isEmpty()) {
             LOG.info("Player(s) to buy (3 best choice by line):");
@@ -243,10 +243,10 @@ public class Games extends AbstractMpgProcess {
         players.removeAll(outPlayers);
 
         // Check if some goalkeeper(s) always on pitch
-        List<Player> goals = players.stream().filter(p -> Position.G.equals(p.getPosition())).collect(Collectors.toList());
+        List<Player> goals = players.stream().filter(p -> Position.G.equals(p.getPosition())).toList();
         if (goals.isEmpty()) {
             LOG.warn("\nWARNING: All goalkeeper(s) are injured/absent, so maintained on the pitch!");
-            players.addAll(outPlayers.stream().filter(p -> Position.G.equals(p.getPosition())).collect(Collectors.toList()));
+            players.addAll(outPlayers.stream().filter(p -> Position.G.equals(p.getPosition())).toList());
         }
 
         return players;
@@ -283,7 +283,7 @@ public class Games extends AbstractMpgProcess {
         CoachRequest request = new CoachRequest(coach.getComposition());
 
         // Goals
-        List<Player> goals = players.stream().filter(p -> p.getPosition().equals(Position.G)).collect(Collectors.toList());
+        List<Player> goals = players.stream().filter(p -> p.getPosition().equals(Position.G)).toList();
         if (!goals.isEmpty()) {
             request.getPlayersOnPitch().setPlayer(1, goals.get(0).getId());
             if (goals.size() > 1) {
@@ -291,9 +291,9 @@ public class Games extends AbstractMpgProcess {
             }
         }
 
-        List<Player> defenders = players.stream().filter(p -> p.getPosition().equals(Position.D)).collect(Collectors.toList());
-        List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList());
-        List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList());
+        List<Player> defenders = players.stream().filter(p -> p.getPosition().equals(Position.D)).collect(Collectors.toList()); // NOSONAR Could be modified
+        List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList()); // NOSONAR Could be modified
+        List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList()); // NOSONAR Could be modified
 
         String playerIdForBonus = midfielders.get(0).getId();
         request.setBonusSelected(selectBonus(coach.getBonusSelected(), team.getBonuses(), gameRemaining, config.isUseBonus(), playerIdForBonus));
