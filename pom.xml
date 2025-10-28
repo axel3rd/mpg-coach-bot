@@ -4,14 +4,14 @@
 	<groupId>org.blondin</groupId>
 	<artifactId>mpg-coach-bot</artifactId>
 	<packaging>jar</packaging>
-	<version>1.13.0-SNAPSHOT</version>
+	<version>1.13-SNAPSHOT</version>
 	<name>MPG Coach Bot</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<main.class>org.blondin.mpg.Main</main.class>
 		<jdk.version>11</jdk.version>
 		<jersey.version>3.1.10</jersey.version>
-		<jackson.version>2.18.2</jackson.version>
+		<jackson.version>2.20.0</jackson.version>
 		<!-- >= 1.7.36 requieres binding updates -->
 		<slf4j.version>1.7.36</slf4j.version>
 		<!-- >= 2.20.0 requieres StatusConsoleListener usage update -->
@@ -30,7 +30,7 @@
 			<plugins>
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.13.0</version>
+					<version>3.14.1</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-resources-plugin</artifactId>
@@ -42,11 +42,11 @@
 				</plugin>
 				<plugin>
 					<artifactId>maven-shade-plugin</artifactId>
-					<version>3.6.0</version>
+					<version>3.6.1</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.5.2</version>
+					<version>3.5.4</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-assembly-plugin</artifactId>
@@ -177,12 +177,12 @@
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
-			<version>1.18.3</version>
+			<version>1.21.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-text</artifactId>
-			<version>1.13.0</version>
+			<version>1.14.0</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -208,13 +208,13 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>5.15.2</version>
+			<version>5.20.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.wiremock</groupId>
 			<artifactId>wiremock</artifactId>
-			<version>3.0.1</version>
+			<version>3.13.1</version>
 			<scope>test</scope>
 			<exclusions>
                 <!-- Keep guava 20.0 due to littleproxy -->

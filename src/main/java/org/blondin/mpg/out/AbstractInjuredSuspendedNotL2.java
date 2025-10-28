@@ -74,10 +74,10 @@ public abstract class AbstractInjuredSuspendedNotL2 extends AbstractClient {
      * @return Player or null if not found
      */
     public Player getPlayer(ChampionshipOutType championship, String playerName, Position position, String teamName, OutType... excludes) {
-        List<OutType> excluded = Arrays.asList(ObjectUtils.defaultIfNull(excludes, new OutType[] {}));
+        List<OutType> excluded = Arrays.asList(ObjectUtils.getIfNull(excludes, new OutType[] {}));
         for (Player player : getPlayers(championship)) {
-            if (!excluded.contains(player.getOutType()) && Stream.of(StringUtils.stripAccents(playerName.toLowerCase()).split(" "))
-                    .allMatch(player.getFullNameWithPosition().toLowerCase()::contains)) {
+            if (!excluded.contains(player.getOutType())
+                    && Stream.of(StringUtils.stripAccents(playerName.toLowerCase()).split(" ")).allMatch(player.getFullNameWithPosition().toLowerCase()::contains)) {
                 Position pos = player.getPosition();
                 if (Position.UNDEFINED.equals(pos) || Position.UNDEFINED.equals(position) || position.equals(pos)) {
                     if (StringUtils.isNotBlank(teamName) && StringUtils.isNotBlank(player.getTeam()) && !player.getTeam().equals(teamName)) {
