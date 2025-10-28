@@ -53,16 +53,14 @@ public class Games extends AbstractMpgProcess {
             List<Player> players = team.getSquad().values().stream().collect(Collectors.toList());
 
             // Complete auction and calculate efficiency (notes should be in injured players display), and save for transactions proposal
-            completeAuctionAndcalculateEfficiency(players, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config,
-                    false, true);
-            List<Player> playersTeam = players.stream().collect(Collectors.toList());
+            completeAuctionAndcalculateEfficiency(players, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, true);
+            List<Player> playersTeam = players.stream().toList();
 
             // Remove out players (and write them)
             removeOutPlayers(players, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()), true);
 
             // Sort by efficiency
-            Collections.sort(players,
-                    Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed());
+            Collections.sort(players, Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed());
 
             // Write optimized team
             writeTeamOptimized(players, coach.getComposition(), config.isDebug());
@@ -74,24 +72,21 @@ public class Games extends AbstractMpgProcess {
 
             if (config.isTransactionsProposal()) {
                 if (Mode.NORMAL.equals(league.getMode())) {
-                    LOG.info(
-                            "\nTransaction proposals can not be achieved, you should buy 'MPG expert mode' for this league (very fun, not expensive!)");
+                    LOG.info("\nTransaction proposals can not be achieved, you should buy 'MPG expert mode' for this league (very fun, not expensive!)");
                 } else {
                     LOG.info("\nTransactions proposal ...");
-                    CurrentDay cd = apiClients.getStats().getStats(ChampionshipTypeWrapper.toStats(league.getChampionship())).getInfos()
-                            .getAnnualStats().getCurrentDay();
+                    CurrentDay cd = apiClients.getStats().getStats(ChampionshipTypeWrapper.toStats(league.getChampionship())).getInfos().getAnnualStats().getCurrentDay();
                     if (!cd.isStatsDayReached()) {
                         LOG.info("\nWARNING: Last day stats have not fully reached! Please retry tomorrow");
                     }
                     List<Player> playersAvailable = apiClients.getMpg().getAvailablePlayers(league.getDivisionId()).getList();
                     completePlayersClub(playersAvailable, apiClients.getMpg().getClubs());
                     removeOutPlayers(playersAvailable, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()), false);
-                    completeAuctionAndcalculateEfficiency(playersAvailable, apiClients.getStats(),
-                            ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, false);
+                    completeAuctionAndcalculateEfficiency(playersAvailable, apiClients.getStats(), ChampionshipTypeWrapper.toStats(league.getChampionship()), config, false, false);
 
                     Integer currentPlayersBuy = team.getBids().stream().map(Player::getPricePaid).collect(Collectors.summingInt(Integer::intValue));
-                    writeTransactionsProposal(cd.getDay(), playersTeam, playersAvailable, team.getBudget() - currentPlayersBuy,
-                            apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()), config);
+                    writeTransactionsProposal(cd.getDay(), playersTeam, playersAvailable, team.getBudget() - currentPlayersBuy, apiClients.getOutPlayers(),
+                            ChampionshipTypeWrapper.toOut(league.getChampionship()), config);
                 }
             }
         } catch (NoMoreGamesException e) {
@@ -123,8 +118,7 @@ public class Games extends AbstractMpgProcess {
         }
     }
 
-    private static void updateTeamWithRetry(MpgClient mpgClient, Division division, Team team, Coach coach, List<Player> players, PoolPlayers pool,
-            Config config) {
+    private static void updateTeamWithRetry(MpgClient mpgClient, Division division, Team team, Coach coach, List<Player> players, PoolPlayers pool, Config config) {
         LOG.info("\nUpdating team ...");
         CoachRequest request = getCoachRequest(team, coach, players, division.getGameRemaining(), config);
         if (StringUtils.isNotBlank(request.getCaptain())) {
@@ -132,7 +126,7 @@ public class Games extends AbstractMpgProcess {
         }
         if (request.getBonusSelected() != null && StringUtils.isNotBlank(request.getBonusSelected().getName())) {
             String playerPotential = "";
-            if (SelectedBonus.BONUS_BOOT_ONE_PLAYER.equals(request.getBonusSelected().getName())) {
+            if (SelectedBonus.BONUS_BOOST_ONE_PLAYER.equals(request.getBonusSelected().getName())) {
                 playerPotential = "(" + pool.getPlayer(request.getBonusSelected().getPlayerId()).getName() + ")";
             }
             LOG.info("  Bonus  : {} {}", request.getBonusSelected().getName(), playerPotential);
@@ -156,16 +150,14 @@ public class Games extends AbstractMpgProcess {
         }
     }
 
-    private static void writeTransactionsProposal(int currentDay, List<Player> playersTeam, List<Player> playersAvailable, int budget,
-            InjuredSuspendedWrapperClient outPlayersClient, ChampionshipOutType championship, Config config) {
+    private static void writeTransactionsProposal(int currentDay, List<Player> playersTeam, List<Player> playersAvailable, int budget, InjuredSuspendedWrapperClient outPlayersClient,
+            ChampionshipOutType championship, Config config) {
 
         // Players with bad efficiency
-        List<Player> players2Sell = playersTeam.stream().filter(p -> p.getEfficiency() <= config.getEfficiencySell(p.getPosition()))
-                .collect(Collectors.toList());
+        List<Player> players2Sell = playersTeam.stream().filter(p -> p.getEfficiency() <= config.getEfficiencySell(p.getPosition())).collect(Collectors.toList());
 
         // Remove goalkeeper(s) (if exist) and same team as the first
-        List<Player> goalkeepers = playersTeam.stream().filter(p -> p.getPosition().equals(Position.G))
-                .sorted(Comparator.comparing(Player::getEfficiency).reversed()).collect(Collectors.toList());
+        List<Player> goalkeepers = playersTeam.stream().filter(p -> p.getPosition().equals(Position.G)).sorted(Comparator.comparing(Player::getEfficiency).reversed()).toList();
         final Player goalFirst = goalkeepers.isEmpty() ? new Player() : goalkeepers.get(0);
         if (!goalkeepers.isEmpty()) {
             players2Sell.removeIf(p -> p.getPosition().equals(Position.G) && p.getClubId().equals(goalkeepers.get(0).getClubId()));
@@ -177,8 +169,7 @@ public class Games extends AbstractMpgProcess {
             AsciiTable at = getTable(TABLE_POSITION, TABLE_PLAYER_NAME, TABLE_EFFICIENCY, TABLE_QUOTE);
             for (Player player : players2Sell) {
                 cash += player.getQuotation();
-                AT_Row row = at.addRow(player.getPosition(), player.getName(), FORMAT_DECIMAL_DOUBLE.format(player.getEfficiency()),
-                        player.getQuotation());
+                AT_Row row = at.addRow(player.getPosition(), player.getName(), FORMAT_DECIMAL_DOUBLE.format(player.getEfficiency()), player.getQuotation());
                 setTableFormatRowPaddingSpace(row);
                 row.getCells().get(2).getContext().setTextAlignment(TextAlignment.RIGHT);
             }
@@ -188,12 +179,12 @@ public class Games extends AbstractMpgProcess {
         }
         LOG.info("Budget: {}", cash);
 
-        Player defenderLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.D))
-                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation)).collect(Collectors.toList()).get(0);
-        Player midfielderLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.M))
-                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation)).collect(Collectors.toList()).get(0);
-        Player attackerLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.A))
-                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation)).collect(Collectors.toList()).get(0);
+        Player defenderLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.D)).sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation)).toList()
+                .get(0);
+        Player midfielderLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.M)).sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation)).toList()
+                .get(0);
+        Player attackerLast = playersTeam.stream().filter(p -> p.getPosition().equals(Position.A)).sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation)).toList()
+                .get(0);
         cash += defenderLast.getQuotation() + midfielderLast.getQuotation() + attackerLast.getQuotation();
         LOG.info("Budget if last field players by line sold: {}", cash);
 
@@ -201,27 +192,23 @@ public class Games extends AbstractMpgProcess {
         List<Player> players2buy = new ArrayList<>();
         players2buy.addAll(playersAvailable.stream().filter(p -> p.getPosition().equals(Position.G)).filter(p -> p.getQuotation() <= budgetPotential)
                 .filter(p -> p.getEfficiency() > goalFirst.getEfficiency()).filter(p -> p.getEfficiency() > config.getEfficiencySell(Position.G))
-                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3)
-                .collect(Collectors.toList()));
+                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3).toList());
         players2buy.addAll(playersAvailable.stream().filter(p -> p.getPosition().equals(Position.D)).filter(p -> p.getQuotation() <= budgetPotential)
                 .filter(p -> p.getEfficiency() > defenderLast.getEfficiency()).filter(p -> p.getEfficiency() > config.getEfficiencySell(Position.D))
-                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3)
-                .collect(Collectors.toList()));
+                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3).toList());
         players2buy.addAll(playersAvailable.stream().filter(p -> p.getPosition().equals(Position.M)).filter(p -> p.getQuotation() <= budgetPotential)
                 .filter(p -> p.getEfficiency() > midfielderLast.getEfficiency()).filter(p -> p.getEfficiency() > config.getEfficiencySell(Position.M))
-                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3)
-                .collect(Collectors.toList()));
+                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3).toList());
         players2buy.addAll(playersAvailable.stream().filter(p -> p.getPosition().equals(Position.A)).filter(p -> p.getQuotation() <= budgetPotential)
                 .filter(p -> p.getEfficiency() > attackerLast.getEfficiency()).filter(p -> p.getEfficiency() > config.getEfficiencySell(Position.A))
-                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3)
-                .collect(Collectors.toList()));
+                .sorted(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed()).limit(3).toList());
 
         if (!players2buy.isEmpty()) {
             LOG.info("Player(s) to buy (3 best choice by line):");
             AsciiTable at = getTable(TABLE_POSITION, TABLE_PLAYER_NAME, TABLE_EFFICIENCY, TABLE_QUOTE);
             for (Player player : players2buy) {
-                org.blondin.mpg.out.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
-                        PositionWrapper.toOut(player.getPosition()), player.getClubName(), OutType.INJURY_GREEN);
+                org.blondin.mpg.out.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(), PositionWrapper.toOut(player.getPosition()), player.getClubName(),
+                        OutType.INJURY_GREEN);
                 String s = player.getName();
                 if (outPlayer != null) {
                     s += String.format(" (%s - %s - %s)", outPlayer.getOutType(), outPlayer.getDescription(), outPlayer.getLength());
@@ -239,28 +226,27 @@ public class Games extends AbstractMpgProcess {
 
     }
 
-    static List<Player> removeOutPlayers(List<Player> players, InjuredSuspendedWrapperClient outPlayersClient, ChampionshipOutType championship,
-            boolean displayOut) {
+    static List<Player> removeOutPlayers(List<Player> players, InjuredSuspendedWrapperClient outPlayersClient, ChampionshipOutType championship, boolean displayOut) {
         List<Player> outPlayers = new ArrayList<>();
         for (Player player : players) {
-            org.blondin.mpg.out.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(),
-                    PositionWrapper.toOut(player.getPosition()), player.getClubName(), OutType.INJURY_GREEN);
+            org.blondin.mpg.out.model.Player outPlayer = outPlayersClient.getPlayer(championship, player.getName(), PositionWrapper.toOut(player.getPosition()), player.getClubName(),
+                    OutType.INJURY_GREEN);
             if (outPlayer != null) {
                 outPlayers.add(player);
                 if (displayOut) {
                     String eff = FORMAT_DECIMAL_DOUBLE.format(player.getEfficiency());
-                    LOG.info("Out: {} ({} - Eff.:{} / Q.:{} / Paid:{}) - {} - {} - {}", player.getName(), player.getPosition(), eff,
-                            player.getQuotation(), player.getPricePaid(), outPlayer.getOutType(), outPlayer.getDescription(), outPlayer.getLength());
+                    LOG.info("Out: {} ({} - Eff.:{} / Q.:{} / Paid:{}) - {} - {} - {}", player.getName(), player.getPosition(), eff, player.getQuotation(), player.getPricePaid(),
+                            outPlayer.getOutType(), outPlayer.getDescription(), outPlayer.getLength());
                 }
             }
         }
         players.removeAll(outPlayers);
 
         // Check if some goalkeeper(s) always on pitch
-        List<Player> goals = players.stream().filter(p -> Position.G.equals(p.getPosition())).collect(Collectors.toList());
+        List<Player> goals = players.stream().filter(p -> Position.G.equals(p.getPosition())).toList();
         if (goals.isEmpty()) {
             LOG.warn("\nWARNING: All goalkeeper(s) are injured/absent, so maintained on the pitch!");
-            players.addAll(outPlayers.stream().filter(p -> Position.G.equals(p.getPosition())).collect(Collectors.toList()));
+            players.addAll(outPlayers.stream().filter(p -> Position.G.equals(p.getPosition())).toList());
         }
 
         return players;
@@ -297,7 +283,7 @@ public class Games extends AbstractMpgProcess {
         CoachRequest request = new CoachRequest(coach.getComposition());
 
         // Goals
-        List<Player> goals = players.stream().filter(p -> p.getPosition().equals(Position.G)).collect(Collectors.toList());
+        List<Player> goals = players.stream().filter(p -> p.getPosition().equals(Position.G)).toList();
         if (!goals.isEmpty()) {
             request.getPlayersOnPitch().setPlayer(1, goals.get(0).getId());
             if (goals.size() > 1) {
@@ -305,14 +291,13 @@ public class Games extends AbstractMpgProcess {
             }
         }
 
-        List<Player> defenders = players.stream().filter(p -> p.getPosition().equals(Position.D)).collect(Collectors.toList());
-        List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList());
-        List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList());
+        List<Player> defenders = players.stream().filter(p -> p.getPosition().equals(Position.D)).collect(Collectors.toList()); // NOSONAR Could be modified
+        List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).collect(Collectors.toList()); // NOSONAR Could be modified
+        List<Player> attackers = players.stream().filter(p -> p.getPosition().equals(Position.A)).collect(Collectors.toList()); // NOSONAR Could be modified
 
         String playerIdForBonus = midfielders.get(0).getId();
         request.setBonusSelected(selectBonus(coach.getBonusSelected(), team.getBonuses(), gameRemaining, config.isUseBonus(), playerIdForBonus));
-        String playerIdForCaptain = request.getBonusSelected() != null
-                && SelectedBonus.BONUS_BOOT_ONE_PLAYER.equals(request.getBonusSelected().getName())
+        String playerIdForCaptain = request.getBonusSelected() != null && SelectedBonus.BONUS_BOOST_ONE_PLAYER.equals(request.getBonusSelected().getName())
                 && !midfielders.get(1).getId().equals(request.getBonusSelected().getPlayerId()) ? midfielders.get(1).getId() : playerIdForBonus;
         request.setCaptain(selectCapatain(coach.getCaptain(), playerIdForCaptain, playerIdForBonus, config.isUseBonus()));
 
@@ -361,7 +346,7 @@ public class Games extends AbstractMpgProcess {
 
     static void verifyBonusPlayersOverrideOnPitch(CoachRequest request, String playerIdForBonusEnforced, String playerIdForCaptainEnforced) {
         // Bonus
-        if (request.getBonusSelected() != null && SelectedBonus.BONUS_BOOT_ONE_PLAYER.equals(request.getBonusSelected().getName())
+        if (request.getBonusSelected() != null && SelectedBonus.BONUS_BOOST_ONE_PLAYER.equals(request.getBonusSelected().getName())
                 && !verifyPlayerOnPitch(request.getPlayersOnPitch(), request.getBonusSelected().getPlayerId())) {
             request.getBonusSelected().setPlayerId(playerIdForBonusEnforced);
         }
@@ -391,8 +376,7 @@ public class Games extends AbstractMpgProcess {
         return captainIdIfNeeded;
     }
 
-    static SelectedBonus selectBonus(SelectedBonus previousBonus, Map<String, Integer> bonuses, int matchsRemaining, boolean useBonus,
-            String playerIdIfNeeded) {
+    static SelectedBonus selectBonus(SelectedBonus previousBonus, Map<String, Integer> bonuses, int matchsRemaining, boolean useBonus, String playerIdIfNeeded) {
         if (!useBonus || (previousBonus != null && previousBonus.getName() != null)) {
             return previousBonus;
         }
@@ -408,7 +392,7 @@ public class Games extends AbstractMpgProcess {
             String bonus = getBestBonus(bonuses, matchsRemaining);
             bonusSelected = new SelectedBonus();
             bonusSelected.setName(bonus);
-            if (SelectedBonus.BONUS_BOOT_ONE_PLAYER.equals(bonus)) {
+            if (SelectedBonus.BONUS_BOOST_ONE_PLAYER.equals(bonus)) {
                 bonusSelected.setPlayerId(playerIdIfNeeded);
             }
         }
@@ -423,6 +407,10 @@ public class Games extends AbstractMpgProcess {
         List<String> bonusLowerPriority = SelectedBonus.getBonusPriority().stream().collect(Collectors.toList());
         Collections.reverse(bonusLowerPriority);
         for (String b : bonusLowerPriority) {
+            if (!bonuses.containsKey(b)) {
+                // If bonuses removed ... do not crash
+                continue;
+            }
             for (int bi = 0; bi < bonuses.get(b); bi++) {
                 if (bonusTooMuch > 0) {
                     bonusTooMuch--;
