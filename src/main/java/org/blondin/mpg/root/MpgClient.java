@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
 import org.blondin.mpg.root.exception.UrlForbiddenException;
@@ -126,28 +127,28 @@ public class MpgClient extends AbstractClient {
     }
 
     public Division getDivision(String leagueDivisionId) {
-        if (!StringUtils.startsWith(leagueDivisionId, PREFIX_ID_DIVISION)) {
+        if (!Strings.CS.startsWith(leagueDivisionId, PREFIX_ID_DIVISION)) {
             throw new UnsupportedOperationException(String.format(ERROR_MESSAGE_LEAGUE, leagueDivisionId, PREFIX_ID_DIVISION));
         }
         return get(PREFIX_PATH_DIVISION + leagueDivisionId + "", headers, Division.class);
     }
 
     public Team getTeam(String leagueTeamId) {
-        if (!StringUtils.startsWith(leagueTeamId, "mpg_team_")) {
+        if (!Strings.CS.startsWith(leagueTeamId, "mpg_team_")) {
             throw new UnsupportedOperationException(String.format(ERROR_MESSAGE_LEAGUE, leagueTeamId, "mpg_team_"));
         }
         return get("team/" + leagueTeamId, headers, Team.class);
     }
 
     public Coach getCoach(String leagueDivisionId) {
-        if (!StringUtils.startsWith(leagueDivisionId, PREFIX_ID_DIVISION)) {
+        if (!Strings.CS.startsWith(leagueDivisionId, PREFIX_ID_DIVISION)) {
             throw new UnsupportedOperationException(String.format(ERROR_MESSAGE_LEAGUE, leagueDivisionId, PREFIX_ID_DIVISION));
         }
         return get(PREFIX_PATH_DIVISION + leagueDivisionId + "/coach", headers, Coach.class);
     }
 
     public AvailablePlayers getAvailablePlayers(String leagueDivisionId) {
-        if (!StringUtils.startsWith(leagueDivisionId, PREFIX_ID_DIVISION)) {
+        if (!Strings.CS.startsWith(leagueDivisionId, PREFIX_ID_DIVISION)) {
             throw new UnsupportedOperationException(String.format(ERROR_MESSAGE_LEAGUE, leagueDivisionId, PREFIX_ID_DIVISION));
         }
         return get(PREFIX_PATH_DIVISION + leagueDivisionId + "/available-players", headers, AvailablePlayers.class);
@@ -169,7 +170,7 @@ public class MpgClient extends AbstractClient {
     }
 
     public void updateCoach(String matchId, CoachRequest coachRequest) {
-        if (!StringUtils.startsWith(matchId, "mpg_match_team_formation_")) {
+        if (!Strings.CS.startsWith(matchId, "mpg_match_team_formation_")) {
             throw new UnsupportedOperationException(String.format("Coach match id '%s' should start with 'mpg_match_team_formation_'", matchId));
         }
         String result = put("match-team-formation/" + matchId, headers, coachRequest, String.class);

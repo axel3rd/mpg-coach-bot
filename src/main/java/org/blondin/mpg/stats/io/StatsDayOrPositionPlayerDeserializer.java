@@ -39,15 +39,13 @@ public class StatsDayOrPositionPlayerDeserializer extends StdDeserializer<StatsD
                 // API v2 format
                 for (HashMap<?, ?> e : (ArrayList<HashMap<?, ?>>) o) {
                     statsDay.put(Integer.parseInt(e.get("D").toString()),
-                            new StatsDay(Double.valueOf(ObjectUtils.defaultIfNull(e.get("n"), 0).toString()),
-                                    Integer.valueOf(ObjectUtils.defaultIfNull(e.get("g"), 0).toString())));
+                            new StatsDay(Double.valueOf(ObjectUtils.getIfNull(e.get("n"), 0).toString()), Integer.valueOf(ObjectUtils.getIfNull(e.get("g"), 0).toString())));
                 }
             } else {
                 for (ArrayList<?> e : (ArrayList<ArrayList<?>>) o) {
                     Integer day = (Integer) e.get(0);
                     Map<String, Object> values = (Map<String, Object>) e.get(1);
-                    statsDay.put(day, new StatsDay(Double.valueOf(ObjectUtils.defaultIfNull(values.get("n"), 0).toString()),
-                            Integer.valueOf(ObjectUtils.defaultIfNull(values.get("g"), 0).toString())));
+                    statsDay.put(day, new StatsDay(Double.valueOf(ObjectUtils.getIfNull(values.get("n"), 0).toString()), Integer.valueOf(ObjectUtils.getIfNull(values.get("g"), 0).toString())));
                 }
             }
             sop.setStatsDay(statsDay);

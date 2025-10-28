@@ -484,7 +484,7 @@ public class MainTest extends AbstractMockTestClient {
     }
 
     private void executeMainProcess(MpgClient mpgClient, MpgStatsClient mpgStatsClient, InjuredSuspendedWrapperClient injuredSuspendedClient, Config config) {
-        Config c = ObjectUtils.defaultIfNull(config, getConfig());
+        Config c = ObjectUtils.getIfNull(config, getConfig());
         // ObjectUtils.defaultIfNull could not be used for other, the builders of client should not be called
         MpgClient mpgClientLocal = mpgClient;
         if (mpgClientLocal == null) {

@@ -1,6 +1,6 @@
 package org.blondin.mpg.root.model;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,7 +25,7 @@ public class League {
     private String nextRealGameWeekDate;
 
     public String getId() {
-        return StringUtils.removeStart(leagueId, "mpg_league_");
+        return Strings.CS.removeStart(leagueId, "mpg_league_");
     }
 
     public String getDivisionId() {
