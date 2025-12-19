@@ -15,7 +15,7 @@
 		<!-- >= 1.7.36 requieres binding updates -->
 		<slf4j.version>1.7.36</slf4j.version>
 		<!-- >= 2.20.0 requieres StatusConsoleListener usage update -->
-		<log4j.version>2.19.0</log4j.version>
+		<log4j.version>2.25.3</log4j.version>
 		<!-- Goals for release plugin -->
 		<goals>package</goals>
 		<!-- Eclipse m2e disable warning -->
