@@ -14,8 +14,7 @@
         <jdk.version>21</jdk.version>
         <jersey.version>3.1.11</jersey.version>
         <jackson.version>2.20.1</jackson.version>
-        <!-- >= 1.7.36 requieres binding updates -->
-        <slf4j.version>1.7.36</slf4j.version>
+        <slf4j.version>2.0.17</slf4j.version>
         <log4j.version>2.25.3</log4j.version>
         <!-- Goals for release plugin -->
         <goals>package</goals>
@@ -152,7 +151,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
+            <artifactId>log4j-slf4j2-impl</artifactId>
             <version>${log4j.version}</version>
         </dependency>
         <dependency>
@@ -203,7 +202,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
-            <version>1.14.0</version>
+            <version>1.15.0</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
