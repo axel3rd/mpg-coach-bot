@@ -11,16 +11,17 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.class>org.blondin.mpg.Main</main.class>
-        <jdk.version>11</jdk.version>
-        <jersey.version>3.1.11</jersey.version>
+        <jdk.version>21</jdk.version>
+        <jersey.version>4.0.0</jersey.version>
         <jackson.version>2.20.1</jackson.version>
-        <!-- >= 1.7.36 requieres binding updates -->
-        <slf4j.version>1.7.36</slf4j.version>
+        <slf4j.version>2.0.17</slf4j.version>
         <log4j.version>2.25.3</log4j.version>
         <!-- Goals for release plugin -->
         <goals>package</goals>
         <!-- Eclipse m2e disable warning -->
         <maven.project.sourceRoots.warningsDisabled>true</maven.project.sourceRoots.warningsDisabled>
+        <!-- Minimal definition for surefire plugin -->
+        <argLine/>
     </properties>
     <scm>
         <connection>scm:git:https://github.com/axel3rd/mpg-coach-bot</connection>
@@ -44,6 +45,10 @@
                 <plugin>
                     <artifactId>maven-shade-plugin</artifactId>
                     <version>3.6.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.9.0</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -83,6 +88,23 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- Mockito agent in unit test -->
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>properties</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>@{argLine} -Xshare:off -javaagent:${org.mockito:mockito-core:jar}</argLine>
+                </configuration>
             </plugin>
             <!-- Auto exec program -->
             <plugin>
@@ -152,7 +174,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
+            <artifactId>log4j-slf4j2-impl</artifactId>
             <version>${log4j.version}</version>
         </dependency>
         <dependency>
@@ -163,7 +185,7 @@
         <dependency>
             <groupId>org.glassfish.jersey.connectors</groupId>
             <artifactId>jersey-apache-connector</artifactId>
-            <version>${jersey.version}</version>
+            <version>3.1.11</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
@@ -203,7 +225,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
-            <version>1.14.0</version>
+            <version>1.15.0</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>

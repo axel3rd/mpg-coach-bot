@@ -62,7 +62,7 @@ This efficiency is focused on recent days (8 by default), current season notatio
 
 ## Usage
 
-*Prerequisite: [java](https://www.java.com/fr/download/) should be installed and on your PATH.*
+*Prerequisite: [java](https://www.java.com/fr/download/) should be installed and on your PATH (>=21 since v1.14, >=11 previously).*
 
 Download package `mpg-coach-bot-X.Y.zip` file from [releases](https://github.com/axel3rd/mpg-coach-bot/releases) (or development SNAPSHOT from [packages](https://github.com/axel3rd/mpg-coach-bot/packages/)), extract ZIP files and update the given `mpg.properties` file with your *MPG* credentials and main options:
 
