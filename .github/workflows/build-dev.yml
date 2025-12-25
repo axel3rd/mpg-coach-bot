@@ -9,11 +9,11 @@ jobs:
       runs-on: ubuntu-latest
       steps:
       -  name: Checkout
-         uses: actions/checkout@v3
+         uses: actions/checkout@v6
          with:
             fetch-depth: 0
       -  name: SetUp Node/NPM
-         uses: actions/setup-node@v3
+         uses: actions/setup-node@v6
       -  name: NPM install
          run: npm install --ignore-scripts
       -  name: Format toc
@@ -27,18 +27,18 @@ jobs:
       -  name: Commit changes
          uses: EndBug/add-and-commit@v9
       -  name: Set up JDK
-         uses: actions/setup-java@v3
+         uses: actions/setup-java@v5
          with:
             java-version: 21
             distribution: temurin
       -  name: Cache SonarCloud packages
-         uses: actions/cache@v3
+         uses: actions/cache@v5
          with:
             path: ~/.sonar/cache
             key: ${{ runner.os }}-sonar
             restore-keys: ${{ runner.os }}-sonar
       -  name: Cache Maven packages
-         uses: actions/cache@v3
+         uses: actions/cache@v5
          with:
             path: ~/.m2
             key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
