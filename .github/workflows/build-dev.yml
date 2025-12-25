@@ -15,7 +15,7 @@ jobs:
       -  name: SetUp Node/NPM
          uses: actions/setup-node@v3
       -  name: NPM install
-         run: npm install
+         run: npm install --ignore-scripts
       -  name: Format toc
          run: npm run format-toc
       -  name: Format main

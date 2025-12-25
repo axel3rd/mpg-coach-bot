@@ -31,11 +31,11 @@ public class StatsDayOrPositionPlayerDeserializer extends StdDeserializer<StatsD
     public StatsDayOrPositionPlayer deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         Object o = ctxt.readValue(jp, Object.class);
         StatsDayOrPositionPlayer sop = new StatsDayOrPositionPlayer();
-        if (o instanceof String) {
-            sop.setPosition(Position.getNameByValue((String) o));
-        } else if (o instanceof ArrayList<?>) {
+        switch (o) {
+        case String objString -> sop.setPosition(Position.getNameByValue(objString));
+        case ArrayList<?> objArrayList -> {
             Map<Integer, StatsDay> statsDay = new HashMap<>();
-            if (!((ArrayList<?>) o).isEmpty() && ((ArrayList<?>) o).get(0) instanceof HashMap<?, ?>) {
+            if (!objArrayList.isEmpty() && objArrayList.get(0) instanceof HashMap<?, ?>) {
                 // API v2 format
                 for (HashMap<?, ?> e : (ArrayList<HashMap<?, ?>>) o) {
                     statsDay.put(Integer.parseInt(e.get("D").toString()),
@@ -49,8 +49,8 @@ public class StatsDayOrPositionPlayerDeserializer extends StdDeserializer<StatsD
                 }
             }
             sop.setStatsDay(statsDay);
-        } else {
-            throw new UnsupportedOperationException("Object is not a 'Position' or 'StatsDay' array");
+        }
+        default -> new UnsupportedOperationException("Object is not a 'Position' or 'StatsDay' array");
         }
         return sop;
     }

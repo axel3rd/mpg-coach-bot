@@ -36,7 +36,7 @@ jobs:
     - name: Get package to release
       id: package_build
       run: |
-        PACKAGE=$(cd target && ls *.zip)
+        PACKAGE=$(cd target && ls ./*.zip)
         echo "package_name=${PACKAGE}" >> "$GITHUB_ENV"
     - name: Create Release
       id: create_release

@@ -105,8 +105,8 @@ public class InjuredSuspendedMaLigue2Client extends AbstractClient {
     private List<Player> parsePlayers(String team, Element e, OutType outType) {
         List<Player> players = new ArrayList<>();
         for (Node node : e.childNodes()) {
-            if (node instanceof TextNode) {
-                String content = ((TextNode) node).getWholeText();
+            if (node instanceof TextNode textNode) {
+                String content = textNode.getWholeText();
                 if (StringUtils.isBlank(content)) {
                     continue;
                 }
