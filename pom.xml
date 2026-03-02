@@ -13,7 +13,7 @@
         <main.class>org.blondin.mpg.Main</main.class>
         <jdk.version>21</jdk.version>
         <jersey.version>4.0.0</jersey.version>
-        <jackson.version>2.20.1</jackson.version>
+        <jackson.version>2.21.1</jackson.version>
         <slf4j.version>2.0.17</slf4j.version>
         <log4j.version>2.25.3</log4j.version>
         <!-- Goals for release plugin -->
