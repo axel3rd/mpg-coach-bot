@@ -6,32 +6,33 @@ MPG (Mon Petit Gazon) coach bot, to automate and optimize weekly league actions
 
 <!-- toc -->
 
-* [Concept](#concept)
-* [Usage](#usage)
-* [Sample output](#sample-output)
+- [Concept](#concept)
+- [Usage](#usage)
+- [Sample output](#sample-output)
   * [Principal](#principal)
   * [Team Update](#team-update)
   * [Transaction proposal](#transaction-proposal)
-* [Usage (advanced)](#usage-advanced)
+- [Usage (advanced)](#usage-advanced)
   * [Configuration](#configuration)
-    * [Proxy http](#proxy-http)
-    * [Team update](#team-update)
-    * [Focus on recent efficiency](#focus-on-recent-efficiency)
-    * [Use bonus](#use-bonus)
-    * [Leagues inclusion / exclusion](#leagues-inclusion--exclusion)
-    * [Tactical substitutes](#tactical-substitutes)
-    * [Transactions proposal](#transactions-proposal)
-    * [Efficiency coefficient](#efficiency-coefficient)
-    * [SSL check](#ssl-check)
-    * [Requests successive wait time](#requests-successive-wait-time)
-    * [Authentications](#authentications)
-    * [Logs debug](#logs-debug)
+    + [Proxy http](#proxy-http)
+    + [Team update](#team-update)
+    + [Focus on recent efficiency](#focus-on-recent-efficiency)
+    + [Use bonus](#use-bonus)
+    + [Leagues inclusion / exclusion](#leagues-inclusion--exclusion)
+    + [Tactical substitutes](#tactical-substitutes)
+    + [Transactions proposal](#transactions-proposal)
+    + [Efficiency coefficient](#efficiency-coefficient)
+    + [SSL check](#ssl-check)
+    + [Requests successive wait time](#requests-successive-wait-time)
+    + [Authentications](#authentications)
+    + [Logs debug](#logs-debug)
   * [Execution](#execution)
-* [Roadmap](#roadmap)
+- [Roadmap](#roadmap)
   * [v1](#v1)
   * [v2](#v2)
   * [v3](#v3)
-* [Development process](#development-process)
+- [Development process](#development-process)
+  * [Unit test execution](#unit-test-execution)
   * [Build and release](#build-and-release)
   * [Documentation format](#documentation-format)
 
@@ -322,6 +323,14 @@ Web application with friendly UI (Spring boot, docker container, JS Frontend, ..
 Data mining on media resources to optimize team (injuries, coach announcements, ...).
 
 ## Development process
+
+### Unit test execution
+
+JRE VM argument should be (in Eclipse, ...):
+
+```
+-ea -Xshare:off -javaagent:C:/[...]/.m2/repository/org/mockito/mockito-core/5.[version]/mockito-core-5.[version].jar
+```
 
 ### Build and release
 
