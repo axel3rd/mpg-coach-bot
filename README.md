@@ -32,6 +32,7 @@ MPG (Mon Petit Gazon) coach bot, to automate and optimize weekly league actions
   * [v2](#v2)
   * [v3](#v3)
 * [Development process](#development-process)
+  * [Unit test execution](#unit-test-execution)
   * [Build and release](#build-and-release)
   * [Documentation format](#documentation-format)
 
@@ -322,6 +323,14 @@ Web application with friendly UI (Spring boot, docker container, JS Frontend, ..
 Data mining on media resources to optimize team (injuries, coach announcements, ...).
 
 ## Development process
+
+### Unit test execution
+
+JRE VM argument should be (in Eclipse, ...):
+
+```
+-ea -Xshare:off -javaagent:C:/[...]/.m2/repository/org/mockito/mockito-core/5.[version]/mockito-core-5.[version].jar
+```
 
 ### Build and release
 
