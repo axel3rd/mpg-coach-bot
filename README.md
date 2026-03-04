@@ -323,6 +323,10 @@ Data mining on media resources to optimize team (injuries, coach announcements, 
 
 ## Development process
 
+### Unit test execution
+
+JRE VM argument should be (in Eclipse, ...):
+
 ### Build and release
 
 This project is using [Maven](https://maven.apache.org/) as integration tool.
