@@ -323,6 +323,14 @@ Data mining on media resources to optimize team (injuries, coach announcements, 
 
 ## Development process
 
+### Unit test execution
+
+JRE VM argument should be (in Eclipse, ...):
+
+```
+-ea -Xshare:off -javaagent:C:/[...]/.m2/repository/org/mockito/mockito-core/5.[version]/mockito-core-5.[version].jar
+```
+
 ### Build and release
 
 This project is using [Maven](https://maven.apache.org/) as integration tool.
