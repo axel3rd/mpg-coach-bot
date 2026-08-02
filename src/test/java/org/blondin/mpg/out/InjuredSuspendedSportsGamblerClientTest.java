@@ -73,7 +73,7 @@ public class InjuredSuspendedSportsGamblerClientTest extends AbstractMockTestCli
      */
     private Collection<String> getTeams(List<Player> players) {
         Collection<String> teams = new HashSet<>();
-        players.stream().forEach(p -> {
+        players.forEach(p -> {
             if (StringUtils.isNotBlank(p.getTeam())) {
                 teams.add(p.getTeam());
             }

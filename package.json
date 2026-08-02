@@ -7,7 +7,7 @@
         "format-all": "npm run format-toc & npm run format-main & npm run format-bug & npm run format-tests"
     },
     "devDependencies": {
-        "@quilicicf/markdown-formatter": "*",
-        "markdown-toc": "*"
+        "@quilicicf/markdown-formatter": "6.0.0",
+        "markdown-toc": "1.2.0"
     }
 }

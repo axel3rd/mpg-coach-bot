@@ -175,7 +175,7 @@ public class Config {
         config.requestWaitTime = parseInt(properties, "request.wait.time", config.requestWaitTime, 1, 999);
         String urls = parseString(properties, "request.wait.urls");
         if (StringUtils.isNoneBlank(urls)) {
-            config.requestWaitUrls = Arrays.asList(urls.trim().split("\\s*,\\s*"));
+            config.requestWaitUrls = Arrays.asList(urls.trim().split(",\\s*"));
         }
     }
 
