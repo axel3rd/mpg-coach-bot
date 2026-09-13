@@ -8,6 +8,8 @@
     },
     "devDependencies": {
         "@quilicicf/markdown-formatter": "6.0.0",
-        "markdown-toc": "1.2.0"
-    }
+        "markdown-toc": "1.2.0",
+        "toml": "2.3.2"
+    },
+    "description": "markdown-toc requires toml 2.3.2, 2.3.6 is resolved"
 }
