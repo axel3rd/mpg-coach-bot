@@ -45,6 +45,7 @@ public class Config {
     private boolean sslCertificatesCheck = true;
     private List<String> requestWaitUrls = Arrays.asList("https://www.sportsgambler.com");
     private int requestWaitTime = 1;
+    private String token;
     private boolean debug = false;
 
     private Config() {
@@ -129,7 +130,8 @@ public class Config {
     private static void configMain(Config config, Properties properties, File fileConfig) {
         config.login = parseString(properties, "email");
         config.password = parseString(properties, "password");
-        if (StringUtils.isBlank(config.login) || StringUtils.isBlank(config.password)) {
+        config.token = parseString(properties, "token", config.token);
+        if (StringUtils.isBlank(config.token) && (StringUtils.isBlank(config.login) || StringUtils.isBlank(config.password))) {
             throw new UnsupportedOperationException(String.format("Login and/or password cannot be retrieved from file '%s' or environement variables", fileConfig.getName()));
         }
         config.authentications = parseString(properties, "authentications", config.authentications);
@@ -196,6 +198,10 @@ public class Config {
 
     public String getAuthentications() {
         return authentications;
+    }
+
+    public String getToken() {
+        return token;
     }
 
     public boolean isTeampUpdate() {
