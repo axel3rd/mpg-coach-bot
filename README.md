@@ -288,7 +288,6 @@ To bypass authentication with hardcoded Bearer token (retrieved via Browser DevT
 token = abc...xyz
 ```
 
-
 #### Logs debug
 
 To add some debug logs about execution (since v1.2):
