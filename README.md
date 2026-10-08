@@ -281,6 +281,14 @@ To customize authentications type (since v1.13):
 authentications = simple,oidc
 ```
 
+To bypass authentication with hardcoded Bearer token (retrieved via Browser DevTools and API endpoint check)(since v1.14):
+
+```
+# Bypass sign in process by using hardcoded Bearer token
+token = abc...xyz
+```
+
+
 #### Logs debug
 
 To add some debug logs about execution (since v1.2):
