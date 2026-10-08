@@ -88,6 +88,7 @@ public class ConfigTest {
         lines.add("email = firstName.lastName@gmail.com");
         lines.add("password = foobar");
         lines.add("authentications = simple");
+        lines.add("token = abc...xyz");
         lines.add("team.update=false");
         lines.add("efficiency.recent.focus=false");
         lines.add("efficiency.recent.days=5");
@@ -121,6 +122,7 @@ public class ConfigTest {
         // No login/password, could be overridden by system properties in real Travis tests
 
         Assert.assertEquals("simple", config.getAuthentications());
+        Assert.assertEquals("abc...xyz", config.getToken());
         Assert.assertEquals(false, config.isTeampUpdate());
         Assert.assertEquals(false, config.isEfficiencyRecentFocus());
         Assert.assertEquals(5, config.getEfficiencyRecentDays());

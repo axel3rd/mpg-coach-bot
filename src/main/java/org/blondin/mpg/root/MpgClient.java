@@ -61,14 +61,21 @@ public class MpgClient extends AbstractClient {
         client.setUrl(Objects.toString(urlOverride, "https://api.mpg.football"));
 
         AuthentMpgWebClient mpgWebClient = AuthentMpgWebClient.build(config, urlOverride);
-        client.signIn(config.getLogin(), config.getPassword(), config.getAuthentications(), mpgWebClient);
+        client.signIn(config.getLogin(), config.getPassword(), config.getAuthentications(), config.getToken(), mpgWebClient);
         return client;
     }
 
-    void signIn(String login, String password, String authentications, AuthentMpgWebClient mpgWebClient) {
+    void signIn(String login, String password, String authentications, String token, AuthentMpgWebClient mpgWebClient) {
         String[] auths = authentications.split(",");
         if (auths.length == 0) {
             throw new UnsupportedOperationException("Authentications types should be defined");
+        }
+        if (StringUtils.isNotBlank(token)) {
+            LOG.debug("Bypass authentication with hardcoded token");
+            headers.add(HEADER_AUTHORIZATION, "Bearer " + token);
+            User user = get("user", headers, User.class);
+            this.userId = user.getId();
+            return;
         }
         for (String authentication : auths) {
             if (headers.containsKey(HEADER_AUTHORIZATION)) {

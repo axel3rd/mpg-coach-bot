@@ -42,6 +42,23 @@ public class MpgClientTest extends AbstractMockTestClient {
     public TemporaryFolder testFolder = new TemporaryFolder();
 
     @Test
+    public void testMockSignInBypassToken() throws IOException {
+        String url = "http://localhost:" + server.port();
+        stubFor(get("/user").willReturn(aResponse().withStatus(200).withHeader("Content-Type", MediaType.APPLICATION_JSON)
+                .withBody("{\"id\":\"user_955966\",\"type\":\"user\",\"email\":\"firstName.lastName@gmail.com\",\"firstName\":\"FirstName\",\"username\":\"pseudo\" }")));
+
+        // Config with token
+        List<String> lines = new ArrayList<>();
+        lines.add("token = abc...xye");
+        File configFile = new File(testFolder.getRoot(), "mpg.properties.test");
+        FileUtils.writeLines(configFile, lines);
+        Config config = Config.build(configFile.getPath());
+
+        MpgClient.build(config, url);
+        Assert.assertTrue(true);
+    }
+
+    @Test
     public void testMockSignInSimpleKo() {
         stubFor(post("/user/sign-in").willReturn(aResponse().withStatus(403).withHeader("Content-Type", MediaType.APPLICATION_JSON).withBodyFile("mpg.user-signIn.bad.json")));
         Config config = getConfig();

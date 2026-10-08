@@ -52,5 +52,8 @@ transactions.proposal = false
 # (Real default is 'simple,oidc' but to many historical impact if not set as it for unit test)
 authentications = simple
 
+# Bypass sign in process by using hardcoded Bearer token
+#token = abc...xyz
+
 # Enable debug logs
 #logs.debug = true
