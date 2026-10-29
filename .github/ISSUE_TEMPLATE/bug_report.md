@@ -20,7 +20,6 @@ Depending your championship, join data files set in attachment.
 
 | Feature          | URL                                                         | Reason                                                                                                    |
 | ---------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| login            | `GET /user/sign-in`                                         | Retrieve **userId**                                                                                       |
 | dashboard        | `GET /dashboard/leagues`                                    | Retrieve **divisionId** (\~ `mpg_division_MLEXXXXX_3_1`)                                                  |
 | division         | `GET /division/mpg_division_MLEXXXXX_3_1`                   | Retrieve `mpg_team_MLEXXXXX_3_1_2` team for user league                                                   |
 | team             | `GET /team/mpg_team_MLEXXXXX_3_1_2`                         | Retrieve Team and Bonus for team                                                                          |

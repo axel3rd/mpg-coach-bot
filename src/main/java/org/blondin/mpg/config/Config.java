@@ -2,6 +2,8 @@ package org.blondin.mpg.config;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +11,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
@@ -19,9 +23,12 @@ public class Config {
 
     private static final String FILE_DEFAULT = "mpg.properties";
 
+    private File fileLocation;
     private String login;
     private String password;
-    private String authentications = "simple,oidc";
+    private String tokenAccess;
+    private String tokenRefresh;
+    private int tokenRenew = 7;
     private boolean teampUpdate = true;
     private boolean efficiencyRecentFocus = true;
     private int efficiencyRecentDays = 8;
@@ -45,7 +52,6 @@ public class Config {
     private boolean sslCertificatesCheck = true;
     private List<String> requestWaitUrls = Arrays.asList("https://www.sportsgambler.com");
     private int requestWaitTime = 1;
-    private String token;
     private boolean debug = false;
 
     private Config() {
@@ -58,6 +64,7 @@ public class Config {
         if (StringUtils.isNotBlank(file) && new File(file).exists()) {
             fileConfig = new File(file);
         }
+        config.fileLocation = fileConfig;
         Properties properties = new Properties();
         if (fileConfig.exists()) {
             try {
@@ -81,14 +88,6 @@ public class Config {
     private static String parseString(Properties properties, String key) {
         // No SonarQube issues, Keys are known
         return StringUtils.defaultIfBlank(properties.getProperty(key), System.getenv("MPG_" + key.toUpperCase().replaceAll("\\.", "_"))); // NOSONAR
-    }
-
-    private static String parseString(Properties properties, String key, String valueIfNotDefined) {
-        String value = parseString(properties, key);
-        if (StringUtils.isNotBlank(value)) {
-            return value;
-        }
-        return valueIfNotDefined;
     }
 
     private static float parseFloat(Properties properties, String key, float valueIfNotDefined) {
@@ -130,11 +129,12 @@ public class Config {
     private static void configMain(Config config, Properties properties, File fileConfig) {
         config.login = parseString(properties, "email");
         config.password = parseString(properties, "password");
-        config.token = parseString(properties, "token", config.token);
-        if (StringUtils.isBlank(config.token) && (StringUtils.isBlank(config.login) || StringUtils.isBlank(config.password))) {
+        if (StringUtils.isBlank(config.login) || StringUtils.isBlank(config.password)) {
             throw new UnsupportedOperationException(String.format("Login and/or password cannot be retrieved from file '%s' or environement variables", fileConfig.getName()));
         }
-        config.authentications = parseString(properties, "authentications", config.authentications);
+        config.tokenAccess = parseString(properties, "token.access");
+        config.tokenRefresh = parseString(properties, "token.refresh");
+        config.tokenRenew = parseInt(properties, "token.renew", config.tokenRenew, 1, 30);
         config.teampUpdate = parseBoolean(properties, "team.update", config.teampUpdate);
         config.efficiencyRecentFocus = parseBoolean(properties, "efficiency.recent.focus", config.efficiencyRecentFocus);
         config.efficiencyRecentDays = parseInt(properties, "efficiency.recent.days", config.efficiencyRecentDays, 1, config.efficiencyRecentDays);
@@ -188,6 +188,35 @@ public class Config {
         config.proxy = new Proxy(uri, user, password);
     }
 
+    private void writeTokens(String accessToken, String refreshToken) {
+        try {
+            PropertiesConfiguration config = new PropertiesConfiguration();
+            try (FileReader reader = new FileReader(fileLocation)) {
+                config.read(reader);
+            }
+            config.getLayout().setGlobalSeparator(" = ");
+            config.setProperty("token.access", accessToken);
+            config.setProperty("token.refresh", refreshToken);
+            try (FileWriter writer = new FileWriter(fileLocation)) {
+                config.write(writer);
+            }
+        } catch (ConfigurationException | IOException e) {
+            throw new UnsupportedOperationException("Unable to store tokens in configuration file", e);
+        }
+    }
+
+    public void storeTokens(String accessToken, String refreshToken) {
+        writeTokens(accessToken, refreshToken);
+    }
+
+    public void removeTokens() {
+        writeTokens("", "");
+    }
+
+    public File getFileLocation() {
+        return fileLocation;
+    }
+
     public String getLogin() {
         return login;
     }
@@ -196,12 +225,24 @@ public class Config {
         return password;
     }
 
+    public String getTokenAccess() {
+        return tokenAccess;
+    }
+
+    public String getTokenRefresh() {
+        return tokenRefresh;
+    }
+
+    public int getTokenRenew() {
+        return tokenRenew;
+    }
+
     public String getAuthentications() {
-        return authentications;
+        throw new UnsupportedOperationException("Parameter 'authentications' is not more supported, please remove it from configuration file.");
     }
 
     public String getToken() {
-        return token;
+        throw new UnsupportedOperationException("Parameter 'token' is not more supported, please remove it from configuration file.");
     }
 
     public boolean isTeampUpdate() {

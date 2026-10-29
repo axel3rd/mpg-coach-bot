@@ -11,6 +11,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -109,8 +110,8 @@ public abstract class AbstractClient {
         return statusCodeLast;
     }
 
-    protected <T> T get(String path, Map<String, Object> params, boolean followRedirects, Class<T> entityResponse) {
-        return call(path, null, entityResponse, new RequestOptions().params(params).followRedirects(followRedirects));
+    protected <T> T get(String path, Map<String, Object> params, List<Response.Status> additionalAcceptedStatusCode, Class<T> entityResponse) {
+        return call(path, null, entityResponse, new RequestOptions().params(params).additionalAcceptedStatusCode(additionalAcceptedStatusCode));
     }
 
     protected <T> T get(String path, Class<T> entityResponse) {
@@ -126,11 +127,13 @@ public abstract class AbstractClient {
     }
 
     protected <T> T get(String path, MultivaluedMap<String, Object> headers, Class<T> entityResponse, long cacheTimeMilliSecond) {
-        return get(path, null, headers, entityResponse, cacheTimeMilliSecond);
+        return get(path, null, headers, null, entityResponse, cacheTimeMilliSecond);
     }
 
-    protected <T> T get(String path, Map<String, Object> params, MultivaluedMap<String, Object> headers, Class<T> entityResponse, long cacheTimeMilliSecond) {
-        return call(path, null, entityResponse, new RequestOptions().params(params).headers(headers).cacheTimeMilliSecond(cacheTimeMilliSecond));
+    protected <T> T get(String path, Map<String, Object> params, MultivaluedMap<String, Object> headers, List<Response.Status> additionalAcceptedStatusCode, Class<T> entityResponse,
+            long cacheTimeMilliSecond) {
+        return call(path, null, entityResponse,
+                new RequestOptions().params(params).headers(headers).cacheTimeMilliSecond(cacheTimeMilliSecond).additionalAcceptedStatusCode(additionalAcceptedStatusCode));
     }
 
     protected <T> T post(String path, Object entityRequest, Class<T> entityResponse) {
@@ -141,9 +144,10 @@ public abstract class AbstractClient {
         return call(path, entityRequest, entityResponse, new RequestOptions().params(params).entityMediaType(entityMediaType));
     }
 
-    protected <T> T post(String path, Map<String, Object> params, MultivaluedMap<String, Object> headers, Object entityRequest, MediaType entityMediaType, boolean followRedirects,
-            Class<T> entityResponse) {
-        return call(path, entityRequest, entityResponse, new RequestOptions().params(params).headers(headers).entityMediaType(entityMediaType).followRedirects(followRedirects));
+    protected <T> T post(String path, Map<String, Object> params, MultivaluedMap<String, Object> headers, Object entityRequest, MediaType entityMediaType,
+            List<Response.Status> additionalAcceptedStatusCode, Class<T> entityResponse) {
+        return call(path, entityRequest, entityResponse,
+                new RequestOptions().params(params).headers(headers).entityMediaType(entityMediaType).additionalAcceptedStatusCode(additionalAcceptedStatusCode));
     }
 
     protected <T> T put(String path, MultivaluedMap<String, Object> headers, Object entityRequest, Class<T> entityResponse) {
@@ -153,10 +157,10 @@ public abstract class AbstractClient {
     private class RequestOptions {
         private Map<String, Object> params = null;
         private MultivaluedMap<String, Object> headers = null;
+        private Collection<Response.Status> additionalAcceptedStatusCode = null;
         private MediaType entityMediaType = MediaType.APPLICATION_JSON_TYPE;
         private long cacheTimeMilliSecond = -1;
         private boolean requestPut = false;
-        private boolean followRedirects = true;
 
         private RequestOptions params(Map<String, Object> params) {
             this.params = params;
@@ -183,10 +187,23 @@ public abstract class AbstractClient {
             return this;
         }
 
-        private RequestOptions followRedirects(boolean followRedirects) {
-            this.followRedirects = followRedirects;
+        private RequestOptions additionalAcceptedStatusCode(Collection<Response.Status> additionalAcceptedStatusCode) {
+            this.additionalAcceptedStatusCode = additionalAcceptedStatusCode;
             return this;
         }
+
+    }
+
+    private boolean isFollowRedirects(Collection<Response.Status> additionalAcceptedStatusCode) {
+        if (additionalAcceptedStatusCode == null) {
+            return true;
+        }
+        for (Response.Status statusCode : additionalAcceptedStatusCode) {
+            if (statusCode.getStatusCode() >= 300 && statusCode.getStatusCode() < 400) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private <T> T call(String path, Object entityRequest, Class<T> entityResponse, RequestOptions requestOptions) {
@@ -211,7 +228,7 @@ public abstract class AbstractClient {
             clientBuilder = configureSsl(clientBuilder);
             Client client = clientBuilder.build();
 
-            WebTarget webTarget = createWebTargetWithOptions(client, url, path, requestOptions.params, requestOptions.followRedirects);
+            WebTarget webTarget = createWebTargetWithOptions(client, url, path, requestOptions.params, isFollowRedirects(requestOptions.additionalAcceptedStatusCode));
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE, MediaType.APPLICATION_FORM_URLENCODED_TYPE).headers(requestOptions.headers);
 
             waitBeforeNextRequest();
@@ -222,12 +239,11 @@ public abstract class AbstractClient {
             if (Response.Status.SERVICE_UNAVAILABLE.getStatusCode() == response.getStatus()) {
                 throw new ServiceUnavailableException(String.format("Service Unavailable URL: %s", url));
             }
-            List<Integer> acceptedStatusCode = List.of(Response.Status.OK.getStatusCode(), Response.Status.NO_CONTENT.getStatusCode());
-            if (!requestOptions.followRedirects) {
-                acceptedStatusCode = new ArrayList<>(acceptedStatusCode);
-                acceptedStatusCode.add(Response.Status.FOUND.getStatusCode());
+            List<Response.Status> acceptedStatusCode = new ArrayList<>(List.of(Response.Status.OK, Response.Status.NO_CONTENT));
+            if (requestOptions.additionalAcceptedStatusCode != null) {
+                acceptedStatusCode.addAll(requestOptions.additionalAcceptedStatusCode);
             }
-            if (!acceptedStatusCode.contains(response.getStatus())) {
+            if (!acceptedStatusCode.contains(Response.Status.fromStatusCode(response.getStatus()))) {
                 String content = IOUtils.toString((InputStream) response.getEntity(), StandardCharsets.UTF_8);
                 if (StringUtils.isNoneBlank(content)) {
                     content = " / Content: " + content;

@@ -12,7 +12,6 @@ The `XXX` should be replaced by a use case scenario (like date, some league, dat
 
 | **File**                                  | **URL**                                                                         | **Description**                      |
 | ----------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------ |
-| `mpg.user-signIn.XXX.json`                | <https://api.mpg.football/user/sign-in>                                         | **Login**                            |
 | `mpg.dashboard.XXX.json`                  | <https://api.mpg.football/dashboard/leagues>                                    | **Dashboard / Home**                 |
 | `mpg.division.XXX.json`                   | <https://api.mpg.football/division/mpg_division_MLEXXXXX_3_1>                   | **User->Team association**           |
 | `mpg.team.XXX.json`                       | <https://api.mpg.football/team/mpg_team_MLEXXXXX_3_1_2>                         | **Current User Team**                |

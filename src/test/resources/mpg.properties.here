@@ -48,12 +48,13 @@ transactions.proposal = false
 #request.wait.urls=https://www.sportsgambler.com
 #request.wait.time=1
 
-# Authentications (simple = direct API signIn / oidc = Ligue1 website mechanism required for account created after February 2025)
-# (Real default is 'simple,oidc' but to many historical impact if not set as it for unit test)
-authentications = simple
-
-# Bypass sign in process by using hardcoded Bearer token
-#token = abc...xyz
+# Days to renew Bearer token before expiration
+#token.renew = 7
 
 # Enable debug logs
 #logs.debug = true
+
+# Access/Refresh tokens used for connections
+# DO NOT UPDATE, AUTOMATICALLY MANAGED
+token.access = 
+token.refresh = 
