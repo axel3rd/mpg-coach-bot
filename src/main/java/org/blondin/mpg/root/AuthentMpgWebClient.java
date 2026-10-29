@@ -1,19 +1,13 @@
 package org.blondin.mpg.root;
 
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
-import org.blondin.mpg.root.model.UserSignIn;
-
-import jakarta.ws.rs.core.Form;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.MultivaluedHashMap;
-import jakarta.ws.rs.core.MultivaluedMap;
+import org.blondin.mpg.root.model.Tokens;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Mpg Website Authenticator<br/>
@@ -24,7 +18,8 @@ import jakarta.ws.rs.core.MultivaluedMap;
  */
 public class AuthentMpgWebClient extends AbstractClient {
 
-    private AuthentConnectLigue1Client connectL1Client;
+    private static final Logger LOG = LoggerFactory.getLogger(AuthentMpgWebClient.class);
+    private final AuthentConnectLigue1Client connectL1Client;
 
     private AuthentMpgWebClient(Config config, String urlOverride) {
         super(config);
@@ -37,51 +32,28 @@ public class AuthentMpgWebClient extends AbstractClient {
         return mpgWebClient;
     }
 
+    protected String getClientId() {
+        String home = get("", String.class);
+        String indexValue = StringUtils.substringBetween(home, "/_expo/static/js/web/index-", ".js");
+        String index = get("_expo/static/js/web/index-" + indexValue + ".js", String.class);
+        return StringUtils.substringBetween(index, "AUTH0_WEB_CLIENT_ID\\\":\\\"", "\\\",\\\"AUTH0_AUDIENCE");
+    }
+
     /**
      * OIDC authentication
      * 
      * @param login    Login
      * @param password Password
-     * @return Token
+     * @return access_token and refresh_token
      */
-    public UserSignIn authenticate(String login, String password) {
-        String randomUUID = UUID.randomUUID().toString();
-
-        // --- Step 1: Initiate auth with MPG (POST form) ---
-        post("auth", Map.of("_data", "routes/__home/__auth/auth", "ext-amplitudeId", randomUUID), new Form().param("email", login).param("password", password),
-                MediaType.APPLICATION_FORM_URLENCODED_TYPE, String.class);
-        if (!getHeaders().containsKey("x-remix-redirect")) {
-            throw new UnsupportedOperationException("Header 'x-remix-redirect' is missing in first oidc authentication step");
-        }
-        URI redirectUri = URI.create(getHeaders().getFirst("x-remix-redirect").replace("ext-amplitudeId=", "ext-amplitudeId=" + randomUUID));
-
-        // --- Steps 2 + 3 + 4 to connect.ligue1
-        String code = connectL1Client.getMpgWebSiteCode(redirectUri.getPath(), redirectUri.getQuery(), login, password);
-
-        // --- Step 5: Exchange code for session (POST to callback) ---
-        post("auth/callback", null, null, new Form("code", code), MediaType.APPLICATION_FORM_URLENCODED_TYPE, false, String.class);
-
-        String sessionCookieHeader = findSetCookieStartingWith(getHeaders().get("set-cookie"), "__session=");
-        if (sessionCookieHeader == null) {
-            throw new UnsupportedOperationException("__session cookie not found in callback response (step 5)");
-        }
-        String sessionValue = sessionCookieHeader.split(";", 2)[0].split("=", 2)[1];
-
-        // --- Step 6: Extract token from dashboard ---
-        MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
-        headers.add("Cookie", "__session=" + sessionValue);
-        return get("dashboard", Map.of("_data", "root"), headers, UserSignIn.class, -1);
+    public Tokens authenticate(String login, String password) {
+        LOG.debug("Authenticate with login/password on web OIDC");
+        return connectL1Client.authenticate(getClientId(), "https://mpg.football", login, password);
     }
 
-    private static String findSetCookieStartingWith(List<String> setCookieHeaders, String prefix) {
-        for (String s : setCookieHeaders) {
-            if (s != null && s.startsWith(prefix))
-                return s;
-            // sometimes whitespace or other; check after trimming
-            if (s != null && s.trim().startsWith(prefix))
-                return s.trim();
-        }
-        return null;
+    public Tokens refresh(String refreshToken) {
+        LOG.debug("Refreshing tokens");
+        return connectL1Client.refresh(getClientId(), refreshToken);
     }
 
 }

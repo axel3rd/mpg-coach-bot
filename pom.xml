@@ -21,7 +21,9 @@
         <!-- Eclipse m2e disable warning -->
         <maven.project.sourceRoots.warningsDisabled>true</maven.project.sourceRoots.warningsDisabled>
         <!-- Minimal definition for surefire plugin -->
-        <argLine/>
+        <argLine />
+        <!-- Tips/cheat for line split when file formatted -->
+        <sfp>-Xshare:off -javaagent</sfp>
     </properties>
     <scm>
         <connection>scm:git:https://github.com/axel3rd/mpg-coach-bot</connection>
@@ -103,7 +105,7 @@
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <argLine>@{argLine} -Xshare:off -javaagent:${org.mockito:mockito-core:jar}</argLine>
+                    <argLine>@{argLine} ${sfp}:${org.mockito:mockito-core:jar}</argLine>
                 </configuration>
             </plugin>
             <!-- Auto exec program -->
@@ -217,7 +219,8 @@
             <artifactId>jackson-jaxrs-json-provider</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-        <!-- For the future : Try to use LocaDateTime instead Date, but some JSon API are note parsable :-/
+        <!-- For the future : Try to use LocaDateTime instead Date, but some
+        JSon API are note parsable :-/
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
@@ -228,6 +231,11 @@
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.23.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-configuration2</artifactId>
+            <version>2.15.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

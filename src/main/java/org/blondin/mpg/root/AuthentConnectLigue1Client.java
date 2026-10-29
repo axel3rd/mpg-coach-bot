@@ -1,18 +1,26 @@
 package org.blondin.mpg.root;
 
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
 import org.blondin.mpg.AbstractClient;
 import org.blondin.mpg.config.Config;
+import org.blondin.mpg.root.model.Tokens;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import jakarta.ws.rs.core.Form;
 import jakarta.ws.rs.core.MediaType;
@@ -29,7 +37,12 @@ import jakarta.ws.rs.core.Response;
  */
 public class AuthentConnectLigue1Client extends AbstractClient {
 
+    private static final Logger LOG = LoggerFactory.getLogger(AuthentConnectLigue1Client.class);
+    private static final SecureRandom RANDOM = new SecureRandom();
     private static final String HEADER_LOCATION = "location";
+    private static final String HEADER_COOKIE = "Cookie";
+    private static final String HEADER_SET_COOKIE = "set-cookie";
+    private static final String PARAM_CLIENT_ID = "client_id";
 
     protected AuthentConnectLigue1Client(Config config) {
         super(config);
@@ -41,50 +54,97 @@ public class AuthentConnectLigue1Client extends AbstractClient {
         return connectLigue1Client;
     }
 
-    public String getMpgWebSiteCode(String path, String params, String login, String password) {
-        // --- Step 2: Follow redirect to Ligue1 OAuth (GET) ---
-        get(path, paramsMap(params), false, String.class);
-        if (getStatusCode() != Response.Status.FOUND.getStatusCode()) {
-            throw new UnsupportedOperationException(String.format("Invalid reponse status code (not %s): %s", Response.Status.FOUND.getStatusCode(), getStatusCode()));
+    public Tokens authenticate(String clientId, String redirectUri, String login, String password) {
+        LOG.debug("Authenticate with web OIDC");
+        LOG.debug("{}: {}", PARAM_CLIENT_ID, clientId);
+        LOG.debug("redirect_url: {}", redirectUri);
+        try {
+            // ---------- 1. code_verifier (43+ chars, base64url) ----------
+            byte[] verifierBytes = new byte[48];
+            RANDOM.nextBytes(verifierBytes);
+            String codeVerifier = base64Url(verifierBytes);
+            LOG.debug("code_verifier: {}", codeVerifier);
+
+            // ---------- 2. code_challenge = BASE64URL(SHA256(verifier)) ----------
+            byte[] digest = MessageDigest.getInstance("SHA-256").digest(codeVerifier.getBytes(StandardCharsets.US_ASCII));
+            String codeChallenge = base64Url(digest);
+            LOG.debug("code_challenge: {}", codeChallenge);
+
+            // ---------- 3. state & nonce ----------
+            byte[] stateBytes = new byte[43];
+            RANDOM.nextBytes(stateBytes);
+            String state = base64Url(stateBytes);
+            LOG.debug("state: {}", state);
+
+            byte[] nonceBytes = new byte[43];
+            RANDOM.nextBytes(nonceBytes);
+            String nonce = base64Url(nonceBytes);
+            LOG.debug("nonce: {}", nonce);
+
+            // ---------- 4. Call URL authentication ----------
+            Map<String, Object> params = Map.ofEntries(Map.entry(PARAM_CLIENT_ID, clientId), Map.entry("scope", "openid profile email offline_access"), Map.entry("redirect_uri", redirectUri),
+                    Map.entry("audience", "https://mpg.ligue1.fr"), Map.entry("prompt", "login"), Map.entry("ui_locales", "fr"), Map.entry("screen_hint", "signin"),
+                    Map.entry("ext-amplitudeId", UUID.randomUUID().toString()), Map.entry("response_type", "code"), Map.entry("response_mode", "query"), Map.entry("state", state),
+                    Map.entry("nonce", nonce), Map.entry("code_challenge", codeChallenge), Map.entry("code_challenge_method", "S256"),
+                    Map.entry("auth0Client", Base64.getEncoder().encodeToString("{\"name\":\"auth0-react\",\"version\":\"2.20.0\"}".getBytes(StandardCharsets.UTF_8))));
+            get("authorize", params, List.of(Response.Status.FOUND), String.class);
+            if (getStatusCode() != Response.Status.FOUND.getStatusCode()) {
+                throw new UnsupportedOperationException(String.format("Invalid reponse status code (not %s): %s", Response.Status.FOUND.getStatusCode(), getStatusCode()));
+            }
+            if (!getHeaders().containsKey(HEADER_LOCATION)) {
+                throw new UnsupportedOperationException(String.format("Header '%s' is missing in response /authorize", HEADER_LOCATION));
+            }
+            String loginUrl = getHeaders().getFirst(HEADER_LOCATION);
+
+            // Extract state from loginUrl
+            String stateReturn = extractFirstGroup(loginUrl, "state=([^&]+)");
+            if (stateReturn == null) {
+                throw new UnsupportedOperationException("State parameter not found in loginUrl");
+            }
+
+            // --- Step 5: Submit credentials to Ligue1 login (POST) ---
+            URI loginPostUrl = URI.create(loginUrl);
+
+            // Build cookie header from set-cookie values of resp2
+            MultivaluedMap<String, Object> headersLogin = new MultivaluedHashMap<>();
+            headersLogin.add(HEADER_COOKIE, joinCookies(getHeaders().get(HEADER_SET_COOKIE)));
+
+            // HTTP 400 when user/password is invalid
+            post(loginPostUrl.getPath().substring(1), paramsMap(loginPostUrl.getQuery()), headersLogin, new Form("state", stateReturn).param("username", login).param("password", password),
+                    MediaType.APPLICATION_FORM_URLENCODED_TYPE, List.of(Response.Status.FOUND, Response.Status.BAD_REQUEST), String.class);
+            if (getStatusCode() == Response.Status.BAD_REQUEST.getStatusCode()) {
+                throw new UnsupportedOperationException("Login/password is invalid");
+            }
+
+            if (!getHeaders().containsKey(HEADER_LOCATION)) {
+                throw new UnsupportedOperationException(String.format("Header '%s' is missing in response /u/login", HEADER_LOCATION));
+            }
+
+            // --- Step 6: Get authorization code (GET resume) ---
+            URI resultUrl = URI.create(getHeaders().getFirst(HEADER_LOCATION));
+            MultivaluedMap<String, Object> headersResume = new MultivaluedHashMap<>();
+            headersResume.add(HEADER_COOKIE, joinCookies(getHeaders().get(HEADER_SET_COOKIE)));
+            get(resultUrl.getPath().substring(1), paramsMap(resultUrl.getQuery()), headersResume, List.of(Response.Status.FOUND), String.class, -1);
+
+            if (!getHeaders().containsKey(HEADER_LOCATION)) {
+                throw new UnsupportedOperationException(String.format("Header '%s' is missing in response /authorize/resume", HEADER_LOCATION));
+            }
+            String code = extractFirstGroup(getHeaders().getFirst(HEADER_LOCATION), "code=([^&]+)");
+            LOG.debug("code: {}", code);
+
+            // --- Step 7: Get access_token and refresh_token ---
+            return post("oauth/token", Map.of("grant_type", "authorization_code", PARAM_CLIENT_ID, clientId, "code", code, "code_verifier", codeVerifier, "redirect_uri", redirectUri), Tokens.class);
+        } catch (NoSuchAlgorithmException e) {
+            throw new UnsupportedOperationException(e);
         }
-        if (!getHeaders().containsKey(HEADER_LOCATION)) {
-            throw new UnsupportedOperationException(String.format("Header '%s' is missing in step 2 oidc authentication step", HEADER_LOCATION));
-        }
-        String loginUrl = getHeaders().getFirst(HEADER_LOCATION);
+    }
 
-        // Extract state from loginUrl
-        String state = extractFirstGroup(loginUrl, "state=([^&]+)");
-        if (state == null) {
-            throw new UnsupportedOperationException("State parameter not found in loginUrl");
-        }
+    public Tokens refresh(String clientId, String refreshToken) {
+        return post("oauth/token", Map.of("grant_type", "refresh_token", PARAM_CLIENT_ID, clientId, "refresh_token", refreshToken), Tokens.class);
+    }
 
-        // --- Step 3: Submit credentials to Ligue1 login (POST) ---
-        URI loginPostUrl = URI.create(loginUrl);
-
-        // Build cookie header from set-cookie values of resp2
-        MultivaluedMap<String, Object> headersLogin = new MultivaluedHashMap<>();
-        headersLogin.add("Cookie", joinCookies(getHeaders().get("set-cookie")));
-
-        post(loginPostUrl.getPath(), paramsMap(loginPostUrl.getQuery()), headersLogin, new Form("state", state).param("username", login).param("password", password),
-                MediaType.APPLICATION_FORM_URLENCODED_TYPE, false, String.class);
-
-        if (!getHeaders().containsKey(HEADER_LOCATION)) {
-            throw new UnsupportedOperationException(String.format("Header '%s' is missing in step 3 oidc authentication step", HEADER_LOCATION));
-        }
-
-        // --- Step 4: Get authorization code (GET resume) ---
-        URI resultUrl = URI.create(getHeaders().getFirst(HEADER_LOCATION));
-        MultivaluedMap<String, Object> headersResume = new MultivaluedHashMap<>();
-        headersResume.add("Cookie", joinCookies(getHeaders().get("set-cookie")));
-        String bodyResume = get(resultUrl.getPath(), paramsMap(resultUrl.getQuery()), headersResume, String.class, -1);
-
-        // Extract code from HTML input name="code" value="..."
-        String code = extractFirstGroup(bodyResume, "name=\"code\"\\s+value=\"([^\"]+)\"");
-        if (StringUtils.isBlank(code)) {
-            throw new UnsupportedOperationException("Authorization code not found on resume page (step 4)");
-        }
-        return code;
-
+    private static String base64Url(byte[] bytes) {
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 
     private static Map<String, Object> paramsMap(String params) {

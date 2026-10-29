@@ -32,8 +32,7 @@ public class ConfigTest {
         Assert.assertEquals("firstName.lastName@gmail.com", config.getLogin());
         Assert.assertEquals("foobar", config.getPassword());
 
-        // Real default is 'simple,oidc' but tests mort complicated if not defined as it
-        Assert.assertEquals("simple", config.getAuthentications());
+        Assert.assertEquals(7, config.getTokenRenew());
 
         Assert.assertEquals(true, config.isSslCertificatesCheck());
 
@@ -87,8 +86,9 @@ public class ConfigTest {
         List<String> lines = new ArrayList<>();
         lines.add("email = firstName.lastName@gmail.com");
         lines.add("password = foobar");
-        lines.add("authentications = simple");
-        lines.add("token = abc...xyz");
+        lines.add("token.access = abc...xyz");
+        lines.add("token.refresh = cba...zyx");
+        lines.add("token.renew = 15");
         lines.add("team.update=false");
         lines.add("efficiency.recent.focus=false");
         lines.add("efficiency.recent.days=5");
@@ -119,10 +119,11 @@ public class ConfigTest {
         FileUtils.writeLines(configFile, lines);
 
         Config config = Config.build(configFile.getPath());
-        // No login/password, could be overridden by system properties in real Travis tests
+        // No login/password, could be overridden by system properties in real tests
 
-        Assert.assertEquals("simple", config.getAuthentications());
-        Assert.assertEquals("abc...xyz", config.getToken());
+        Assert.assertEquals("abc...xyz", config.getTokenAccess());
+        Assert.assertEquals("cba...zyx", config.getTokenRefresh());
+        Assert.assertEquals(15, config.getTokenRenew());
         Assert.assertEquals(false, config.isTeampUpdate());
         Assert.assertEquals(false, config.isEfficiencyRecentFocus());
         Assert.assertEquals(5, config.getEfficiencyRecentDays());
@@ -212,4 +213,30 @@ public class ConfigTest {
         }
     }
 
+    @Test
+    public void testDeprecated() throws IOException {
+        List<String> lines = new ArrayList<>();
+        lines.add("email = firstName.lastName@gmail.com");
+        lines.add("password = foobar");
+        lines.add("authentications = simple");
+        lines.add("token = abc...xyz");
+
+        File configFile = new File(testFolder.getRoot(), "mpg.properties.test");
+        FileUtils.writeLines(configFile, lines);
+
+        Config config = Config.build(configFile.getPath());
+
+        try {
+            config.getAuthentications();
+            Assert.fail("No more supported");
+        } catch (UnsupportedOperationException e) {
+            Assert.assertTrue(e.getMessage().contains("Parameter 'authentications' is not more supported, please remove it from configuration file."));
+        }
+        try {
+            config.getToken();
+            Assert.fail("No more supported");
+        } catch (UnsupportedOperationException e) {
+            Assert.assertTrue(e.getMessage().contains("Parameter 'token' is not more supported, please remove it from configuration file."));
+        }
+    }
 }

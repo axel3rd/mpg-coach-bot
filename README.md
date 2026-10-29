@@ -24,7 +24,7 @@ MPG (Mon Petit Gazon) coach bot, to automate and optimize weekly league actions
     * [Efficiency coefficient](#efficiency-coefficient)
     * [SSL check](#ssl-check)
     * [Requests successive wait time](#requests-successive-wait-time)
-    * [Authentications](#authentications)
+    * [Authentication](#authentication)
     * [Logs debug](#logs-debug)
   * [Execution](#execution)
 * [Roadmap](#roadmap)
@@ -76,7 +76,7 @@ Depending your environment system, run `mpg-coach-bot.bat` (Windows) or `mpg-coa
 
 To fully automate update your weekly actions on your *MPG* leagues, you can use a Linux *crontab* (daily at 6pm, for sample).
 
-**Disclaimer**: *MPG* credentials are used to connect on *MPG* website API, to retrieve your leagues informations. These credentials are not stored outside the configuration file, but are in memory during the program execution.
+**Disclaimer**: *MPG* credentials are used to connect on *MPG* website API and get a Bearer token stored in your configuration file, to retrieve your leagues informations. These credentials are not stored outside the configuration file, but are in memory during the program execution.
 
 ## Sample output
 
@@ -272,20 +272,26 @@ request.wait.urls=https://www.sportsgambler.com
 request.wait.time=1
 ```
 
-#### Authentications
+#### Authentication
 
-To customize authentications type (since v1.13):
+Since 1st October 2026 authentication is exclusively based on <https://connect.ligue1.fr> OIDC mechanism.
 
-```
-# Authentications (simple = direct API signIn / oidc = Ligue1 website mechanism required for account created after February 2025)
-authentications = simple,oidc
-```
-
-To bypass authentication with hardcoded Bearer token (retrieved via Browser DevTools and API endpoint check)(since v1.14):
+A Bearer token is retrieved from authentication and stored in configuration file to optimize re-connection of program.
 
 ```
-# Bypass sign in process by using hardcoded Bearer token
-token = abc...xyz
+# Days to renew Bearer token before expiration
+token.renew = 7
+
+# Access/Refresh tokens used for connections
+# DO NOT UPDATE, AUTOMATICALLY MANAGED
+token.access = 
+token.refresh = 
+```
+
+The authentications type (since v1.13) has been removed in v1.14 after MPG OIDC change the first October 2026.
+
+```
+authentications = parameter should be removed
 ```
 
 #### Logs debug
