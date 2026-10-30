@@ -1,6 +1,6 @@
 package org.blondin.mpg.stats.model;
 
-import java.util.Date;
+import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,21 +9,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class LeaguesRefresh {
 
     @JsonProperty("1")
-    private Date date1;
+    private Instant date1;
 
     @JsonProperty("2")
-    private Date date2;
+    private Instant date2;
 
     @JsonProperty("3")
-    private Date date3;
+    private Instant date3;
 
     @JsonProperty("4")
-    private Date date4;
+    private Instant date4;
 
     @JsonProperty("5")
-    private Date date5;
+    private Instant date5;
 
-    public Date getDate(int league) {
+    public Instant getDate(int league) {
         switch (league) {
         case 1:
             return date1;

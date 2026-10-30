@@ -1,7 +1,7 @@
 package org.blondin.mpg.stats.model;
 
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.blondin.mpg.root.exception.PlayerNotFoundException;
@@ -22,7 +22,7 @@ public class Championship {
     private List<Player> players = new ArrayList<>();
 
     @JsonProperty("bD")
-    private Date date;
+    private Instant date;
 
     @JsonProperty("mL")
     private Infos infos;
@@ -33,8 +33,7 @@ public class Championship {
         synchronized (this) {
             if (!maxDaySetOnPlayer) {
                 // If last season statistics does not exist (Dominos L2 in 2019 use case, first one in MPG), current annual max day is used
-                final int previousMaxSeasonDay = getInfos().getLastStats() == null ? getInfos().getAnnualStats().getMaxDay()
-                        : getInfos().getLastStats().getMaxDay();
+                final int previousMaxSeasonDay = getInfos().getLastStats() == null ? getInfos().getAnnualStats().getMaxDay() : getInfos().getLastStats().getMaxDay();
                 final int currentSeasonDay = getInfos().getAnnualStats().getCurrentDay().getDayReached();
                 players.forEach(p -> p.getStats().setCurrentSeasonDay(currentSeasonDay));
                 players.forEach(p -> p.getStats().setPreviousMaxSeasonDay(previousMaxSeasonDay));
@@ -57,7 +56,7 @@ public class Championship {
         return infos;
     }
 
-    public Date getDate() {
+    public Instant getDate() {
         return date;
     }
 }

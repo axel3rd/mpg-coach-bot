@@ -60,7 +60,7 @@ public class Games extends AbstractMpgProcess {
             removeOutPlayers(players, apiClients.getOutPlayers(), ChampionshipTypeWrapper.toOut(league.getChampionship()), true);
 
             // Sort by efficiency
-            Collections.sort(players, Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed());
+            players.sort(Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed());
 
             // Write optimized team
             writeTeamOptimized(players, coach.getComposition(), config.isDebug());
@@ -327,7 +327,7 @@ public class Games extends AbstractMpgProcess {
             playersRemaining.addAll(defenders);
             playersRemaining.addAll(midfielders);
             playersRemaining.addAll(attackers);
-            Collections.sort(playersRemaining, Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed());
+            playersRemaining.sort(Comparator.comparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed());
             for (int i = 12; i <= 17; i++) {
                 if (playersRemaining.isEmpty()) {
                     break;

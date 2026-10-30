@@ -5,9 +5,9 @@ import org.apache.commons.lang3.StringUtils;
 
 public class Proxy {
 
-    private String uri;
-    private String user;
-    private String password;
+    private final String uri;
+    private final String user;
+    private final String password;
 
     public Proxy(String uri, String user, String password) {
         this.uri = uri;
