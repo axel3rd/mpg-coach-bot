@@ -12,12 +12,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.class>org.blondin.mpg.Main</main.class>
         <jdk.version>21</jdk.version>
-        <jersey.version>4.0.2</jersey.version>
-        <jackson.version>2.21.7</jackson.version>
-        <slf4j.version>2.0.17</slf4j.version>
-        <log4j.version>2.25.4</log4j.version>
+        <jersey.version>4.0.3</jersey.version>
+        <jackson.version>2.22.4</jackson.version>
+        <slf4j.version>2.0.20</slf4j.version>
+        <log4j.version>2.26.1</log4j.version>
         <!-- Goals for release plugin -->
         <goals>package</goals>
+        <!-- Excluded patterns for 'mvn versions:use-latest-versions/versions:update-properties/versions:display-dependency-updates/versions:display-plugin-updates' -->
+        <maven.version.ignore>.*-alpha.*,.*-beta.*,.*-M.*</maven.version.ignore>
         <!-- Eclipse m2e disable warning -->
         <maven.project.sourceRoots.warningsDisabled>true</maven.project.sourceRoots.warningsDisabled>
         <!-- Minimal definition for surefire plugin -->
@@ -34,27 +36,27 @@
             <plugins>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.15.0</version>
+                    <version>3.16.0</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.4.0</version>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-jar-plugin</artifactId>
                     <version>3.5.0</version>
                 </plugin>
                 <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.5.1</version>
+                </plugin>
+                <plugin>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>3.6.1</version>
+                    <version>3.6.2</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.10.0</version>
+                    <version>3.11.0</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.5.5</version>
+                    <version>3.6.1</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
@@ -187,7 +189,7 @@
         <dependency>
             <groupId>org.glassfish.jersey.connectors</groupId>
             <artifactId>jersey-apache-connector</artifactId>
-            <version>3.1.11</version>
+            <version>3.1.12</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
@@ -242,7 +244,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.21.0</version>
+            <version>2.22.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -263,7 +265,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.22.0</version>
+            <version>5.24.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
