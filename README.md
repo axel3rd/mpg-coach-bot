@@ -345,7 +345,7 @@ Data mining on media resources to optimize team (injuries, coach announcements, 
 -ea -Xshare:off -javaagent:C:/[...]/.m2/repository/org/mockito/mockito-core/5.[version]/mockito-core-5.[version].jar
 ```
 
-2. Annotation processing should be enabled for unit tests execution (for Console logs analyse)
+2. Annotation processing should be enabled (for some output logs asserts)
 
 * Eclipse : Preferences → Maven → Annotation Processing, Enable annotation processing
 
