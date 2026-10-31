@@ -16,7 +16,7 @@ import org.blondin.mpg.out.model.Position;
 
 public abstract class AbstractInjuredSuspendedNotL2 extends AbstractClient {
 
-    private EnumMap<ChampionshipOutType, List<Player>> cache = new EnumMap<>(ChampionshipOutType.class);
+    private final EnumMap<ChampionshipOutType, List<Player>> cache = new EnumMap<>(ChampionshipOutType.class);
 
     protected AbstractInjuredSuspendedNotL2(Config config) {
         super(config);

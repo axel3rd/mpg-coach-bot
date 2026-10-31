@@ -1,6 +1,6 @@
 package org.blondin.mpg.stats;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.EnumMap;
 import java.util.Objects;
 
@@ -14,7 +14,7 @@ import org.blondin.mpg.stats.model.LeaguesRefresh;
  */
 public class MpgStatsClient extends AbstractClient {
 
-    private EnumMap<ChampionshipStatsType, Championship> cache = new EnumMap<>(ChampionshipStatsType.class);
+    private final EnumMap<ChampionshipStatsType, Championship> cache = new EnumMap<>(ChampionshipStatsType.class);
 
     private MpgStatsClient(Config config) {
         super(config);
@@ -35,8 +35,8 @@ public class MpgStatsClient extends AbstractClient {
             // FR : "Ligue-1" / EN : "Premier-League" / ES : "Liga"
             // Call with infinite cache and verify timestamp after
             Championship championship = get("leagues/" + type.getValue() + "_v2.json", Championship.class, 0);
-            Date leagueDateRefresh = getLeaguesRefresh().getDate(championship.getInfos().getId());
-            if (leagueDateRefresh == null || championship.getDate().before(leagueDateRefresh)) {
+            Instant leagueDateRefresh = getLeaguesRefresh().getDate(championship.getInfos().getId());
+            if (leagueDateRefresh == null || championship.getDate().isBefore(leagueDateRefresh)) {
                 // Force refresh by using a mini cache time
                 championship = get("leagues/" + type.getValue() + "_v2.json", Championship.class, 1);
             }

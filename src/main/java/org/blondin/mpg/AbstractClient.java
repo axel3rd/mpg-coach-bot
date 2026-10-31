@@ -35,6 +35,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import jakarta.ws.rs.ProcessingException;
 import jakarta.ws.rs.ServiceUnavailableException;
@@ -330,7 +332,7 @@ public abstract class AbstractClient {
             return (T) FileUtils.readFileToString(file, StandardCharsets.UTF_8);
         }
         // Perhaps 'enable(DeserializationFeature.UNWRAP_ROOT_VALUE)' to set depending wrapRoot
-        return new ObjectMapper().readValue(file, entityResponse);
+        return new ObjectMapper().registerModule(new JavaTimeModule()).disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS).readValue(file, entityResponse);
     }
 
     public static File getCacheFile(String url, String path) {

@@ -1,7 +1,6 @@
 package org.blondin.mpg;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public abstract class AbstractMercatoMpgProcess extends AbstractMpgProcess {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractMercatoMpgProcess.class);
 
     protected static void processMercato(List<Player> players, InjuredSuspendedWrapperClient outPlayersClient, ChampionshipOutType championship) {
-        Collections.sort(players, Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed());
+        players.sort(Comparator.comparing(Player::getPosition).thenComparing(Player::getEfficiency).thenComparing(Player::getQuotation).reversed());
         List<Player> goals = players.stream().filter(p -> p.getPosition().equals(Position.G)).toList().subList(0, 5);
         List<Player> defenders = players.stream().filter(p -> p.getPosition().equals(Position.D)).toList().subList(0, 10);
         List<Player> midfielders = players.stream().filter(p -> p.getPosition().equals(Position.M)).toList().subList(0, 10);

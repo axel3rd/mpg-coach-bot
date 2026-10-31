@@ -13,7 +13,7 @@ cd $(dirname $0)
 
 echo "$VERSION" | grep "SNAPSHOT" > /dev/null
 if [ $? -eq 0 ]; then
-    echo "ERROR: SNAPSHOT version update is currently not supported (GitHub packages does not allow non-authenticated access), exiting";
+    echo "ERROR: SNAPSHOT version update is currently not supported (GitHub packages does not allow non-authenticated access), exiting" >&2;
     exit 1;
 fi
 
@@ -22,9 +22,9 @@ FILE_DOWNLOAD="$FILE_PREFIX-$VERSION.zip";
 URL="https://github.com/axel3rd/mpg-coach-bot/releases/download/mpg-coach-bot-$VERSION/$FILE_DOWNLOAD"
 
 echo "Download: $URL";
-curl -L "$URL" -o "$FILE_DOWNLOAD";
+curl --proto "=https" --location "$URL" --output "$FILE_DOWNLOAD";
 if [ $? -ne 0 ]; then
-    echo "ERROR: Package cannot be downloaded, exiting";
+    echo "ERROR: Package cannot be downloaded, exiting" >&2;
     exit 1;
 fi
 

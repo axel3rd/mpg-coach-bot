@@ -339,11 +339,15 @@ Data mining on media resources to optimize team (injuries, coach announcements, 
 
 ### Unit test execution
 
-JRE VM argument should be (in Eclipse, ...):
+1. JRE VM argument should be (in Eclipse, ...):
 
 ```
 -ea -Xshare:off -javaagent:C:/[...]/.m2/repository/org/mockito/mockito-core/5.[version]/mockito-core-5.[version].jar
 ```
+
+2. Annotation processing should be enabled (for some output logs asserts)
+
+* Eclipse : Preferences → Maven → Annotation Processing, Enable annotation processing
 
 ### Build and release
 

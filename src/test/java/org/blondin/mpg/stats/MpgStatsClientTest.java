@@ -15,16 +15,16 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class MpgStatsClientTest extends AbstractMockTestClient {
 
     @Test
     public void testApiV2DateRefreshMechanismNoRefreshDate() {
         // No league date refresh
-        stubFor(get("/builds.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20220327-no-L1.json")));
-        stubFor(get("/leagues/Ligue-1_v2.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-1.20220327.json")));
+        stubFor(get("/builds.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20220327-no-L1.json")));
+        stubFor(get("/leagues/Ligue-1_v2.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-1.20220327.json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
 
         Player p = mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_1).getPlayer("Mbappé");
@@ -34,10 +34,8 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
     @Test
     public void testApiV2DateRefreshMechanismOldChampionshipDate() {
         // No league date refresh
-        stubFor(get("/builds.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20220327.json")));
-        stubFor(get("/leagues/Ligue-1_v2.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-1.20220327-old-refresh.json")));
+        stubFor(get("/builds.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20220327.json")));
+        stubFor(get("/leagues/Ligue-1_v2.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-1.20220327-old-refresh.json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
 
         Player p = mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_1).getPlayer("Mbappé");
@@ -46,10 +44,8 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
 
     @Test
     public void testApiV2L1() {
-        stubFor(get("/builds.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20220327.json")));
-        stubFor(get("/leagues/Ligue-1_v2.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-1.20220327.json")));
+        stubFor(get("/builds.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20220327.json")));
+        stubFor(get("/leagues/Ligue-1_v2.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-1.20220327.json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
 
         Player p = mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_1).getPlayer("Mbappé");
@@ -68,10 +64,8 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
 
     @Test
     public void testApiV2L2() {
-        stubFor(get("/builds.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20220327.json")));
-        stubFor(get("/leagues/Ligue-2_v2.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-2.20220327.json")));
+        stubFor(get("/builds.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20220327.json")));
+        stubFor(get("/leagues/Ligue-2_v2.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-2.20220327.json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
 
         Player p = mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_2).getPlayer("van den Boomen");
@@ -90,10 +84,8 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
 
     @Test
     public void testApiV2Liga() {
-        stubFor(get("/builds.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20220327.json")));
-        stubFor(get("/leagues/Liga_v2.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.liga.20220327.json")));
+        stubFor(get("/builds.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20220327.json")));
+        stubFor(get("/leagues/Liga_v2.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.liga.20220327.json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
 
         Player p = mpgStatsClient.getStats(ChampionshipStatsType.LIGA).getPlayer("Benzema");
@@ -112,10 +104,8 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
 
     @Test
     public void testApiV2Pl() {
-        stubFor(get("/builds.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20220327.json")));
-        stubFor(get("/leagues/Premier-League_v2.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.premier-league.20220327.json")));
+        stubFor(get("/builds.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20220327.json")));
+        stubFor(get("/leagues/Premier-League_v2.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.premier-league.20220327.json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
 
         Player p = mpgStatsClient.getStats(ChampionshipStatsType.PREMIER_LEAGUE).getPlayer("Mohamed Salah");
@@ -134,10 +124,8 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
 
     @Test
     public void testApiV2SerieA() {
-        stubFor(get("/builds.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20220327.json")));
-        stubFor(get("/leagues/Serie-A_v2.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.serie-a.20220327.json")));
+        stubFor(get("/builds.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20220327.json")));
+        stubFor(get("/leagues/Serie-A_v2.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.serie-a.20220327.json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
 
         Player p = mpgStatsClient.getStats(ChampionshipStatsType.SERIE_A).getPlayer("Vlahovic");
@@ -156,10 +144,8 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
 
     @Test
     public void testAuction() {
-        stubFor(get("/builds.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20211122.json")));
-        stubFor(get("/leagues/Ligue-1_v2.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-1.20211122.json")));
+        stubFor(get("/builds.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20211122.json")));
+        stubFor(get("/leagues/Ligue-1_v2.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-1.20211122.json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
         Player p = mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_1).getPlayer("Mbappé");
         Assert.assertEquals(43, p.getAuction().getMin());
@@ -170,10 +156,8 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
 
     @Test
     public void testPlayersWithSameName() {
-        stubFor(get("/builds.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20210804.json")));
-        stubFor(get("/leagues/Ligue-2_v2.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-2.20210804.json")));
+        stubFor(get("/builds.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20210804.json")));
+        stubFor(get("/leagues/Ligue-2_v2.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-2.20210804.json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
         Assert.assertEquals(25, mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_2).getPlayer("Ba Pape Ibnou").getPrice());
         Assert.assertEquals(1, mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_2).getInfos().getAnnualStats().getCurrentDay().getDayReached());
@@ -182,10 +166,8 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
 
     @Test
     public void testEfficiencyRecentFocus() {
-        stubFor(get("/builds.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20190406.json")));
-        stubFor(get("/leagues/Ligue-1_v2.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-1.20190406.json")));
+        stubFor(get("/builds.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20190406.json")));
+        stubFor(get("/leagues/Ligue-1_v2.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-1.20190406.json")));
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
         Assert.assertEquals(30, mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_1).getInfos().getAnnualStats().getCurrentDay().getDayReached());
         Assert.assertTrue(mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_1).getInfos().getAnnualStats().getCurrentDay().isStatsDayReached());
@@ -238,30 +220,23 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
 
     @Test
     public void testMockAllLeagues() {
-        stubFor(get("/builds.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20181017.json")));
-        stubFor(get("/leagues/Ligue-1_v2.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-1.20181017.json")));
-        stubFor(get("/leagues/Premier-League_v2.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.premier-league.20181017.json")));
-        stubFor(get("/leagues/Liga_v2.json")
-                .willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.liga.20181017.json")));
+        stubFor(get("/builds.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.builds.20181017.json")));
+        stubFor(get("/leagues/Ligue-1_v2.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.ligue-1.20181017.json")));
+        stubFor(get("/leagues/Premier-League_v2.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.premier-league.20181017.json")));
+        stubFor(get("/leagues/Liga_v2.json").willReturn(aResponse().withHeader("Content-Type", "application/json").withBodyFile("mlnstats.liga.20181017.json")));
 
         MpgStatsClient mpgStatsClient = MpgStatsClient.build(getConfig(), "http://localhost:" + getServer().port());
 
         Assert.assertEquals(8, mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_1).getInfos().getAnnualStats().getCurrentDay().getDayReached());
         Assert.assertTrue(mpgStatsClient.getStats(ChampionshipStatsType.LIGUE_1).getInfos().getAnnualStats().getCurrentDay().isStatsDayReached());
 
-        Assert.assertEquals(8,
-                mpgStatsClient.getStats(ChampionshipStatsType.PREMIER_LEAGUE).getInfos().getAnnualStats().getCurrentDay().getDayReached());
-        Assert.assertTrue(
-                mpgStatsClient.getStats(ChampionshipStatsType.PREMIER_LEAGUE).getInfos().getAnnualStats().getCurrentDay().isStatsDayReached());
+        Assert.assertEquals(8, mpgStatsClient.getStats(ChampionshipStatsType.PREMIER_LEAGUE).getInfos().getAnnualStats().getCurrentDay().getDayReached());
+        Assert.assertTrue(mpgStatsClient.getStats(ChampionshipStatsType.PREMIER_LEAGUE).getInfos().getAnnualStats().getCurrentDay().isStatsDayReached());
 
         Assert.assertEquals(8, mpgStatsClient.getStats(ChampionshipStatsType.LIGA).getInfos().getAnnualStats().getCurrentDay().getDayReached());
         Assert.assertTrue(mpgStatsClient.getStats(ChampionshipStatsType.LIGA).getInfos().getAnnualStats().getCurrentDay().isStatsDayReached());
 
-        for (ChampionshipStatsType type : Arrays.asList(ChampionshipStatsType.LIGUE_1, ChampionshipStatsType.PREMIER_LEAGUE,
-                ChampionshipStatsType.LIGA)) {
+        for (ChampionshipStatsType type : Arrays.asList(ChampionshipStatsType.LIGUE_1, ChampionshipStatsType.PREMIER_LEAGUE, ChampionshipStatsType.LIGA)) {
             Championship championship = mpgStatsClient.getStats(type);
             subChampionshipTest(championship, type.getValue().toLowerCase());
         }
@@ -270,16 +245,16 @@ public class MpgStatsClientTest extends AbstractMockTestClient {
     @Test
     public void testLocalMapping() throws Exception {
         for (String subFile : Arrays.asList("ligue-1", "premier-league", "liga")) {
-            Championship championship = new ObjectMapper().readValue(new File("src/test/resources/__files", "mlnstats." + subFile + ".20181017.json"),
-                    Championship.class);
+            Championship championship = new ObjectMapper().registerModule(new JavaTimeModule()).disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                    .readValue(new File("src/test/resources/__files", "mlnstats." + subFile + ".20181017.json"), Championship.class);
             subChampionshipTest(championship, subFile);
         }
     }
 
     @Test
     public void testLocalMappingRefresh() throws Exception {
-        LeaguesRefresh refresh = new ObjectMapper().readValue(new File("src/test/resources/__files", "mlnstats.builds.20181017.json"),
-                LeaguesRefresh.class);
+        LeaguesRefresh refresh = new ObjectMapper().registerModule(new JavaTimeModule()).disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                .readValue(new File("src/test/resources/__files", "mlnstats.builds.20181017.json"), LeaguesRefresh.class);
         Assert.assertNotNull(refresh);
         Assert.assertNotNull(refresh.getDate(1));
         Assert.assertNotNull(refresh.getDate(2));
